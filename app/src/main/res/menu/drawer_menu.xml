@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/my_info"
+            android:icon="@drawable/ic_person"
+            android:title="My information" />
+        <item
+            android:id="@+id/nav_message"
+           android:icon="@drawable/customer"
+            android:title="customer information" />
+        <item
+            android:id="@+id/nav_chat"
+            android:icon="@drawable/produclist"
+            android:title="products list" />
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/producthisstory"
+            android:title="sale history" />
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+               android:icon="@drawable/logout"
+                android:title="log out" />
+
+        </menu>
+    </item>
+
+</menu>
