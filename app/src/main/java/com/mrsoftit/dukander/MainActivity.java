@@ -9,16 +9,36 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -26,7 +46,22 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
     private FirebaseAuth mAuth;
 
-    FirebaseAuth.AuthStateListener mAuthLisenar;
+    StorageReference mStorageReferenceImage;
+    FirebaseFirestore firebaseFirestore;
+    ProgressDialog progressDialog;
+    FirebaseFirestore firestore;
+    MinimumProductAdapter minimumProductAdapter;
+
+    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+    String user_id = currentUser.getUid();
+
+    CollectionReference myInfo = FirebaseFirestore.getInstance()
+            .collection("users").document(user_id).collection("DukanInfo");
+
+    CollectionReference product = FirebaseFirestore.getInstance()
+            .collection("users").document(user_id).collection("Product");
+
 
 
     @Override
@@ -58,6 +93,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
         toggle.syncState();
 
+        recyclear();
 
     }
 
@@ -97,11 +133,81 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+
+        minimumProductAdapter.startListening();
+
+        firestore = FirebaseFirestore.getInstance();
+
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        String user_id = currentUser.getUid();
+
+        CollectionReference myInfo = FirebaseFirestore.getInstance()
+                .collection("users").document(user_id).collection("DukanInfo");
+
+        NavigationView navigationView = findViewById(R.id.navigationView);
+        View headeView = navigationView.getHeaderView(0);
+
+        final ImageView appCompatImageView = headeView.findViewById(R.id.appCompatImageView);
+        final TextView dukanname = headeView.findViewById(R.id.dukanname);
+        final TextView dukanPhone = headeView.findViewById(R.id.dukanPhone);
+        final TextView AddresTextView = headeView.findViewById(R.id.AddresTextView);
+
+        myInfo.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        MyInfoNote myInfoNote = document.toObject(MyInfoNote.class);
+
+                        dukanname.setText(myInfoNote.getDukanName());
+                        dukanPhone.setText(myInfoNote.getDukanphone());
+                        AddresTextView.setText(myInfoNote.getDukanaddress());
+
+                        Uri myUri = Uri.parse(myInfoNote.getDukanaddpicurl());
+
+                        Picasso.get().load(myUri).into(appCompatImageView);
+                    }
+                }
+            }
+        });
+
+    }
+
+    @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
+    }
+
+
+    private void recyclear() {
+
+
+        Query query = product.orderBy("proQua", Query.Direction.ASCENDING);
+
+        FirestoreRecyclerOptions<ProductNote> options = new FirestoreRecyclerOptions.Builder<ProductNote>()
+                .setQuery(query, ProductNote.class)
+                .build();
+
+        minimumProductAdapter = new MinimumProductAdapter(options);
+
+        RecyclerView recyclerView = findViewById(R.id.minimumPruduct);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        // recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(minimumProductAdapter);
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        minimumProductAdapter.stopListening();
     }
 }

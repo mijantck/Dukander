@@ -49,15 +49,18 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:gravity="center"
+                    android:layout_gravity="center"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
                 >
                     <TextView
-                        android:textSize="25dp"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="20dp"
                         android:textColor="#FFFF"
                         android:gravity="fill_vertical"
-                        android:text="589245789"
+                        android:text="58924"
                         android:maxLines="1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
@@ -87,6 +90,11 @@
                 android:layout_height="match_parent"
                 android:layout_weight="2">
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/minimumPruduct"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
 
 
 
@@ -96,6 +104,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="2">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/dueCustomer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
 
 
 

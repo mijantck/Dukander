@@ -16,12 +16,12 @@
 
         />
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/civ_requests"
+        android:id="@+id/customar_add_pictur"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_margin="10dp"
         android:layout_gravity="center"
-        android:src="@drawable/ic_person" />
+        android:src="@drawable/person" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -41,11 +41,13 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/custumar_name_add"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -56,6 +58,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/custumar_phone_add"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="phone"
@@ -73,6 +76,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/custumar_taka_add"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
@@ -90,6 +94,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/custumar_address_add"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 />
@@ -97,6 +102,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/addedCustomer"
             android:gravity="center"
             android:layout_width="wrap_content"
             android:text="Customer added"

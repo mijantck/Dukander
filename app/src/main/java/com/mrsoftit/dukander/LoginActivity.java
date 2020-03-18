@@ -75,10 +75,6 @@ public class LoginActivity extends AppCompatActivity {
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 progressDialog.show();
 
-                String email=  emailTV.getText().toString().trim();
-                String pass=  passwordTV.getText().toString().trim();
-                Toast.makeText(LoginActivity.this, email+" " +pass, Toast.LENGTH_SHORT).show();
-
                 if(checkIntert()){
 
                     loginUserAccount();
