@@ -127,6 +127,55 @@ public class CustumarActivity extends AppCompatActivity {
 
     }
 
+    private void recyclear(String search) {
+
+        Query query = customer.whereEqualTo("nameCUstomer",search).orderBy("nameCUstomer", Query.Direction.ASCENDING);
+
+        FirestoreRecyclerOptions<CustomerNote> options = new FirestoreRecyclerOptions.Builder<CustomerNote>()
+                .setQuery(query, CustomerNote.class)
+                .build();
+
+        adapter = new CusomareAdapter(options);
+
+        RecyclerView recyclerView = findViewById(R.id.customar_info_recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        // recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+
+
+        adapter.setOnItemClickListener(new CusomareAdapter.OnItemClickListener(){
+            @Override
+            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+                CustomerNote customerNote = documentSnapshot.toObject(CustomerNote.class);
+                String id = documentSnapshot.getId();
+                String imageurl = customerNote.getImageUrl();
+                String name = customerNote.getNameCUstomer();
+                String phone = customerNote.getPhone();
+                String taka = customerNote.getTaka();
+                String addreds = customerNote.getAddres();
+
+                Intent pdfIntent = new Intent(CustumarActivity.this, CustomerAddActivity.class);
+
+                pdfIntent.putExtra("id", id);
+                if (imageurl != null) {
+                    pdfIntent.putExtra("imageurl", imageurl);
+                }
+                pdfIntent.putExtra("name", name);
+
+                pdfIntent.putExtra("phone", phone);
+                if (taka != null) {
+                    pdfIntent.putExtra("taka", taka);
+                }
+                if (addreds != null) {
+                    pdfIntent.putExtra("addreds", addreds);
+                }
+                startActivity(pdfIntent);
+            }
+        });
+
+    }
+
     @Override
     protected void onStart() {
         super.onStart();

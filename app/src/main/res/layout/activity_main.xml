@@ -40,10 +40,10 @@
                     >
 
                     <TextView
-                        android:textSize="25dp"
+                        android:textSize="20dp"
                         android:textColor="#FFFF"
-                        android:gravity="center"
-                        android:text="Dukander "
+                        android:gravity="center_vertical"
+                        android:text="দোকানদার"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
                 </LinearLayout>
@@ -60,6 +60,7 @@
                         android:textSize="20dp"
                         android:textColor="#FFFF"
                         android:gravity="fill_vertical"
+                        android:fontFamily="@font/adamina"
                         android:text="58924"
                         android:maxLines="1"
                         android:layout_width="match_parent"
@@ -82,10 +83,12 @@
             android:layout_below="@id/toolbar_support"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="250dp"
             android:weightSum="4"
             >
             <LinearLayout
+                android:layout_margin="4dp"
+                android:background="@drawable/rounded_corner"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="2">
@@ -93,7 +96,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/minimumPruduct"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent" />
 
 
 
@@ -101,6 +104,8 @@
             </LinearLayout>
 
             <LinearLayout
+                android:layout_margin="5dp"
+                android:background="@drawable/rounded_corner"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="2">
@@ -139,34 +144,36 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:layout_width="0dp"
+                    android:background="@color/colorPrimary"
                     android:layout_height="150dp"
                     android:layout_weight="1">
 
 
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/salecard"
                         android:elevation="10dp"
-                        android:layout_margin="10dp"
-
+                        android:layout_margin="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
                         <ImageView
                             android:layout_gravity="center"
-                            android:src="@drawable/sale"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="15dp"/>
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:src="@drawable/ic_add_shopping"
+                            android:layout_marginBottom="15dp"
+                             />
 
                         <TextView
 
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="bottom"
+                            android:fontFamily="@font/adamina"
                             android:gravity="center"
                             android:text="Sale"
-                            android:textSize="20dp"
                             android:textColor="#000"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+                            android:textSize="15dp" />
 
 
                     </androidx.cardview.widget.CardView>
@@ -176,31 +183,33 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:layout_width="0dp"
+                    android:background="@color/colorPrimary"
                     android:layout_height="150dp"
+                    android:layout_marginLeft="5dp"
                     android:layout_weight="1">
 
 
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/todaysale"
                         android:elevation="10dp"
-                        android:layout_margin="10dp"
-
+                        android:layout_margin="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
                         <ImageView
                             android:layout_gravity="center"
-                            android:src="@drawable/todaysale"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="10dp"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:src="@drawable/ic_today"
                             android:layout_marginBottom="15dp"/>
 
                         <TextView
                             android:layout_gravity="bottom"
                             android:gravity="center"
+                            android:fontFamily="@font/adamina"
                             android:text="Today Sale"
                             android:textColor="#000"
-                            android:textSize="20dp"
+                            android:textSize="15dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
 
@@ -223,29 +232,30 @@
                     android:gravity="center"
                     android:layout_width="0dp"
                     android:layout_height="150dp"
+                    android:background="@color/colorPrimary"
                     android:layout_weight="1">
 
 
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/imvesment"
                         android:elevation="10dp"
-                        android:layout_margin="10dp"
-
+                        android:layout_margin="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
                         <ImageView
                             android:layout_gravity="center"
-                            android:src="@drawable/invesment"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="10dp"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:src="@drawable/ic_withdrow"
                             android:layout_marginBottom="15dp"/>
 
                         <TextView
                             android:layout_gravity="bottom"
                             android:gravity="center"
                             android:text="Investment"
-                            android:textSize="20dp"
+                            android:textSize="15dp"
+                            android:fontFamily="@font/adamina"
                             android:textColor="#000"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
@@ -258,23 +268,24 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:layout_width="0dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="@color/colorPrimary"
                     android:layout_height="150dp"
                     android:layout_weight="1">
 
 
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/withdraw"
                         android:elevation="10dp"
-                        android:layout_margin="10dp"
-
+                        android:layout_margin="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
                         <ImageView
                             android:layout_gravity="center"
-                            android:src="@drawable/withd"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="10dp"
+                            android:src="@drawable/ic_invesment"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
                             android:layout_marginBottom="15dp"/>
 
                         <TextView
@@ -282,7 +293,8 @@
                             android:gravity="center"
                             android:text="withdraw"
                             android:textColor="#000"
-                            android:textSize="20dp"
+                            android:textSize="15dp"
+                            android:fontFamily="@font/adamina"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
 

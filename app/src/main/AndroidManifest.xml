@@ -15,7 +15,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CustomerProfileActivity"></activity>
+        <activity android:name=".TodaysaleActivity"></activity>
+        <activity android:name=".TotalSaleActivity" />
+        <activity android:name=".WitdrawActivity" />
+        <activity android:name=".InvesmentActivity" />
+        <activity android:name=".SeleTwoActivity" />
+        <activity android:name=".SaleoOneActivity" />
+        <activity android:name=".CustomerProfileActivity" />
         <activity android:name=".MyInfoActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".ProductAddActivity" />
@@ -30,6 +36,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

@@ -18,17 +18,9 @@ public class SplashScreenActivity extends AppCompatActivity {
                 .withFullScreen()
                 .withTargetActivity(LoginActivity.class)
                 .withSplashTimeOut(3000)
-                .withBackgroundColor(Color.parseColor("#1a1b29"))
-                .withHeaderText("Header")
-                .withFooterText("Footer")
-                .withBeforeLogoText("Before Logo Text")
-                .withAfterLogoText("After Logo Text")
-                .withLogo(R.mipmap.ic_launcher_round);
+                .withBackgroundColor(Color.parseColor("#6200EE"))
+                .withLogo(R.mipmap.ic_launcher);
 
-        config.getHeaderTextView().setTextColor(Color.WHITE);
-        config.getFooterTextView().setTextColor(Color.WHITE);
-        config.getBeforeLogoTextView().setTextColor(Color.WHITE);
-        config.getAfterLogoTextView().setTextColor(Color.WHITE);
 
         View easySplashScreen = config.create();
         setContentView(easySplashScreen);

@@ -1,5 +1,7 @@
 package com.mrsoftit.dukander;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +34,9 @@ public class MinimumProductAdapter extends FirestoreRecyclerAdapter<ProductNote,
         if (model.getProMin() > model.getProQua()){
             holder.minimumproductname.setText(model.getProName());
             holder.minimumproduct.setText(model.getProQua()+"");
+            holder.minimumproductname.setTextColor(Color.RED);
+            holder.minimumproduct.setTextColor(Color.RED);
+
         }
         else if (model.getProMin() < model.getProQua()){
 

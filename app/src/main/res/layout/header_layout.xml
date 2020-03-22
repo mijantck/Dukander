@@ -26,23 +26,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/dukanname"
+        android:fontFamily="@font/adamina"
         android:text="Dukandar "
+        android:layout_marginLeft="10dp"
         android:textColor="#FFF"
         android:layout_below="@id/appCompatImageView"/>
     <TextView
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
+        android:fontFamily="@font/adamina"
         android:layout_height="wrap_content"
         android:id="@+id/dukanPhone"
         android:text="Phone "
+        android:layout_marginLeft="10dp"
         android:textColor="#FFF"
         android:layout_below="@id/dukanname"/>
     <TextView
+        android:layout_marginLeft="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/AddresTextView"
         android:text="Addres "
         android:textColor="#FFF"
+        android:fontFamily="@font/adamina"
         android:layout_below="@id/dukanPhone"/>
 
 

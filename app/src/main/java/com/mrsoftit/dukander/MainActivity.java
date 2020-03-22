@@ -3,6 +3,7 @@ package com.mrsoftit.dukander;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -52,6 +53,9 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     FirebaseFirestore firestore;
     MinimumProductAdapter minimumProductAdapter;
 
+     private CardView Sale,todaysale,invemet,withdrow;
+
+
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
     String user_id = currentUser.getUid();
@@ -79,8 +83,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         toolbar.getNavigationIcon().setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY);
 
-
-
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.navigationView);
         navigationView.setNavigationItemSelectedListener(this);
@@ -92,6 +94,49 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.grey));
 
         toggle.syncState();
+
+        Sale =findViewById(R.id.salecard);
+        todaysale =findViewById(R.id.todaysale);
+        invemet =findViewById(R.id.imvesment);
+        withdrow =findViewById(R.id.withdraw);
+
+
+        Sale.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(MainActivity.this,SaleoOneActivity.class);
+                startActivity(intent);
+            }
+        });
+        todaysale.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(MainActivity.this,TodaysaleActivity.class);
+                startActivity(intent);
+            }
+        });
+        invemet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(MainActivity.this,InvesmentActivity.class);
+                startActivity(intent);
+            }
+        });
+        withdrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(MainActivity.this,WitdrawActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+
+
 
         recyclear();
 
@@ -115,8 +160,8 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
                 break;
             case R.id.nav_profile:
-               /* Intent resultIntnt1 =new Intent(MainActivity.this,SuggestionActivity.class);
-                startActivity(resultIntnt1);*/
+                Intent resultIntnt2 =new Intent(MainActivity.this,TotalSaleActivity.class);
+                startActivity(resultIntnt2);
                 Toast.makeText(this, " click ", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_share:
