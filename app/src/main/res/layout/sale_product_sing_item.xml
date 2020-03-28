@@ -14,6 +14,7 @@
     android:layout_marginTop="5dp">
 
     <LinearLayout
+        android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:weightSum="6"
@@ -28,10 +29,9 @@
         <ImageView
             android:scaleType="fitXY"
             android:gravity="center"
-            android:id="@+id/product_profile_pic"
+            android:id="@+id/sale_product_profile_pic"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-
             android:src="@drawable/textimage"
           />
 
@@ -41,44 +41,44 @@
         android:orientation="vertical"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="4"
+        android:layout_weight="3"
         android:paddingLeft="5dp"
         >
 
         <TextView
             android:paddingLeft="5dp"
-            android:id="@+id/product_name_textview"
+            android:id="@+id/sale_product_name_textview"
             android:textColor="#000"
             android:textSize="14dp"
             android:fontFamily="@font/adamina"
-            android:text="phone  "
+            android:text="Product name  "
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-        <TextView
+        <EditText
             android:paddingLeft="5dp"
-            android:id="@+id/product_price_textview"
-            android:textColor="#696969"
+            android:id="@+id/Sale_product_price"
+            android:textColor="#000"
             android:fontFamily="@font/adamina"
             android:textSize="10dp"
-            android:text="1200"
+            android:text=" 1200"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-        <TextView
+        <EditText
             android:paddingLeft="5dp"
             android:fontFamily="@font/adamina"
-            android:id="@+id/product_quantedy_textview"
-            android:textColor="#696969"
+            android:id="@+id/Sale_product_quantedy"
+            android:textColor="#000"
             android:textSize="10dp"
-            android:text="100"
+            android:text="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <TextView
+        <EditText
             android:paddingLeft="5dp"
-            android:id="@+id/product_mini_textview"
-            android:textColor="#696969"
+            android:id="@+id/product_totla_this_textview"
+            android:textColor="#000"
             android:textSize="10dp"
-            android:text="10"
+            android:text="000.00"
             android:fontFamily="@font/adamina"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
@@ -86,6 +86,42 @@
 
 
     </LinearLayout>
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            >
+
+            <RelativeLayout
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/productSaleCaculation"
+                    android:scaleType="fitXY"
+                    android:gravity="center"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_check"
+                    />
+                <ImageView
+                    android:id="@+id/product_add_customer"
+                    android:visibility="gone"
+                    android:scaleType="fitXY"
+                    android:gravity="center"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_arrow_downward"
+                    />
+
+
+            </RelativeLayout>
+
+
+
+        </LinearLayout>
 
 </LinearLayout>
 </androidx.cardview.widget.CardView>

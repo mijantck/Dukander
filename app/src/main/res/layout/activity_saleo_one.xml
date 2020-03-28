@@ -7,14 +7,47 @@
     android:orientation="vertical"
     tools:context=".SaleoOneActivity">
 
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_support"
         android:layout_width="match_parent"
         app:titleTextColor="#ffff"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
-        />
+        >
 
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:weightSum="5"
+            >
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                >
+
+                <TextView
+                    android:textSize="20dp"
+                    android:textColor="#FFFF"
+                    android:gravity="center_vertical"
+                    android:text="দোকানদার"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+
+
+
+    </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
 
@@ -87,47 +120,6 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:padding="5dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="6"
-            >
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="5">
-
-                <EditText
-                    android:id="@+id/searchEdite"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/rounded_corner"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-                android:gravity="center">
-
-
-                <ImageView
-                    android:id="@+id/searchButtonhome"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_search" />
-
-            </LinearLayout>
-
-
-
-        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_marginTop="5dp"

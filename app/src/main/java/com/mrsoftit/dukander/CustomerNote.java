@@ -11,8 +11,8 @@ public class CustomerNote {
     public  CustomerNote(){}
 
     public CustomerNote(String customerIdDucunt, String nameCUstomer, String phone, String taka, String addres, String imageUrl) {
-        CustomerIdDucunt = customerIdDucunt;
-        this.nameCUstomer = nameCUstomer;
+       this.CustomerIdDucunt = customerIdDucunt;
+        this.nameCUstomer = nameCUstomer.toLowerCase();
         this.phone = phone;
         this.taka = taka;
         this.addres = addres;
@@ -20,7 +20,7 @@ public class CustomerNote {
     }
 
     public CustomerNote(String customerIdDucunt, String nameCUstomer, String phone, String taka, String addres) {
-        CustomerIdDucunt = customerIdDucunt;
+        this.CustomerIdDucunt = customerIdDucunt;
         this.nameCUstomer = nameCUstomer;
         this.phone = phone;
         this.taka = taka;
@@ -32,7 +32,7 @@ public class CustomerNote {
     }
 
     public String getNameCUstomer() {
-        return nameCUstomer;
+        return nameCUstomer.toLowerCase();
     }
 
     public String getPhone() {

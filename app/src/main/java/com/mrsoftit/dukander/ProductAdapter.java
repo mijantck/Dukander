@@ -43,6 +43,7 @@ public class ProductAdapter  extends FirestoreRecyclerAdapter<ProductNote,Produc
         String pp = String.valueOf(model.getProPrice());
         holder.product_price_textview.setText(pp);
 
+
         String pq = String.valueOf(model.getProQua());
         holder.product_quantedy_textview.setText(pq);
 

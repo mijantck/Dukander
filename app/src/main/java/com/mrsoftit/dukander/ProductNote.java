@@ -4,9 +4,12 @@ public class ProductNote {
     private String proId;
     private String proName;
     private double proPrice;
+    private String userID;
     private int proQua;
     private int proMin;
     private String proImgeUrl;
+    private String invoiseid;
+    private  int invoice;
 
     public ProductNote(){}
 
@@ -17,6 +20,14 @@ public class ProductNote {
         this.proQua = proQua;
         this.proMin = proMin;
         this.proImgeUrl = proImgeUrl;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
+
+    public String getUserID() {
+        return userID;
     }
 
     public String getProId() {
@@ -41,5 +52,21 @@ public class ProductNote {
 
     public String getProImgeUrl() {
         return proImgeUrl;
+    }
+
+    public String getInvoiseid() {
+        return invoiseid;
+    }
+
+    public void setInvoiseid(String invoiseid) {
+        this.invoiseid = invoiseid;
+    }
+
+    public int getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(int invoice) {
+        this.invoice = invoice;
     }
 }

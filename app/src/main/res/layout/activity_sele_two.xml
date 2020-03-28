@@ -1,9 +1,332 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".SeleTwoActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_support"
+        android:layout_width="match_parent"
+        app:titleTextColor="#ffff"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:elevation="10dp"
+        >
+
+
+        <TextView
+            android:id="@+id/invoiseId"
+            android:gravity="center|right"
+            android:text="000"
+            android:textColor="#FFF"
+            android:textSize="15dp"
+            android:layout_marginRight="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:id="@+id/bundellLayout"
+        android:visibility="gone"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_marginLeft="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:weightSum="6">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4">
+                <TextView
+                    android:text="mijanur Rahman mijan "
+                    android:maxLines="1"
+                    android:textColor="#FFF"
+                    android:textSize="15dp"
+                    android:gravity="center_vertical"
+                    android:id="@+id/bundelCustomerName"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2">
+                <TextView
+                    android:text="+8801733-883310"
+                    android:maxLines="1"
+                    android:textColor="#FFF"
+                    android:textSize="15dp"
+                    android:gravity="center_vertical"
+                    android:id="@+id/bundelCustomerPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginLeft="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="6">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="4">
+
+                <TextView
+                    android:text="mijanur Rahman mijan "
+                    android:maxLines="1"
+                    android:textColor="#FFF"
+                    android:textSize="15dp"
+                    android:gravity="center_vertical"
+                    android:id="@+id/bundelCustomerAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2">
+                <TextView
+                    android:text="310 tk"
+                    android:maxLines="1"
+                    android:textColor="#FFF"
+                    android:textSize="15dp"
+                    android:gravity="center_vertical"
+                    android:id="@+id/bundelCustomertaka"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/unknownCustomerinfo"
+        android:visibility="visible"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_marginLeft="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:weightSum="6">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:orientation="vertical"
+                android:layout_height="match_parent"
+                android:layout_weight="4">
+
+                <EditText
+                    android:text="Unknown "
+                    android:maxLines="1"
+                    android:textColor="#FFF"
+                    android:textSize="15dp"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2">
+                <EditText
+                    android:text="123456789"
+                    android:maxLines="1"
+                    android:textColor="#FFF"
+                    android:textSize="15dp"
+                    android:gravity="center_vertical"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginLeft="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="6">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="4">
+
+                <EditText
+                    android:text="Unknown"
+                    android:maxLines="1"
+                    android:textColor="#FFF"
+                    android:textSize="15dp"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2">
+                <EditText
+                    android:text="000 tk"
+                    android:maxLines="1"
+                    android:textColor="#FFF"
+                    android:textSize="15dp"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+<RelativeLayout
+    android:layout_gravity="center_horizontal"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/showitemLinearLayout"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Spinner
+            style="@style/Widget.AppCompat.Spinner.DropDown"
+            android:id="@+id/spinner"
+            android:elevation="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/productseletrecyclearview"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"/>
+    </LinearLayout>
+
+    <Button
+
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:elevation="2dp"
+        android:padding="10dp"
+        android:gravity="center_vertical"
+        android:id="@+id/addItemButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add ITEMS"
+        app:icon="@drawable/ic_add_black_24dp"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+
+        />
+
+
+</RelativeLayout>
+
+    <androidx.cardview.widget.CardView
+       android:elevation="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+
+    <LinearLayout
+        android:background="#C0C0C0"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="7">
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:layout_weight=".5">
+
+            <TextView
+                android:gravity="center"
+                android:text="Srl"
+                android:textColor="@color/colorPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:layout_weight="3">
+            <TextView
+                android:textColor="@color/colorPrimary"
+                android:gravity="center"
+                android:text="Items"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:textColor="@color/colorPrimary"
+                android:gravity="center"
+                android:text="QTY"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:layout_weight="2.5">
+            <TextView
+                android:textColor="@color/colorPrimary"
+                android:gravity="center"
+                android:text="Price"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/invoiceRecyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

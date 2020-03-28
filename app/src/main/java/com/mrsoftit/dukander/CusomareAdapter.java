@@ -43,6 +43,7 @@ public class CusomareAdapter extends FirestoreRecyclerAdapter<CustomerNote,Cusom
         if (model.getPhone()!=null) {
             holder.phone.setText(model.getPhone());
         }
+
         if (model.getTaka()!=null) {
             holder.taka.setText(model.getTaka());
         }

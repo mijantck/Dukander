@@ -42,6 +42,8 @@ public class MinimumProductAdapter extends FirestoreRecyclerAdapter<ProductNote,
 
             holder.minimumproductname.setText(model.getProName());
             holder.minimumproduct.setText(model.getProQua()+"");
+            holder.minimumproductname.setTextColor(Color.BLACK);
+            holder.minimumproduct.setTextColor(Color.BLACK);
         }
 
     }

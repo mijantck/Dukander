@@ -60,9 +60,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
     String user_id = currentUser.getUid();
 
-    CollectionReference myInfo = FirebaseFirestore.getInstance()
-            .collection("users").document(user_id).collection("DukanInfo");
-
     CollectionReference product = FirebaseFirestore.getInstance()
             .collection("users").document(user_id).collection("Product");
 
@@ -149,20 +146,23 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             case R.id.my_info:
                 Intent myinten =new Intent(MainActivity.this,MyInfoActivity.class);
                 startActivity(myinten);
+                finish();
                 break;
             case R.id.nav_message:
                 Intent homeIntnt =new Intent(MainActivity.this,CustumarActivity.class);
                 startActivity(homeIntnt);
+                finish();
                 break;
             case R.id.nav_chat:
                 Intent resultIntnt =new Intent(MainActivity.this,ProductListActivity.class);
                 startActivity(resultIntnt);
 
+                finish();
                 break;
             case R.id.nav_profile:
                 Intent resultIntnt2 =new Intent(MainActivity.this,TotalSaleActivity.class);
                 startActivity(resultIntnt2);
-                Toast.makeText(this, " click ", Toast.LENGTH_SHORT).show();
+            finish();
                 break;
             case R.id.nav_share:
                 mAuth.signOut();
@@ -243,6 +243,25 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         minimumProductAdapter = new MinimumProductAdapter(options);
 
         RecyclerView recyclerView = findViewById(R.id.minimumPruduct);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        // recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(minimumProductAdapter);
+
+    }
+
+    private void recyclearDue() {
+
+
+        Query query = product.orderBy("proQua", Query.Direction.ASCENDING);
+
+        FirestoreRecyclerOptions<ProductNote> options = new FirestoreRecyclerOptions.Builder<ProductNote>()
+                .setQuery(query, ProductNote.class)
+                .build();
+
+        minimumProductAdapter = new MinimumProductAdapter(options);
+
+        RecyclerView recyclerView = findViewById(R.id.dueCustomer);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // recyclerView.setLayoutManager(new LinearLayoutManager(this));
