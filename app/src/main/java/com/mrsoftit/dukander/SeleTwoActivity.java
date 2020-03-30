@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -210,6 +211,7 @@ public class SeleTwoActivity extends AppCompatActivity {
 
                 if (task.isSuccessful()){
                     for (QueryDocumentSnapshot document : task.getResult()) {
+
                         ProductNote productNote = document.toObject(ProductNote.class);
 
                         exampleList.add(productNote);
@@ -321,6 +323,7 @@ public class SeleTwoActivity extends AppCompatActivity {
                     for(DocumentSnapshot readData: queryDocumentSnapshots.getDocuments()){
                         String titlename = readData.get("proName").toString();
                         titleList.add(titlename);
+
                     }
                     ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(SeleTwoActivity.this, android.R.layout.simple_spinner_item, titleList);
                     arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
