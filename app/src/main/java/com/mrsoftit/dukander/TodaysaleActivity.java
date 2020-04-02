@@ -183,13 +183,11 @@ public class TodaysaleActivity extends AppCompatActivity {
 
         PdfWriter.getInstance(document, output);
 
-
         try {
             final File docsFolder1 = new File(Environment.getExternalStorageDirectory() + "/Documents/");
             File newFile = new File(docsFolder1,"images.png");
             image = Image.getInstance(String.valueOf(newFile));
-            image.scaleToFit(540f, 72f);
-            //image = Image.getInstance(String.valueOf(b));
+            image.scaleAbsolute(540f, 72f);//image width,height
 
             Toast.makeText(this, "fdjshfjdhfjadhdfjdhfkjdhkjh", Toast.LENGTH_SHORT).show();
 
@@ -204,14 +202,11 @@ public class TodaysaleActivity extends AppCompatActivity {
 
 
 
-
         PdfPTable irdTable = new PdfPTable(2);
         irdTable.addCell(getIRDCell("Invoice No"));
         irdTable.addCell(getIRDCell("Invoice Date"));
-
         irdTable.addCell(getIRDCell("XE1234")); // pass invoice number
         irdTable.addCell(getIRDCell("13-Mar-2016")); // pass invoice date
-
         PdfPTable irhTable = new PdfPTable(3);
         irhTable.setWidthPercentage(100);
 
@@ -224,16 +219,28 @@ public class TodaysaleActivity extends AppCompatActivity {
         invoiceTable.setBorder(0);
         irhTable.addCell(invoiceTable);
 
+        PdfPTable FromTable  = new PdfPTable(2);
+        FromTable.setWidthPercentage(100);
+        FromTable.addCell(getFROMCell("Bill To ",PdfPTable.ALIGN_LEFT));
+        FromTable.addCell(getFROMCell("Shop From ",PdfPTable.ALIGN_RIGHT));
+        FromTable.addCell(getCell("Text to the left", PdfPCell.ALIGN_LEFT));
+        FromTable.addCell(getCell("Text to the right", PdfPCell.ALIGN_RIGHT));
+
+
+
         FontSelector fs = new FontSelector();
         Font font = FontFactory.getFont(FontFactory.TIMES_ROMAN, 13, Font.BOLD);
         fs.addFont(font);
         Phrase bill = fs.process("Bill To"); // customer information
+
         Paragraph name = new Paragraph("Mr.Venkateswara Rao");
+        name.setAlignment(Paragraph.ALIGN_RIGHT);
         name.setIndentationLeft(20);
         Paragraph contact = new Paragraph("9652886877");
         contact.setIndentationLeft(20);
         Paragraph address = new Paragraph("Kuchipudi,Movva");
         address.setIndentationLeft(20);
+
 
 
 
@@ -319,6 +326,7 @@ public class TodaysaleActivity extends AppCompatActivity {
 
         document.add(image);
         document.add(irhTable);
+        document.add(FromTable);
         document.add(bill);
         document.add(name);
         document.add(contact);
@@ -442,6 +450,7 @@ public class TodaysaleActivity extends AppCompatActivity {
     }
 
     public static PdfPCell getValidityCell(String text) {
+
         FontSelector fs = new FontSelector();
         Font font = FontFactory.getFont(FontFactory.HELVETICA, 10);
         font.setColor(BaseColor.GRAY);
@@ -465,8 +474,29 @@ public class TodaysaleActivity extends AppCompatActivity {
         return cell;
     }
 
+    public static PdfPCell getFROMCell(String text, int alignment) {
+        FontSelector fs = new FontSelector();
+        Font font = FontFactory.getFont(FontFactory.TIMES_ROMAN, 13, Font.BOLD);
+        /*	font.setColor(BaseColor.GRAY);*/
+        fs.addFont(font);
+        Phrase phrase = fs.process(text);
+        PdfPCell cell = new PdfPCell(phrase);
+        cell.setPadding(5);
+        cell.setHorizontalAlignment(alignment);
+        cell.setBorder(PdfPCell.NO_BORDER);
+        return cell;
+    }
+
+    public PdfPCell getCell(String text, int alignment) {
+        PdfPCell cell = new PdfPCell(new Phrase(text));
+        cell.setPadding(0);
+        cell.setHorizontalAlignment(alignment);
+        cell.setBorder(PdfPCell.NO_BORDER);
+        return cell;
+    }
 
     public static PdfPCell getIRDCell(String text) {
+
         PdfPCell cell = new PdfPCell (new Paragraph (text));
         cell.setHorizontalAlignment (Element.ALIGN_CENTER);
         cell.setPadding (5.0f);
