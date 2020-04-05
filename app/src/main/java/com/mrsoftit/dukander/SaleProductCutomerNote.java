@@ -7,9 +7,10 @@ public class SaleProductCutomerNote {
     Double price;
     Double quantedt;
     Double totalPrice;
-   private int date;
-   private  int invoiceNumber;
-   private  String invoiceId;
+    int date;
+    int invoiceNumber;
+    String invoiceId;
+    String TotalSaleid;
 
 public SaleProductCutomerNote(){}
 
@@ -22,6 +23,17 @@ public SaleProductCutomerNote(){}
         this.date = date;
         this.invoiceNumber = invoiceNumber;
         this.invoiceId = invoiceId;
+    }
+
+    public SaleProductCutomerNote(String saleProductId, String itemName, Double price, Double quantedt, Double totalPrice, int date, int invoiceNumber, String totalSaleid) {
+        SaleProductId = saleProductId;
+        this.itemName = itemName;
+        this.price = price;
+        this.quantedt = quantedt;
+        this.totalPrice = totalPrice;
+        this.date = date;
+        this.invoiceNumber = invoiceNumber;
+        TotalSaleid = totalSaleid;
     }
 
     public String getSaleProductId() {

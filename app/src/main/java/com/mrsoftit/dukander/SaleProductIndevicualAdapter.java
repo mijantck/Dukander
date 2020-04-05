@@ -30,6 +30,9 @@ public class SaleProductIndevicualAdapter  extends FirestoreRecyclerAdapter<Sale
         holder.imenViewpr.setText(model.getItemName());
         holder.qyt.setText(model.getQuantedt()+"");
         holder.price.setText(model.getTotalPrice()+"");
+        holder.receptsinglepric.setText(model.getPrice()+"");
+
+
 
     }
 
@@ -43,7 +46,7 @@ public class SaleProductIndevicualAdapter  extends FirestoreRecyclerAdapter<Sale
 
     public class NotViewHolde extends RecyclerView.ViewHolder {
 
-        TextView imenViewpr,qyt,price;
+        TextView imenViewpr,qyt,price,receptsinglepric;
 
 
         public NotViewHolde(@NonNull View itemView) {
@@ -51,6 +54,8 @@ public class SaleProductIndevicualAdapter  extends FirestoreRecyclerAdapter<Sale
             imenViewpr =itemView.findViewById(R.id.receptIemview);
             qyt =itemView.findViewById(R.id.recepQytview);
             price =itemView.findViewById(R.id.receptpriceview);
+            receptsinglepric =itemView.findViewById(R.id.receptsinglepric);
+
         }
     }
 }

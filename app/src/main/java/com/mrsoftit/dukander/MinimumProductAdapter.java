@@ -31,7 +31,7 @@ public class MinimumProductAdapter extends FirestoreRecyclerAdapter<ProductNote,
     @Override
     protected void onBindViewHolder(@NonNull NotViewHolde holder, int position, @NonNull ProductNote model) {
 
-        if (model.getProMin() > model.getProQua()){
+        if (model.getProMin() > model.getProQua()|| model.getProMin()==model.getProQua()){
             holder.minimumproductname.setText(model.getProName());
             holder.minimumproduct.setText(model.getProQua()+"");
             holder.minimumproductname.setTextColor(Color.RED);

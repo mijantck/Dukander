@@ -10,6 +10,7 @@ public class ProductNote {
     private String proImgeUrl;
     private String invoiseid;
     private  int invoice;
+    private String unkid;
 
     public ProductNote(){}
 
@@ -68,5 +69,13 @@ public class ProductNote {
 
     public void setInvoice(int invoice) {
         this.invoice = invoice;
+    }
+
+    public String getUnkid() {
+        return unkid;
+    }
+
+    public void setUnkid(String unkid) {
+        this.unkid = unkid;
     }
 }

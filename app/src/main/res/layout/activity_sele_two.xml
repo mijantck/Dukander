@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical"
     tools:context=".SeleTwoActivity">
 
@@ -27,6 +28,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </androidx.appcompat.widget.Toolbar>
+
+
+    <LinearLayout
+       android:layout_marginBottom="20dp"
+        android:id="@+id/fulLiniarLaout"
+        android:layout_below="@id/toolbar_support"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+
+
 
     <LinearLayout
         android:id="@+id/bundellLayout"
@@ -136,6 +150,7 @@
                 android:layout_weight="4">
 
                 <EditText
+                    android:background="@null"
                     android:text="Unknown "
                     android:maxLines="1"
                     android:textColor="#FFF"
@@ -150,7 +165,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="2">
                 <EditText
-                    android:text="123456789"
+                    android:background="@null"
+                    android:text="0000-00000"
                     android:maxLines="1"
                     android:textColor="#FFF"
                     android:textSize="15dp"
@@ -175,6 +191,7 @@
                 android:layout_weight="4">
 
                 <EditText
+                    android:background="@null"
                     android:text="Unknown"
                     android:maxLines="1"
                     android:textColor="#FFF"
@@ -189,6 +206,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="2">
                 <EditText
+                    android:background="@null"
                     android:text="000 tk"
                     android:maxLines="1"
                     android:textColor="#FFF"
@@ -230,7 +248,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/productseletrecyclearview"
             android:layout_width="match_parent"
-            android:layout_height="150dp"/>
+            android:layout_height="106dp"/>
     </LinearLayout>
 
     <Button
@@ -264,26 +282,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:weightSum="7">
+
         <LinearLayout
             android:gravity="center"
             android:layout_width="0dp"
             android:layout_height="20dp"
-            android:layout_weight=".5">
-
-            <TextView
-                android:gravity="center"
-                android:text="Srl"
-                android:textColor="@color/colorPrimary"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-
-
-        </LinearLayout>
-        <LinearLayout
-            android:gravity="center"
-            android:layout_width="0dp"
-            android:layout_height="20dp"
-            android:layout_weight="3">
+            android:layout_weight="2.5">
             <TextView
                 android:textColor="@color/colorPrimary"
                 android:gravity="center"
@@ -301,6 +305,19 @@
                 android:textColor="@color/colorPrimary"
                 android:gravity="center"
                 android:text="QTY"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:layout_weight="1">
+            <TextView
+                android:textColor="@color/colorPrimary"
+                android:id="@+id/receptsinglepric"
+                android:gravity="center_vertical"
+                android:text="S price "
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
@@ -329,4 +346,82 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-</LinearLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            app:srcCompat="@drawable/ic_add_black_24dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:id="@+id/TotalLayout"
+        android:background="#C0C0C0"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="20dp"
+        android:weightSum="7">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4.5">
+
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:textColor="#0F6E19"
+                android:text="Total Amount "
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2.2">
+
+
+            <TextView
+                android:id="@+id/totalAmount"
+                android:textColor="#A10532"
+                android:text="0000.00 "
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/PDFfab"
+        android:visibility="gone"
+        style="@style/Widget.MaterialComponents.FloatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="23dp"
+        app:backgroundTint="@color/colorAccent"
+        app:srcCompat="@drawable/ic_picture_as_pdf"
+        app:tint="#FFF" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/okfab"
+        android:visibility="visible"
+        style="@style/Widget.MaterialComponents.FloatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="23dp"
+        android:layout_marginRight="5dp"
+        app:backgroundTint="@color/colorAccent"
+        app:srcCompat="@drawable/ic_done"
+        app:tint="#FFF" />
+
+
+
+</RelativeLayout>

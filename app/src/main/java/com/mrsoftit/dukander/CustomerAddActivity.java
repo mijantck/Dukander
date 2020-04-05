@@ -177,10 +177,11 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
                     final String name = customerName.getText().toString();
                     final String phone = customerPhone.getText().toString();
                     final String taka = customerTaka.getText().toString();
+                    double dtaka = Double.parseDouble(taka);
                     final String addres = CustomerAddress.getText().toString();
 
 
-                    customer.document(id).update("customerIdDucunt", id,"nameCUstomer",name,"phone",phone,"taka",taka,"addres",addres).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    customer.document(id).update("customerIdDucunt", id,"nameCUstomer",name,"phone",phone,"taka",dtaka,"addres",addres).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
 
@@ -216,10 +217,12 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
                     final String name = customerName.getText().toString();
                     final String phone = customerPhone.getText().toString();
                     final String taka = customerTaka.getText().toString();
+                    double dtaka = Double.parseDouble(taka);
+
                     final String addres = CustomerAddress.getText().toString();
 
 
-                    customer.add(new CustomerNote(null, name, phone, taka, addres)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    customer.add(new CustomerNote(null, name, phone, dtaka, addres,00.00)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentReference> task) {
 
@@ -353,6 +356,7 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
                                final String name = customerName.getText().toString();
                                 final String phone = customerPhone.getText().toString();
                                 final String taka = customerTaka.getText().toString();
+                                double dtaka = Double.parseDouble(taka);
                                 final String addres = CustomerAddress.getText().toString();
 
                                 if (image!=false){
@@ -372,7 +376,7 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
 
                                 }else {
 
-                                customer.add(new CustomerNote(null,name,phone,taka,addres,uri.toString())).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                customer.add(new CustomerNote(null,name,phone,dtaka,addres,uri.toString(),00.00)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                     @Override
                                     public void onComplete(@NonNull Task<DocumentReference> task) {
 

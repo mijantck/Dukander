@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -19,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,6 +28,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -46,6 +49,7 @@ public class SaleoOneActivity extends AppCompatActivity {
     CollectionReference customer = FirebaseFirestore.getInstance()
             .collection("users").document(user_id).collection("Customers");
 
+    ProgressDialog progressDialog;
     private EditText searchEditeText;
     private ImageView searchButon,customerList,unknowncustomer;
 
@@ -104,9 +108,51 @@ public class SaleoOneActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                progressDialog = new ProgressDialog(SaleoOneActivity.this);
+                progressDialog.setMessage("Loading..."); // Setting Message
+                progressDialog.setTitle("ProgressDialog"); // Setting Title
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); // Progress Dialog Style Spinner
+                progressDialog.show(); // Display Progress Dialog
+                progressDialog.setCancelable(false);
+                final CollectionReference unkonwnCustomar = FirebaseFirestore.getInstance()
+                        .collection("users").document(user_id).collection("UnknownCustomer");
 
-                Intent intent = new Intent(SaleoOneActivity.this,SeleTwoActivity.class);
-                startActivity(intent);
+                unkonwnCustomar.add(new CustomerNote(null,"Unknown","Unknown",00.00,"Unknown",00.0)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentReference> task) {
+
+                        if (task.isSuccessful()){
+
+                            final String unid = task.getResult().getId();
+
+                            Toast.makeText(SaleoOneActivity.this, unid+" befor update ", Toast.LENGTH_SHORT).show();
+                            unkonwnCustomar.document(unid).update("customerIdDucunt",unid).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+
+                                    if (task.isSuccessful()) {
+
+                                        Toast.makeText(SaleoOneActivity.this, unid+" after update", Toast.LENGTH_SHORT).show();
+                                       Intent intent = new Intent(SaleoOneActivity.this, SeleTwoActivity.class);
+
+                                        if (unid != null) {
+                                            intent.putExtra("unkownId", unid);
+                                            startActivity(intent);
+
+                                            progressDialog.dismiss();
+                                        }
+
+                                    }
+                                }
+                            });
+
+
+                        }
+
+
+                    }
+                });
 
             }
         });
@@ -114,7 +160,6 @@ public class SaleoOneActivity extends AppCompatActivity {
     }
 
     private void recyclear() {
-
 
         Query query = customer.orderBy("nameCUstomer", Query.Direction.ASCENDING);
 
@@ -141,7 +186,7 @@ public class SaleoOneActivity extends AppCompatActivity {
                 String imageurl = customerNote.getImageUrl();
                 String name = customerNote.getNameCUstomer();
                 String phone = customerNote.getPhone();
-                String taka = customerNote.getTaka();
+                double taka = customerNote.getTaka();
                 String addreds = customerNote.getAddres();
 
                 Intent pdfIntent = new Intent(SaleoOneActivity.this, SeleTwoActivity.class);
@@ -153,9 +198,9 @@ public class SaleoOneActivity extends AppCompatActivity {
                 pdfIntent.putExtra("name", name);
 
                 pdfIntent.putExtra("phone", phone);
-                if (taka != null) {
+
                     pdfIntent.putExtra("taka", taka);
-                }
+
                 if (addreds != null) {
                     pdfIntent.putExtra("addreds", addreds);
                 }
@@ -192,7 +237,7 @@ public class SaleoOneActivity extends AppCompatActivity {
                 String imageurl = customerNote.getImageUrl();
                 String name = customerNote.getNameCUstomer();
                 String phone = customerNote.getPhone();
-                String taka = customerNote.getTaka();
+                double taka = customerNote.getTaka();
                 String addreds = customerNote.getAddres();
 
                 Intent pdfIntent = new Intent(SaleoOneActivity.this, SeleTwoActivity.class);
@@ -204,9 +249,9 @@ public class SaleoOneActivity extends AppCompatActivity {
                 pdfIntent.putExtra("name", name);
 
                 pdfIntent.putExtra("phone", phone);
-                if (taka != null) {
+
                     pdfIntent.putExtra("taka", taka);
-                }
+
                 if (addreds != null) {
                     pdfIntent.putExtra("addreds", addreds);
                 }
@@ -215,8 +260,6 @@ public class SaleoOneActivity extends AppCompatActivity {
         });
 
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

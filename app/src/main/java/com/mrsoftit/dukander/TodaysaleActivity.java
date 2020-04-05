@@ -324,7 +324,10 @@ public class TodaysaleActivity extends AppCompatActivity {
 
         document.open();
 
-        document.add(image);
+        if (image!=null){
+            document.add(image);
+        }
+
         document.add(irhTable);
         document.add(FromTable);
         document.add(bill);
@@ -369,7 +372,7 @@ public class TodaysaleActivity extends AppCompatActivity {
 
     public  void  loadData(){
         CollectionReference customerProductSale = FirebaseFirestore.getInstance()
-                .collection("users").document(user_id).collection("Customers").document("QfFCZf65opXhu5X8H5fs").collection("saleProduct");
+                .collection("users").document(user_id).collection("Customers").document("o32ebl3gIQTC3yfohRl9").collection("saleProduct");
 
 
         customerProductSale.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

@@ -114,7 +114,7 @@ public class CustumarActivity extends AppCompatActivity {
                 String imageurl = customerNote.getImageUrl();
                 String name = customerNote.getNameCUstomer();
                 String phone = customerNote.getPhone();
-                String taka = customerNote.getTaka();
+                double taka = customerNote.getTaka();
                 String addreds = customerNote.getAddres();
 
                 Intent pdfIntent = new Intent(CustumarActivity.this, CustomerAddActivity.class);
@@ -126,9 +126,9 @@ public class CustumarActivity extends AppCompatActivity {
                 pdfIntent.putExtra("name", name);
 
                 pdfIntent.putExtra("phone", phone);
-                if (taka != null) {
+
                     pdfIntent.putExtra("taka", taka);
-                }
+
                 if (addreds != null) {
                     pdfIntent.putExtra("addreds", addreds);
                 }
@@ -163,7 +163,7 @@ public class CustumarActivity extends AppCompatActivity {
                 String imageurl = customerNote.getImageUrl();
                 String name = customerNote.getNameCUstomer();
                 String phone = customerNote.getPhone();
-                String taka = customerNote.getTaka();
+                double taka = customerNote.getTaka();
                 String addreds = customerNote.getAddres();
 
                 Intent pdfIntent = new Intent(CustumarActivity.this, CustomerAddActivity.class);
@@ -175,9 +175,9 @@ public class CustumarActivity extends AppCompatActivity {
                 pdfIntent.putExtra("name", name);
 
                 pdfIntent.putExtra("phone", phone);
-                if (taka != null) {
+
                     pdfIntent.putExtra("taka", taka);
-                }
+
                 if (addreds != null) {
                     pdfIntent.putExtra("addreds", addreds);
                 }
