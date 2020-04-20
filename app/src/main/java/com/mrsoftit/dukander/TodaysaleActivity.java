@@ -372,7 +372,7 @@ public class TodaysaleActivity extends AppCompatActivity {
 
     public  void  loadData(){
         CollectionReference customerProductSale = FirebaseFirestore.getInstance()
-                .collection("users").document(user_id).collection("Customers").document("o32ebl3gIQTC3yfohRl9").collection("saleProduct");
+                .collection("users").document(user_id).collection("Customers").document("1QM5dpnTIh0R9rcLaVUa").collection("saleProduct");
 
 
         customerProductSale.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -414,7 +414,7 @@ public class TodaysaleActivity extends AppCompatActivity {
         });
     }
 
-
+//main for PDF
     public static PdfPCell getAccountsCell(String text) {
         FontSelector fs = new FontSelector();
         Font font = FontFactory.getFont(FontFactory.HELVETICA, 10);

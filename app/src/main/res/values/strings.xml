@@ -11,6 +11,14 @@
     <string name="StateChangeSample">State Change Sample</string>
     <string name="ProgressPaddingSample">Progress Padding Sample</string>
     <string name="CustomSelectorSample">Custom Selector Sample</string>
+    <string name="dukander" >দোকানদার</string>
+    <string name="totalbalace">58924</string>
+    <string name="todo">TODO</string>
+    <string name="withdraw">withdraw</string>
+    <string name="sale">Sale</string>
+    <string name="today_sale">Today Sale</string>
+    <string name="investment">Investment</string>
+
 
     <array name="sample_list">
         <item>@string/IndeterminateProgressSample</item>

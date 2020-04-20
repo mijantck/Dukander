@@ -10,6 +10,7 @@ public class ProductSaleNote {
     private int date;
 
 
+
     public ProductSaleNote(){}
 
     public ProductSaleNote(String productSaleId, String proName, double price, double producQuantidy, double totalPrice, int date) {

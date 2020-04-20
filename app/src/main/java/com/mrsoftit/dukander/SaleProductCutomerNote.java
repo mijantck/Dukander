@@ -2,7 +2,7 @@ package com.mrsoftit.dukander;
 
 public class SaleProductCutomerNote {
 
-   private String SaleProductId;
+   private String saleProductId;
     String itemName;
     Double price;
     Double quantedt;
@@ -10,22 +10,23 @@ public class SaleProductCutomerNote {
     int date;
     int invoiceNumber;
     String invoiceId;
+    Boolean update ;
     String TotalSaleid;
 
 public SaleProductCutomerNote(){}
 
-    public SaleProductCutomerNote(String saleProductId, String itemName, Double price, Double quantedt, Double totalPrice, int date, int invoiceNumber) {
-        SaleProductId = saleProductId;
+    public SaleProductCutomerNote(String saleProductId, String itemName, Double price, Double quantedt, Double totalPrice, int date, int invoiceNumber,Boolean update ) {
+       this.saleProductId = saleProductId;
         this.itemName = itemName;
         this.price = price;
         this.quantedt = quantedt;
         this.totalPrice = totalPrice;
         this.date = date;
         this.invoiceNumber = invoiceNumber;
-        this.invoiceId = invoiceId;
+        this.update = update;
     }
 
-    public SaleProductCutomerNote(String saleProductId, String itemName, Double price, Double quantedt, Double totalPrice, int date, int invoiceNumber, String totalSaleid) {
+  /*  public SaleProductCutomerNote(String saleProductId, String itemName, Double price, Double quantedt, Double totalPrice, int date, int invoiceNumber, String totalSaleid) {
         SaleProductId = saleProductId;
         this.itemName = itemName;
         this.price = price;
@@ -34,14 +35,14 @@ public SaleProductCutomerNote(){}
         this.date = date;
         this.invoiceNumber = invoiceNumber;
         TotalSaleid = totalSaleid;
-    }
+    }*/
 
     public String getSaleProductId() {
-        return SaleProductId;
+        return saleProductId;
     }
 
     public void setSaleProductId(String saleProductId) {
-        SaleProductId = saleProductId;
+        this.saleProductId = saleProductId;
     }
 
     public String getItemName() {
@@ -98,5 +99,13 @@ public SaleProductCutomerNote(){}
 
     public void setInvoiceId(String invoiceId) {
         this.invoiceId = invoiceId;
+    }
+
+    public Boolean getUpdate() {
+        return update;
+    }
+
+    public void setUpdate(Boolean update) {
+        this.update = update;
     }
 }

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,6 +33,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -39,6 +41,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 import com.itextpdf.text.Image;
 
 import java.text.DateFormat;
@@ -53,6 +56,8 @@ public class SeleTwoActivity extends AppCompatActivity {
 
     private Spinner spinner;
     SaleProductIndevicualAdapter saleProductIndevicualAdapter;
+
+    FirebaseFirestore db;
 
     TextView bundelCustomerName,bundelCustomerphone,bundelCustomeraddrss,bundelCustomertaka,invoiseIdTextView,TotalAmount;
 
@@ -71,7 +76,7 @@ public class SeleTwoActivity extends AppCompatActivity {
 
     String  idup, nameup,phoneup,takaup,addresup,imageup;
 
-    String bundelId;
+    String bundelId,takacutomerup;
 
     //pdf Creatore
     ArrayList<SaleProductCutomerNote> MyList1 = new ArrayList<SaleProductCutomerNote>();
@@ -112,6 +117,18 @@ public class SeleTwoActivity extends AppCompatActivity {
 
     FloatingActionButton  OKfloatingActionButton,PDFfloatingActionButton;
 
+    EditText discunt,payeditetext;
+    TextView paymentLooding,TitleTExt;
+
+    double totallestAvount;
+
+
+    Date calendar1 = Calendar.getInstance().getTime();
+    DateFormat df1 = new SimpleDateFormat("yyyyMMdd");
+    String todayString = df1.format(calendar1);
+    final int datenew = Integer.parseInt(todayString);
+
+
 
 
     @Override
@@ -136,6 +153,10 @@ public class SeleTwoActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+
+        db = FirebaseFirestore.getInstance();
+
 
         spinner = findViewById(R.id.spinner);
         bundelCustomerName = findViewById(R.id.bundelCustomerName);
@@ -162,7 +183,6 @@ public class SeleTwoActivity extends AppCompatActivity {
 
             bundl.setVisibility(View.GONE);
             unkonwn.setVisibility(View.VISIBLE);
-            Toast.makeText(this, unknonwnCustomerId+" Two Activiry", Toast.LENGTH_SHORT).show();
         }
 
         final Bundle bundle = getIntent().getExtras();
@@ -177,6 +197,8 @@ public class SeleTwoActivity extends AppCompatActivity {
             imageup = bundle.getString("imageurl");
 
             bundelId=idup;
+            takacutomerup = takaup;
+
 
             if (bundelId!=null){
                 bundl.setVisibility(View.VISIBLE);
@@ -187,8 +209,9 @@ public class SeleTwoActivity extends AppCompatActivity {
             }
             if (phoneup!=null){
                 bundelCustomerphone.setText(phoneup);
+
             }if (takaup!=null){
-                bundelCustomertaka.setText(takaup);
+               // bundelCustomertaka.setText(takaup);
             }
             if (addresup!=null){
                 bundelCustomeraddrss.setText(addresup);
@@ -245,7 +268,11 @@ public class SeleTwoActivity extends AppCompatActivity {
         });
 
         if (bundelId!=null){
+
+
             recyclearinvoiser();
+
+
         }else if ( unknonwnCustomerId!=null){
 
             UnkownCustumerrecyclearinvoiser();
@@ -267,16 +294,87 @@ public class SeleTwoActivity extends AppCompatActivity {
                 dialog.setTitle("Bill Pay ");
                 dialog.show();
                 dialog.setCanceledOnTouchOutside(false);
-                Button okButton = dialog.findViewById(R.id.okButton);
+                final Button okButton = dialog.findViewById(R.id.okButton);
                 Button cancelButton = dialog.findViewById(R.id.cancelButton);
 
-                EditText discunt= dialog.findViewById(R.id.dialogDiscount);
-                EditText payeditetext= dialog.findViewById(R.id.dialogpayMoney);
+                 payeditetext= dialog.findViewById(R.id.dialogpayMoney);
+                TitleTExt= dialog.findViewById(R.id.TitleTExt);
+                paymentLooding = dialog.findViewById(R.id.loadingTExt);
+
+
+
                 okButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
+                        payeditetext.setVisibility(View.GONE);
+                        paymentLooding.setVisibility(View.VISIBLE);
+                        okButton.setVisibility(View.GONE);
+                        TitleTExt.setVisibility(View.GONE);
 
+                        String paymony = payeditetext.getText().toString();
+
+                        if (paymony.isEmpty()){
+
+                            return;
+                        }
+
+                        double paymonyDouable  = Double.parseDouble(paymony);
+
+                        double totallastbill = Double.parseDouble(TotalAmount.getText().toString());
+                        double dautakaccustomer = Double.parseDouble(takacutomerup);
+
+                        double withpaytaka = totallastbill - paymonyDouable;
+
+                        double dauabbbill = dautakaccustomer + withpaytaka;
+
+                        final CollectionReference customer = FirebaseFirestore.getInstance()
+                                .collection("users").document(user_id).collection("Customers");
+
+                        customer.document(bundelId).update("taka",dauabbbill).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+
+                                customer.document(bundelId).update("lastTotal",00.00).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+
+                                        CollectionReference customerProductSale = FirebaseFirestore.getInstance()
+                                                .collection("users").document(user_id).collection("Customers").document(bundelId).collection("saleProduct");
+
+
+                                        Query query = customerProductSale.whereEqualTo("update",false);
+
+                                        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                                                if (task.isSuccessful()) {
+                                                    List<String> list = new ArrayList<>();
+                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                        list.add(document.getId());
+                                                        Toast.makeText(SeleTwoActivity.this, document.getId()+"", Toast.LENGTH_SHORT).show();
+
+                                                    }
+
+                                                   saveCustomerupdateData((ArrayList) list); // *** new ***
+
+                                                } else {
+
+                                                }
+                                            }
+
+
+                                        });
+
+
+
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                            }
+                        });
 
                     }
                 });
@@ -288,8 +386,6 @@ public class SeleTwoActivity extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 });
-
-
 
             }
         });
@@ -349,21 +445,17 @@ public class SeleTwoActivity extends AppCompatActivity {
 
     private void recyclearinvoiser() {
 
-        Date calendar1 = Calendar.getInstance().getTime();
-        DateFormat df1 = new SimpleDateFormat("yyyyMMdd");
-        String todayString = df1.format(calendar1);
-        final int datenew = Integer.parseInt(todayString);
-
-
         CollectionReference customerProductSale = FirebaseFirestore.getInstance()
                 .collection("users").document(user_id).collection("Customers").document(bundelId).collection("saleProduct");
 
 
-        Query query = customerProductSale.whereEqualTo("date",datenew);
+        Query query = customerProductSale.whereEqualTo("update",false);
+
 
         FirestoreRecyclerOptions<SaleProductCutomerNote> options = new FirestoreRecyclerOptions.Builder<SaleProductCutomerNote>()
                 .setQuery(query, SaleProductCutomerNote.class)
                 .build();
+
 
         saleProductIndevicualAdapter = new SaleProductIndevicualAdapter(options);
 
@@ -372,66 +464,102 @@ public class SeleTwoActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        CollectionReference customerProductSaleUptatlasttaka = FirebaseFirestore.getInstance()
-                .collection("users").document(user_id).collection("Customers");
 
-        Query query1 = customerProductSaleUptatlasttaka.whereEqualTo("customerIdDucunt",bundelId);
+            final CollectionReference customerProductSaleUptatlasttaka = FirebaseFirestore.getInstance()
+                    .collection("users").document(user_id).collection("Customers");
 
-        query1.addSnapshotListener(new EventListener<QuerySnapshot>() {
-         @Override
-         public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+            Query query1 = customerProductSaleUptatlasttaka.whereEqualTo("customerIdDucunt",bundelId);
+
+            query1.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                    if (e != null) {
+
+                        return;
+                    }
+
+                    List<String> cities = new ArrayList<>();
+                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                        if (doc.get("lastTotal") != null) {
+                            double totaltest  = (double) doc.get("lastTotal");
+                            TotalAmount.setText(totaltest+"");
+                        }
+
+                        if (doc.get("taka") != null) {
+
+                            double totaltaka  = (double) doc.get("taka");
+
+                            bundelCustomertaka.setText(totaltaka+"");
+                        }
+
+                    }
+
+                }
+            });
 
 
-             if (e != null) {
-
-                 return;
-             }
-
-             List<String> cities = new ArrayList<>();
-             for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                 if (doc.get("lastTotal") != null) {
-
-                     double totaltest  = (double) doc.get("lastTotal");
-
-                     Toast.makeText(SeleTwoActivity.this, TotalAmountallproduct+"", Toast.LENGTH_SHORT).show();
-                      TotalAmount.setText(totaltest+"");
-                 }
-             }
-
-         }
-     });
 
         recyclerView.setAdapter(saleProductIndevicualAdapter);
 
 
-    /*.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+        saleProductIndevicualAdapter.setOnItemClickListener(new SaleProductIndevicualAdapter.OnItemClickListener() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
+            public void onItemClick(DocumentSnapshot documentSnapshot, final int position) {
 
-                    QuerySnapshot queryDocumentSnapshots = task.getResult();
+                final SaleProductCutomerNote saleProductCutomerNote = documentSnapshot.toObject(SaleProductCutomerNote.class);
 
-                    for (DocumentSnapshot readData : queryDocumentSnapshots.getDocuments()) {
-                        String Total = readData.get("totalPrice").toString();
+                final Dialog dialogInvdiveoalProduct = new Dialog(SeleTwoActivity.this);
+                // Include dialog.xml file
+                dialogInvdiveoalProduct.setContentView(R.layout.dialog_idivsiual_delete_item);
+                dialogInvdiveoalProduct.show();
+                dialogInvdiveoalProduct.setCanceledOnTouchOutside(false);
 
-                        Toast.makeText(SeleTwoActivity.this, Total+"", Toast.LENGTH_SHORT).show();
+                TextView proDuctName,productquantdy,productprice,canclebutton,deletebutton;
 
+                proDuctName=dialogInvdiveoalProduct.findViewById(R.id.dilog_product_name);
+                productquantdy=dialogInvdiveoalProduct.findViewById(R.id.dilog_product_quantidy);
+                productprice=dialogInvdiveoalProduct.findViewById(R.id.dilog_product_price);
+                canclebutton=dialogInvdiveoalProduct.findViewById(R.id.dilog_product_cancle);
+                deletebutton=dialogInvdiveoalProduct.findViewById(R.id.dilog_product_delete);
+
+                proDuctName.setText(saleProductCutomerNote.getItemName());
+                productquantdy.setText(saleProductCutomerNote.getQuantedt()+"");
+                productprice.setText(saleProductCutomerNote.getTotalPrice()+"");
+                canclebutton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogInvdiveoalProduct.dismiss();
+                    }
+                });
+
+                deletebutton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+
+                        double subduble = totallestAvount - saleProductCutomerNote.getTotalPrice();
+
+                        String productId = saleProductCutomerNote.getInvoiceId();
+
+                        customerProductSaleUptatlasttaka.document(bundelId).update("lastTotal",subduble).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+
+                               saleProductIndevicualAdapter.deleteItem(position);
+
+                               dialogInvdiveoalProduct.dismiss();
+                            }
+                        });
 
                     }
-                }
+                });
+
             }
-        });*/
-
-
+        });
 
     }
     private void UnkownCustumerrecyclearinvoiser() {
-
-        Date calendar1 = Calendar.getInstance().getTime();
-        DateFormat df1 = new SimpleDateFormat("yyyyMMdd");
-        String todayString = df1.format(calendar1);
-        final int datenew = Integer.parseInt(todayString);
-
 
         final CollectionReference unkonwnCustomar = FirebaseFirestore.getInstance()
                 .collection("users").document(user_id).collection("UnknownCustomer").document(unknonwnCustomerId).collection("salePrucuct");
@@ -450,6 +578,33 @@ public class SeleTwoActivity extends AppCompatActivity {
         // recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(saleProductIndevicualAdapter);
 
+        if (unknonwnCustomerId!=null){
+
+            CollectionReference customerProductSaleUptatlasttaka = FirebaseFirestore.getInstance()
+                    .collection("users").document(user_id).collection("UnknownCustomer");
+
+            Query query1 = customerProductSaleUptatlasttaka.whereEqualTo("customerIdDucunt",unknonwnCustomerId);
+
+            query1.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                    if (e != null) {
+
+                        return;
+                    }
+                    List<String> cities = new ArrayList<>();
+                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                        if (doc.get("lastTotal") != null) {
+                            double totaltest  = (double) doc.get("lastTotal");
+                            double totataka  = (double) doc.get("lastTotal");
+
+                            TotalAmount.setText(totaltest+"");
+                        }
+                    }
+
+                }
+            });
+        }
 
 
     }
@@ -462,8 +617,6 @@ public class SeleTwoActivity extends AppCompatActivity {
         firestore = FirebaseFirestore.getInstance();
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        String user_id = currentUser.getUid();
 
         invoiseFb.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -480,18 +633,39 @@ public class SeleTwoActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-
        saleProductIndevicualAdapter.startListening();
-
-
     }
 
     @Override
     protected void onStop() {
         super.onStop();
        saleProductIndevicualAdapter.stopListening();
+
+    }
+
+    public void saveCustomerupdateData(ArrayList list) {
+
+        // Get a new write batch
+        WriteBatch batch = db.batch();
+
+        // Iterate through the list
+        for (int k = 0; k < list.size(); k++) {
+
+            // Update each list item
+            DocumentReference ref = db.collection("users").document(user_id).collection("Customers")
+                    .document(bundelId).collection("saleProduct").document((String) list.get(k));
+
+            batch.update(ref, "update", true);
+
+        }
+
+        // Commit the batch
+        batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                // Yay its all done in one go!
+            }
+        });
 
     }
 }

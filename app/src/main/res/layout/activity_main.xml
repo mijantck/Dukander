@@ -32,7 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:weightSum="5"
-                >
+                android:baselineAligned="false">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -41,10 +41,10 @@
                     >
 
                     <TextView
-                        android:textSize="20dp"
+                        android:textSize="20sp"
                         android:textColor="#FFFF"
                         android:gravity="center_vertical"
-                        android:text="দোকানদার"
+                        android:text="@string/dukander"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
                 </LinearLayout>
@@ -58,11 +58,11 @@
                 >
                     <TextView
                         android:layout_gravity="center_vertical"
-                        android:textSize="20dp"
+                        android:textSize="20sp"
                         android:textColor="#FFFF"
                         android:gravity="fill_vertical"
                         android:fontFamily="@font/adamina"
-                        android:text="58924"
+                        android:text="@string/totalbalace"
                         android:maxLines="1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
@@ -83,11 +83,11 @@
             android:id="@+id/list_item_recyclearviews"
             android:layout_below="@id/toolbar_support"
             android:orientation="horizontal"
-            android:background="@color/colorPrimary"
+            android:background="@color/primary"
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:weightSum="4"
-            >
+            android:baselineAligned="false">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -127,11 +127,10 @@
             android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_below="@id/list_item_recyclearviews"
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:background="@color/colorPrimary"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
            >
 
             <LinearLayout
@@ -139,7 +138,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:weightSum="2"
-                >
+                android:baselineAligned="false">
                 <LinearLayout
                     android:layout_gravity="center"
                     android:gravity="center"
@@ -152,17 +151,17 @@
                     <androidx.cardview.widget.CardView
                         android:id="@+id/salecard"
                         android:elevation="10dp"
-                        android:layout_width="match_parent"
-                        android:layout_marginRight="1dp"
-                        android:layout_height="match_parent">
+                        android:layout_width="100dp"
+                        android:layout_marginEnd="1dp"
+                        android:layout_height="100dp">
 
                         <ImageView
+                            android:layout_width="69dp"
+                            android:layout_height="54dp"
                             android:layout_gravity="center"
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:src="@drawable/ic_add_shopping"
                             android:layout_marginBottom="15dp"
-                             />
+                            android:contentDescription="TODO"
+                            android:src="@drawable/ic_add_shopping" />
 
                         <TextView
 
@@ -171,9 +170,9 @@
                             android:layout_gravity="bottom"
                             android:fontFamily="@font/adamina"
                             android:gravity="center"
-                            android:text="Sale"
+                            android:text="@string/sale"
                             android:textColor="#000"
-                            android:textSize="15dp" />
+                            android:textSize="15sp" />
 
 
                     </androidx.cardview.widget.CardView>
@@ -196,18 +195,19 @@
 
                         <ImageView
                             android:layout_gravity="center"
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
+                            android:layout_width="69dp"
+                            android:layout_height="54dp"
                             android:src="@drawable/ic_today"
-                            android:layout_marginBottom="15dp"/>
+                            android:layout_marginBottom="15dp"
+                            android:contentDescription="@string/todo" />
 
                         <TextView
                             android:layout_gravity="bottom"
                             android:gravity="center"
                             android:fontFamily="@font/adamina"
-                            android:text="Today Sale"
+                            android:text="@string/today_sale"
                             android:textColor="#000"
-                            android:textSize="15dp"
+                            android:textSize="15sp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
 
@@ -224,7 +224,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:weightSum="2"
-                >
+                android:baselineAligned="false">
                 <LinearLayout
                     android:layout_gravity="center"
                     android:gravity="center"
@@ -237,22 +237,22 @@
                     <androidx.cardview.widget.CardView
                         android:id="@+id/imvesment"
                         android:elevation="10dp"
-                      android:layout_marginRight="1dp"
+                      android:layout_marginEnd="1dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
                         <ImageView
+                            android:layout_width="69dp"
+                            android:layout_height="54dp"
                             android:layout_gravity="center"
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:src="@drawable/ic_withdrow"
-                            android:layout_marginBottom="15dp"/>
+                            android:layout_marginBottom="15dp"
+                            android:src="@drawable/ic_withdrow" />
 
                         <TextView
                             android:layout_gravity="bottom"
                             android:gravity="center"
-                            android:text="Investment"
-                            android:textSize="15dp"
+                            android:text="@string/investment"
+                            android:textSize="15sp"
                             android:fontFamily="@font/adamina"
                             android:textColor="#000"
                             android:layout_width="match_parent"
@@ -280,16 +280,17 @@
                         <ImageView
                             android:layout_gravity="center"
                             android:src="@drawable/ic_invesment"
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:layout_marginBottom="15dp"/>
+                            android:layout_width="69dp"
+                            android:layout_height="54dp"
+                            android:layout_marginBottom="15dp"
+                            android:contentDescription="@string/todo" />
 
                         <TextView
                             android:layout_gravity="bottom"
                             android:gravity="center"
-                            android:text="withdraw"
+                            android:text="@string/withdraw"
                             android:textColor="#000"
-                            android:textSize="15dp"
+                            android:textSize="15sp"
                             android:fontFamily="@font/adamina"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>

@@ -114,7 +114,10 @@ public class CustumarActivity extends AppCompatActivity {
                 String imageurl = customerNote.getImageUrl();
                 String name = customerNote.getNameCUstomer();
                 String phone = customerNote.getPhone();
-                double taka = customerNote.getTaka();
+                double takadobul = customerNote.getTaka();
+
+                String taka = Double.toString(takadobul);
+
                 String addreds = customerNote.getAddres();
 
                 Intent pdfIntent = new Intent(CustumarActivity.this, CustomerAddActivity.class);
@@ -126,8 +129,10 @@ public class CustumarActivity extends AppCompatActivity {
                 pdfIntent.putExtra("name", name);
 
                 pdfIntent.putExtra("phone", phone);
+                if (taka != null) {
 
                     pdfIntent.putExtra("taka", taka);
+                }
 
                 if (addreds != null) {
                     pdfIntent.putExtra("addreds", addreds);
@@ -163,7 +168,9 @@ public class CustumarActivity extends AppCompatActivity {
                 String imageurl = customerNote.getImageUrl();
                 String name = customerNote.getNameCUstomer();
                 String phone = customerNote.getPhone();
-                double taka = customerNote.getTaka();
+                double takadobul = customerNote.getTaka();
+
+                String taka = Double.toString(takadobul);
                 String addreds = customerNote.getAddres();
 
                 Intent pdfIntent = new Intent(CustumarActivity.this, CustomerAddActivity.class);
@@ -176,7 +183,11 @@ public class CustumarActivity extends AppCompatActivity {
 
                 pdfIntent.putExtra("phone", phone);
 
+                if (taka!=null){
+
                     pdfIntent.putExtra("taka", taka);
+
+                }
 
                 if (addreds != null) {
                     pdfIntent.putExtra("addreds", addreds);
@@ -214,23 +225,8 @@ public class CustumarActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
 
-                exampleList.clear();
-                customer.whereGreaterThanOrEqualTo("nameCUstomer",query)
-                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                recyclear(query);
 
-                        if (task.isSuccessful()){
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                CustomerNote customerNote = document.toObject(CustomerNote.class);
-                                exampleList.add(customerNote);
-                                adapter.notifyDataSetChanged();
-                            }
-
-                        }
-                    }
-                });
-                adapter.notifyDataSetChanged();
                 return false;
             }
 

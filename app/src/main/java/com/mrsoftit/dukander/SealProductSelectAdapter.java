@@ -36,10 +36,15 @@ import java.util.List;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSelectAdapter.ExampleViewHolder> {
 
+
+
     private Context context;
     private List<ProductNote> exampleList;
     private String cutomerId;
     private String unknownCustomerID;
+
+    boolean update = false;
+
 
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -184,7 +189,8 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
                     final CollectionReference customerProductSale = FirebaseFirestore.getInstance()
                             .collection("users").document(user_id).collection("Customers").document(cutomerId).collection("saleProduct");
 
-                    customerProductSale.add(new SaleProductCutomerNote(null, productName, price, totalQantidy, total, datenew, tinvoicenumber)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+
+                    customerProductSale.add(new SaleProductCutomerNote(null, productName, price, totalQantidy, total, datenew, tinvoicenumber,update)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentReference> task) {
 
@@ -256,7 +262,7 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
 
                                             invoiseFb.document(productNote.getInvoiseid()).update("invoice", tinvoicenumber);
 
-                                            TotalcustomerProductSale.add(new SaleProductCutomerNote(id, productName, price, totalQantidy, total, datenew, tinvoicenumber)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                            TotalcustomerProductSale.add(new SaleProductCutomerNote(id, productName, price, totalQantidy, total, datenew, tinvoicenumber,update)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<DocumentReference> task) {
 
@@ -267,7 +273,7 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
                                     }
                                 });
 
-                                customerProductSale.document(id).update("SaleProductId", id).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                customerProductSale.document(id).update("saleProductId", id).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
 
@@ -286,7 +292,7 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
                     final CollectionReference unkonwnCustomar = FirebaseFirestore.getInstance()
                             .collection("users").document(user_id).collection("UnknownCustomer").document(unknownCustomerID).collection("salePrucuct");
 
-                    unkonwnCustomar.add(new SaleProductCutomerNote(null, productName, price, totalQantidy, total, datenew, tinvoicenumber)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    unkonwnCustomar.add(new SaleProductCutomerNote(null, productName, price, totalQantidy, total, datenew, tinvoicenumber,update)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentReference> task) {
 
@@ -353,7 +359,7 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
 
                                             invoiseFb.document(productNote.getInvoiseid()).update("invoice", tinvoicenumber);
 
-                                            TotalcustomerProductSale.add(new SaleProductCutomerNote(id, productName, price, totalQantidy, total, datenew, tinvoicenumber)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                            TotalcustomerProductSale.add(new SaleProductCutomerNote(id, productName, price, totalQantidy, total, datenew, tinvoicenumber,update)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<DocumentReference> task) {
 
@@ -363,7 +369,7 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
                                         }
                                     }
                                 });
-                                unkonwnCustomar.document(id).update("SaleProductId", id).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                unkonwnCustomar.document(id).update("saleProductId", id).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
 
@@ -377,6 +383,10 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
 
 
                 }
+
+
+
+
             }
         });
 

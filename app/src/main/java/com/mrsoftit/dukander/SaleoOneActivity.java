@@ -125,7 +125,6 @@ public class SaleoOneActivity extends AppCompatActivity {
 
                             final String unid = task.getResult().getId();
 
-                            Toast.makeText(SaleoOneActivity.this, unid+" befor update ", Toast.LENGTH_SHORT).show();
                             unkonwnCustomar.document(unid).update("customerIdDucunt",unid).addOnCompleteListener(new OnCompleteListener<Void>() {
 
                                 @Override
@@ -133,7 +132,6 @@ public class SaleoOneActivity extends AppCompatActivity {
 
                                     if (task.isSuccessful()) {
 
-                                        Toast.makeText(SaleoOneActivity.this, unid+" after update", Toast.LENGTH_SHORT).show();
                                        Intent intent = new Intent(SaleoOneActivity.this, SeleTwoActivity.class);
 
                                         if (unid != null) {
@@ -186,7 +184,11 @@ public class SaleoOneActivity extends AppCompatActivity {
                 String imageurl = customerNote.getImageUrl();
                 String name = customerNote.getNameCUstomer();
                 String phone = customerNote.getPhone();
-                double taka = customerNote.getTaka();
+                double takadobul = customerNote.getTaka();
+
+                String taka = Double.toString(takadobul);
+
+
                 String addreds = customerNote.getAddres();
 
                 Intent pdfIntent = new Intent(SaleoOneActivity.this, SeleTwoActivity.class);
@@ -199,7 +201,11 @@ public class SaleoOneActivity extends AppCompatActivity {
 
                 pdfIntent.putExtra("phone", phone);
 
+                if (taka!=null){
+
                     pdfIntent.putExtra("taka", taka);
+                }
+
 
                 if (addreds != null) {
                     pdfIntent.putExtra("addreds", addreds);
@@ -237,7 +243,11 @@ public class SaleoOneActivity extends AppCompatActivity {
                 String imageurl = customerNote.getImageUrl();
                 String name = customerNote.getNameCUstomer();
                 String phone = customerNote.getPhone();
-                double taka = customerNote.getTaka();
+                double takadubol = customerNote.getTaka();
+
+                String taka = Double.toString(takadubol);
+
+
                 String addreds = customerNote.getAddres();
 
                 Intent pdfIntent = new Intent(SaleoOneActivity.this, SeleTwoActivity.class);
@@ -249,9 +259,9 @@ public class SaleoOneActivity extends AppCompatActivity {
                 pdfIntent.putExtra("name", name);
 
                 pdfIntent.putExtra("phone", phone);
-
+                if (taka!=null) {
                     pdfIntent.putExtra("taka", taka);
-
+                }
                 if (addreds != null) {
                     pdfIntent.putExtra("addreds", addreds);
                 }
