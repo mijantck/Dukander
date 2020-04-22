@@ -110,14 +110,13 @@ public class SaleoOneActivity extends AppCompatActivity {
 
                 progressDialog = new ProgressDialog(SaleoOneActivity.this);
                 progressDialog.setMessage("Loading..."); // Setting Message
-                progressDialog.setTitle("ProgressDialog"); // Setting Title
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); // Progress Dialog Style Spinner
                 progressDialog.show(); // Display Progress Dialog
                 progressDialog.setCancelable(false);
                 final CollectionReference unkonwnCustomar = FirebaseFirestore.getInstance()
                         .collection("users").document(user_id).collection("UnknownCustomer");
 
-                unkonwnCustomar.add(new CustomerNote(null,"Unknown","Unknown",00.00,"Unknown",00.0)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                unkonwnCustomar.add(new CustomerNote(null,"Unknown","Unknown",00.00,"Unknown",00.0,00.00)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentReference> task) {
 

@@ -21,7 +21,7 @@
         <TextView
             android:id="@+id/invoiseId"
             android:gravity="center|right"
-            android:text="000"
+            android:text="0"
             android:textColor="#FFF"
             android:textSize="15dp"
             android:layout_marginRight="5dp"
@@ -150,8 +150,9 @@
                 android:layout_weight="4">
 
                 <EditText
+                    android:id="@+id/unKnoneName"
                     android:background="@null"
-                    android:text="Unknown "
+                    android:text="Customer "
                     android:maxLines="1"
                     android:textColor="#FFF"
                     android:textSize="15dp"
@@ -165,6 +166,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="2">
                 <EditText
+                    android:id="@+id/unKnonePhone"
                     android:background="@null"
                     android:text="0000-00000"
                     android:maxLines="1"
@@ -191,6 +193,7 @@
                 android:layout_weight="4">
 
                 <EditText
+                    android:id="@+id/unKnoneAddres"
                     android:background="@null"
                     android:text="Unknown"
                     android:maxLines="1"
@@ -206,8 +209,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="2">
                 <EditText
+                    android:id="@+id/unKnonetaka"
                     android:background="@null"
-                    android:text="000 tk"
+                    android:text="00.0"
                     android:maxLines="1"
                     android:textColor="#FFF"
                     android:textSize="15dp"
@@ -287,7 +291,7 @@
             android:gravity="center"
             android:layout_width="0dp"
             android:layout_height="20dp"
-            android:layout_weight="2.5">
+            android:layout_weight="2">
             <TextView
                 android:textColor="@color/colorPrimary"
                 android:gravity="center"
@@ -326,11 +330,24 @@
             android:gravity="center"
             android:layout_width="0dp"
             android:layout_height="20dp"
-            android:layout_weight="2.5">
+            android:layout_weight="1.8">
             <TextView
                 android:textColor="@color/colorPrimary"
                 android:gravity="center"
                 android:text="Price"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:layout_weight=".8">
+            <TextView
+                android:textColor="@color/colorPrimary"
+                android:gravity="center"
+                android:text="Status"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
@@ -416,7 +433,6 @@
         app:backgroundTint="@color/colorAccent"
         app:srcCompat="@drawable/ic_done"
         app:tint="#FFF" />
-
 
 
 </RelativeLayout>

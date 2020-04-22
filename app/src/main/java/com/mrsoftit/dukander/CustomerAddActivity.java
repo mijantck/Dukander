@@ -222,7 +222,7 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
                     final String addres = CustomerAddress.getText().toString();
 
 
-                    customer.add(new CustomerNote(null, name, phone, dtaka, addres,00.00)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    customer.add(new CustomerNote(null, name, phone, dtaka, addres,00.00,00.00)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentReference> task) {
 
@@ -376,7 +376,7 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
 
                                 }else {
 
-                                customer.add(new CustomerNote(null,name,phone,dtaka,addres,uri.toString(),00.00)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                customer.add(new CustomerNote(null,name,phone,dtaka,addres,uri.toString(),00.00,00.00)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                     @Override
                                     public void onComplete(@NonNull Task<DocumentReference> task) {
 

@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PDFActivity">
+
+    <ImageView
+        android:src="@drawable/ic_check"
+        android:id="@+id/shopeBanner"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:contentDescription="TODO" />
+
+    <LinearLayout
+        android:id="@+id/invoiceLayout"
+        android:layout_below="@id/shopeBanner"
+        android:layout_width="match_parent"
+        android:gravity="right"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:weightSum="2">
+
+            <LinearLayout
+
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                <TextView
+                    android:textSize="15sp"
+                    android:textColor="#000"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:text="Invoice No"
+                    android:layout_height="wrap_content"/>
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                <TextView
+                    android:textSize="15dp"
+                    android:textColor="#000"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:text="Invoice Date"
+                    android:layout_height="wrap_content"/>
+
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:weightSum="2">
+
+            <LinearLayout
+
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/invoiceID"
+                    android:textSize="15dp"
+                    android:textColor="#000"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:text="00001"
+                    android:layout_height="wrap_content"/>
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/invoiceDate"
+                    android:textSize="15dp"
+                    android:textColor="#000"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:text="22-04-2020"
+                    android:layout_height="wrap_content"/>
+
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/biliid"
+        android:layout_below="@+id/invoiceLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="4"
+        >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2">
+            <TextView
+                android:layout_marginLeft="4dp"
+                android:text="Bill To"
+                android:textColor="#000"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/BilCustomrName"
+                android:textSize="10sp"
+                android:layout_marginStart="4dp"
+                android:text="Customer Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/BilCustomrhone"
+                android:textSize="10sp"
+                android:layout_marginStart="4dp"
+                android:text="01733-883310"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/BilCustomrAddress"
+                android:textSize="10sp"
+                android:layout_marginLeft="4dp"
+                android:text="jfhjksdhfjhfjsjhfjhsjhd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2">
+            <TextView
+                android:gravity="right"
+                android:layout_marginEnd="4dp"
+                android:text="Bill From"
+                android:textColor="#000"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/BilShopName"
+                android:textSize="10sp"
+                android:layout_marginRight="4dp"
+                android:gravity="right"
+                android:text="Shome Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/BilShopPhone"
+                android:textSize="10sp"
+                android:layout_marginEnd="4dp"
+                android:gravity="right"
+                android:text="01733-883310"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/BilShopAddress"
+                android:textSize="10sp"
+                android:layout_marginEnd="4dp"
+                android:gravity="right"
+                android:text="jfhjksdhfjhfjsjhfjhsjhd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        </LinearLayout>
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/titele"
+        android:layout_below="@+id/biliid"
+        android:elevation="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+
+        <LinearLayout
+            android:background="#C0C0C0"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:weightSum="7">
+
+            <LinearLayout
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="20dp"
+                android:layout_weight="2">
+                <TextView
+                    android:textColor="@color/colorPrimary"
+                    android:gravity="center"
+                    android:text="Items"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="20dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:textColor="@color/colorPrimary"
+                    android:gravity="center"
+                    android:text="QTY"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="20dp"
+                android:layout_weight="1">
+                <TextView
+                    android:textColor="@color/colorPrimary"
+                    android:id="@+id/receptsinglepric"
+                    android:gravity="center_vertical"
+                    android:text="S price "
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="20dp"
+                android:layout_weight="1.8">
+                <TextView
+                    android:textColor="@color/colorPrimary"
+                    android:gravity="center"
+                    android:text="Price"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="20dp"
+                android:layout_weight=".8">
+                <TextView
+                    android:textColor="@color/colorPrimary"
+                    android:gravity="center"
+                    android:text="Status"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@+id/titele"
+        android:id="@+id/PDFRecyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+
+
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:id="@+id/totalbil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="4">
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:weightSum="2">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:textColor="#000"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Subtotal "/>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/Subtotal"
+                            android:textColor="#000"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="1349.00"/>
+
+                    </LinearLayout>
+
+
+
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:weightSum="2">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:textColor="#000"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Discount "/>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:textColor="#000"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="00%"/>
+
+                    </LinearLayout>
+
+
+
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:weightSum="2">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:textColor="#000"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Total "/>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/PDFtotal"
+                            android:textColor="#000"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="19349.00"/>
+
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

@@ -1,6 +1,6 @@
 package com.mrsoftit.dukander;
 
-public class SaleProductCutomerNote {
+public class PDFSaleProductCutomerNote {
 
    private String saleProductId;
     String itemName;
@@ -14,9 +14,9 @@ public class SaleProductCutomerNote {
     Boolean paid;
     String TotalSaleid;
 
-public SaleProductCutomerNote(){}
+public PDFSaleProductCutomerNote(){}
 
-    public SaleProductCutomerNote(String saleProductId, String itemName, Double price, Double quantedt, Double totalPrice, int date, int invoiceNumber,Boolean update,Boolean paid) {
+    public PDFSaleProductCutomerNote(String saleProductId, String itemName, Double price, Double quantedt, Double totalPrice, int date, int invoiceNumber, Boolean update, Boolean paid) {
        this.saleProductId = saleProductId;
         this.itemName = itemName;
         this.price = price;
@@ -28,16 +28,6 @@ public SaleProductCutomerNote(){}
         this.paid = paid;
     }
 
-  /*  public SaleProductCutomerNote(String saleProductId, String itemName, Double price, Double quantedt, Double totalPrice, int date, int invoiceNumber, String totalSaleid) {
-        SaleProductId = saleProductId;
-        this.itemName = itemName;
-        this.price = price;
-        this.quantedt = quantedt;
-        this.totalPrice = totalPrice;
-        this.date = date;
-        this.invoiceNumber = invoiceNumber;
-        TotalSaleid = totalSaleid;
-    }*/
 
     public String getSaleProductId() {
         return saleProductId;
@@ -117,9 +107,5 @@ public SaleProductCutomerNote(){}
 
     public void setPaid(Boolean paid) {
         this.paid = paid;
-    }
-
-    public void setTotalSaleid(String totalSaleid) {
-        TotalSaleid = totalSaleid;
     }
 }

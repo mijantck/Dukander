@@ -164,6 +164,7 @@ public class CustumarActivity extends AppCompatActivity {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 CustomerNote customerNote = documentSnapshot.toObject(CustomerNote.class);
+
                 String id = documentSnapshot.getId();
                 String imageurl = customerNote.getImageUrl();
                 String name = customerNote.getNameCUstomer();

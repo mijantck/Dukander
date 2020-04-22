@@ -7,13 +7,11 @@ import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -23,7 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -33,13 +31,12 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -47,18 +44,13 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
     private FirebaseAuth mAuth;
 
-    StorageReference mStorageReferenceImage;
-    FirebaseFirestore firebaseFirestore;
-    ProgressDialog progressDialog;
     FirebaseFirestore firestore;
     MinimumProductAdapter minimumProductAdapter;
-
-     private CardView Sale,todaysale,invemet,withdrow;
 
 
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-    String user_id = currentUser.getUid();
+    String user_id = Objects.requireNonNull(currentUser).getUid();
 
     CollectionReference product = FirebaseFirestore.getInstance()
             .collection("users").document(user_id).collection("Product");
@@ -73,12 +65,12 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         mAuth = FirebaseAuth.getInstance();
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_support);
-        toolbar.setTitle("Dukandar ");
+        Toolbar toolbar = findViewById(R.id.toolbar_support);
+        toolbar.setTitle("Dukandar");
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        toolbar.getNavigationIcon().setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY);
+        Objects.requireNonNull(toolbar.getNavigationIcon()).setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY);
 
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.navigationView);
@@ -92,13 +84,13 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
         toggle.syncState();
 
-        Sale =findViewById(R.id.salecard);
-        todaysale =findViewById(R.id.todaysale);
-        invemet =findViewById(R.id.imvesment);
-        withdrow =findViewById(R.id.withdraw);
+        CardView sale = findViewById(R.id.salecard);
+        CardView todaysale = findViewById(R.id.todaysale);
+        CardView invemet = findViewById(R.id.imvesment);
+        CardView withdrow = findViewById(R.id.withdraw);
 
 
-        Sale.setOnClickListener(new View.OnClickListener() {
+        sale.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -110,7 +102,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(MainActivity.this,TodaysaleActivity.class);
+                Intent intent = new Intent(MainActivity.this, PDFActivity.class);
                 startActivity(intent);
             }
         });
@@ -187,6 +179,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
+        assert currentUser != null;
         String user_id = currentUser.getUid();
 
         CollectionReference myInfo = FirebaseFirestore.getInstance()
@@ -204,7 +197,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
+                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                         MyInfoNote myInfoNote = document.toObject(MyInfoNote.class);
 
                         dukanname.setText(myInfoNote.getDukanName());
@@ -250,24 +243,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
     }
 
-    private void recyclearDue() {
-
-
-        Query query = product.orderBy("proQua", Query.Direction.ASCENDING);
-
-        FirestoreRecyclerOptions<ProductNote> options = new FirestoreRecyclerOptions.Builder<ProductNote>()
-                .setQuery(query, ProductNote.class)
-                .build();
-
-        minimumProductAdapter = new MinimumProductAdapter(options);
-
-        RecyclerView recyclerView = findViewById(R.id.dueCustomer);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        // recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(minimumProductAdapter);
-
-    }
 
     @Override
     protected void onStop() {

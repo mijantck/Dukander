@@ -8,7 +8,7 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="20dp"
-        android:layout_weight="2.5">
+        android:layout_weight="2">
         <TextView
             android:id="@+id/receptIemview"
             android:gravity="center_vertical"
@@ -34,7 +34,7 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="20dp"
-        android:layout_weight="1.5">
+        android:layout_weight="1">
         <TextView
             android:id="@+id/receptsinglepric"
             android:gravity="center_vertical"
@@ -46,11 +46,24 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="20dp"
-        android:layout_weight="2">
+        android:layout_weight="1.8">
         <TextView
+            android:gravity="center"
             android:id="@+id/receptpriceview"
+            android:text="13788.005"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
-            android:text="13455.005"
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_weight=".8">
+        <TextView
+            android:gravity="center"
+            android:id="@+id/receptpaidview"
+            android:textColor="@color/primary_dark"
+            android:text="   "
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
