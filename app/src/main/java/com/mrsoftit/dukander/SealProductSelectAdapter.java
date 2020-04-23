@@ -232,9 +232,7 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
                                             }
                                         });
 
-                                      /*  if (productNote.getInvoiseid() == null) {
-
-
+                                       /* if (productNote.getInvoiseid() == null) {
                                             final CollectionReference invoiseFb = FirebaseFirestore.getInstance()
                                                     .collection("users").document(user_id).collection("invoise");
 
@@ -244,16 +242,9 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
                                                     if (task.isSuccessful()) {
                                                         String id = task.getResult().getId();
                                                         invoiseFb.document(id).update("id", id);
-
                                                     }
                                                 }
                                             });
-
-                                        } else {
-
-                                            invoiseFb.document(productNote.getInvoiseid()).update("invoice", tinvoicenumber);
-
-
                                         }*/
 
                                     }
@@ -325,7 +316,7 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
                                             }
                                         });
 
-                                        /*if (productNote.getInvoiseid() == null) {
+                                       /* if (productNote.getInvoiseid() == null) {
 
                                             final CollectionReference invoiseFb = FirebaseFirestore.getInstance()
                                                     .collection("users").document(user_id).collection("invoise");
@@ -340,9 +331,8 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
                                                 }
                                             });
 
-                                        } else {
-
-                                            invoiseFb.document(productNote.getInvoiseid()).update("invoice", tinvoicenumber);
+                                        }*/
+                                        /* else {
 
                                             TotalcustomerProductSale.add(new SaleProductCutomerNote(id, productName, price, totalQantidy, total, datenew, tinvoicenumber,update,paid)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                                 @Override

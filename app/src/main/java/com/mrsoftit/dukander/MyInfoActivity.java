@@ -37,6 +37,7 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.Random;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
@@ -323,7 +324,9 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
 
                                 } else if(firstTime == false && image == true ){
 
-                                    myInfo.add(new MyInfoNote(null, dukanName1, dukanphon1, dukanAddres1, uri.toString(),true)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                    Random rand = new Random();
+                                    String picname = String.format("%05d", rand.nextInt(10000));
+                                    myInfo.add(new MyInfoNote(null, dukanName1, dukanphon1, dukanAddres1, uri.toString(),true,picname)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                         @Override
                                         public void onComplete(@NonNull Task<DocumentReference> task) {
 

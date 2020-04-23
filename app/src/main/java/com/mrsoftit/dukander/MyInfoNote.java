@@ -8,15 +8,17 @@ public class MyInfoNote {
     private String dukanaddress;
     private String dukanaddpicurl;
     private boolean firsttime;
+    private String picName;
     public MyInfoNote(){}
 
-    public MyInfoNote(String myid, String dukanName, String dukanphone, String dukanaddress, String dukanaddpicurl,boolean firsttime) {
+    public MyInfoNote(String myid, String dukanName, String dukanphone, String dukanaddress, String dukanaddpicurl,boolean firsttime,String picName) {
         this.myid = myid;
         this.dukanName = dukanName;
         this.dukanphone = dukanphone;
         this.dukanaddress = dukanaddress;
         this.dukanaddpicurl = dukanaddpicurl;
         this.firsttime = firsttime;
+        this.picName = picName;
     }
 
     public String getMyid() {
@@ -41,5 +43,13 @@ public class MyInfoNote {
 
     public boolean isFirsttime() {
         return firsttime;
+    }
+
+    public String getPicName() {
+        return picName;
+    }
+
+    public void setPicName(String picName) {
+        this.picName = picName;
     }
 }

@@ -68,7 +68,7 @@ import static java.lang.Double.parseDouble;
 public class PDFActivity extends AppCompatActivity {
 
 
-    String id;
+    String id,unkcutomarId,name,phone,taka,addrs,invoise;
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 111;
 
@@ -93,17 +93,48 @@ public class PDFActivity extends AppCompatActivity {
 
     Image image;
 
-    String unknonwnCustomerId,bundelId;
-
-
     TextView invoiceNmaber,invoiceDate,BilCutomerName,BilCustomerPhone,
             BilCutomerAddress,BilShopName,BilShopPhone,BilShopAddrss,SubTottal,Total;
 
 
+    String picName;
+
     @Override
     protected void onStart() {
         super.onStart();
+
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        String user_id = Objects.requireNonNull(currentUser).getUid();
+
+
+        CollectionReference myInfo = FirebaseFirestore.getInstance()
+                .collection("users").document(user_id).collection("DukanInfo");
+        myInfo.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+
+                assert queryDocumentSnapshots != null;
+                for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                    if (doc.get("dukanName") != null) {
+                        BilShopName.setText(doc.get("dukanName").toString());
+                    }
+                    if (doc.get("dukanaddress") != null) {
+
+                        BilShopAddrss.setText(doc.get("dukanaddress").toString());
+                    }if (doc.get("dukanphone") != null) {
+
+                        BilShopPhone.setText(doc.get("dukanphone").toString());
+                    }if (doc.get("picName") != null) {
+                        picName= doc.get("picName").toString();
+                    }
+                }
+
+            }
+        });
         saleProductIndevicualAdapter.startListening();
+
+
 
     }
 
@@ -140,10 +171,35 @@ public class PDFActivity extends AppCompatActivity {
             if (bundle!=null){
 
                 id = bundle.getString("cutomarId");
+                unkcutomarId = bundle.getString("unkcutomarId");
+                name = bundle.getString("customarName");
+                phone = bundle.getString("cutomerPhone");
+                taka = bundle.getString("customertaka");
+                addrs = bundle.getString("customerAddres");
+                invoise = bundle.getString("invoise");
 
-                Toast.makeText(this, id+"", Toast.LENGTH_SHORT).show();
+                if (name!=null){
+                    BilCutomerName.setText(name);
+                }if (phone!=null){
+                    BilCustomerPhone.setText(phone);
+                }
+                if (addrs!=null){
+                    BilCutomerAddress.setText(addrs);
+                }
+                if (invoise!=null){
+                    invoiceNmaber.setText(invoise);
+                }
             }
-        recyclearinvoiser();
+        String pattern = "dd-MM-yyyy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        String date = simpleDateFormat.format(new Date());
+        invoiceDate.setText(date);
+
+        if (id!=null) {
+            recyclearinvoiser();
+        }if (unkcutomarId!=null){
+            UnkownCustumerrecyclearinvoiser();
+        }
             loadData();
 
 
@@ -623,7 +679,7 @@ public class PDFActivity extends AppCompatActivity {
     private void UnkownCustumerrecyclearinvoiser() {
 
         final CollectionReference unkonwnCustomar = FirebaseFirestore.getInstance()
-                .collection("users").document(user_id).collection("UnknownCustomer").document(id).collection("salePrucuct");
+                .collection("users").document(user_id).collection("UnknownCustomer").document(unkcutomarId).collection("salePrucuct");
 
         Query query = unkonwnCustomar.whereEqualTo("update",false);
 
@@ -643,7 +699,7 @@ public class PDFActivity extends AppCompatActivity {
         final CollectionReference customerProductSaleUptatlasttaka = FirebaseFirestore.getInstance()
                 .collection("users").document(user_id).collection("UnknownCustomer");
 
-        Query query1 = customerProductSaleUptatlasttaka.whereEqualTo("customerIdDucunt",id);
+        Query query1 = customerProductSaleUptatlasttaka.whereEqualTo("customerIdDucunt",unkcutomarId);
 
         query1.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
