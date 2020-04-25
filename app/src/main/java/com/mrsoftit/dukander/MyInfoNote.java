@@ -9,9 +9,12 @@ public class MyInfoNote {
     private String dukanaddpicurl;
     private boolean firsttime;
     private String picName;
+    private Double invesment;
+    private Double activeBalance;
+
     public MyInfoNote(){}
 
-    public MyInfoNote(String myid, String dukanName, String dukanphone, String dukanaddress, String dukanaddpicurl,boolean firsttime,String picName) {
+    public MyInfoNote(String myid, String dukanName, String dukanphone, String dukanaddress, String dukanaddpicurl,boolean firsttime,String picName,Double activeBalance,Double invesment) {
         this.myid = myid;
         this.dukanName = dukanName;
         this.dukanphone = dukanphone;
@@ -19,6 +22,8 @@ public class MyInfoNote {
         this.dukanaddpicurl = dukanaddpicurl;
         this.firsttime = firsttime;
         this.picName = picName;
+        this.invesment = invesment;
+        this.activeBalance = activeBalance;
     }
 
     public String getMyid() {
@@ -51,5 +56,21 @@ public class MyInfoNote {
 
     public void setPicName(String picName) {
         this.picName = picName;
+    }
+
+    public Double getActiveBalance() {
+        return activeBalance;
+    }
+
+    public void setActiveBalance(Double activeBalance) {
+        this.activeBalance = activeBalance;
+    }
+
+    public Double getInvesment() {
+        return invesment;
+    }
+
+    public void setInvesment(Double invesment) {
+        this.invesment = invesment;
     }
 }

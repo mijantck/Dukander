@@ -25,7 +25,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -55,9 +55,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class SeleTwoActivity extends AppCompatActivity {
-
-
-
 
     private Spinner spinner;
     SaleProductIndevicualAdapter saleProductIndevicualAdapter;
@@ -116,6 +113,10 @@ public class SeleTwoActivity extends AppCompatActivity {
 
     int invoiceINt ;
 
+      String myinfoid;
+
+      Double activeBalance;
+
 
 
     @Override
@@ -167,7 +168,31 @@ public class SeleTwoActivity extends AppCompatActivity {
         unKnoneAddres = findViewById(R.id.unKnoneAddres);
         unKnonetaka = findViewById(R.id.unKnonetaka);
 
+        CollectionReference myInfo = FirebaseFirestore.getInstance()
+                .collection("users").document(user_id).collection("DukanInfo");
 
+        myInfo.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+
+                if (e != null) {
+
+                    return;
+                }
+                assert queryDocumentSnapshots != null;
+                for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                    if (doc.get("myid") != null) {
+                        myinfoid = doc.getId();
+                    }
+                    if (doc.get("activeBalance") != null) {
+                        Double activeBalanceConvert = Double.parseDouble(doc.get("activeBalance").toString());
+
+                        activeBalance = activeBalanceConvert;
+                    }
+                }
+
+            }
+        });
 
         unKnoneName.setText("Customer("+datenew+")");
         invoiceINt = Integer.parseInt(invoiseIdTextView.getText().toString());
@@ -276,8 +301,6 @@ public class SeleTwoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                OKfloatingActionButton.setVisibility(View.GONE);
-
                 final Dialog dialog = new Dialog(SeleTwoActivity.this);
                 // Include dialog.xml file
                 dialog.setContentView(R.layout.cutomar_pay_taka);
@@ -291,7 +314,7 @@ public class SeleTwoActivity extends AppCompatActivity {
                  payeditetext= dialog.findViewById(R.id.dialogpayMoney);
                 TitleTExt= dialog.findViewById(R.id.TitleTExt);
                 paymentLooding = dialog.findViewById(R.id.loadingTExt);
-
+                final TextView loadingTExt = dialog.findViewById(R.id.loadingTExt);
 
 
                 okButton.setOnClickListener(new View.OnClickListener() {
@@ -301,6 +324,8 @@ public class SeleTwoActivity extends AppCompatActivity {
                         paymentLooding.setVisibility(View.VISIBLE);
                         okButton.setVisibility(View.GONE);
                         TitleTExt.setVisibility(View.GONE);
+                        loadingTExt.setVisibility(View.VISIBLE);
+
                         PDFfloatingActionButton.setVisibility(View.VISIBLE);
                         String paymony = payeditetext.getText().toString();
                         if (paymony.isEmpty()){
@@ -314,6 +339,7 @@ public class SeleTwoActivity extends AppCompatActivity {
                         double dautakaccustomer = 00.0;
                         if (bundelId!=null){
                             dautakaccustomer = Double.parseDouble(takacutomerup);
+
                         }if (unknonwnCustomerId!=null){
                             double unktotallast = Double.parseDouble(unKnonetaka.getText().toString());
                             dautakaccustomer = unktotallast;
@@ -321,6 +347,14 @@ public class SeleTwoActivity extends AppCompatActivity {
                         double withpaytaka = totallastbill - paymonyDouable;
                         double daubill = dautakaccustomer + withpaytaka;
 
+                        if (activeBalance!=null){
+                            activeBalance += paymonyDouable;
+                        }
+
+                        CollectionReference myInfo = FirebaseFirestore.getInstance()
+                                .collection("users").document(user_id).collection("DukanInfo");
+
+                        myInfo.document(myinfoid).update("activeBalance",activeBalance);
 
                         if (invoisenumberID == null) {
 
@@ -336,10 +370,8 @@ public class SeleTwoActivity extends AppCompatActivity {
                                     }
                                 }
                             });
-
                         }
                         else {
-
                             String invoice = invoiseIdTextView.getText().toString();
                             int i = Integer.parseInt(invoice);
                             invoiseFb.document(invoisenumberID).update("invoice", i);
@@ -347,12 +379,14 @@ public class SeleTwoActivity extends AppCompatActivity {
                         }
 
                         if (bundelId!=null) {
+
                             final CollectionReference customer = FirebaseFirestore.getInstance()
                                     .collection("users").document(user_id).collection("Customers");
                             customer.document(bundelId).update("taka", daubill).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    customer.document(bundelId).update("lastTotal", 00.00,"pdfTotal",totallastbill).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                                    customer.document(bundelId).update("lastTotal", 00.0,"pdfTotal",totallastbill).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             CollectionReference customerProductSale = FirebaseFirestore.getInstance()
@@ -362,10 +396,10 @@ public class SeleTwoActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                                     if (task.isSuccessful()) {
+
                                                         List<String> list = new ArrayList<>();
                                                         for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                                                             list.add(document.getId());
-                                                            Toast.makeText(SeleTwoActivity.this, document.getId() + "", Toast.LENGTH_SHORT).show();
                                                         }
                                                         saveCustomerupdateData((ArrayList) list); // *** new ***
                                                     }
@@ -396,7 +430,6 @@ public class SeleTwoActivity extends AppCompatActivity {
                                                         List<String> list = new ArrayList<>();
                                                         for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                                                             list.add(document.getId());
-                                                            Toast.makeText(SeleTwoActivity.this, document.getId() + "", Toast.LENGTH_SHORT).show();
 
                                                         }
 
@@ -441,12 +474,15 @@ public class SeleTwoActivity extends AppCompatActivity {
                          String customertaka = bundelCustomertaka.getText().toString();
                          String customerAddres = bundelCustomeraddrss.getText().toString();
                          String invoice = invoiseIdTextView.getText().toString();
+                         String totaltaka  = bundelCustomertaka.getText().toString();
                     pdfIntent.putExtra("cutomarId",bundelId);
                     pdfIntent.putExtra("customarName",customarName);
                     pdfIntent.putExtra("cutomerPhone",cutomerPhone);
                     pdfIntent.putExtra("customertaka",customertaka);
                     pdfIntent.putExtra("customerAddres",customerAddres);
                     pdfIntent.putExtra("invoise",invoice);
+                    pdfIntent.putExtra("totaltaka",totaltaka);
+                    pdfIntent.putExtra("takacutomerup",takacutomerup);
 
 
 
@@ -457,6 +493,7 @@ public class SeleTwoActivity extends AppCompatActivity {
                     String customertaka = unKnonetaka.getText().toString();
                     String customerAddres = unKnoneAddres.getText().toString();
                     String invoice = invoiseIdTextView.getText().toString();
+                    String totaltaka = unKnonetaka.getText().toString();
 
                     pdfIntent.putExtra("unkcutomarId",unknonwnCustomerId);
                     pdfIntent.putExtra("customarName",customarName);
@@ -464,6 +501,8 @@ public class SeleTwoActivity extends AppCompatActivity {
                     pdfIntent.putExtra("customertaka",customertaka);
                     pdfIntent.putExtra("customerAddres",customerAddres);
                     pdfIntent.putExtra("invoise",invoice);
+                    pdfIntent.putExtra("totaltaka",totaltaka);
+                    pdfIntent.putExtra("takacutomerup",takacutomerup);
 
 
                 }
@@ -760,6 +799,8 @@ public class SeleTwoActivity extends AppCompatActivity {
 
         saleProductIndevicualAdapter.startListening();
 
+
+
         invoiseFb.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -772,36 +813,17 @@ public class SeleTwoActivity extends AppCompatActivity {
                 for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                     if (doc.get("id") != null) {
                        invoisenumberID = doc.getId();
-                        Toast.makeText(SeleTwoActivity.this, invoisenumberID+"", Toast.LENGTH_SHORT).show();
                     }
                     if (doc.get("invoice") != null) {
 
                         int i =Integer.parseInt(doc.get("invoice").toString());
                         i = i+1;
-                        Toast.makeText(SeleTwoActivity.this, i+"", Toast.LENGTH_SHORT).show();
 
                         invoiseIdTextView.setText(i+"");
                     }
                 }
             }
         });
-      /* invoiseFb.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-
-                        InvoiceseNote invoiceseNote = document.toObject(InvoiceseNote.class);
-                        String invoisrhow = String.valueOf(invoiceseNote.getInvoice()+1);
-                        invoiseIdTextView.setText(invoisrhow);
-                        invoisenumber = invoiceseNote.getInvoice()+1;
-                        invoisenumberID = invoiceseNote.getId();
-                    }
-                }
-            }
-        });*/
-
-
 
 
 

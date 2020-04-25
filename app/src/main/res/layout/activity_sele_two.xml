@@ -44,7 +44,7 @@
 
     <LinearLayout
         android:id="@+id/bundellLayout"
-        android:visibility="visible"
+        android:visibility="gone"
         android:background="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -150,6 +150,7 @@
                 android:layout_weight="4">
 
                 <EditText
+                    android:outlineSpotShadowColor="#fff"
                     android:id="@+id/unKnoneName"
                     android:background="@null"
                     android:text="Customer "
@@ -213,6 +214,7 @@
                     android:background="@null"
                     android:text="00.0"
                     android:maxLines="1"
+                    android:inputType="numberDecimal"
                     android:textColor="#FFF"
                     android:textSize="15dp"
                     android:gravity="center_vertical"
@@ -414,7 +416,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="23dp"
+        android:layout_marginBottom="80dp"
         android:layout_marginRight="5dp"
         app:backgroundTint="@color/colorAccent"
         app:srcCompat="@drawable/ic_picture_as_pdf"

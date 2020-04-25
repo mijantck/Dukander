@@ -11,7 +11,7 @@
     <string name="StateChangeSample">State Change Sample</string>
     <string name="ProgressPaddingSample">Progress Padding Sample</string>
     <string name="CustomSelectorSample">Custom Selector Sample</string>
-    <string name="dukander" >দোকানদার</string>
+    <string name="dukander">দোকানদার</string>
     <string name="totalbalace">58924</string>
     <string name="todo">TODO</string>
     <string name="withdraw">withdraw</string>
@@ -27,4 +27,8 @@
         <item>@string/ProgressPaddingSample</item>
         <item>@string/CustomSelectorSample</item>
     </array>
+
+
+    <string name="login_email_hint">Email</string>
+    <string name="login_password_hint">Password</string>
 </resources>

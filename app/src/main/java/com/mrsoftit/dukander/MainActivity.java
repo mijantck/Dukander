@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(MainActivity.this, PDFActivity.class);
+                Intent intent = new Intent(MainActivity.this, TodaySaleActivity.class);
                 startActivity(intent);
             }
         });

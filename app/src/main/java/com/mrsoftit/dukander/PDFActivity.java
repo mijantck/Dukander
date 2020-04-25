@@ -11,9 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,9 +29,11 @@ import android.widget.Toast;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -36,6 +41,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -68,11 +74,13 @@ import static java.lang.Double.parseDouble;
 public class PDFActivity extends AppCompatActivity {
 
 
-    String id,unkcutomarId,name,phone,taka,addrs,invoise;
+    String id,unkcutomarId,name,phone,taka,addrs,invoise,totaltaka,takacutomerup;
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 111;
 
     private File pdfFile;
+
+    FirebaseFirestore db;
 
     SaleProductIndevicualAdapter saleProductIndevicualAdapter;
 
@@ -84,8 +92,10 @@ public class PDFActivity extends AppCompatActivity {
     SaleProductCutomerNote quantedt;
     SaleProductCutomerNote Sprice;
     SaleProductCutomerNote price;
-    SaleProductCutomerNote status;
-    ImageView pdfcrat;
+
+
+    ProgressDialog progressDialog;
+
 
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -93,16 +103,25 @@ public class PDFActivity extends AppCompatActivity {
 
     Image image;
 
+    Date calendar1 = Calendar.getInstance().getTime();
+    @SuppressLint("SimpleDateFormat")
+    DateFormat df1 = new SimpleDateFormat("yyyyMMdd");
+    String todayString = df1.format(calendar1);
+    final int datenew = Integer.parseInt(todayString);
+
+
     TextView invoiceNmaber,invoiceDate,BilCutomerName,BilCustomerPhone,
-            BilCutomerAddress,BilShopName,BilShopPhone,BilShopAddrss,SubTottal,Total;
+            BilCutomerAddress,BilShopName,BilShopPhone,BilShopAddrss,SubTottal,Total,dautaka;
 
-
+    String BilShopImage;
+     //ExtendedFloatingActionButton createPDF ;
     String picName;
+
+    double sum =00.00;
 
     @Override
     protected void onStart() {
         super.onStart();
-
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         String user_id = Objects.requireNonNull(currentUser).getUid();
@@ -117,14 +136,15 @@ public class PDFActivity extends AppCompatActivity {
                 assert queryDocumentSnapshots != null;
                 for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                     if (doc.get("dukanName") != null) {
-                        BilShopName.setText(doc.get("dukanName").toString());
+                        BilShopName.setText(Objects.requireNonNull(doc.get("dukanName")).toString());
                     }
                     if (doc.get("dukanaddress") != null) {
-
-                        BilShopAddrss.setText(doc.get("dukanaddress").toString());
+                        BilShopAddrss.setText(Objects.requireNonNull(doc.get("dukanaddress")).toString());
+                    }
+                    if (doc.get("dukanaddpicurl") != null) {
+                       BilShopImage = Objects.requireNonNull(doc.get("dukanaddpicurl")).toString();
                     }if (doc.get("dukanphone") != null) {
-
-                        BilShopPhone.setText(doc.get("dukanphone").toString());
+                        BilShopPhone.setText(Objects.requireNonNull(doc.get("dukanphone")).toString());
                     }if (doc.get("picName") != null) {
                         picName= doc.get("picName").toString();
                     }
@@ -132,6 +152,8 @@ public class PDFActivity extends AppCompatActivity {
 
             }
         });
+
+
         saleProductIndevicualAdapter.startListening();
 
 
@@ -152,8 +174,6 @@ public class PDFActivity extends AppCompatActivity {
 
         saleProductCutomerNote  = new SaleProductCutomerNote();
 
-        pdfcrat = findViewById(R.id.shopeBanner);
-
                     invoiceNmaber =findViewById(R.id.invoiceID);
                     invoiceDate =findViewById(R.id.invoiceDate);
                     BilCutomerName=findViewById(R.id.BilCustomrName);
@@ -164,6 +184,10 @@ public class PDFActivity extends AppCompatActivity {
                     BilShopAddrss=findViewById(R.id.BilShopAddress);
                     SubTottal=findViewById(R.id.Subtotal);
                     Total=findViewById(R.id.PDFtotal);
+                    dautaka=findViewById(R.id.dautaka);
+
+                   ExtendedFloatingActionButton createPDF = (ExtendedFloatingActionButton) findViewById(R.id.PDFcreate);
+
 
 
             final Bundle bundle = getIntent().getExtras();
@@ -177,6 +201,8 @@ public class PDFActivity extends AppCompatActivity {
                 taka = bundle.getString("customertaka");
                 addrs = bundle.getString("customerAddres");
                 invoise = bundle.getString("invoise");
+                totaltaka = bundle.getString("totaltaka");
+                takacutomerup = bundle.getString("takacutomerup");
 
                 if (name!=null){
                     BilCutomerName.setText(name);
@@ -189,33 +215,65 @@ public class PDFActivity extends AppCompatActivity {
                 if (invoise!=null){
                     invoiceNmaber.setText(invoise);
                 }
+                if (takacutomerup!=null){
+                    dautaka.setText(takacutomerup);
+                }
             }
+
+
+        db = FirebaseFirestore.getInstance();
+
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Creating pdf...");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+
+
+        final File docsFolder1 = new File(Environment.getExternalStorageDirectory() + "/Dukandar/");
+        File newFile = new File(docsFolder1,picName+".jpeg");
+
+        if (newFile.exists()){
+            Bitmap myBitmap = BitmapFactory.decodeFile(newFile.getAbsolutePath());
+
+            ImageView myImage =  findViewById(R.id.shopeBanner);
+
+            myImage.setImageBitmap(myBitmap);
+        }
+
+
         String pattern = "dd-MM-yyyy";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         String date = simpleDateFormat.format(new Date());
         invoiceDate.setText(date);
 
         if (id!=null) {
-            recyclearinvoiser();
-        }if (unkcutomarId!=null){
-            UnkownCustumerrecyclearinvoiser();
-        }
             loadData();
+            recyclearinvoiser();
+
+
+        }if (unkcutomarId!=null){
+            UnknownloadData();
+            UnkownCustumerrecyclearinvoiser();
+
+        }
 
 
 
-
-
-        pdfcrat.setOnClickListener(new View.OnClickListener() {
+        createPDF.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
+                    progressDialog.show();
                     createPdfWrapper();
+                    progressDialog.dismiss();
                 } catch (FileNotFoundException | DocumentException e) {
                     e.printStackTrace();
                 }
+
             }
         });
+
     }
 
 
@@ -249,30 +307,24 @@ public class PDFActivity extends AppCompatActivity {
 
     private void createPdf() throws FileNotFoundException, DocumentException {
 
-
-
-        final File docsFolder = new File(Environment.getExternalStorageDirectory() + "/Documents");
+        final File docsFolder = new File(Environment.getExternalStorageDirectory() + "/Dukandar");
 
          if (!docsFolder.exists()) {
             docsFolder.mkdir();
 
-            Toast.makeText(PDFActivity.this, Environment.getExternalStorageDirectory() + "/Documents"+"", Toast.LENGTH_SHORT).show();
         }
 
         
-        String pdfname = "GiftItem.pdf";
+        String pdfname = name+datenew+".pdf";
         pdfFile = new File(docsFolder.getAbsolutePath(), pdfname);
         OutputStream output = new FileOutputStream(pdfFile);
         final Document document = new Document(PageSize.A4);
 
-
-
-
         PdfWriter.getInstance(document, output);
 
         try {
-            final File docsFolder1 = new File(Environment.getExternalStorageDirectory() + "/Dukaner/");
-            File newFile = new File(docsFolder1,"images.png");
+            final File docsFolder1 = new File(Environment.getExternalStorageDirectory() + "/Dukandar/");
+            File newFile = new File(docsFolder1,picName+".jpeg");
             image = Image.getInstance(String.valueOf(newFile));
             image.scaleAbsolute(540f, 72f);//image width,height
 
@@ -290,15 +342,18 @@ public class PDFActivity extends AppCompatActivity {
 
         PdfPTable irdTable = new PdfPTable(2);
         irdTable.addCell(getIRDCell("Invoice No"));
+
         irdTable.addCell(getIRDCell("Invoice Date"));
-        irdTable.addCell(getIRDCell("XE1234")); // pass invoice number
-        irdTable.addCell(getIRDCell("13-Mar-2016")); // pass invoice date
+        String invoiceNmaberS = invoiceNmaber.getText().toString();
+        irdTable.addCell(getIRDCell(invoiceNmaberS)); // pass invoice number
+        String invoicedateS = invoiceDate.getText().toString();
+        irdTable.addCell(getIRDCell(invoicedateS)); // pass invoice date
         PdfPTable irhTable = new PdfPTable(3);
         irhTable.setWidthPercentage(100);
 
         irhTable.addCell(getIRHCell("", PdfPCell.ALIGN_RIGHT));
         irhTable.addCell(getIRHCell("", PdfPCell.ALIGN_RIGHT));
-        irhTable.addCell(getIRHCell("Invoice", PdfPCell.ALIGN_RIGHT));
+        irhTable.addCell(getIRHCell("", PdfPCell.ALIGN_RIGHT));
         irhTable.addCell(getIRHCell("", PdfPCell.ALIGN_RIGHT));
         irhTable.addCell(getIRHCell("", PdfPCell.ALIGN_RIGHT));
         PdfPCell invoiceTable = new PdfPCell (irdTable);
@@ -309,23 +364,27 @@ public class PDFActivity extends AppCompatActivity {
         FromTable.setWidthPercentage(100);
         FromTable.addCell(getFROMCell("Bill To ",PdfPTable.ALIGN_LEFT));
         FromTable.addCell(getFROMCell("Shop From ",PdfPTable.ALIGN_RIGHT));
-        FromTable.addCell(getCell("Text to the left", PdfPCell.ALIGN_LEFT));
-        FromTable.addCell(getCell("Text to the right", PdfPCell.ALIGN_RIGHT));
+        String cName = BilCutomerName.getText().toString();
+        FromTable.addCell(getCell(" "+cName, PdfPCell.ALIGN_LEFT));
+        FromTable.addCell(getCell(" "+BilShopName.getText().toString(), PdfPCell.ALIGN_RIGHT));
+        FromTable.addCell(getCell(" "+BilCustomerPhone.getText().toString(), PdfPCell.ALIGN_LEFT));
+        FromTable.addCell(getCell(" "+BilShopPhone.getText().toString(), PdfPCell.ALIGN_RIGHT));
+        FromTable.addCell(getCell(" "+BilCutomerAddress.getText().toString(), PdfPCell.ALIGN_LEFT));
+        FromTable.addCell(getCell(" "+BilShopAddrss.getText().toString(), PdfPCell.ALIGN_RIGHT));
 
 
 
-        FontSelector fs = new FontSelector();
+        /*FontSelector fs = new FontSelector();
         Font font = FontFactory.getFont(FontFactory.TIMES_ROMAN, 13, Font.BOLD);
         fs.addFont(font);
-        Phrase bill = fs.process("Bill To"); // customer information
-
-        Paragraph name = new Paragraph("Mr.Venkateswara Rao");
+        Phrase bill = fs.process(" "); // customer information
+        Paragraph name = new Paragraph(" ");
         name.setAlignment(Paragraph.ALIGN_RIGHT);
         name.setIndentationLeft(20);
-        Paragraph contact = new Paragraph("9652886877");
+        Paragraph contact = new Paragraph(" ");
         contact.setIndentationLeft(20);
-        Paragraph address = new Paragraph("Kuchipudi,Movva");
-        address.setIndentationLeft(20);
+        Paragraph address = new Paragraph(" ");
+        address.setIndentationLeft(20);*/
 
 
 
@@ -368,7 +427,6 @@ public class PDFActivity extends AppCompatActivity {
             String TotalPrice = price.getTotalPrice()+"";
 
 
-           Toast.makeText(PDFActivity.this,  TotalPrice+" fuck   ", Toast.LENGTH_SHORT).show();
 
 
 
@@ -384,8 +442,8 @@ public class PDFActivity extends AppCompatActivity {
         validity.setWidthPercentage(100);
         validity.addCell(getValidityCell(" "));
         validity.addCell(getValidityCell("Warranty"));
-        validity.addCell(getValidityCell(" * Products purchased comes with 1 year national warranty \n   (if applicable)"));
-        validity.addCell(getValidityCell(" * Warranty should be claimed only from the respective manufactures"));
+       // validity.addCell(getValidityCell(" * Products purchased comes with 1 year national warranty \n   (if applicable)"));
+       // validity.addCell(getValidityCell(" * Warranty should be claimed only from the respective manufactures"));
         PdfPCell summaryL = new PdfPCell (validity);
         summaryL.setColspan (3);
         summaryL.setPadding (1.0f);
@@ -394,22 +452,19 @@ public class PDFActivity extends AppCompatActivity {
         PdfPTable accounts = new PdfPTable(2);
         accounts.setWidthPercentage(100);
         accounts.addCell(getAccountsCell("Subtotal"));
-        accounts.addCell(getAccountsCellR("12620.00"));
-        accounts.addCell(getAccountsCell("Discount (10%)"));
-        accounts.addCell(getAccountsCellR("1262.00"));
-        accounts.addCell(getAccountsCell("Tax(2.5%)"));
-        accounts.addCell(getAccountsCellR("315.55"));
+        accounts.addCell(getAccountsCellR(SubTottal.getText().toString()));
+        accounts.addCell(getAccountsCell("Dau"));
+        accounts.addCell(getAccountsCellR(dautaka.getText().toString()));
         accounts.addCell(getAccountsCell("Total"));
-        accounts.addCell(getAccountsCellR("11673.55"));
+        accounts.addCell(getAccountsCellR(Total.getText().toString()));
         PdfPCell summaryR = new PdfPCell (accounts);
-        summaryR.setColspan (3);
+        summaryR.setColspan (2);
         table.addCell(summaryR);
 
         PdfPTable describer = new PdfPTable(1);
         describer.setWidthPercentage(100);
         describer.addCell(getdescCell(" "));
-        describer.addCell(getdescCell("Goods once sold will not be taken back or exchanged || Subject to product justification || Product damage no one responsible || "
-                + " Service only at concarned authorized service centers"));
+        describer.addCell(getdescCell("Operation and maintenance by MR.SOFT.IT || © MR.SOFT.IT 2020 || http://www.mr.soft.it.com"));
 
         document.open();
 
@@ -419,10 +474,10 @@ public class PDFActivity extends AppCompatActivity {
 
         document.add(irhTable);
         document.add(FromTable);
-        document.add(bill);
-        document.add(name);
-        document.add(contact);
-        document.add(address);
+        //document.add(bill);
+       // document.add(name);
+        //document.add(contact);
+       // document.add(address);
         document.add(table);
         document.add(describer);
 
@@ -444,6 +499,53 @@ public class PDFActivity extends AppCompatActivity {
             intent.setDataAndType(uri, "application/pdf");
             startActivity(intent);
         } else {
+
+if (id!=null){
+
+    CollectionReference customerProductSale = FirebaseFirestore.getInstance()
+            .collection("users").document(user_id).collection("Customers").document(id).collection("saleProduct");
+
+    Query query = customerProductSale.whereEqualTo("update",false).whereEqualTo("date",datenew).whereEqualTo("paid",true);
+    query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        @Override
+        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+            if (task.isSuccessful()) {
+                List<String> list = new ArrayList<>();
+                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                    list.add(document.getId());
+                }
+                saveCustomerupdateData((ArrayList) list); // *** new ***
+            }
+        }
+
+
+    });
+
+}
+            if (unkcutomarId!=null){
+
+                CollectionReference UNcustomerProductSale = FirebaseFirestore.getInstance()
+                        .collection("users").document(user_id).collection("UnknownCustomer").document(unkcutomarId).collection("salePrucuct");
+
+                Query query = UNcustomerProductSale.whereEqualTo("update",false).whereEqualTo("paid",true);
+
+                query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<String> list = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                                list.add(document.getId());
+                            }
+                            unknowCustomerupdateData((ArrayList) list); // *** new ***
+                        }
+                    }
+
+
+                });
+            }
+
+
             Toast.makeText(PDFActivity.this, "Download a PDF Viewer to see the generated PDF", Toast.LENGTH_SHORT).show();
         }
     }
@@ -456,23 +558,17 @@ public class PDFActivity extends AppCompatActivity {
                 .create()
                 .show();
     }
-
-
-
     public  void  loadData(){
         CollectionReference customerProductSale = FirebaseFirestore.getInstance()
                 .collection("users").document(user_id).collection("Customers").document(id).collection("saleProduct");
 
+        Query query = customerProductSale.whereEqualTo("update",false).whereEqualTo("date",datenew).whereEqualTo("paid",true);
 
-        customerProductSale.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
                 if (task.isSuccessful()){
-
-
-                    Toast.makeText(PDFActivity.this,  task.getResult()+" taskkkkkkk", Toast.LENGTH_SHORT).show();
-
 
                     QuerySnapshot queryDocumentSnapshots = task.getResult();
 
@@ -483,11 +579,11 @@ public class PDFActivity extends AppCompatActivity {
                         String name = Objects.requireNonNull(readData.get("itemName")).toString();
                         saleProductCutomerNote.setItemName(name);
 
-                        String quantidy = readData.get("quantedt").toString();
+                        String quantidy = Objects.requireNonNull(readData.get("quantedt")).toString();
                         double quantdylist = parseDouble(quantidy);
                         saleProductCutomerNote.setQuantedt(quantdylist);
 
-                        String sprice = readData.get("price").toString();
+                        String sprice = Objects.requireNonNull(readData.get("price")).toString();
                         double SinglePrice = parseDouble(sprice);
                         saleProductCutomerNote.setPrice(SinglePrice);
 
@@ -502,14 +598,67 @@ public class PDFActivity extends AppCompatActivity {
 
                         saleProductCutomerNote = new SaleProductCutomerNote();
 
-                        Toast.makeText(PDFActivity.this, price+"  comLoad", Toast.LENGTH_SHORT).show();
 
                     }
 
                 }
 
+                progressDialog.dismiss();
             }
         });
+
+
+
+    }
+    public  void  UnknownloadData(){
+        CollectionReference UNcustomerProductSale = FirebaseFirestore.getInstance()
+                .collection("users").document(user_id).collection("UnknownCustomer").document(unkcutomarId).collection("salePrucuct");
+
+        Query query = UNcustomerProductSale.whereEqualTo("update",false).whereEqualTo("paid",true);
+
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                if (task.isSuccessful()){
+                    QuerySnapshot queryDocumentSnapshots = task.getResult();
+
+                    PDFList = new ArrayList<>();
+                    assert queryDocumentSnapshots != null;
+                    for(DocumentSnapshot readData: queryDocumentSnapshots.getDocuments()){
+
+                        String name = Objects.requireNonNull(readData.get("itemName")).toString();
+                        saleProductCutomerNote.setItemName(name);
+
+                        String quantidy = Objects.requireNonNull(readData.get("quantedt")).toString();
+                        double quantdylist = parseDouble(quantidy);
+
+                        saleProductCutomerNote.setQuantedt(quantdylist);
+                        String sprice = Objects.requireNonNull(readData.get("price")).toString();
+                        double SinglePrice = parseDouble(sprice);
+                        saleProductCutomerNote.setPrice(SinglePrice);
+
+                        String price = readData.get("totalPrice").toString();
+
+                        double totalPrice = parseDouble(price);
+
+                        saleProductCutomerNote.setTotalPrice(totalPrice);
+
+                        Toast.makeText(PDFActivity.this, price+" unkown Load", Toast.LENGTH_SHORT).show();
+                        PDFList.add(saleProductCutomerNote);
+
+
+                        saleProductCutomerNote = new SaleProductCutomerNote();
+
+
+                    }
+
+                }
+
+                progressDialog.dismiss();
+            }
+        });
+
     }
 
 //main for PDF
@@ -607,17 +756,12 @@ public class PDFActivity extends AppCompatActivity {
 
     private void recyclearinvoiser() {
 
-        Date calendar1 = Calendar.getInstance().getTime();
-        @SuppressLint("SimpleDateFormat")
-        DateFormat df1 = new SimpleDateFormat("yyyyMMdd");
-        String todayString = df1.format(calendar1);
-        final int datenew = Integer.parseInt(todayString);
 
         CollectionReference customerProductSale = FirebaseFirestore.getInstance()
                 .collection("users").document(user_id).collection("Customers").document(id).collection("saleProduct");
 
 
-        Query query = customerProductSale.whereEqualTo("update",false).whereEqualTo("date",datenew);
+        Query query = customerProductSale.whereEqualTo("update",false).whereEqualTo("date",datenew).whereEqualTo("paid",true);
 
 
         FirestoreRecyclerOptions<SaleProductCutomerNote> options = new FirestoreRecyclerOptions.Builder<SaleProductCutomerNote>()
@@ -632,45 +776,32 @@ public class PDFActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
-        final CollectionReference customerProductSaleUptatlasttaka = FirebaseFirestore.getInstance()
-                .collection("users").document(user_id).collection("Customers");
-
-        Query query1 = customerProductSaleUptatlasttaka.whereEqualTo("customerIdDucunt",id);
-
-        query1.addSnapshotListener(new EventListener<QuerySnapshot>() {
+        query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 if (e != null) {
 
                     return;
                 }
-
-
+                sum = 0;
                 assert queryDocumentSnapshots != null;
                 for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                    if (doc.get("lastTotal") != null) {
-                        double totaltest  = (double) doc.get("lastTotal");
-
-
-                      //  totallestAvount = totaltest;
-                      //  TotalAmount.setText(totaltest+"");
-
-
+                    if (doc.get("totalPrice") != null) {
+                        double totaltest  = (double) doc.get("totalPrice");
+                        sum += totaltest;
                     }
-                    if (doc.get("taka") != null) {
-
-                        double totaltaka  = (double) doc.get("taka");
-
-                      //  bundelCustomertaka.setText(totaltaka+"");
-                    }
-
                 }
+                SubTottal.setText(sum+"");
+                double setTotaltaka = Double.parseDouble(takacutomerup);
+
+               double calculate= setTotaltaka + sum;
+
+                dautaka.setText(setTotaltaka+"");
+
+                Total.setText(calculate+"");
 
             }
         });
-
-
 
         recyclerView.setAdapter(saleProductIndevicualAdapter);
 
@@ -681,7 +812,7 @@ public class PDFActivity extends AppCompatActivity {
         final CollectionReference unkonwnCustomar = FirebaseFirestore.getInstance()
                 .collection("users").document(user_id).collection("UnknownCustomer").document(unkcutomarId).collection("salePrucuct");
 
-        Query query = unkonwnCustomar.whereEqualTo("update",false);
+        Query query = unkonwnCustomar.whereEqualTo("update",false).whereEqualTo("paid",true);
 
         FirestoreRecyclerOptions<SaleProductCutomerNote> options = new FirestoreRecyclerOptions.Builder<SaleProductCutomerNote>()
                 .setQuery(query, SaleProductCutomerNote.class)
@@ -693,38 +824,91 @@ public class PDFActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(saleProductIndevicualAdapter);
 
 
-        final CollectionReference customerProductSaleUptatlasttaka = FirebaseFirestore.getInstance()
-                .collection("users").document(user_id).collection("UnknownCustomer");
-
-        Query query1 = customerProductSaleUptatlasttaka.whereEqualTo("customerIdDucunt",unkcutomarId);
-
-        query1.addSnapshotListener(new EventListener<QuerySnapshot>() {
+        query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 if (e != null) {
 
                     return;
                 }
+                sum = 0;
                 assert queryDocumentSnapshots != null;
                 for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                    if (doc.get("lastTotal") != null) {
-                        double totaltest  = (double) doc.get("lastTotal");
-                        //totallestAvount = totaltest;
-                        //TotalAmount.setText(totaltest+"");
+                    if (doc.get("totalPrice") != null) {
+                        double totaltest  = (double) doc.get("totalPrice");
+                        sum += totaltest;
                     }
                 }
+                SubTottal.setText(sum+"");
+
+                double setTotaltaka = Double.parseDouble(totaltaka);
+
+                double calculate= setTotaltaka + sum;
+
+                dautaka.setText(setTotaltaka+"");
+
+                Total.setText(calculate+"");
 
             }
         });
 
-
-
+        recyclerView.setAdapter(saleProductIndevicualAdapter);
     }
 
 
+    public void saveCustomerupdateData(ArrayList list) {
+
+        // Get a new write batch
+        WriteBatch batch = db.batch();
+
+        // Iterate through the list
+        for (int k = 0; k < list.size(); k++) {
+
+            // Update each list item
+            DocumentReference ref = db.collection("users").document(user_id).collection("Customers")
+                    .document(id).collection("saleProduct").document((String) list.get(k));
+
+
+            batch.update(ref, "update",true);
+
+        }
+
+        // Commit the batch
+        batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                // Yay its all done in one go!
+            }
+        });
+
+    }
+
+    public void unknowCustomerupdateData(ArrayList list) {
+        // Get a new write batch
+        WriteBatch batch = db.batch();
+
+        // Iterate through the list
+        for (int k = 0; k < list.size(); k++) {
+
+            // Update each list item
+            DocumentReference ref = db.collection("users").document(user_id).collection("UnknownCustomer")
+                    .document(unkcutomarId).collection("salePrucuct").document((String) list.get(k));
+
+            batch.update(ref, "update",true);
+
+        }
+
+        // Commit the batch
+        batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                // Yay its all done in one go!
+            }
+        });
+
+    }
 
 
 }

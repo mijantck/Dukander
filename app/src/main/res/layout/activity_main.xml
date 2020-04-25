@@ -21,8 +21,8 @@
             android:id="@+id/toolbar_support"
             android:layout_width="match_parent"
             app:titleTextColor="#ffff"
+            android:background="@color/primary_dark"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
             android:elevation="10dp"
             >
 
@@ -151,27 +151,26 @@
                     <androidx.cardview.widget.CardView
                         android:id="@+id/salecard"
                         android:elevation="10dp"
-                        android:layout_width="100dp"
+                        android:layout_width="match_parent"
                         android:layout_marginEnd="1dp"
-                        android:layout_height="100dp">
+                        android:layout_height="match_parent">
 
                         <ImageView
-                            android:layout_width="69dp"
-                            android:layout_height="54dp"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
                             android:layout_gravity="center"
-                            android:layout_marginBottom="15dp"
-                            android:contentDescription="TODO"
-                            android:src="@drawable/ic_add_shopping" />
+                            android:layout_marginBottom="5dp"
+                            android:src="@drawable/iconcustomer" />
 
                         <TextView
-
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="bottom"
                             android:fontFamily="@font/adamina"
                             android:gravity="center"
                             android:text="@string/sale"
-                            android:textColor="#000"
+                            android:textColor="#2ECC71"
+                            android:textStyle="bold"
                             android:textSize="15sp" />
 
 
@@ -195,9 +194,9 @@
 
                         <ImageView
                             android:layout_gravity="center"
-                            android:layout_width="69dp"
-                            android:layout_height="54dp"
-                            android:src="@drawable/ic_today"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:src="@drawable/icontoday"
                             android:layout_marginBottom="15dp"
                             android:contentDescription="@string/todo" />
 
@@ -206,7 +205,8 @@
                             android:gravity="center"
                             android:fontFamily="@font/adamina"
                             android:text="@string/today_sale"
-                            android:textColor="#000"
+                            android:textColor="#2ECC71"
+                            android:textStyle="bold"
                             android:textSize="15sp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
@@ -242,11 +242,11 @@
                         android:layout_height="match_parent">
 
                         <ImageView
-                            android:layout_width="69dp"
-                            android:layout_height="54dp"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
                             android:layout_gravity="center"
                             android:layout_marginBottom="15dp"
-                            android:src="@drawable/ic_withdrow" />
+                            android:src="@drawable/iconmoneybag" />
 
                         <TextView
                             android:layout_gravity="bottom"
@@ -254,7 +254,8 @@
                             android:text="@string/investment"
                             android:textSize="15sp"
                             android:fontFamily="@font/adamina"
-                            android:textColor="#000"
+                            android:textColor="#2ECC71"
+                            android:textStyle="bold"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
 
@@ -279,9 +280,9 @@
 
                         <ImageView
                             android:layout_gravity="center"
-                            android:src="@drawable/ic_invesment"
-                            android:layout_width="69dp"
-                            android:layout_height="54dp"
+                            android:src="@drawable/iconwithdrawallimit"
+                            android:layout_width="100dp"
+                            android:layout_height="80dp"
                             android:layout_marginBottom="15dp"
                             android:contentDescription="@string/todo" />
 
@@ -289,7 +290,8 @@
                             android:layout_gravity="bottom"
                             android:gravity="center"
                             android:text="@string/withdraw"
-                            android:textColor="#000"
+                            android:textColor="#2ECC71"
+                            android:textStyle="bold"
                             android:textSize="15sp"
                             android:fontFamily="@font/adamina"
                             android:layout_width="match_parent"

@@ -35,7 +35,7 @@
     <TextView
         android:visibility="gone"
         android:id="@+id/loadingTExt"
-        android:layout_marginBottom="10dp"
+        android:layout_above="@+id/buttonid"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:gravity="center"
@@ -45,6 +45,7 @@
         android:text=" payment Loding..."/>
 
     <LinearLayout
+        android:id="@+id/buttonid"
         android:layout_marginTop="5dp"
         android:layout_below="@+id/outlinedTextField"
         android:layout_width="match_parent"

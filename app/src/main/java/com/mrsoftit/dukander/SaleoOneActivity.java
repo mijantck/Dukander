@@ -50,14 +50,9 @@ public class SaleoOneActivity extends AppCompatActivity {
             .collection("users").document(user_id).collection("Customers");
 
     ProgressDialog progressDialog;
-    private EditText searchEditeText;
-    private ImageView searchButon,customerList,unknowncustomer;
+    private ImageView customerList,unknowncustomer;
 
     private LinearLayout linearLayout1,linearLayout2;
-
-    List<CustomerNote> exampleList;
-
-    SealProductSelectAdapter adapter1 ;
 
 
     @Override
@@ -243,11 +238,9 @@ public class SaleoOneActivity extends AppCompatActivity {
                 String name = customerNote.getNameCUstomer();
                 String phone = customerNote.getPhone();
                 double takadubol = customerNote.getTaka();
-
                 String taka = Double.toString(takadubol);
-
-
                 String addreds = customerNote.getAddres();
+
 
                 Intent pdfIntent = new Intent(SaleoOneActivity.this, SeleTwoActivity.class);
 

@@ -326,7 +326,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
 
                                     Random rand = new Random();
                                     String picname = String.format("%05d", rand.nextInt(10000));
-                                    myInfo.add(new MyInfoNote(null, dukanName1, dukanphon1, dukanAddres1, uri.toString(),true,picname)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                    myInfo.add(new MyInfoNote(null, dukanName1, dukanphon1, dukanAddres1, uri.toString(),true,picname,00.00,0.0)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                         @Override
                                         public void onComplete(@NonNull Task<DocumentReference> task) {
 
