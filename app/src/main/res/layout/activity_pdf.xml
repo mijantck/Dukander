@@ -453,7 +453,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="8dp"
-        android:backgroundTint="@color/primary_dark"
+        android:backgroundTint="@color/colorPrimary"
         android:textColor="#fff"
         android:text="CREATE PDF"
         app:layout_anchorGravity="bottom|right|end"/>

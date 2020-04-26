@@ -21,8 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-
+import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -46,6 +45,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
     FirebaseFirestore firestore;
     MinimumProductAdapter minimumProductAdapter;
+    DueCusomareAdapter dueCusomareAdapter;
 
 
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -54,6 +54,10 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
     CollectionReference product = FirebaseFirestore.getInstance()
             .collection("users").document(user_id).collection("Product");
+
+    CollectionReference customer = FirebaseFirestore.getInstance()
+            .collection("users").document(user_id).collection("Customers");
+
 
 
 
@@ -128,7 +132,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
 
         recyclear();
-
+        recyclearcustomer();
     }
 
     @Override
@@ -174,6 +178,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         super.onStart();
 
         minimumProductAdapter.startListening();
+        dueCusomareAdapter.startListening();
 
         firestore = FirebaseFirestore.getInstance();
 
@@ -242,11 +247,31 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         recyclerView.setAdapter(minimumProductAdapter);
 
     }
+    private void recyclearcustomer() {
+
+
+        Query query = customer.orderBy("taka", Query.Direction.DESCENDING);
+        FirestoreRecyclerOptions<CustomerNote> options = new FirestoreRecyclerOptions.Builder<CustomerNote>()
+                .setQuery(query, CustomerNote.class)
+                .build();
+
+        dueCusomareAdapter = new DueCusomareAdapter(options);
+
+        RecyclerView recyclerView = findViewById(R.id.dueCustomer);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        // recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(dueCusomareAdapter);
+
+        Toast.makeText(this, "  customer ", Toast.LENGTH_SHORT).show();
+
+    }
 
 
     @Override
     protected void onStop() {
         super.onStop();
         minimumProductAdapter.stopListening();
+        dueCusomareAdapter.stopListening();
     }
 }

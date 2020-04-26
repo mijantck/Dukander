@@ -13,11 +13,9 @@
         android:layout_width="match_parent"
         app:titleTextColor="#ffff"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/main_header_bk"
         android:elevation="10dp"
         >
-
-
         <TextView
             android:id="@+id/invoiseId"
             android:gravity="center|right"
@@ -26,12 +24,15 @@
             android:textSize="15dp"
             android:layout_marginRight="5dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            tools:ignore="RtlHardcoded" />
+
     </androidx.appcompat.widget.Toolbar>
 
 
     <LinearLayout
-       android:layout_marginBottom="20dp"
+        android:layout_marginTop="-20dp"
+        android:layout_marginBottom="20dp"
         android:id="@+id/fulLiniarLaout"
         android:layout_below="@id/toolbar_support"
         android:layout_width="match_parent"
@@ -43,13 +44,14 @@
 
 
     <LinearLayout
+        android:background="@drawable/main_header_bk"
         android:id="@+id/bundellLayout"
         android:visibility="gone"
-        android:background="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <LinearLayout
+            android:layout_marginTop="20dp"
             android:layout_marginLeft="5dp"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -59,6 +61,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="4">
                 <TextView
+                    style="@style/headerText"
                     android:text="mijanur Rahman mijan "
                     android:maxLines="1"
                     android:textColor="#FFF"
@@ -74,6 +77,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="2">
                 <TextView
+                    style="@style/headerText"
                     android:text="+8801733-883310"
                     android:maxLines="1"
                     android:textColor="#FFF"
@@ -99,6 +103,7 @@
                 android:layout_weight="4">
 
                 <TextView
+                    style="@style/headerText"
                     android:text="mijanur Rahman mijan "
                     android:maxLines="1"
                     android:textColor="#FFF"
@@ -114,6 +119,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="2">
                 <TextView
+                    style="@style/headerText"
                     android:text="310 tk"
                     android:maxLines="1"
                     android:textColor="#FFF"
@@ -132,13 +138,14 @@
 
     </LinearLayout>
     <LinearLayout
+        android:background="@drawable/main_header_bk"
         android:id="@+id/unknownCustomerinfo"
         android:visibility="visible"
-        android:background="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <LinearLayout
+            android:layout_marginTop="20dp"
             android:layout_marginLeft="5dp"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -150,6 +157,7 @@
                 android:layout_weight="4">
 
                 <EditText
+                    style="@style/headerText"
                     android:outlineSpotShadowColor="#fff"
                     android:id="@+id/unKnoneName"
                     android:background="@null"
@@ -167,6 +175,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="2">
                 <EditText
+                    style="@style/headerText"
                     android:id="@+id/unKnonePhone"
                     android:background="@null"
                     android:text="0000-00000"
@@ -194,6 +203,8 @@
                 android:layout_weight="4">
 
                 <EditText
+
+                    style="@style/headerText"
                     android:id="@+id/unKnoneAddres"
                     android:background="@null"
                     android:text="Unknown"
@@ -210,6 +221,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="2">
                 <EditText
+                    style="@style/headerText"
                     android:id="@+id/unKnonetaka"
                     android:background="@null"
                     android:text="00.0"

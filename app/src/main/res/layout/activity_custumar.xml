@@ -15,11 +15,28 @@
             android:layout_width="match_parent"
             app:titleTextColor="#ffff"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
-            />
+            android:background="@drawable/main_header_bk"
+            >
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                >
+
+                <TextView
+                    android:textSize="20sp"
+                    android:textColor="#FFFF"
+                    android:gravity="center_vertical"
+                    android:text="Customer List"
+                    style="@style/headerText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+
+        </androidx.appcompat.widget.Toolbar>
 
 
-       <androidx.recyclerview.widget.RecyclerView
+
+        <androidx.recyclerview.widget.RecyclerView
            android:id="@+id/customar_info_recyclerView"
            android:layout_below="@id/toolbar_support"
            android:layout_width="match_parent"

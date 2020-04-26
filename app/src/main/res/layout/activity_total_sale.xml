@@ -147,7 +147,7 @@ android:layout_gravity="center">
                     android:textSize="17sp"
                     android:text="Already have an account?"
                     android:layout_marginTop="@dimen/loginViewsMargin"
-                    android:onClick="onLoginClick"/>
+                    android:onClick="onRegestetionClick"/>
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -219,6 +219,6 @@ android:layout_gravity="center">
     android:src="@drawable/ic_back_img"
     android:layout_marginRight="11dp"
     android:layout_marginBottom="30dp"
-    android:onClick="onLoginClick"
+    android:onClick="onRegestetionClick"
     android:adjustViewBounds="false"/>
 </RelativeLayout>

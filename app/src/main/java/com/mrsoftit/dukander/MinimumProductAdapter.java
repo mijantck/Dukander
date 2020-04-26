@@ -34,7 +34,6 @@ public class MinimumProductAdapter extends FirestoreRecyclerAdapter<ProductNote,
         if (model.getProMin() > model.getProQua()|| model.getProMin()==model.getProQua()){
             holder.minimumproductname.setText(model.getProName());
             holder.minimumproduct.setText(model.getProQua()+"");
-            holder.minimumproductname.setTextColor(Color.RED);
             holder.minimumproduct.setTextColor(Color.RED);
 
         }
@@ -42,7 +41,6 @@ public class MinimumProductAdapter extends FirestoreRecyclerAdapter<ProductNote,
 
             holder.minimumproductname.setText(model.getProName());
             holder.minimumproduct.setText(model.getProQua()+"");
-            holder.minimumproductname.setTextColor(Color.BLACK);
             holder.minimumproduct.setTextColor(Color.BLACK);
         }
 

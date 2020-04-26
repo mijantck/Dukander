@@ -44,6 +44,15 @@
         <item name="android:textSize">18sp</item>
         <item name="android:layout_below">@id/dateTextView</item>
     </style>
+    <style name="fontEndContentText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:textColor">@color/whiteTextColor</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">8sp</item>
+        <item name="android:layout_below">@id/dateTextView</item>
+    </style>
 
 
     <!--designs login_bkogin and register-->

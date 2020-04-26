@@ -40,6 +40,7 @@ public class CustumarActivity extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     String user_id = currentUser.getUid();
+
     CollectionReference customer = FirebaseFirestore.getInstance()
             .collection("users").document(user_id).collection("Customers");
 

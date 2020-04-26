@@ -52,7 +52,7 @@ public class SaleoOneActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
     private ImageView customerList,unknowncustomer;
 
-    private LinearLayout linearLayout1,linearLayout2;
+    private LinearLayout linearLayout1,cardLayoutchosecustomer,linearLayout2;
 
 
     @Override
@@ -81,6 +81,7 @@ public class SaleoOneActivity extends AppCompatActivity {
 
 
         linearLayout1 = findViewById(R.id.saleFondSide);
+        cardLayoutchosecustomer = findViewById(R.id.cardLayoutchosecustomer);
         linearLayout2 = findViewById(R.id.salecustomerlist);
         customerList = findViewById(R.id.customerList);
         unknowncustomer = findViewById(R.id.unknownCustomer);
@@ -94,6 +95,7 @@ public class SaleoOneActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 linearLayout1.setVisibility(View.GONE);
+                cardLayoutchosecustomer.setVisibility(View.GONE);
                 linearLayout2.setVisibility(View.VISIBLE);
 
 

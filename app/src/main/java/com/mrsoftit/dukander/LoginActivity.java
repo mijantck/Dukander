@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -21,11 +22,14 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
+
 public class LoginActivity extends AppCompatActivity {
 
 
      private TextInputEditText emailTV, passwordTV;
-      private MaterialButton loginButton;
+
+      private CircularProgressButton loginButton;
 
     ProgressDialog progressDialog;
 
@@ -51,6 +55,9 @@ public class LoginActivity extends AppCompatActivity {
         passwordTV = findViewById(R.id.input_password);
         loginButton =findViewById(R.id.btn_login);
 
+        if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.M){
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
 
 
         mAuthLisenar = new FirebaseAuth.AuthStateListener() {
@@ -93,7 +100,10 @@ public class LoginActivity extends AppCompatActivity {
 
 
     }
+    public void onRegestetionClick(View View){
+        startActivity(new Intent(this,TotalSaleActivity.class));
 
+    }
     private void loginUserAccount() {
 
         String email, password;

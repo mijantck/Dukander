@@ -62,7 +62,7 @@
         <TextView
             android:gravity="center"
             android:id="@+id/receptpaidview"
-            android:textColor="@color/primary_dark"
+            android:textColor="@color/colorPrimary"
             android:text="   "
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
