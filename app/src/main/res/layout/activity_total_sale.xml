@@ -1,224 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context=".TotalSaleActivity"
-android:background="@color/register_bk_color"
-android:focusableInTouchMode="true"
-android:gravity="center"
-android:layout_gravity="center">
-
-<ScrollView
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_alignParentTop="true">
-    <LinearLayout
+    tools:context=".TotalSaleActivity">
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="20dp"
-        android:layout_marginTop="30dp">
-        <RelativeLayout
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_support"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            app:titleTextColor="#ffff"
+            android:background="@drawable/main_header_bk"
+            android:layout_height="?attr/actionBarSize"
+            android:elevation="10dp"
+            >
+
             <TextView
-                android:layout_centerVertical="true"
-                android:layout_alignParentLeft="true"
-                style="@style/viewParent.headerText.NoMode"
-                android:textColor="@color/whiteTextColor"
-                android:text="Here’s\nyour first\nstep with \nus! "/>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_login_hero"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"/>
-        </RelativeLayout>
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:cardBackgroundColor="@color/whiteTextColor"
-            app:cardCornerRadius="10dp">
-
-            <LinearLayout
+                style="@style/headerText"
+                android:textSize="20sp"
+                android:textColor="#FFFF"
+                android:gravity="center_vertical"
+                android:text="Total Sale list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:orientation="vertical">
+                android:layout_height="match_parent"/>
+        </androidx.appcompat.widget.Toolbar>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:background="#FFF"
-                    style="@style/parent"
-                    android:layout_marginTop="@dimen/loginViewsMargin">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextEmail"
-                        style="@style/modifiedEditText"
-                        android:inputType="textEmailAddress"
-                        android:maxLines="1"
-                        android:hint="@string/login_email_hint"/>
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:background="#FFF"
-                    style="@style/parent"
-                    android:layout_marginTop="@dimen/loginViewsMargin">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextEmailll"
-                        style="@style/modifiedEditText"
-                        android:inputType="textEmailAddress"
-                        android:maxLines="1"
-                        android:hint="@string/login_email_hint"/>
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:background="#FFF"
-                    style="@style/parent"
-                    android:layout_marginTop="@dimen/loginViewsMargin">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextEmaillll"
-                        style="@style/modifiedEditText"
-                        android:inputType="textEmailAddress"
-                        android:maxLines="1"
-                        android:hint="@string/login_email_hint"/>
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:background="#FFF"
-                    style="@style/parent"
-                    android:layout_marginTop="@dimen/loginViewsMargin">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextEmaihgl"
-                        style="@style/modifiedEditText"
-                        android:inputType="textEmailAddress"
-                        android:maxLines="1"
-                        android:hint="@string/login_email_hint"/>
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
-                    android:id="@+id/cirRegisterButton"
-                    style="@style/loginButton"
-                    app:spinning_bar_width="4dp"
-                    app:spinning_bar_color="#FFF"
-                    android:text="Register"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/loginViewsMargin"
-                    app:initialCornerAngle="27dp"
-                    app:spinning_bar_padding="6dp"/>
-
-                <TextView
-                    style="@style/parent"
-                    android:textAlignment="center"
-                    android:textStyle="bold"
-                    android:textColor="@color/themeColor"
-                    android:textSize="17sp"
-                    android:text="Already have an account?"
-                    android:layout_marginTop="@dimen/loginViewsMargin"
-                    android:onClick="onRegestetionClick"/>
-
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/headerLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="12"
-            android:gravity="center"
-            android:layout_marginTop="30dp">
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:background="@color/whiteTextColor"
-                android:layout_weight="3"/>
+            android:background="@drawable/main_header_bk"
+            android:paddingLeft="20dp"
+            android:paddingTop="60dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="20dp">
 
             <TextView
-                style="@style/viewParent.headerText.NoMode"
+                android:id="@+id/dateTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/whiteTextColor"
-                android:text="Use other Methods"
-                android:layout_weight="6"
-                android:textSize="12sp"
-                android:textAlignment="center"/>
+                android:text="01 April 2017 to 01 April 2019"
+                android:layout_alignParentTop="true"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/whiteTextColor"/>
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:background="@color/whiteTextColor"
-                android:layout_weight="3"/>
+            <ImageView
+                android:id="@+id/calanderid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/iconscalendar" />
 
-        </LinearLayout>
+            <TextView
+                android:id="@+id/salesHeaderTextView"
+                style="@style/reportContentText"
+                android:layout_marginTop="30dp"
+                android:text=" Total Sale" />
 
-        <LinearLayout
+            <TextView
+                android:id="@+id/todayTotalSale"
+                style="@style/viewParent.headerText"
+                android:layout_below="@id/salesHeaderTextView"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="$15,990.00"
+                android:textColor="@color/whiteTextColor" />
+
+
+        </RelativeLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_below="@+id/headerLayout"
+            android:id="@+id/totalsaletoday"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="30dp">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_facebook"/>
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_google_plus"
-                android:layout_marginLeft="10dp"/>
-        </LinearLayout>
+            android:layout_height="match_parent"/>
+
+    </RelativeLayout>
 
 
-    </LinearLayout>
-</ScrollView>
-<View
-    android:layout_marginTop="20dp"
-    android:layout_alignParentTop="true"
-    android:layout_alignParentRight="true"
-    android:layout_width="11dp"
-    android:layout_height="match_parent"
-    android:background="@drawable/ic_side_bg"/>
-<ImageView
-    android:layout_alignParentBottom="true"
-    android:layout_alignParentLeft="true"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:src="@drawable/ic_back_img"
-    android:layout_marginRight="11dp"
-    android:layout_marginBottom="30dp"
-    android:onClick="onRegestetionClick"
-    android:adjustViewBounds="false"/>
-</RelativeLayout>
+
+</LinearLayout>

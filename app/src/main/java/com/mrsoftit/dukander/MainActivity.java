@@ -21,7 +21,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -57,6 +56,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
     CollectionReference customer = FirebaseFirestore.getInstance()
             .collection("users").document(user_id).collection("Customers");
+
 
 
 
@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 finish();
                 break;
             case R.id.nav_profile:
-                Intent resultIntnt2 =new Intent(MainActivity.this,TotalSaleActivity.class);
+                Intent resultIntnt2 =new Intent(MainActivity.this, TotalSaleActivity.class);
                 startActivity(resultIntnt2);
             finish();
                 break;
@@ -263,7 +263,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         // recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(dueCusomareAdapter);
 
-        Toast.makeText(this, "  customer ", Toast.LENGTH_SHORT).show();
 
     }
 

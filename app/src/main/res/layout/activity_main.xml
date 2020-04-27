@@ -45,6 +45,7 @@
                             >
 
                             <TextView
+                                style="@style/headerText"
                                 android:textSize="20sp"
                                 android:textColor="#FFFF"
                                 android:gravity="center_vertical"

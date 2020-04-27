@@ -311,7 +311,7 @@ public class SeleTwoActivity extends AppCompatActivity {
                 final Button okButton = dialog.findViewById(R.id.okButton);
                 Button cancelButton = dialog.findViewById(R.id.cancelButton);
 
-                 payeditetext= dialog.findViewById(R.id.dialogpayMoney);
+                payeditetext= dialog.findViewById(R.id.dialogpayMoney);
                 TitleTExt= dialog.findViewById(R.id.TitleTExt);
                 paymentLooding = dialog.findViewById(R.id.loadingTExt);
                 final TextView loadingTExt = dialog.findViewById(R.id.loadingTExt);
@@ -351,6 +351,14 @@ public class SeleTwoActivity extends AppCompatActivity {
                             activeBalance += paymonyDouable;
                         }
 
+
+                        CollectionReference totalsale = FirebaseFirestore.getInstance()
+                                .collection("users").document(user_id).collection("TotalSale");
+
+
+
+
+
                         CollectionReference myInfo = FirebaseFirestore.getInstance()
                                 .collection("users").document(user_id).collection("DukanInfo");
 
@@ -375,6 +383,7 @@ public class SeleTwoActivity extends AppCompatActivity {
                             String invoice = invoiseIdTextView.getText().toString();
                             int i = Integer.parseInt(invoice);
                             invoiseFb.document(invoisenumberID).update("invoice", i);
+
 
                         }
 
@@ -401,7 +410,10 @@ public class SeleTwoActivity extends AppCompatActivity {
                                                         for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                                                             list.add(document.getId());
                                                         }
+
                                                         saveCustomerupdateData((ArrayList) list); // *** new ***
+
+                                                        totalupdateData((ArrayList) list);
                                                     }
                                                 }
 
@@ -433,8 +445,10 @@ public class SeleTwoActivity extends AppCompatActivity {
 
                                                         }
 
-                                                        unknowCustomerupdateData((ArrayList) list); // *** new ***
+                                                        unknowCustomerupdateData((ArrayList) list);
+                                                        // *** new ***
 
+                                                        totalupdateData((ArrayList) list);
                                                         dialog.dismiss();
 
                                                     }
@@ -448,8 +462,17 @@ public class SeleTwoActivity extends AppCompatActivity {
 
                         }
 
+
+
+
                     }
                 });
+
+
+
+
+
+
                 cancelButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -878,6 +901,34 @@ public class SeleTwoActivity extends AppCompatActivity {
             // Update each list item
             DocumentReference ref = db.collection("users").document(user_id).collection("UnknownCustomer")
                     .document(unknonwnCustomerId).collection("salePrucuct").document((String) list.get(k));
+
+            batch.update(ref, "paid", true,"invoiceNumber",i);
+
+        }
+
+        // Commit the batch
+        batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                // Yay its all done in one go!
+            }
+        });
+
+    }
+
+    public void totalupdateData(ArrayList list) {
+
+        String invoice = invoiseIdTextView.getText().toString();
+        int i=Integer.parseInt(invoice);
+        // Get a new write batch
+        WriteBatch batch = db.batch();
+
+        // Iterate through the list
+        for (int k = 0; k < list.size(); k++) {
+
+            // Update each list item
+            DocumentReference ref = db.collection("users").document(user_id).collection("Sales")
+                    .document((String) list.get(k));
 
             batch.update(ref, "paid", true,"invoiceNumber",i);
 

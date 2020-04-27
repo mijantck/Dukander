@@ -43,7 +43,6 @@
         android:textColor="@color/colorPrimaryDark"
         android:fontFamily="@font/reciptfont"
         android:text=" payment Loding..."/>
-
     <LinearLayout
         android:id="@+id/buttonid"
         android:layout_marginTop="5dp"
@@ -51,6 +50,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:weightSum="4">
+
+
 
         <LinearLayout
             android:gravity="center"

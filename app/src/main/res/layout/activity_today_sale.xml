@@ -6,12 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".TodaySaleActivity">
 
-
-  <ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -20,15 +14,25 @@
             android:id="@+id/toolbar_support"
             android:layout_width="match_parent"
             app:titleTextColor="#ffff"
-            android:background="@drawable/reports_header_bk"
+            android:background="@drawable/main_header_bk"
             android:layout_height="?attr/actionBarSize"
             android:elevation="10dp"
-            />
+            >
+
+                <TextView
+                    style="@style/headerText"
+                    android:textSize="20sp"
+                    android:textColor="#FFFF"
+                    android:gravity="center_vertical"
+                    android:text="Today Sale list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+        </androidx.appcompat.widget.Toolbar>
         <RelativeLayout
             android:id="@+id/headerLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/reports_header_bk"
+            android:background="@drawable/main_header_bk"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:paddingBottom="20dp"
@@ -44,104 +48,29 @@
                 android:textStyle="bold"
                 android:textColor="@color/whiteTextColor"/>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:src="@drawable/ic_dropdown_arrow" />
+
 
             <TextView
                 android:id="@+id/salesHeaderTextView"
-                android:text="Total Sale"
+                style="@style/reportContentText"
                 android:layout_marginTop="30dp"
-                style="@style/reportContentText" />
+                android:text=" Today Total Sale" />
 
             <TextView
+                android:id="@+id/todayTotalSale"
                 style="@style/viewParent.headerText"
                 android:layout_centerHorizontal="true"
                 android:textColor="@color/whiteTextColor"
                 android:layout_below="@id/salesHeaderTextView"
                 android:text="$15,990.00"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="70dp"/>
-
-
+                android:layout_marginTop="10dp" />
         </RelativeLayout>
-
-        <LinearLayout
-            android:id="@+id/cardLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/headerLayout"
-            android:layout_marginTop="-80dp">
-
-            <androidx.cardview.widget.CardView
-                app:cardCornerRadius="16dp"
-                app:cardBackgroundColor="@color/whiteTextColor"
-                style="@style/reportsCardStyle">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        style="@style/reportContentText"
-                        android:textColor="#79D0A3"
-                        android:text="This Month"/>
-
-                    <TextView
-                        style="@style/viewParent.headerText"
-                        android:textSize="27sp"
-                        android:text="$5,990.00"/>
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                app:cardCornerRadius="16dp"
-                app:cardBackgroundColor="@color/whiteTextColor"
-                style="@style/reportsCardStyle">
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        style="@style/reportContentText"
-                        android:textColor="#79D0A3"
-                        android:text="This Week"/>
-
-                    <TextView
-                        style="@style/viewParent.headerText"
-                        android:textSize="27sp"
-                        android:text="$200.00"/>
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/cardLayout"
-            android:orientation="vertical">
-
-            <include layout="@layout/card_sales"/>
-            <include layout="@layout/card_sales"/>
-            <include layout="@layout/card_sales"/>
-            <include layout="@layout/card_sales"/>
-            <include layout="@layout/card_sales"/>
-            <include layout="@layout/card_sales"/>
-
-        </LinearLayout>
-
-
+       <androidx.recyclerview.widget.RecyclerView
+           android:layout_below="@+id/headerLayout"
+           android:id="@+id/totalsaletoday"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"/>
     </RelativeLayout>
-</ScrollView>
 
 </LinearLayout>
 

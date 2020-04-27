@@ -26,10 +26,7 @@ public class ProductListActivity extends AppCompatActivity {
 
     FloatingActionButton floating_action_button_customer;
 
-    StorageReference mStorageReferenceImage;
-    DatabaseReference mDatabaseReference;
-    FirebaseFirestore firebaseFirestore;
-    ProgressDialog progressDialog;
+
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
     ProductAdapter adapter;

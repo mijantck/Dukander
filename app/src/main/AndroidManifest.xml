@@ -17,9 +17,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TodaySaleActivity"></activity>
+        <activity android:name=".TotalSaleActivity"></activity>
+        <activity android:name=".TodaySaleActivity" />
         <activity android:name=".PDFActivity" />
-        <activity android:name=".TotalSaleActivity" />
+        <activity android:name=".RegestationActivity" />
         <activity android:name=".WitdrawActivity" />
         <activity android:name=".InvesmentActivity" />
         <activity android:name=".SeleTwoActivity" />

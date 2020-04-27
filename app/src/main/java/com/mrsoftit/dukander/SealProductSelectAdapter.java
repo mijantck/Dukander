@@ -31,7 +31,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSelectAdapter.ExampleViewHolder> {
@@ -166,9 +168,11 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
                 final int datenew = Integer.parseInt(todayString);
 
 
+
                 //total sale
                 final CollectionReference TotalcustomerProductSale = FirebaseFirestore.getInstance()
-                        .collection("users").document(user_id).collection("TotalSale");
+                        .collection("users").document(user_id).collection("Sales");
+
 
                 //product update
                 final CollectionReference product = FirebaseFirestore.getInstance()
@@ -232,20 +236,6 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
                                             }
                                         });
 
-                                       /* if (productNote.getInvoiseid() == null) {
-                                            final CollectionReference invoiseFb = FirebaseFirestore.getInstance()
-                                                    .collection("users").document(user_id).collection("invoise");
-
-                                            invoiseFb.add(new InvoiceseNote(null, 1)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<DocumentReference> task) {
-                                                    if (task.isSuccessful()) {
-                                                        String id = task.getResult().getId();
-                                                        invoiseFb.document(id).update("id", id);
-                                                    }
-                                                }
-                                            });
-                                        }*/
 
                                     }
                                 });
@@ -255,6 +245,24 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
 
+                                        // Create a new user with a first and last name
+                                        Map<String, Object> user = new HashMap<>();
+                                        user.put("saleProductId",id);
+                                        user.put("date",datenew);
+                                        user.put("itemName",productName);
+                                        user.put("quantedt", totalQantidy);
+                                        user.put("totalPrice", total);
+                                        user.put("paid", paid);
+
+                                        TotalcustomerProductSale.document(id).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+
+                                            }
+                                        });
+
+
+
                                         Toast.makeText(v.getContext(), " Complete ", Toast.LENGTH_SHORT).show();
                                     }
                                 });
@@ -263,9 +271,6 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
                     });
 
                 }else if ( unknownCustomerID!=null){
-
-
-
 
                     final CollectionReference unkonwnCustomar = FirebaseFirestore.getInstance()
                             .collection("users").document(user_id).collection("UnknownCustomer").document(unknownCustomerID).collection("salePrucuct");
@@ -309,6 +314,8 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
                                                         public void onComplete(@NonNull Task<Void> task) {
 
 
+
+
                                                         }
                                                     });
                                                 }
@@ -347,6 +354,21 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
 
+                                        // Create a new user with a first and last name
+                                        Map<String, Object> user = new HashMap<>();
+                                        user.put("saleProductId",id);
+                                        user.put("date",datenew);
+                                        user.put("itemName",productName);
+                                        user.put("quantedt", totalQantidy);
+                                        user.put("totalPrice", total);
+                                        user.put("paid", paid);
+
+                                        TotalcustomerProductSale.document(id).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+
+                                            }
+                                        });
                                     }
                                 });
                             }
