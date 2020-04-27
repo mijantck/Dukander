@@ -61,7 +61,7 @@ android:layout_gravity="center">
                     android:layout_marginTop="@dimen/loginViewsMargin">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextEmail"
+                        android:id="@+id/editTextEmailregistesion"
                         style="@style/modifiedEditText"
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
@@ -81,52 +81,15 @@ android:layout_gravity="center">
                     android:layout_marginTop="@dimen/loginViewsMargin">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextEmailll"
+                        android:id="@+id/editTextPassword"
                         style="@style/modifiedEditText"
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
-                        android:hint="@string/login_email_hint"/>
+                        android:hint="@string/login_password_hint"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:background="#FFF"
-                    style="@style/parent"
-                    android:layout_marginTop="@dimen/loginViewsMargin">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextEmaillll"
-                        style="@style/modifiedEditText"
-                        android:inputType="textEmailAddress"
-                        android:maxLines="1"
-                        android:hint="@string/login_email_hint"/>
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:background="#FFF"
-                    style="@style/parent"
-                    android:layout_marginTop="@dimen/loginViewsMargin">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextEmaihgl"
-                        style="@style/modifiedEditText"
-                        android:inputType="textEmailAddress"
-                        android:maxLines="1"
-                        android:hint="@string/login_email_hint"/>
-
-                </com.google.android.material.textfield.TextInputLayout>
 
                 <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
                     android:id="@+id/cirRegisterButton"
@@ -140,6 +103,7 @@ android:layout_gravity="center">
                     app:spinning_bar_padding="6dp"/>
 
                 <TextView
+                    android:id="@+id/alredyResistetionTextView"
                     style="@style/parent"
                     android:textAlignment="center"
                     android:textStyle="bold"
@@ -147,7 +111,7 @@ android:layout_gravity="center">
                     android:textSize="17sp"
                     android:text="Already have an account?"
                     android:layout_marginTop="@dimen/loginViewsMargin"
-                    android:onClick="onRegestetionClick"/>
+                   />
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -212,6 +176,7 @@ android:layout_gravity="center">
     android:layout_height="match_parent"
     android:background="@drawable/ic_side_bg"/>
 <ImageView
+    android:id="@+id/alredyResistetionImage"
     android:layout_alignParentBottom="true"
     android:layout_alignParentLeft="true"
     android:layout_width="wrap_content"
@@ -219,6 +184,5 @@ android:layout_gravity="center">
     android:src="@drawable/ic_back_img"
     android:layout_marginRight="11dp"
     android:layout_marginBottom="30dp"
-    android:onClick="onRegestetionClick"
     android:adjustViewBounds="false"/>
 </RelativeLayout>

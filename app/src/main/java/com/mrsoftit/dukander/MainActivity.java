@@ -23,6 +23,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
@@ -45,6 +48,8 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     FirebaseFirestore firestore;
     MinimumProductAdapter minimumProductAdapter;
     DueCusomareAdapter dueCusomareAdapter;
+
+    GoogleSignInClient googleSignInClient;
 
 
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -93,6 +98,15 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         CardView invemet = findViewById(R.id.imvesment);
         CardView withdrow = findViewById(R.id.withdraw);
 
+
+        // Configure sign-in to request the user's ID, email address, and basic
+// profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+// Build a GoogleSignInClient with the options specified by gso.
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
 
         sale.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,7 +175,10 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             finish();
                 break;
             case R.id.nav_share:
-                mAuth.signOut();
+
+                signOut();
+
+                revokeAccess();
                Intent resultIntnt1 =new Intent(MainActivity.this,LoginActivity.class);
                startActivity(resultIntnt1);
                finish();
@@ -197,7 +214,9 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         final TextView dukanname = headeView.findViewById(R.id.dukanname);
         final TextView dukanPhone = headeView.findViewById(R.id.dukanPhone);
         final TextView AddresTextView = headeView.findViewById(R.id.AddresTextView);
+        final TextView dukanEmail = headeView.findViewById(R.id.dukanEmail);
 
+        dukanEmail.setText(currentUser.getEmail()+"");
         myInfo.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -272,5 +291,35 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         super.onStop();
         minimumProductAdapter.stopListening();
         dueCusomareAdapter.stopListening();
+    }
+
+    private void signOut() {
+        // Firebase sign out
+        mAuth.signOut();
+
+        // Google sign out
+        googleSignInClient.signOut().addOnCompleteListener(this,
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // Google Sign In failed, update UI appropriately
+
+                    }
+                });
+    }
+
+    private void revokeAccess() {
+        // Firebase sign out
+        mAuth.signOut();
+
+        // Google revoke access
+        googleSignInClient.revokeAccess().addOnCompleteListener(this,
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // Google Sign In failed, update UI appropriately
+
+                    }
+                });
     }
 }

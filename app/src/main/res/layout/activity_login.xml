@@ -39,6 +39,12 @@
                     android:layout_alignParentRight="true"/>
             </RelativeLayout>
 
+            <LinearLayout
+                android:id="@+id/loginLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
             <!--  Email Label -->
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -84,9 +90,50 @@
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
 
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/forgetPasswordLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
+            <!--  Email Label -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:hint="Email"
+                android:background="#FFF"
+                style="@style/parent"
+                android:layout_marginTop="@dimen/loginViewsMargin">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/forgetPassword_email"
+                    style="@style/modifiedEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
+                android:id="@+id/forgetPasswordLink"
+                style="@style/loginButton"
+                app:spinning_bar_width="4dp"
+                app:spinning_bar_color="#FFF"
+                android:text="SEND FORGET PASSWORD LINK"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/loginViewsMargin"
+                app:spinning_bar_padding="6dp"
+                app:initialCornerAngle="27dp"/>
+        </LinearLayout>
             <TextView
+                android:id="@+id/forgetPassword"
                 style="@style/viewParent"
                 android:text="Forgot Password?"
                 android:textColor="@color/primaryTextColor"
@@ -150,16 +197,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_marginTop="20dp">
-                <ImageView
+                android:layout_marginTop="20dp"
+                >
+                <com.google.android.gms.common.SignInButton
+                    android:id="@+id/sign_in_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_facebook"/>
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_google_plus"
-                    android:layout_marginLeft="10dp"/>
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
             </LinearLayout>
 
         </LinearLayout>
