@@ -21,7 +21,10 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -48,12 +51,16 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
     StorageReference mStorageReferenceImage;
     FirebaseFirestore firebaseFirestore;
     ProgressDialog progressDialog;
+
+
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
     String user_id = currentUser.getUid();
 
     CollectionReference myInfo = FirebaseFirestore.getInstance()
             .collection("users").document(user_id).collection("DukanInfo");
+
+      boolean open = true;
 
     private static final int PICK_IMAGE_REQUEST = 1;
     public Uri mImageUri;
@@ -71,8 +78,8 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
 
 
 
-    private TextInputEditText dukanName, dukanPhone,dukanaddess;
-    private MaterialButton addmyinfo;
+    private TextInputEditText dukanName, dukanPhone,dukanaddess,orldpass,newpass;
+    private MaterialButton addmyinfo,confirm;
 
     FirebaseFirestore firestore;
 
@@ -153,16 +160,24 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
         shopaddres =findViewById(R.id.shopAddresView);
 
 
+        orldpass =findViewById(R.id.oldPasword);
+        newpass =findViewById(R.id.newPassword);
+        confirm =findViewById(R.id.newPasswordButton);
+
+
         etideButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (vigivity ==true){
+                TextView chagepasswordtextview = findViewById(R.id.chagepasswordtextview);
 
+                if (vigivity ==true){
+                    chagepasswordtextview.setVisibility(View.GONE);
                     shopdelaisView.setVisibility(View.GONE);
                     shopediteView.setVisibility(View.VISIBLE);
                     vigivity=false;
                     etideButton.setVisibility(View.GONE);
+
                 }else if (vigivity == false){
 
                     shopediteView.setVisibility(View.GONE);
@@ -197,6 +212,12 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
                     return;
                 }
 
+
+                if (imageuploadurl==null && id!=null){
+
+                    MyInfoUploadWithpicnew( mImageUri);
+
+                }
                 if ( image == false && imageuploadurl != null) {
 
                     progressDialog = new ProgressDialog(MyInfoActivity.this);
@@ -236,9 +257,45 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
                     MyInfoUpload(mImageUri);
                 }
                 else if (mImageUri == null ){
-                    Toast.makeText(getApplicationContext(), "Please enter Photo...", Toast.LENGTH_LONG).show();
 
-                    return;
+                    final String dukanName1 = dukanName.getText().toString();
+                    final String dukanphon1 = dukanPhone.getText().toString();
+                    final String dukanAddres1 = dukanaddess.getText().toString();
+
+
+
+                    Random rand = new Random();
+                    String picname = String.format("%05d", rand.nextInt(10000));
+                    myInfo.add(new MyInfoNote(null, dukanName1, dukanphon1, dukanAddres1,true,picname,00.00,00.0,00.0,0)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentReference> task) {
+
+                            if (task.isSuccessful()) {
+
+                                String id = task.getResult().getId();
+
+
+                                myInfo.document(id).update("myid", id).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        shopdelaisView.setVisibility(View.VISIBLE);
+                                        shopediteView.setVisibility(View.GONE);
+
+                                        etideButton.setVisibility(View.GONE);
+                                        updateadtaall();
+
+                                        Toast.makeText(MyInfoActivity.this, " successful ", Toast.LENGTH_SHORT).show();
+
+                                    }
+                                });
+                            }
+
+                        }
+                    });
+
+
+                    Toast.makeText(getApplicationContext(), " Photo is empty ", Toast.LENGTH_LONG).show();
+
                 }
 
 
@@ -254,8 +311,66 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
             }
         });
 
+        TextView chagepasswordtextview = findViewById(R.id.chagepasswordtextview);
+        chagepasswordtextview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinearLayout PasswordLayout = findViewById(R.id.PasswordLayout);
 
-    } @AfterPermissionGranted(PICK_IMAGE_REQUEST)
+                if ( open == true){
+                    PasswordLayout.setVisibility(View.VISIBLE);
+                    open = false;
+                }else  if (open == false){
+                    PasswordLayout.setVisibility(View.GONE);
+                    open = true;
+                }
+
+            }
+        });
+
+
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+
+              String olrdpassowr=  orldpass.getText().toString();
+              final String newdpassowr=  newpass.getText().toString();
+
+
+                final String email = currentUser.getEmail();
+                AuthCredential credential = EmailAuthProvider.getCredential(email,olrdpassowr);
+
+                currentUser.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            currentUser.updatePassword(newdpassowr).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(!task.isSuccessful()){
+                                        Snackbar snackbar_fail = Snackbar
+                                                .make(v, "Something went wrong. Please try again later", Snackbar.LENGTH_LONG);
+                                        snackbar_fail.show();
+                                    }else {
+                                        Snackbar snackbar_su = Snackbar
+                                                .make(v, "Password Successfully Modified", Snackbar.LENGTH_LONG);
+                                        snackbar_su.show();
+                                    }
+                                }
+                            });
+                        }else {
+                            Snackbar snackbar_su = Snackbar
+                                    .make(v, "Authentication Failed", Snackbar.LENGTH_LONG);
+                            snackbar_su.show();
+                        }
+                    }
+                });
+            }
+        });
+
+    }
+
+    @AfterPermissionGranted(PICK_IMAGE_REQUEST)
     private void getIMEGE() {
 
         String[] perms = {Manifest.permission.READ_EXTERNAL_STORAGE};
@@ -326,7 +441,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
 
                                     Random rand = new Random();
                                     String picname = String.format("%05d", rand.nextInt(10000));
-                                    myInfo.add(new MyInfoNote(null, dukanName1, dukanphon1, dukanAddres1, uri.toString(),true,picname,00.00,0.0)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                    myInfo.add(new MyInfoNote(null, dukanName1, dukanphon1, dukanAddres1, uri.toString(),true,picname,00.00,00.0,00.0,0)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                         @Override
                                         public void onComplete(@NonNull Task<DocumentReference> task) {
 
@@ -355,6 +470,79 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
 
                                         }
                                     });
+                                }
+
+                                progressDialog.dismiss();
+
+                            }
+                        });
+
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+
+                int countProgres = (int) (100 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                progressDialog.setProgress(countProgres);
+            }
+        });
+    }
+
+    public void MyInfoUploadWithpicnew(final Uri mImageUri) {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setTitle("Uploading...");
+        progressDialog.setProgress(0);
+        progressDialog.show();
+        progressDialog.setCanceledOnTouchOutside(false);
+
+
+
+        final String fileName = System.currentTimeMillis() + "";
+
+        final StorageReference putImage = mStorageReferenceImage.child(fileName);
+
+
+        putImage.putFile(mImageUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                        putImage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(final Uri uri) {
+
+
+                                final String dukanName1 = dukanName.getText().toString();
+                                final String dukanphon1 = dukanPhone.getText().toString();
+                                final String dukanAddres1 = dukanaddess.getText().toString();
+
+
+                                if (image != false && id !=null) {
+
+                                    myInfo.document(id).update("myid", id, "dukanName", dukanName1, "dukanphone", dukanphon1, "dukanaddress", dukanAddres1,  "dukanaddpicurl", uri.toString(),"firsttime",firstTime)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    progressDialog.dismiss();
+                                                    shopdelaisView.setVisibility(View.VISIBLE);
+                                                    shopediteView.setVisibility(View.GONE);
+                                                    etideButton.setVisibility(View.GONE);
+                                                    updateadtaall();
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            progressDialog.dismiss();
+                                        }
+                                    });
+
                                 }
 
                                 progressDialog.dismiss();
@@ -431,15 +619,16 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
                         shopphone.setText(myInfoNote.getDukanphone());
                         shopaddres.setText(myInfoNote.getDukanaddress());
 
-                        Uri myUri = Uri.parse(myInfoNote.getDukanaddpicurl());
-
-                        Picasso.get().load(myUri).into(shopeImageView);
+                        if (myInfoNote.getDukanaddpicurl()!=null){
+                            Uri myUri = Uri.parse(myInfoNote.getDukanaddpicurl());
+                            Picasso.get().load(myUri).into(shopeImageView);
+                            Picasso.get().load(myUri).into(appCompatImageView);
+                        }
 
                         dukanName.setText(myInfoNote.getDukanName());
                         dukanPhone.setText(myInfoNote.getDukanphone());
                         dukanaddess.setText(myInfoNote.getDukanaddress());
 
-                        Picasso.get().load(myUri).into(appCompatImageView);
 
                         imageuploadurl = myInfoNote.getDukanaddpicurl();
                         id = myInfoNote.getMyid();
@@ -450,7 +639,6 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
                 }
             }
         });
-
     }
 }
 

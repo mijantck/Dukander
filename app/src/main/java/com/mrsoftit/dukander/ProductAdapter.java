@@ -61,6 +61,11 @@ public class ProductAdapter  extends FirestoreRecyclerAdapter<ProductNote,Produc
         return new NotViewHolde(v);
     }
 
+    public void deleteItem(int position) {
+        getSnapshots().getSnapshot(position).getReference().delete();
+    }
+
+
     public class NotViewHolde extends RecyclerView.ViewHolder {
 
         ImageView ImageView;

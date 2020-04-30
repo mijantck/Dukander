@@ -126,11 +126,13 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
             pruductImageup = bundle.getString("imageurl");
 
             id = proIdup;
+if (pruductImageup!=null){
+    Uri myUri = Uri.parse(pruductImageup);
+    mImageUri = myUri;
 
-            Uri myUri = Uri.parse(pruductImageup);
-            mImageUri = myUri;
+    Picasso.get().load(myUri).into(pruductImage);
+}
 
-            Picasso.get().load(myUri).into(pruductImage);
             productName.setText(productNameup);
             productPrice.setText(productPriceup);
             productQuantayn.setText(productQuantaynup);
@@ -159,10 +161,7 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
                 String price = productPrice.getText().toString();
                 String ppq = productQuantayn.getText().toString();
                 String pmq = pruductMin.getText().toString();
-                if (mImageUri ==null ){
-                    Toast.makeText(getApplicationContext(), "Please enter Photo...", Toast.LENGTH_LONG).show();
-                    return;
-                }
+
                 if (TextUtils.isEmpty(name) ){
                     Toast.makeText(getApplicationContext(), "Please enter Name...", Toast.LENGTH_LONG).show();
                     return;
@@ -180,6 +179,55 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
                     return;
                 }
 
+                progressDialog = new ProgressDialog(ProductAddActivity.this);
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                progressDialog.setTitle("Uploading...");
+                progressDialog.setProgress(0);
+                progressDialog.show();
+                progressDialog.setCanceledOnTouchOutside(false);
+
+                if (mImageUri == null  ){
+
+
+                    final String pnmae = productName.getText().toString();
+                    final String pps = productPrice.getText().toString();
+                    double pp = Double.parseDouble(pps);
+                    final String pqs = productQuantayn.getText().toString();
+                    int pq = Integer.parseInt(pqs);
+                    final String pms = pruductMin.getText().toString();
+                    int pm = Integer.parseInt(pms);
+
+
+                    product.add(new ProductNote(null, pnmae, pp, pq, pm)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentReference> task) {
+
+                            if (task.isSuccessful()) {
+
+                                String id = task.getResult().getId();
+
+
+                                product.document(id).update("proId", id).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+
+
+                                        Toast.makeText(ProductAddActivity.this, " successful ", Toast.LENGTH_SHORT).show();
+
+                                    }
+                                });
+                            }
+
+                        }
+                    });
+
+                    Intent intent = new Intent(ProductAddActivity.this,ProductListActivity.class);
+                    startActivity(intent);
+                    finish();
+
+                    Toast.makeText(getApplicationContext(), " Photo is empty ", Toast.LENGTH_LONG).show();
+                }
+
                 final String pnmae = productName.getText().toString();
                 final String pps = productPrice.getText().toString();
                 double pp = Double.parseDouble(pps);
@@ -190,12 +238,6 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
 
                 if (bundle!=null && image == false) {
 
-                    progressDialog = new ProgressDialog(ProductAddActivity.this);
-                    progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                    progressDialog.setTitle("Uploading...");
-                    progressDialog.setProgress(0);
-                    progressDialog.show();
-                    progressDialog.setCanceledOnTouchOutside(false);
 
                     product.document(id).update("proId", id, "proName", pnmae, "proPrice", pp, "proQua", pq, "proMin", pm, "proImgeUrl", pruductImageup)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -262,9 +304,6 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
             }
         }}
 
-
-
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -286,13 +325,6 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
     }
 
     public void CustomerInfoUpload(final Uri mImageUri) {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progressDialog.setTitle("Uploading...");
-        progressDialog.setProgress(0);
-        progressDialog.show();
-        progressDialog.setCanceledOnTouchOutside(false);
-
 
 
             final String fileName = System.currentTimeMillis() + "";
@@ -330,6 +362,10 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
                                                 progressDialog.dismiss();
+
+                                                Intent intent = new Intent(ProductAddActivity.this,ProductListActivity.class);
+                                                startActivity(intent);
+                                                finish();
                                             }
                                         });
 

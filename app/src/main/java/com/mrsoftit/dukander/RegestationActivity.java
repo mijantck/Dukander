@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.SignInMethodQueryResult;
 
 import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
 
@@ -69,7 +70,7 @@ public class RegestationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String email = editTextEmail.getText().toString();
+                final String email = editTextEmail.getText().toString();
                 final String password = editTextPassword.getText().toString();
 
                 if(TextUtils.isEmpty(email)){
@@ -93,23 +94,41 @@ public class RegestationActivity extends AppCompatActivity {
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 progressDialog.show();
 
-                Auth.createUserWithEmailAndPassword(email,password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+
+
+                //check email already exist or not.
+                Auth.fetchSignInMethodsForEmail(email)
+                        .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
                             @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if(task.isSuccessful()){
+                            public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+
+                                boolean isNewUser = task.getResult().getSignInMethods().isEmpty();
+
+                                if (isNewUser) {
+                                    Auth.createUserWithEmailAndPassword(email,password)
+                                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                                    if(task.isSuccessful()){
+                                                        progressDialog.dismiss();
+                                                        startActivity(new Intent(getApplicationContext(),MyInfoActivity.class));
+                                                        finish();
+
+                                                    }
+                                                    else{
+                                                        progressDialog.dismiss();
+                                                    }
+                                                }
+                                            });
+                                } else {
                                     progressDialog.dismiss();
-                                    startActivity(new Intent(getApplicationContext(),MainActivity.class));
-                                    finish();
+                                    Toast.makeText(getApplicationContext(),email+" Already SingUp ",Toast.LENGTH_SHORT).show();
 
                                 }
-                                else{
 
-                                    progressDialog.dismiss();
-                                    Toast.makeText(getApplicationContext(),"E-mail or password is wrong",Toast.LENGTH_SHORT).show();
-                                }
                             }
                         });
+
             }
 
 

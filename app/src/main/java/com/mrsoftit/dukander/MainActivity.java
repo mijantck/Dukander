@@ -12,6 +12,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -37,6 +38,11 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
@@ -63,6 +69,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             .collection("users").document(user_id).collection("Customers");
 
 
+    String id;
 
 
 
@@ -201,10 +208,19 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
+
+        Date calendar1 = Calendar.getInstance().getTime();
+        @SuppressLint("SimpleDateFormat")
+        DateFormat df1 = new SimpleDateFormat("yyyyMMdd");
+        String todayString = df1.format(calendar1);
+        final int datenew = Integer.parseInt(todayString);
+
+
+
         assert currentUser != null;
         String user_id = currentUser.getUid();
 
-        CollectionReference myInfo = FirebaseFirestore.getInstance()
+        final CollectionReference myInfo = FirebaseFirestore.getInstance()
                 .collection("users").document(user_id).collection("DukanInfo");
 
         NavigationView navigationView = findViewById(R.id.navigationView);
@@ -212,11 +228,10 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
         final ImageView appCompatImageView = headeView.findViewById(R.id.appCompatImageView);
         final TextView dukanname = headeView.findViewById(R.id.dukanname);
-        final TextView dukanPhone = headeView.findViewById(R.id.dukanPhone);
-        final TextView AddresTextView = headeView.findViewById(R.id.AddresTextView);
         final TextView dukanEmail = headeView.findViewById(R.id.dukanEmail);
 
         dukanEmail.setText(currentUser.getEmail()+"");
+
         myInfo.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -225,12 +240,23 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                         MyInfoNote myInfoNote = document.toObject(MyInfoNote.class);
 
                         dukanname.setText(myInfoNote.getDukanName());
-                        dukanPhone.setText(myInfoNote.getDukanphone());
-                        AddresTextView.setText(myInfoNote.getDukanaddress());
 
-                        Uri myUri = Uri.parse(myInfoNote.getDukanaddpicurl());
+                        if (myInfoNote.getDukanaddpicurl()!=null){
+                            Uri myUri = Uri.parse(myInfoNote.getDukanaddpicurl());
+                            Picasso.get().load(myUri).into(appCompatImageView);
+                        }
 
-                        Picasso.get().load(myUri).into(appCompatImageView);
+                        id = myInfoNote.getMyid().toString();
+
+                        if (myInfoNote.getDate()!=datenew){
+
+                            CollectionReference myInfo = FirebaseFirestore.getInstance()
+                                    .collection("users").document(id).collection("DukanInfo");
+
+                            myInfo.document(id).update("totalpaybil",0,"date",datenew);
+
+                        }
+
                     }
                 }
             }

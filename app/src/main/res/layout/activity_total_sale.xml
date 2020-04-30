@@ -64,14 +64,31 @@
                 android:text=" Total Sale" />
 
             <TextView
+                android:layout_alignParentRight="true"
+                android:id="@+id/dueHeaderTextView"
+                style="@style/reportContentText"
+                android:textSize="15dp"
+                android:layout_marginTop="50dp"
+                android:text=" Total Due" />
+            <TextView
                 android:id="@+id/todayTotalSale"
                 style="@style/viewParent.headerText"
                 android:layout_below="@id/salesHeaderTextView"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
-                android:text="$15,990.00"
+                android:text="00.00"
                 android:textColor="@color/whiteTextColor" />
 
+            <TextView
+                android:id="@+id/Totaldue"
+                style="@style/viewParent.headerText"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentRight="true"
+                android:textSize="20dp"
+                android:textColor="@color/whiteTextColor"
+                android:layout_below="@id/dueHeaderTextView"
+                android:text="00.00"
+                android:layout_marginTop="10dp" />
 
         </RelativeLayout>
         <androidx.recyclerview.widget.RecyclerView

@@ -101,6 +101,7 @@ public class SeleTwoActivity extends AppCompatActivity {
     TextView paymentLooding,TitleTExt;
 
     double totallestAvount;
+    Double dueBalance ;
 
 
     Date calendar1 = Calendar.getInstance().getTime();
@@ -171,6 +172,7 @@ public class SeleTwoActivity extends AppCompatActivity {
         CollectionReference myInfo = FirebaseFirestore.getInstance()
                 .collection("users").document(user_id).collection("DukanInfo");
 
+
         myInfo.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -185,9 +187,16 @@ public class SeleTwoActivity extends AppCompatActivity {
                         myinfoid = doc.getId();
                     }
                     if (doc.get("activeBalance") != null) {
-                        Double activeBalanceConvert = Double.parseDouble(doc.get("activeBalance").toString());
 
+                        Double activeBalanceConvert = Double.parseDouble(doc.get("activeBalance").toString());
                         activeBalance = activeBalanceConvert;
+                    }
+
+                    if (doc.get("totalpaybil") != null) {
+
+                        Double dueBalanceConvert = Double.parseDouble(doc.get("totalpaybil").toString());
+
+                        dueBalance = dueBalanceConvert;
                     }
                 }
 
@@ -351,18 +360,16 @@ public class SeleTwoActivity extends AppCompatActivity {
                             activeBalance += paymonyDouable;
                         }
 
+                        if (dueBalance != null){
+                            dueBalance += paymonyDouable;
 
-                        CollectionReference totalsale = FirebaseFirestore.getInstance()
-                                .collection("users").document(user_id).collection("TotalSale");
-
-
-
+                        }
 
 
                         CollectionReference myInfo = FirebaseFirestore.getInstance()
                                 .collection("users").document(user_id).collection("DukanInfo");
 
-                        myInfo.document(myinfoid).update("activeBalance",activeBalance);
+                        myInfo.document(myinfoid).update("activeBalance",activeBalance,"totalpaybil",dueBalance,"date",datenew);
 
                         if (invoisenumberID == null) {
 
@@ -467,11 +474,6 @@ public class SeleTwoActivity extends AppCompatActivity {
 
                     }
                 });
-
-
-
-
-
 
                 cancelButton.setOnClickListener(new View.OnClickListener() {
                     @Override

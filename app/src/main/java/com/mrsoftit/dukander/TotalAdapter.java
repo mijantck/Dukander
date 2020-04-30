@@ -14,6 +14,10 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class TotalAdapter extends FirestoreRecyclerAdapter<TotalSaleNote, TotalAdapter.NotViewHolde> {
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
@@ -34,6 +38,18 @@ public class TotalAdapter extends FirestoreRecyclerAdapter<TotalSaleNote, TotalA
         holder.product_name_textview.setText(model.getItemName());
         holder.product_quantedy_textview.setText(model.getQuantedt()+"");
         holder.product_price_textview.setText(model.getTotalPrice()+"");
+
+
+        Integer value = model.getDate();
+        SimpleDateFormat originalFormat = new SimpleDateFormat("yyyyMMdd");
+        try {
+            Date date = originalFormat.parse(value.toString());
+            SimpleDateFormat newFormat = new SimpleDateFormat("dd-MM-yyyy");
+            String formatedDate = newFormat.format(date);
+            holder.dateproductsale.setText(formatedDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @NonNull
@@ -46,7 +62,7 @@ public class TotalAdapter extends FirestoreRecyclerAdapter<TotalSaleNote, TotalA
 
     public class NotViewHolde extends RecyclerView.ViewHolder {
 
-        TextView product_name_textview,product_price_textview,product_quantedy_textview,product_mini_textview;
+        TextView product_name_textview,product_price_textview,product_quantedy_textview,dateproductsale;
 
         public NotViewHolde(@NonNull View itemView) {
             super(itemView);
@@ -54,6 +70,7 @@ public class TotalAdapter extends FirestoreRecyclerAdapter<TotalSaleNote, TotalA
             product_name_textview = itemView.findViewById(R.id.totalproductName);
             product_quantedy_textview = itemView.findViewById(R.id.Totalquantidy);
             product_price_textview = itemView.findViewById(R.id.Totalpariceto);
+            dateproductsale = itemView.findViewById(R.id.dateproductsale);
 
         }
     }

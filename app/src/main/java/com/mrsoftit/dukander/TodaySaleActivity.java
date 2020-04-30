@@ -38,7 +38,7 @@ public class TodaySaleActivity extends AppCompatActivity {
     //ProductAdapter adapter;
     TotalAdapter adapter;
 
-    private TextView dateView,TodayTotalSale;
+    private TextView dateView,TodayTotalSale,todayTotaldue;
 
 
     CollectionReference product = FirebaseFirestore.getInstance()
@@ -49,7 +49,9 @@ public class TodaySaleActivity extends AppCompatActivity {
             .collection("users").document(user_id).collection("Sales");
 
 
+
     double totalsum = 0.0;
+    double totalpaybilint = 0.0;
 
 
     @Override
@@ -60,9 +62,10 @@ public class TodaySaleActivity extends AppCompatActivity {
 
         dateView = findViewById(R.id.dateTextView);
         TodayTotalSale = findViewById(R.id.todayTotalSale);
+        todayTotaldue = findViewById(R.id.todayTotaldue);
 
-        CollectionReference product = FirebaseFirestore.getInstance()
-                .collection("users").document(user_id).collection("Product");
+        final CollectionReference myInfo = FirebaseFirestore.getInstance()
+                .collection("users").document(user_id).collection("DukanInfo");
 
 
         recyclear();
@@ -82,6 +85,7 @@ public class TodaySaleActivity extends AppCompatActivity {
         final int datenew = Integer.parseInt(todayString);
 
 
+
         Query query = TotalcustomerProductSale.whereEqualTo("date",datenew).whereEqualTo("paid",true);
 
         query.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -97,15 +101,53 @@ public class TodaySaleActivity extends AppCompatActivity {
                 for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                     if (doc.get("totalPrice") != null) {
                         double totaltest  = (double) doc.get("totalPrice");
-
                         totalsum += totaltest;
+                    }
 
+
+                    if (doc.get("totalpaybil") != null) {
+                        double totalpaybil  = (double) doc.get("totalpaybil");
+
+                        totalpaybilint = totalpaybil;
+
+                        Toast.makeText(TodaySaleActivity.this, totalpaybilint+" tk", Toast.LENGTH_SHORT).show();
                     }
                 }
+
                 TodayTotalSale.setText(totalsum+"");
+
+
 
             }
         });
+        myInfo.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+
+                if (e != null) {
+                    return;
+                }
+
+                totalpaybilint = 00.00;
+
+                assert queryDocumentSnapshots != null;
+                for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+
+                    if (doc.get("totalpaybil") != null) {
+                        double totalpaybil  = (double) doc.get("totalpaybil");
+
+                        totalpaybilint = totalpaybil;
+
+                    }
+
+                    todayTotaldue.setText(totalsum - totalpaybilint+"");
+
+                }
+            }
+        });
+
+
+
     }
 
     private void recyclear() {

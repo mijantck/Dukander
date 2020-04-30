@@ -4,14 +4,15 @@
     <color name="color_white">#FFFFFF</color>
     <color name="bg">#FFFFFF</color>
     <color name="grey">#FFFFFF</color>
-    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorPrimaryDark">#2183C5</color>
     <color name="colorAccent">#2183C5</color>
     <color name="primary">#3f51b5</color>
-    <color name="primary_dark">#303f9f</color>
+    <color name="primary_dark">#2183C5</color>
     <color name="ripple">#F06292</color>
     <color name="accent">#2183C5</color>
-    <color name="grean">#2ECC71</color>
+    <color name="grean">#2183C5</color>
     <color name="toolbarTransparent">#00FFFFFF</color>
+    <color name="mainColor">#FFEB3B</color>
 
 
 

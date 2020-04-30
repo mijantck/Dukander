@@ -30,11 +30,39 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/salesImageView">
 
-            <TextView
-                android:id="@+id/totalproductName"
-                style="@style/fontEndContentText"
-                android:text="Name"
-                android:textColor="#25C0DE"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="6">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4">
+                    <TextView
+                        android:id="@+id/totalproductName"
+                        style="@style/fontEndContentText"
+                        android:text="Name"
+                        android:textColor="#25C0DE"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:gravity="right"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2">
+                    <TextView
+                        android:id="@+id/dateproductsale"
+                        style="@style/fontEndContentText"
+                        android:text="Name"
+                        android:textColor="#25C0DE"/>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
 
 
 

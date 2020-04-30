@@ -23,6 +23,14 @@ public class ProductNote {
         this.proImgeUrl = proImgeUrl;
     }
 
+    public ProductNote(String proId, String proName, double proPrice, int proQua, int proMin) {
+        this.proId = proId;
+        this.proName = proName;
+        this.proPrice = proPrice;
+        this.proQua = proQua;
+        this.proMin = proMin;
+    }
+
     public void setUserID(String userID) {
         this.userID = userID;
     }

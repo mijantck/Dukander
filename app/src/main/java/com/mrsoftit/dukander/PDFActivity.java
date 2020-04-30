@@ -30,6 +30,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -334,8 +335,6 @@ public class PDFActivity extends AppCompatActivity {
 
             e.printStackTrace();
 
-            Toast.makeText(this, e+"", Toast.LENGTH_SHORT).show();
-
         }
 
 
@@ -545,8 +544,9 @@ if (id!=null){
                 });
             }
 
-
-            Toast.makeText(PDFActivity.this, "Download a PDF Viewer to see the generated PDF", Toast.LENGTH_SHORT).show();
+            Snackbar snackbar_su = Snackbar
+                    .make(getCurrentFocus(), " GO TO "+pdfFile, Snackbar.LENGTH_LONG);
+            snackbar_su.show();
         }
     }
 

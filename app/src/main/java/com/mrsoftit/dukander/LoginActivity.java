@@ -322,7 +322,7 @@ public class LoginActivity extends AppCompatActivity {
     private void launchMainActivity(FirebaseUser user) {
         if (user != null) {
 
-            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+            startActivity(new Intent(getApplicationContext(),MyInfoActivity.class));
             finish();
         }
     }

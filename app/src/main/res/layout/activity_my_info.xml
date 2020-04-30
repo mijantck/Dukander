@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
    >
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_support"
         android:layout_width="match_parent"
@@ -15,14 +15,15 @@
         android:background="@drawable/main_header_bk"
         >
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             >
 
             <TextView
+
                 android:textSize="20sp"
                 android:textColor="#FFFF"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:text="My Information"
                 style="@style/headerText"
                 android:layout_width="match_parent"
@@ -31,7 +32,9 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -91,7 +94,6 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
@@ -162,33 +164,28 @@
                 android:textSize="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginBottom="12dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:background="#FFF"/>
             <TextView
                 android:gravity="center_vertical"
                 android:id="@+id/shopphnoneView"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:text="Shop phone"
                 android:textSize="15dp"
                 android:fontFamily="@font/adamina"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginBottom="12dp"
+                android:layout_height="35dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:background="#FFF"/>
             <TextView
                 android:id="@+id/shopAddresView"
                 android:gravity="center_vertical"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:text="Shop name"
                 android:textSize="15dp"
                 android:fontFamily="@font/adamina"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginBottom="12dp"
+                android:layout_height="35dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:background="#FFF"/>
@@ -196,6 +193,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/editeshopbuttton"
             android:layout_below="@+id/shopdelaisView"
             android:gravity="center"
             android:layout_width="match_parent"
@@ -212,11 +210,75 @@
 
 
         </LinearLayout>
+        <LinearLayout
+            android:layout_below="@+id/editeshopbuttton"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/chagepasswordtextview"
+                android:textColor="@color/colorPrimary"
+                android:padding="10dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="Change Password  -->"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/PasswordLayout"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="#FFF"
+                    android:hint="Old Password"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/oldPasword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
+                </com.google.android.material.textfield.TextInputLayout>
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="#FFF"
+                    android:hint="New Password "
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/newPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/newPasswordButton"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:text="CONFIRM"
+                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
     </RelativeLayout>
 
-
-
-
+</ScrollView>
 
 </LinearLayout>

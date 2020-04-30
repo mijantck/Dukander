@@ -1,14 +1,21 @@
 package com.mrsoftit.dukander;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.SearchView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -30,6 +37,8 @@ public class ProductListActivity extends AppCompatActivity {
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
     ProductAdapter adapter;
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
     String user_id = currentUser.getUid();
@@ -103,37 +112,72 @@ public class ProductListActivity extends AppCompatActivity {
 
         adapter.setOnItemClickListener(new ProductAdapter.OnItemClickListener(){
             @Override
-            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                ProductNote productNote = documentSnapshot.toObject(ProductNote.class);
-                String id = documentSnapshot.getId();
-                String imageurl = productNote.getProImgeUrl();
-                String name = productNote.getProName();
+            public void onItemClick(final DocumentSnapshot documentSnapshot, final int position) {
 
 
-                String pp = String.valueOf(productNote.getProPrice());
+
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(ProductListActivity.this);
+                String[] option = {"Product Edite ","Delete"};
+                builder.setItems(option, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        db = FirebaseFirestore.getInstance();
+
+                        if (which == 0) {
+                            ProductNote productNote = documentSnapshot.toObject(ProductNote.class);
+                            String id = documentSnapshot.getId();
+                            String imageurl = productNote.getProImgeUrl();
+                            String name = productNote.getProName();
+                            String pp = String.valueOf(productNote.getProPrice());
+                            String pq = String.valueOf(productNote.getProQua());
+                            String pm = String.valueOf(productNote.getProMin());
+                            Intent pdfIntent = new Intent(ProductListActivity.this, ProductAddActivity.class);
+                            pdfIntent.putExtra("id", id);
+                            if (imageurl != null) {
+                                pdfIntent.putExtra("imageurl", imageurl);
+                            }
+                            pdfIntent.putExtra("name", name);
+
+                            pdfIntent.putExtra("pprice", pp);
+
+                            pdfIntent.putExtra("pQuan", pq);
+
+                            pdfIntent.putExtra("pmini", pm);
+
+                            startActivity(pdfIntent);
 
 
-                String pq = String.valueOf(productNote.getProQua());
+                        }
+                        if(which == 1){
+                            new AlertDialog.Builder(ProductListActivity.this).setTitle("Confirm Delete?")
+                                    .setMessage("Are you sure?")
+                                    .setPositiveButton("YES",
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int which) {
+
+                                                    adapter.deleteItem(position);
+                                                    dialog.dismiss();
+                                                }
+                                            })
+                                    .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            // Do nothing
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .create()
+                                    .show();
+                        }
+                    }
+                }).create().show();
 
 
-                String pm = String.valueOf(productNote.getProMin());
 
 
-                Intent pdfIntent = new Intent(ProductListActivity.this, ProductAddActivity.class);
 
-                pdfIntent.putExtra("id", id);
-                if (imageurl != null) {
-                    pdfIntent.putExtra("imageurl", imageurl);
-                }
-                pdfIntent.putExtra("name", name);
 
-                pdfIntent.putExtra("pprice", pp);
-
-                    pdfIntent.putExtra("pQuan", pq);
-
-                    pdfIntent.putExtra("pmini", pm);
-
-                startActivity(pdfIntent);
             }
         });
 
@@ -149,5 +193,32 @@ public class ProductListActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         adapter.stopListening();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.example_menu, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                return false;
+            }
+        });
+        return true;
     }
 }

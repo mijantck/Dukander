@@ -54,6 +54,8 @@ public class CusomareAdapter extends FirestoreRecyclerAdapter<CustomerNote,Cusom
 
     }
 
+
+
     @NonNull
     @Override
     public NotViewHolde onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -61,6 +63,13 @@ public class CusomareAdapter extends FirestoreRecyclerAdapter<CustomerNote,Cusom
                 parent, false);
         return new NotViewHolde(v);
     }
+
+
+
+    public void deleteItem(int position) {
+        getSnapshots().getSnapshot(position).getReference().delete();
+    }
+
 
     public class NotViewHolde extends RecyclerView.ViewHolder {
 

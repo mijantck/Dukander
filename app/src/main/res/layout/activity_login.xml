@@ -53,7 +53,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginLeft="5dp"
                 android:hint="Email"
-                android:background="#FFF"
+
                 style="@style/parent"
                 android:layout_marginTop="@dimen/loginViewsMargin">
                 <com.google.android.material.textfield.TextInputEditText

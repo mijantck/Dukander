@@ -361,7 +361,7 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
 
                                 if (image!=false){
 
-                                    customer.document(id).update("customerIdDucunt", id,"nameCUstomer",name,"phone",phone,"taka",taka,"addres",addres,"imageUrl",uri.toString())
+                                    customer.document(id).update("customerIdDucunt", id,"nameCUstomer",name,"phone",phone,"taka",dtaka,"addres",addres,"imageUrl",uri.toString())
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {

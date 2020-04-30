@@ -39,7 +39,7 @@ public class TotalSaleActivity extends AppCompatActivity {
     //ProductAdapter adapter;
     TotalAdapter adapter;
 
-    private TextView dateView,TodayTotalSale;
+    private TextView dateView,TodayTotalSale,Totaldue;
 
 
     CollectionReference product = FirebaseFirestore.getInstance()
@@ -51,6 +51,7 @@ public class TotalSaleActivity extends AppCompatActivity {
 
 
     double totalsum = 0.0;
+    double totalpaybilint = 0.0;
 
     ImageView calanderid;
 
@@ -65,11 +66,18 @@ public class TotalSaleActivity extends AppCompatActivity {
 
         final TextView viewdate = findViewById(R.id.dateTextView);
         TodayTotalSale = findViewById(R.id.todayTotalSale);
+        Totaldue = findViewById(R.id.Totaldue);
 
         String pattern = "dd MMMM yyyy";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         String date = simpleDateFormat.format(new Date());
         viewdate.setText(date);
+
+
+        final CollectionReference myInfo = FirebaseFirestore.getInstance()
+                .collection("users").document(user_id).collection("DukanInfo");
+
+
 
         recyclear();
 
@@ -82,8 +90,6 @@ public class TotalSaleActivity extends AppCompatActivity {
                 if (e != null) {
                     return;
                 }
-
-
                 totalsum = 00.00;
                 assert queryDocumentSnapshots != null;
                 for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
@@ -98,6 +104,37 @@ public class TotalSaleActivity extends AppCompatActivity {
 
             }
         });
+
+        myInfo.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+
+                if (e != null) {
+                    return;
+                }
+
+                totalpaybilint = 00.00;
+
+                assert queryDocumentSnapshots != null;
+                for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+
+                    if (doc.get("totalpaybil") != null) {
+                        double totalpaybil  = (double) doc.get("totalpaybil");
+
+                        totalpaybilint = totalpaybil;
+
+                    }
+
+                    Totaldue.setText(totalsum - totalpaybilint+"");
+
+                }
+            }
+        });
+
+
+
+
+
         calanderid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

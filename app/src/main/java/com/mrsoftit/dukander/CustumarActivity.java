@@ -1,11 +1,13 @@
 package com.mrsoftit.dukander;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -109,36 +111,112 @@ public class CustumarActivity extends AppCompatActivity {
 
         adapter.setOnItemClickListener(new CusomareAdapter.OnItemClickListener(){
             @Override
-            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                CustomerNote customerNote = documentSnapshot.toObject(CustomerNote.class);
-                String id = documentSnapshot.getId();
-                String imageurl = customerNote.getImageUrl();
-                String name = customerNote.getNameCUstomer();
-                String phone = customerNote.getPhone();
-                double takadobul = customerNote.getTaka();
+            public void onItemClick(final DocumentSnapshot documentSnapshot, final int position) {
 
-                String taka = Double.toString(takadobul);
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CustumarActivity.this);
+                String[] option = {"Profile Edite ", "View Profile","Delete"};
+                builder.setItems(option, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-                String addreds = customerNote.getAddres();
+                        db = FirebaseFirestore.getInstance();
 
-                Intent pdfIntent = new Intent(CustumarActivity.this, CustomerAddActivity.class);
+                        if (which == 0) {
 
-                pdfIntent.putExtra("id", id);
-                if (imageurl != null) {
-                    pdfIntent.putExtra("imageurl", imageurl);
-                }
-                pdfIntent.putExtra("name", name);
+                            CustomerNote customerNote = documentSnapshot.toObject(CustomerNote.class);
+                            String id = documentSnapshot.getId();
+                            String imageurl = customerNote.getImageUrl();
+                            String name = customerNote.getNameCUstomer();
+                            String phone = customerNote.getPhone();
+                            double takadobul = customerNote.getTaka();
 
-                pdfIntent.putExtra("phone", phone);
-                if (taka != null) {
+                            String taka = Double.toString(takadobul);
 
-                    pdfIntent.putExtra("taka", taka);
-                }
+                            String addreds = customerNote.getAddres();
 
-                if (addreds != null) {
-                    pdfIntent.putExtra("addreds", addreds);
-                }
-                startActivity(pdfIntent);
+                            Intent pdfIntent = new Intent(CustumarActivity.this, CustomerAddActivity.class);
+
+                            pdfIntent.putExtra("id", id);
+                            if (imageurl != null) {
+                                pdfIntent.putExtra("imageurl", imageurl);
+                            }
+                            pdfIntent.putExtra("name", name);
+
+                            pdfIntent.putExtra("phone", phone);
+                            if (taka != null) {
+
+                                pdfIntent.putExtra("taka", taka);
+                            }
+
+                            if (addreds != null) {
+                                pdfIntent.putExtra("addreds", addreds);
+                            }
+                            startActivity(pdfIntent);
+
+
+                        }
+                        if (which == 1) {
+
+
+                            CustomerNote customerNote = documentSnapshot.toObject(CustomerNote.class);
+                            String id = documentSnapshot.getId();
+                            String imageurl = customerNote.getImageUrl();
+                            String name = customerNote.getNameCUstomer();
+                            String phone = customerNote.getPhone();
+                            double takadobul = customerNote.getTaka();
+
+                            String taka = Double.toString(takadobul);
+
+                            String addreds = customerNote.getAddres();
+
+                            Intent pdfIntent = new Intent(CustumarActivity.this, CustomerProfileViewActivity.class);
+
+                            pdfIntent.putExtra("id", id);
+                            if (imageurl != null) {
+                                pdfIntent.putExtra("imageurl", imageurl);
+                            }
+                            pdfIntent.putExtra("name", name);
+
+                            pdfIntent.putExtra("phone", phone);
+                            if (taka != null) {
+
+                                pdfIntent.putExtra("taka", taka);
+                            }
+
+                            if (addreds != null) {
+                                pdfIntent.putExtra("addreds", addreds);
+                            }
+                            startActivity(pdfIntent);
+
+
+                        }
+                        if(which == 2){
+
+                            new AlertDialog.Builder(CustumarActivity.this).setTitle("Confirm Delete?")
+                                    .setMessage("Are you sure?")
+                                    .setPositiveButton("YES",
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int which) {
+
+                                                    adapter.deleteItem(position);
+                                                    dialog.dismiss();
+                                                }
+                                            })
+                                    .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            // Do nothing
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .create()
+                                    .show();
+                        }
+                    }
+                }).create().show();
+
+
+
             }
         });
 
