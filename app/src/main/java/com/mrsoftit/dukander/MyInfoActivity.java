@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alimuzaffar.lib.pin.PinEntryEditText;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -47,6 +48,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
+import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -74,6 +76,9 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
     boolean image = false;
     boolean firstTime = false;
 
+
+    CircularProgressButton button ;
+    PinEntryEditText oldPin,newpin;
 
     private LinearLayout shopediteView,shopdelaisView;
     private MaterialButton etideButton;
