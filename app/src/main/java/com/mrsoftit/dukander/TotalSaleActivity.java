@@ -2,10 +2,14 @@ package com.mrsoftit.dukander;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
@@ -61,6 +65,26 @@ public class TotalSaleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_total_sale);
+
+
+        Toolbar toolbar =  findViewById(R.id.toolbar_support);
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        Objects.requireNonNull(toolbar.getNavigationIcon()).setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
+
+
+        toolbar.setSubtitleTextColor(getResources().getColor(R.color.grey));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TotalSaleActivity.this,MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+
 
         calanderid = findViewById(R.id.calanderid);
 
@@ -118,10 +142,10 @@ public class TotalSaleActivity extends AppCompatActivity {
                 assert queryDocumentSnapshots != null;
                 for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
 
-                    if (doc.get("totalpaybil") != null) {
-                        double totalpaybil  = (double) doc.get("totalpaybil");
+                    if (doc.get("activeBalance") != null) {
 
-                        totalpaybilint = totalpaybil;
+                        double d = Double.parseDouble(doc.get("activeBalance").toString());
+                        totalpaybilint = d;
 
                     }
 

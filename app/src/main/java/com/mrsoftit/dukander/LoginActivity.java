@@ -149,7 +149,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if(mAuth.getCurrentUser()!=null){
 
-            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+            startActivity(new Intent(getApplicationContext(),PinViewActivity.class));
 
             finish();
         }

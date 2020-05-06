@@ -1,6 +1,7 @@
 package com.mrsoftit.dukander;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -13,16 +14,26 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.DownloadManager;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.telephony.mbms.DownloadProgressListener;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.DownloadListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -33,12 +44,15 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -50,11 +64,11 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     private DrawerLayout drawer;
 
     private FirebaseAuth mAuth;
-
+    FirebaseFirestore db;
     FirebaseFirestore firestore;
     MinimumProductAdapter minimumProductAdapter;
     DueCusomareAdapter dueCusomareAdapter;
-
+     ProgressDialog pd;
     GoogleSignInClient googleSignInClient;
 
 
@@ -70,6 +84,16 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
 
     String id;
+    Uri myUri ;
+    int mydate;
+    String picname;
+
+
+    Date calendar1 = Calendar.getInstance().getTime();
+    @SuppressLint("SimpleDateFormat")
+    DateFormat df1 = new SimpleDateFormat("yyyyMMdd");
+    String todayString = df1.format(calendar1);
+    final int datenew = Integer.parseInt(todayString);
 
 
 
@@ -79,8 +103,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
-
-
         Toolbar toolbar = findViewById(R.id.toolbar_support);
         toolbar.setTitle("Dukandar");
         setSupportActionBar(toolbar);
@@ -106,6 +128,12 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         CardView withdrow = findViewById(R.id.withdraw);
 
 
+        pd = new ProgressDialog(MainActivity.this);
+        pd.setMessage("loading");
+        pd.show();
+        pd.setCancelable(false);
+
+
         // Configure sign-in to request the user's ID, email address, and basic
 // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -118,8 +146,8 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         sale.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(MainActivity.this,SaleoOneActivity.class);
+
                 startActivity(intent);
             }
         });
@@ -128,6 +156,8 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             public void onClick(View v) {
 
                 Intent intent = new Intent(MainActivity.this, TodaySaleActivity.class);
+
+
                 startActivity(intent);
             }
         });
@@ -135,25 +165,75 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(MainActivity.this,InvesmentActivity.class);
-                startActivity(intent);
+                if (id!=null){
+                    Intent intent = new Intent(MainActivity.this,InvesmentActivity.class);
+
+                    intent.putExtra("id",id);
+
+                    startActivity(intent);
+
+                }
+
             }
         });
         withdrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(MainActivity.this,WitdrawActivity.class);
-                startActivity(intent);
+                if (id!=null) {
+                    Intent intent = new Intent(MainActivity.this, WitdrawActivity.class);
+
+                    intent.putExtra("id", id);
+
+                    startActivity(intent);
+                }
+            }
+        });
+
+
+
+        db = FirebaseFirestore.getInstance();
+
+        //  final CollectionReference investment = FirebaseFirestore.getInstance()
+
+        CollectionReference investment =db.collection("users").document(user_id).collection("DukanInfo");
+
+     investment.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if (e !=null){
+                    return;
+                }
+
+                String  urlImage = null;
+
+                assert queryDocumentSnapshots != null;
+                for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                    if (doc.get("dukanaddpicurl") != null) {
+
+                      String  urlImage1 = (String) doc.get("dukanaddpicurl");
+
+                        urlImage = urlImage1;
+                    }
+
+                }
+
+
+                final File docsFolder1 = new File(Environment.getExternalStorageDirectory() +"/Dukandar/dont_delete/");
+                File newFile = new File(docsFolder1,"01743.jpeg");
+
+                if (!newFile.exists()) {
+                    dwnld(MainActivity.this, urlImage, "01743.jpeg");
+                }
             }
         });
 
 
 
 
-
         recyclear();
         recyclearcustomer();
+        pd.dismiss();
     }
 
     @Override
@@ -207,21 +287,13 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         firestore = FirebaseFirestore.getInstance();
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
-
-        Date calendar1 = Calendar.getInstance().getTime();
-        @SuppressLint("SimpleDateFormat")
-        DateFormat df1 = new SimpleDateFormat("yyyyMMdd");
-        String todayString = df1.format(calendar1);
-        final int datenew = Integer.parseInt(todayString);
-
-
-
         assert currentUser != null;
         String user_id = currentUser.getUid();
 
         final CollectionReference myInfo = FirebaseFirestore.getInstance()
                 .collection("users").document(user_id).collection("DukanInfo");
+
+
 
         NavigationView navigationView = findViewById(R.id.navigationView);
         View headeView = navigationView.getHeaderView(0);
@@ -242,20 +314,17 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                         dukanname.setText(myInfoNote.getDukanName());
 
                         if (myInfoNote.getDukanaddpicurl()!=null){
-                            Uri myUri = Uri.parse(myInfoNote.getDukanaddpicurl());
-                            Picasso.get().load(myUri).into(appCompatImageView);
+                            Uri uri = Uri.parse(myInfoNote.getDukanaddpicurl());
+                             myUri = uri;
+                            Picasso.get().load(uri).into(appCompatImageView);
                         }
 
                         id = myInfoNote.getMyid().toString();
 
-                        if (myInfoNote.getDate()!=datenew){
+                        mydate = myInfoNote.getDate();
+                        picname = myInfoNote.getPicName();
 
-                            CollectionReference myInfo = FirebaseFirestore.getInstance()
-                                    .collection("users").document(id).collection("DukanInfo");
 
-                            myInfo.document(id).update("totalpaybil",0,"date",datenew);
-
-                        }
 
                     }
                 }
@@ -347,5 +416,40 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
                     }
                 });
+    }
+
+    public void dwnld(Context context, String pdfUrl1, String name) {
+
+
+        ProgressDialog progressDialog =new ProgressDialog(MainActivity.this);
+        progressDialog.setCancelable(false);
+        progressDialog.setTitle("Wait...");
+        progressDialog.show();
+
+        File direct = new File("/Dukandar/dont_delete");
+
+        if (!direct.exists()) {
+            direct.mkdirs();
+        }
+        // Create request for android download manager
+        DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+        Uri uri = Uri.parse(pdfUrl1);
+        DownloadManager.Request request = new DownloadManager.Request(uri);
+        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI |
+                DownloadManager.Request.NETWORK_MOBILE);
+
+// set title and description
+        request.setTitle(name);
+        request.setDescription(name +" Downloading");
+
+        request.allowScanningByMediaScanner();
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+
+//set the local destination for download file to a path within the application's external files directory
+        request.setDestinationInExternalPublicDir("/Dukandar/dont_delete/", name);
+        request.setMimeType("*/*");
+        downloadManager.enqueue(request);
+
+        progressDialog.dismiss();
     }
 }

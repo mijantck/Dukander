@@ -7,8 +7,11 @@ import androidx.appcompat.widget.Toolbar;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -39,7 +42,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
@@ -126,22 +131,23 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_info);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_support);
-        toolbar.setTitle("Dukandar ");
+        Toolbar toolbar =  findViewById(R.id.toolbar_support);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        Objects.requireNonNull(toolbar.getNavigationIcon()).setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
 
 
         toolbar.setSubtitleTextColor(getResources().getColor(R.color.grey));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MyInfoActivity.this,MainActivity.class);
+                Intent intent = new Intent(MyInfoActivity.this,SaleoOneActivity.class);
                 startActivity(intent);
                 finish();
             }
         });
+
 
 
         appCompatImageView = findViewById(R.id.appCompatImageView);
@@ -170,6 +176,15 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
             public void onClick(View v) {
 
                 TextView chagepasswordtextview = findViewById(R.id.chagepasswordtextview);
+
+
+                final File docsFolder1 = new File(Environment.getExternalStorageDirectory() +"/Dukandar/dont_delete/");
+                File newFile = new File(docsFolder1,"01743.jpeg");
+
+                if (newFile.exists()) {
+                    newFile.delete();
+                }
+
 
                 if (vigivity ==true){
                     chagepasswordtextview.setVisibility(View.GONE);
@@ -266,7 +281,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
 
                     Random rand = new Random();
                     String picname = String.format("%05d", rand.nextInt(10000));
-                    myInfo.add(new MyInfoNote(null, dukanName1, dukanphon1, dukanAddres1,true,picname,00.00,00.0,00.0,0)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    myInfo.add(new MyInfoNote(null, dukanName1, dukanphon1, dukanAddres1,true,picname,0.0,0.0,0.0,0)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentReference> task) {
 
@@ -293,9 +308,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
                         }
                     });
 
-
                     Toast.makeText(getApplicationContext(), " Photo is empty ", Toast.LENGTH_LONG).show();
-
                 }
 
 

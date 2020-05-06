@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -25,6 +26,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -102,7 +104,9 @@ public class SeleTwoActivity extends AppCompatActivity {
 
     double totallestAvount;
     Double dueBalance ;
+    double withpaytaka;
 
+    double daubill;
 
     Date calendar1 = Calendar.getInstance().getTime();
     @SuppressLint("SimpleDateFormat")
@@ -126,7 +130,6 @@ public class SeleTwoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sele_two);
 
         Toolbar toolbar =  findViewById(R.id.toolbar_support);
-        toolbar.setTitle("Dukandar ");
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -329,21 +332,21 @@ public class SeleTwoActivity extends AppCompatActivity {
                 okButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                       String paymony = payeditetext.getText().toString();
+                        if (paymony.isEmpty()){
+                            Toast.makeText(SeleTwoActivity.this, " Empty", Toast.LENGTH_SHORT).show();
+                            return;
+
+                        }
                         payeditetext.setVisibility(View.GONE);
                         paymentLooding.setVisibility(View.VISIBLE);
                         okButton.setVisibility(View.GONE);
                         TitleTExt.setVisibility(View.GONE);
                         loadingTExt.setVisibility(View.VISIBLE);
-
                         PDFfloatingActionButton.setVisibility(View.VISIBLE);
-                        String paymony = payeditetext.getText().toString();
-                        if (paymony.isEmpty()){
-                            return;
-                        }
 
                         double paymonyDouable  = Double.parseDouble(paymony);
                         final double totallastbill = Double.parseDouble(TotalAmount.getText().toString());
-
 
                         double dautakaccustomer = 00.0;
                         if (bundelId!=null){
@@ -353,9 +356,23 @@ public class SeleTwoActivity extends AppCompatActivity {
                             double unktotallast = Double.parseDouble(unKnonetaka.getText().toString());
                             dautakaccustomer = unktotallast;
                         }
-                        double withpaytaka = totallastbill - paymonyDouable;
-                        double daubill = dautakaccustomer + withpaytaka;
 
+
+
+
+                        withpaytaka = totallastbill - paymonyDouable;
+
+                        Double conditonBil = totallastbill + dautakaccustomer;
+
+                        daubill = dautakaccustomer + withpaytaka;
+
+                        if (conditonBil < paymonyDouable){
+
+                            Toast.makeText(SeleTwoActivity.this, "Invalid Input", Toast.LENGTH_SHORT).show();
+
+                            dialog.dismiss();
+                            return;
+                        }
                         if (activeBalance!=null){
                             activeBalance += paymonyDouable;
                         }
@@ -395,7 +412,10 @@ public class SeleTwoActivity extends AppCompatActivity {
                         }
 
                         if (bundelId!=null) {
-
+                            final ProgressDialog pd = new ProgressDialog(SeleTwoActivity.this);
+                            pd.setMessage("loading");
+                            pd.setCancelable(false);
+                            pd.show();
                             final CollectionReference customer = FirebaseFirestore.getInstance()
                                     .collection("users").document(user_id).collection("Customers");
                             customer.document(bundelId).update("taka", daubill).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -427,11 +447,17 @@ public class SeleTwoActivity extends AppCompatActivity {
 
                                             });
                                             dialog.dismiss();
+                                            pd.dismiss();
                                         }
                                     });
                                 }
                             });
                         }if (unknonwnCustomerId!=null){
+
+                            final ProgressDialog pd = new ProgressDialog(SeleTwoActivity.this);
+                            pd.setMessage("loading");
+                            pd.setCancelable(false);
+                            pd.show();
                             String name = unKnoneName.getText().toString();
                             String phone = unKnonePhone.getText().toString();
                             final CollectionReference unkonwnCustomarksdf = FirebaseFirestore.getInstance()
@@ -457,7 +483,7 @@ public class SeleTwoActivity extends AppCompatActivity {
 
                                                         totalupdateData((ArrayList) list);
                                                         dialog.dismiss();
-
+                                                         pd.dismiss();
                                                     }
                                                 }
 
@@ -666,7 +692,7 @@ public class SeleTwoActivity extends AppCompatActivity {
 
                 proDuctName=dialogInvdiveoalProduct.findViewById(R.id.dilog_product_name);
                 productquantdy=dialogInvdiveoalProduct.findViewById(R.id.dilog_product_quantidy);
-                productprice=dialogInvdiveoalProduct.findViewById(R.id.dilog_product_price);
+                productprice = dialogInvdiveoalProduct.findViewById(R.id.dilog_product_price);
                 canclebutton=dialogInvdiveoalProduct.findViewById(R.id.dilog_product_cancle);
                 deletebutton=dialogInvdiveoalProduct.findViewById(R.id.dilog_product_delete);
                 workingId=dialogInvdiveoalProduct.findViewById(R.id.workingId);
@@ -690,18 +716,22 @@ public class SeleTwoActivity extends AppCompatActivity {
                        canclebutton.setVisibility(View.GONE);
                         workingId.setVisibility(View.VISIBLE);
 
-                        double subduble = totallestAvount - saleProductCutomerNote.getTotalPrice();
+                        if (saleProductCutomerNote.getPaid()==false) {
 
+                            double subduble = totallestAvount - saleProductCutomerNote.getTotalPrice();
+                            customerProductSaleUptatlasttaka.document(bundelId).update("lastTotal", subduble).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
 
-                        customerProductSaleUptatlasttaka.document(bundelId).update("lastTotal",subduble).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
+                                    saleProductIndevicualAdapter.deleteItem(position);
+                                    dialogInvdiveoalProduct.dismiss();
+                                }
+                            });
+                        }else {
 
-                               saleProductIndevicualAdapter.deleteItem(position);
-
-                               dialogInvdiveoalProduct.dismiss();
-                            }
-                        });
+                            saleProductIndevicualAdapter.deleteItem(position);
+                            dialogInvdiveoalProduct.dismiss();
+                        }
 
                     }
                 });

@@ -224,7 +224,7 @@ public class CustumarActivity extends AppCompatActivity {
 
     private void recyclear(String search) {
 
-        Query query = customer.whereEqualTo("nameCUstomer",search).orderBy("nameCUstomer", Query.Direction.ASCENDING);
+        Query query = customer.whereLessThanOrEqualTo("nameCUstomer",search).orderBy("nameCUstomer", Query.Direction.ASCENDING);
 
         FirestoreRecyclerOptions<CustomerNote> options = new FirestoreRecyclerOptions.Builder<CustomerNote>()
                 .setQuery(query, CustomerNote.class)
@@ -275,6 +275,8 @@ public class CustumarActivity extends AppCompatActivity {
                 startActivity(pdfIntent);
             }
         });
+
+        adapter.startListening();
 
     }
 

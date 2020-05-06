@@ -273,6 +273,10 @@ public class CustomerProfileViewActivity extends AppCompatActivity {
                             dautakaccustomer = Double.parseDouble(takaup);
 
                         }
+                        if (dautakaccustomer <paymonyDouable ){
+                            Toast.makeText(CustomerProfileViewActivity.this, "invalid input", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         double withpaytaka = dautakaccustomer - paymonyDouable;
                         double daubill = withpaytaka;
 

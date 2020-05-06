@@ -10,9 +10,12 @@ public class MyInfoNote {
     private boolean firsttime;
     private String picName;
     private Double invesment;
+    private Double withdrow;
     private Double activeBalance;
     private Double totalpaybil;
     private int date;
+    private String investmentDeleils;
+    private String withdrowDeleils;
 
     public MyInfoNote(){}
 
@@ -41,6 +44,21 @@ public class MyInfoNote {
         this.activeBalance = activeBalance;
         this.totalpaybil = totalpaybil;
         this.date = date;
+    }
+
+    public MyInfoNote(String myid, Double invesment, int date, String investmentDeleils) {
+        this.myid = myid;
+        this.invesment = invesment;
+        this.date = date;
+        this.investmentDeleils = investmentDeleils;
+    }
+
+    public MyInfoNote(String myid, boolean firsttime, Double withdrow, int date, String withdrowDeleils) {
+        this.myid = myid;
+        this.firsttime = firsttime;
+        this.withdrow = withdrow;
+        this.date = date;
+        this.withdrowDeleils = withdrowDeleils;
     }
 
     public String getMyid() {
@@ -123,6 +141,29 @@ public class MyInfoNote {
         this.totalpaybil = totalpaybil;
     }
 
+    public Double getWithdrow() {
+        return withdrow;
+    }
+
+    public void setWithdrow(Double withdrow) {
+        this.withdrow = withdrow;
+    }
+
+    public String getInvestmentDeleils() {
+        return investmentDeleils;
+    }
+
+    public void setInvestmentDeleils(String investmentDeleils) {
+        this.investmentDeleils = investmentDeleils;
+    }
+
+    public String getWithdrowDeleils() {
+        return withdrowDeleils;
+    }
+
+    public void setWithdrowDeleils(String withdrowDeleils) {
+        this.withdrowDeleils = withdrowDeleils;
+    }
 
     public int getDate() {
         return date;

@@ -52,6 +52,10 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'pub.devrel:easypermissions:2.0.1'
 
+
+    implementation 'com.alimuzaffar.lib:pinentryedittext:2.0.6'
+    implementation 'com.amitshekhar.android:android-networking:1.0.2'
+
     implementation 'com.github.clans:fab:1.6.4'
     implementation 'br.com.simplepass:loading-button-android:1.14.0'
     implementation 'com.google.firebase:firebase-firestore:21.4.1'

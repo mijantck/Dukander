@@ -11,7 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.DownloadManager;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -28,6 +30,7 @@ import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -57,6 +60,7 @@ import com.itextpdf.text.pdf.FontSelector;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -113,12 +117,17 @@ public class PDFActivity extends AppCompatActivity {
 
     TextView invoiceNmaber,invoiceDate,BilCutomerName,BilCustomerPhone,
             BilCutomerAddress,BilShopName,BilShopPhone,BilShopAddrss,SubTottal,Total,dautaka;
+    TextView BilShoppiciname;
 
     String BilShopImage;
      //ExtendedFloatingActionButton createPDF ;
     String picName;
-
+    String picName2;
+    ImageView imageView;
     double sum =00.00;
+
+    String urlImage;
+    String filename;
 
     @Override
     protected void onStart() {
@@ -134,6 +143,8 @@ public class PDFActivity extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
 
+
+                String picurl = null;
                 assert queryDocumentSnapshots != null;
                 for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                     if (doc.get("dukanName") != null) {
@@ -142,14 +153,18 @@ public class PDFActivity extends AppCompatActivity {
                     if (doc.get("dukanaddress") != null) {
                         BilShopAddrss.setText(Objects.requireNonNull(doc.get("dukanaddress")).toString());
                     }
-                    if (doc.get("dukanaddpicurl") != null) {
-                       BilShopImage = Objects.requireNonNull(doc.get("dukanaddpicurl")).toString();
-                    }if (doc.get("dukanphone") != null) {
+                   if (doc.get("dukanphone") != null) {
                         BilShopPhone.setText(Objects.requireNonNull(doc.get("dukanphone")).toString());
                     }if (doc.get("picName") != null) {
                         picName= doc.get("picName").toString();
+                    } if (doc.get("dukanaddpicurl") != null) {
+                        BilShopImage = Objects.requireNonNull(doc.get("dukanaddpicurl")).toString();
+                        Picasso.get().load(Uri.parse(BilShopImage)).into(imageView);
+                        picurl = BilShopImage;
                     }
                 }
+
+                urlImage = picurl;
 
             }
         });
@@ -181,11 +196,13 @@ public class PDFActivity extends AppCompatActivity {
                     BilCustomerPhone=findViewById(R.id.BilCustomrhone);
                     BilCutomerAddress=findViewById(R.id.BilCustomrAddress);
                     BilShopName=findViewById(R.id.BilShopName);
+                    imageView=findViewById(R.id.shopeBanner);
                     BilShopPhone=findViewById(R.id.BilShopPhone);
                     BilShopAddrss=findViewById(R.id.BilShopAddress);
                     SubTottal=findViewById(R.id.Subtotal);
                     Total=findViewById(R.id.PDFtotal);
                     dautaka=findViewById(R.id.dautaka);
+                    BilShoppiciname = findViewById(R.id.BilShoppiciname);
 
                    ExtendedFloatingActionButton createPDF = (ExtendedFloatingActionButton) findViewById(R.id.PDFcreate);
 
@@ -205,6 +222,7 @@ public class PDFActivity extends AppCompatActivity {
                 totaltaka = bundle.getString("totaltaka");
                 takacutomerup = bundle.getString("takacutomerup");
 
+
                 if (name!=null){
                     BilCutomerName.setText(name);
                 }if (phone!=null){
@@ -222,6 +240,7 @@ public class PDFActivity extends AppCompatActivity {
             }
 
 
+
         db = FirebaseFirestore.getInstance();
 
 
@@ -231,14 +250,16 @@ public class PDFActivity extends AppCompatActivity {
         progressDialog.show();
 
 
-        final File docsFolder1 = new File(Environment.getExternalStorageDirectory() + "/Dukandar/");
-        File newFile = new File(docsFolder1,picName+".jpeg");
+
+
+        final File docsFolder1 = new File(Environment.getExternalStorageDirectory() +"/Dukandar/");
+
+        File newFile = new File(docsFolder1,"01743.jpeg");
+
 
         if (newFile.exists()){
             Bitmap myBitmap = BitmapFactory.decodeFile(newFile.getAbsolutePath());
-
             ImageView myImage =  findViewById(R.id.shopeBanner);
-
             myImage.setImageBitmap(myBitmap);
         }
 
@@ -264,8 +285,9 @@ public class PDFActivity extends AppCompatActivity {
         createPDF.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 try {
-                    progressDialog.show();
                     createPdfWrapper();
                     progressDialog.dismiss();
                 } catch (FileNotFoundException | DocumentException e) {
@@ -301,7 +323,11 @@ public class PDFActivity extends AppCompatActivity {
                         REQUEST_CODE_ASK_PERMISSIONS);
             }
         } else {
+
+
             createPdf();
+
+            progressDialog.dismiss();
         }
     }
 
@@ -315,7 +341,7 @@ public class PDFActivity extends AppCompatActivity {
 
         }
 
-        
+
         String pdfname = name+datenew+".pdf";
         pdfFile = new File(docsFolder.getAbsolutePath(), pdfname);
         OutputStream output = new FileOutputStream(pdfFile);
@@ -323,20 +349,17 @@ public class PDFActivity extends AppCompatActivity {
 
         PdfWriter.getInstance(document, output);
 
+
         try {
-            final File docsFolder1 = new File(Environment.getExternalStorageDirectory() + "/Dukandar/");
-            File newFile = new File(docsFolder1,picName+".jpeg");
-            image = Image.getInstance(String.valueOf(newFile));
+            final File docsFolder1 = new File(Environment.getExternalStorageDirectory() +"/Dukandar/dont_delete/");
+            File newFile1 = new File(docsFolder1,"01743.jpeg");
+            image = Image.getInstance(String.valueOf(newFile1));
             image.scaleAbsolute(540f, 72f);//image width,height
+            Toast.makeText(PDFActivity.this, " pic add ", Toast.LENGTH_SHORT).show();
+        }catch (Exception e1) {
 
-
-
-        }catch (Exception e) {
-
-            e.printStackTrace();
-
+            e1.printStackTrace();
         }
-
 
 
         PdfPTable irdTable = new PdfPTable(2);
@@ -456,6 +479,10 @@ public class PDFActivity extends AppCompatActivity {
         accounts.addCell(getAccountsCellR(dautaka.getText().toString()));
         accounts.addCell(getAccountsCell("Total"));
         accounts.addCell(getAccountsCellR(Total.getText().toString()));
+        accounts.addCell(getAccountsCell("Amount Paid"));
+        accounts.addCell(getAccountsCellR("        "));
+        accounts.addCell(getAccountsCell("Total Due"));
+        accounts.addCell(getAccountsCellR("        "));
         PdfPCell summaryR = new PdfPCell (accounts);
         summaryR.setColspan (2);
         table.addCell(summaryR);
@@ -463,7 +490,7 @@ public class PDFActivity extends AppCompatActivity {
         PdfPTable describer = new PdfPTable(1);
         describer.setWidthPercentage(100);
         describer.addCell(getdescCell(" "));
-        describer.addCell(getdescCell("Operation and maintenance by MR.SOFT.IT || © MR.SOFT.IT 2020 || http://www.mr.soft.it.com"));
+        describer.addCell(getdescCell("Operation and maintenance by MR.SOFT.IT || © MR.SOFT.IT 2020 || http://www.mrsoftit.com"));
 
         document.open();
 
@@ -480,14 +507,17 @@ public class PDFActivity extends AppCompatActivity {
         document.add(table);
         document.add(describer);
 
-
         document.close();
+
         previewPdf();
+
+        progressDialog.dismiss();
+
     }
 
 
     private void previewPdf() {
-        PackageManager packageManager = PDFActivity.this.getPackageManager();
+       /* PackageManager packageManager = PDFActivity.this.getPackageManager();
         Intent testIntent = new Intent(Intent.ACTION_VIEW);
         testIntent.setType("application/pdf");
         List list = packageManager.queryIntentActivities(testIntent, PackageManager.MATCH_DEFAULT_ONLY);
@@ -497,7 +527,8 @@ public class PDFActivity extends AppCompatActivity {
             Uri uri = Uri.fromFile(pdfFile);
             intent.setDataAndType(uri, "application/pdf");
             startActivity(intent);
-        } else {
+
+        } else {*/
 
 if (id!=null){
 
@@ -519,9 +550,8 @@ if (id!=null){
 
 
     });
-
 }
-            if (unkcutomarId!=null){
+if (unkcutomarId!=null){
 
                 CollectionReference UNcustomerProductSale = FirebaseFirestore.getInstance()
                         .collection("users").document(user_id).collection("UnknownCustomer").document(unkcutomarId).collection("salePrucuct");
@@ -544,10 +574,21 @@ if (id!=null){
                 });
             }
 
-            Snackbar snackbar_su = Snackbar
-                    .make(getCurrentFocus(), " GO TO "+pdfFile, Snackbar.LENGTH_LONG);
-            snackbar_su.show();
-        }
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(PDFActivity.this);
+        builder1.setTitle("PDF Create ");
+        builder1.setMessage(pdfFile+"");
+        builder1.setCancelable(true);
+
+        builder1.setPositiveButton(
+                "Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
     }
 
     private void showMessageOKCancel(DialogInterface.OnClickListener okListener) {
@@ -607,8 +648,6 @@ if (id!=null){
             }
         });
 
-
-
     }
     public  void  UnknownloadData(){
         CollectionReference UNcustomerProductSale = FirebaseFirestore.getInstance()
@@ -644,7 +683,7 @@ if (id!=null){
 
                         saleProductCutomerNote.setTotalPrice(totalPrice);
 
-                        Toast.makeText(PDFActivity.this, price+" unkown Load", Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(PDFActivity.this, price+" unkown Load", Toast.LENGTH_SHORT).show();
                         PDFList.add(saleProductCutomerNote);
 
 
@@ -792,6 +831,7 @@ if (id!=null){
                     }
                 }
                 SubTottal.setText(sum+"");
+
                 double setTotaltaka = Double.parseDouble(takacutomerup);
 
                double calculate= setTotaltaka + sum;
@@ -892,6 +932,7 @@ if (id!=null){
         // Iterate through the list
         for (int k = 0; k < list.size(); k++) {
 
+
             // Update each list item
             DocumentReference ref = db.collection("users").document(user_id).collection("UnknownCustomer")
                     .document(unkcutomarId).collection("salePrucuct").document((String) list.get(k));
@@ -909,6 +950,5 @@ if (id!=null){
         });
 
     }
-
 
 }

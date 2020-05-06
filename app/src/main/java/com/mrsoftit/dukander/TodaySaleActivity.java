@@ -1,16 +1,23 @@
 package com.mrsoftit.dukander;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -58,6 +65,23 @@ public class TodaySaleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_today_sale);
+
+        Toolbar toolbar =  findViewById(R.id.toolbar_support);
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        Objects.requireNonNull(toolbar.getNavigationIcon()).setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
+
+
+        toolbar.setSubtitleTextColor(getResources().getColor(R.color.grey));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TodaySaleActivity.this,MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
 
         dateView = findViewById(R.id.dateTextView);
@@ -123,26 +147,42 @@ public class TodaySaleActivity extends AppCompatActivity {
         myInfo.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-
                 if (e != null) {
                     return;
                 }
-
                 totalpaybilint = 00.00;
 
+                String id = null;
+                int  date = 0;
                 assert queryDocumentSnapshots != null;
                 for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
 
                     if (doc.get("totalpaybil") != null) {
-                        double totalpaybil  = (double) doc.get("totalpaybil");
-
-                        totalpaybilint = totalpaybil;
-
+                        double d = Double.parseDouble(doc.get("totalpaybil").toString());
+                      //  double totalpaybil  = (double) doc.get("totalpaybil");
+                        totalpaybilint = d;
+                    } if (doc.get("totalpaybil") != null) {
+                        id = doc.getId();
                     }
-
+                    if (doc.get("date") != null) {
+                        String dateS =  doc.get("date").toString();
+                        int i =Integer.parseInt(dateS);
+                        date = i;
+                    }
                     todayTotaldue.setText(totalsum - totalpaybilint+"");
-
                 }
+
+                if (datenew != date ) {
+
+                    myInfo.document(id).update("date",datenew,"totalpaybil",0.0).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+
+                        }
+                    });
+                }
+
+
             }
         });
 

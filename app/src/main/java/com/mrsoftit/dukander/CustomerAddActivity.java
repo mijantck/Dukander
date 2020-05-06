@@ -65,7 +65,6 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
     DatabaseReference mDatabaseReference;
     FirebaseFirestore firebaseFirestore;
     ProgressDialog progressDialog;
-    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     String  idup, nameup,phoneup,takaup,addresup,imageup;
 
     boolean image = false;
@@ -76,7 +75,7 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
     public Uri mImageUri;
     String id;
 
-
+    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     String user_id = currentUser.getUid();
 
     CollectionReference customer = FirebaseFirestore.getInstance()
@@ -99,6 +98,17 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setSubtitleTextColor(getResources().getColor(R.color.grey));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CustomerAddActivity.this,CustumarActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+
 
         circleCutomerImageView = findViewById(R.id.customar_add_pictur);
         customerName = findViewById(R.id.custumar_name_add);
@@ -144,16 +154,6 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
 
 
         }
-
-        toolbar.setSubtitleTextColor(getResources().getColor(R.color.grey));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(CustomerAddActivity.this,CustumarActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
 
 
 

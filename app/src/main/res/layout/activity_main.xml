@@ -272,7 +272,7 @@
                             <TextView
                                 android:layout_gravity="bottom"
                                 android:gravity="center"
-                                android:text="@string/withdraw"
+                                android:text="Cash out "
                                 android:textColor="#2ECC71"
                                 android:textStyle="bold"
                                 android:textSize="15sp"
