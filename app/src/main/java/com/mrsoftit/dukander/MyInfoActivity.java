@@ -349,7 +349,12 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
               String olrdpassowr=  orldpass.getText().toString();
               final String newdpassowr=  newpass.getText().toString();
 
-
+              if (olrdpassowr.isEmpty()){
+                  Toast.makeText(MyInfoActivity.this, " Enter Old password", Toast.LENGTH_SHORT).show();
+              }
+              if (newdpassowr.isEmpty()){
+                    Toast.makeText(MyInfoActivity.this, " Enter new password", Toast.LENGTH_SHORT).show();
+                }
                 final String email = currentUser.getEmail();
                 AuthCredential credential = EmailAuthProvider.getCredential(email,olrdpassowr);
 

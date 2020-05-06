@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -152,11 +153,11 @@ public class PinViewActivity extends AppCompatActivity {
 
                     if (str.toString().equals(pin)) {
                         Toast.makeText(PinViewActivity.this, "SUCCESS", Toast.LENGTH_SHORT).show();
-                        Toast.makeText(PinViewActivity.this, str.toString()+"", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(PinViewActivity.this,MainActivity.class));
+                        finish();
                     } else {
                         pinEntry2.setError(true);
                         Toast.makeText(PinViewActivity.this, "FAIL", Toast.LENGTH_SHORT).show();
-                        Toast.makeText(PinViewActivity.this, pin+"", Toast.LENGTH_SHORT).show();
 
                         pinEntry2.postDelayed(new Runnable() {
                             @Override

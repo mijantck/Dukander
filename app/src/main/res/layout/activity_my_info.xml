@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-   >
+    >
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_support"
@@ -211,6 +212,7 @@
 
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/passChange"
             android:layout_below="@+id/editeshopbuttton"
             android:gravity="center"
             android:layout_width="match_parent"
@@ -222,7 +224,7 @@
                 android:padding="10dp"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:text="Change Password  -->"
+                android:text="Change Password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <LinearLayout
@@ -266,6 +268,87 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/newPasswordButton"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:text="CONFIRM"
+                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_below="@+id/passChange"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/chagepintextview"
+                android:textColor="@color/colorPrimary"
+                android:padding="10dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="Change pin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <LinearLayout
+                android:visibility="visible"
+                android:id="@+id/PinLayout"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:text="Enter Your old pin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <com.alimuzaffar.lib.pin.PinEntryEditText
+                    android:id="@+id/old_pin_entry"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@null"
+                    android:cursorVisible="false"
+                    android:digits="1234567890"
+                    android:inputType="number"
+                    android:maxLength="4"
+                    android:textIsSelectable="false"
+                    android:textSize="24dp"
+                    app:pinAnimationType="fromBottom"
+                    app:pinBackgroundDrawable="@drawable/bg_pin"
+                    app:pinBackgroundIsSquare="true"
+                    app:pinCharacterSpacing="4dp"
+                    app:pinTextBottomPadding="16dp"
+                    tools:ignore="SpUsage" />
+
+                <TextView
+                    android:text="Enter Your new pin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                
+                <com.alimuzaffar.lib.pin.PinEntryEditText
+                    android:id="@+id/new_pin_entry"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@null"
+                    android:cursorVisible="false"
+                    android:digits="1234567890"
+                    android:inputType="number"
+                    android:maxLength="4"
+                    android:textIsSelectable="false"
+                    android:textSize="24dp"
+                    app:pinAnimationType="fromBottom"
+                    app:pinBackgroundDrawable="@drawable/bg_pin"
+                    app:pinBackgroundIsSquare="true"
+                    app:pinCharacterSpacing="4dp"
+                    app:pinTextBottomPadding="16dp"
+                    tools:ignore="SpUsage" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/newPindButton"
                     android:gravity="center"
                     android:layout_width="wrap_content"
                     android:text="CONFIRM"

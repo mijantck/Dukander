@@ -167,14 +167,13 @@ public class WitdrawActivity extends AppCompatActivity {
                     public void onClick(View v) {
 
                         String investmenttaka=    payeditetext.getText().toString();
-                        double aDoubleinvestmenttaka = Double.parseDouble(investmenttaka);
-                        String details =    moneyInvest_withdrow_ditails_editeTEaxt.getText().toString();
-
                         if (investmenttaka.isEmpty()){
-
                             Toast.makeText(WitdrawActivity.this, "Cashout file is empty ", Toast.LENGTH_SHORT).show();
                             return;
                         }
+
+                        double aDoubleinvestmenttaka = Double.parseDouble(investmenttaka);
+                        String details =    moneyInvest_withdrow_ditails_editeTEaxt.getText().toString();
 
 
                         pd.show();
