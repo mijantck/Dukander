@@ -24,6 +24,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
@@ -98,9 +100,7 @@ public class PinViewActivity extends AppCompatActivity {
             pinNewPin.setOnPinEnteredListener(new PinEntryEditText.OnPinEnteredListener() {
                 @Override
                 public void onPinEntered(CharSequence str) {
-
                     pin = str.toString();
-
                 }
             });
         }
@@ -125,14 +125,21 @@ public class PinViewActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<Void> task) {
                                     final CollectionReference myPin = FirebaseFirestore.getInstance()
                                             .collection("AllPin");
-                                    myPin.add(new PinNote(idnew,cutomerGmail,pin,true)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DocumentReference> task) {
 
-                                                    pinNewPin.setText(null);
-                                                    progressDialog.dismiss();
+                                    Map<String, Object> PinData = new HashMap<>();
+                                    PinData.put("id",idnew);
+                                    PinData.put("gmail",cutomerGmail);
+                                    PinData.put("pin",pin);
+                                    PinData.put("fairtTime",true);
+
+
+                                    myPin.document(idnew).set(PinData).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            progressDialog.dismiss();
                                             newPinLayout.setVisibility(View.GONE);
                                             pinLayout.setVisibility(View.VISIBLE);
+
                                         }
                                     });
                                 }
@@ -152,7 +159,7 @@ public class PinViewActivity extends AppCompatActivity {
                 public void onPinEntered(CharSequence str) {
 
                     if (str.toString().equals(pin)) {
-                        Toast.makeText(PinViewActivity.this, "SUCCESS", Toast.LENGTH_SHORT).show();
+
                         startActivity(new Intent(PinViewActivity.this,MainActivity.class));
                         finish();
                     } else {

@@ -34,6 +34,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -77,10 +78,10 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
     boolean firstTime = false;
 
 
-    CircularProgressButton button ;
-    PinEntryEditText oldPin,newpin;
+    MaterialButton newPindButton ;
+    PinEntryEditText old_pin_entry,new_pin_entry;
 
-    private LinearLayout shopediteView,shopdelaisView;
+    private LinearLayout shopediteView,shopdelaisView,passChange,PinLayout;
     private MaterialButton etideButton;
     private boolean vigivity =true;
     private ImageView appCompatImageView,shopeImageView;
@@ -88,11 +89,15 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
 
 
 
+    String pin,idpin;
     private TextInputEditText dukanName, dukanPhone,dukanaddess,orldpass,newpass;
     private MaterialButton addmyinfo,confirm;
 
     FirebaseFirestore firestore;
+    TextView chagepasswordtextview;
+    TextView chagepintextview;
 
+    String oldpin,newpin;
 
     @Override
     public void onStart() {
@@ -161,6 +166,11 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
         dukanaddess = findViewById(R.id.DukantAddres);
         addmyinfo = findViewById(R.id.addedmyinfo);
 
+        chagepasswordtextview = findViewById(R.id.chagepasswordtextview);
+        chagepintextview = findViewById(R.id.chagepintextview);
+
+
+
         shopediteView= findViewById(R.id.shopdetailEditor);
         shopdelaisView= findViewById(R.id.shopdelaisView);
         etideButton= findViewById(R.id.myinfoEditeButton);
@@ -175,12 +185,41 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
         newpass =findViewById(R.id.newPassword);
         confirm =findViewById(R.id.newPasswordButton);
 
+        passChange = findViewById(R.id.chagepintextviewLiniarlayout);
+        old_pin_entry = findViewById(R.id.old_pin_entry);
+        new_pin_entry = findViewById(R.id.new_pin_entry);
+        newPindButton = findViewById(R.id.newPindButton);
+        chagepintextview = findViewById(R.id.chagepintextview);
+        PinLayout = findViewById(R.id.PinLayout);
+
+
+
+        final CollectionReference myPin = FirebaseFirestore.getInstance()
+                .collection("users").document(user_id).collection("Pin");
+
+        myPin.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+
+                    PinNote pinNote = new PinNote();
+                    for (DocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+
+                        pinNote.setFairtTime((Boolean) document.get("fairtTime"));
+                        pin = Objects.requireNonNull(document.get("pin")).toString();
+                        idpin = Objects.requireNonNull(document.get("id")).toString();
+
+                    }
+
+
+                }}
+        });
+
 
         etideButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                TextView chagepasswordtextview = findViewById(R.id.chagepasswordtextview);
 
 
                 final File docsFolder1 = new File(Environment.getExternalStorageDirectory() +"/Dukandar/dont_delete/");
@@ -193,6 +232,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
 
                 if (vigivity ==true){
                     chagepasswordtextview.setVisibility(View.GONE);
+                    passChange.setVisibility(View.GONE);
                     shopdelaisView.setVisibility(View.GONE);
                     shopediteView.setVisibility(View.VISIBLE);
                     vigivity=false;
@@ -250,6 +290,8 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
                     final String dukanName1 = dukanName.getText().toString();
                     final String dukanphon1 = dukanPhone.getText().toString();
                     final String dukanAddres1 = dukanaddess.getText().toString();
+
+
 
                     myInfo.document(id).update( "dukanName", dukanName1, "dukanphone", dukanphon1, "dukanaddress", dukanAddres1)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -346,6 +388,21 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
             }
         });
 
+        chagepintextview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if ( open == true){
+                    PinLayout.setVisibility(View.VISIBLE);
+                    open = false;
+                }else  if (open == false){
+                    PinLayout.setVisibility(View.GONE);
+                    open = true;
+                }
+
+            }
+        });
+
 
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -390,6 +447,66 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
                 });
             }
         });
+
+        if (old_pin_entry != null) {
+            old_pin_entry.setAnimateText(true);
+            old_pin_entry.setOnPinEnteredListener(new PinEntryEditText.OnPinEnteredListener() {
+                @Override
+                public void onPinEntered(CharSequence str) {
+                    oldpin = str.toString();
+
+                }
+            });
+        }
+        if (new_pin_entry != null) {
+            new_pin_entry.setAnimateText(true);
+            new_pin_entry.setOnPinEnteredListener(new PinEntryEditText.OnPinEnteredListener() {
+                @Override
+                public void onPinEntered(CharSequence str) {
+                    newpin = str.toString();
+
+                }
+            });
+        }
+
+        newPindButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (oldpin.isEmpty()){
+
+                    Toast.makeText(MyInfoActivity.this, "Old Pin is Empty", Toast.LENGTH_SHORT).show();
+                    return;
+                } if (oldpin.isEmpty()){
+
+                    Toast.makeText(MyInfoActivity.this, "New Pin is Empty", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (oldpin.equals(pin)){
+                    progressDialog = new ProgressDialog(MyInfoActivity.this);
+                    progressDialog.setTitle("Changing pin");
+                    progressDialog.show();
+
+
+                    myPin.document(idpin).update("pin",newpin).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+
+                            progressDialog.dismiss();
+                            PinLayout.setVisibility(View.GONE);
+                            open = true;
+
+                        }
+                    });
+
+                }else {
+                    Toast.makeText(MyInfoActivity.this, "OLD PIN  INCORRECT  ", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
 
     }
 

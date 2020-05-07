@@ -30,7 +30,7 @@
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             style="@style/viewParent.headerText.NoMode"
-            android:textColor="@color/primary_dark"
+            android:textColor="#FFF"
             android:text="Here’s\nEnter your \nsecurity  \ncode! "/>
         <ImageView
             android:layout_width="wrap_content"
@@ -43,17 +43,18 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/newPinCode"
                 android:visibility="gone"
                 android:layout_marginTop="50dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 app:cardBackgroundColor="@color/whiteTextColor"
                 app:cardCornerRadius="10dp">
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:orientation="vertical">
                     <TextView
@@ -67,7 +68,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:layout_gravity="center_horizontal"
-
                         android:background="@null"
                         android:cursorVisible="false"
                         android:digits="1234567890"
@@ -85,30 +85,28 @@
 
                     <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
                         android:id="@+id/cirPincodeButton"
+                        android:layout_marginTop="10dp"
                         style="@style/loginButton"
                         app:spinning_bar_width="4dp"
                         app:spinning_bar_color="#FFF"
                         android:text="CONFIRM PIN"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/loginViewsMargin"
                         app:initialCornerAngle="27dp"
-                        app:spinning_bar_padding="6dp"
-                        android:layout_marginBottom="40dp"/>
+                        app:spinning_bar_padding="6dp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-
                 android:id="@+id/pin_code"
                 android:layout_marginTop="100dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 app:cardBackgroundColor="@color/whiteTextColor"
                 app:cardCornerRadius="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:orientation="vertical">
                     <TextView
@@ -126,7 +124,7 @@
                         android:background="@null"
                         android:cursorVisible="false"
                         android:digits="1234567890"
-                        android:inputType="number"
+                        android:inputType="numberPassword"
                         android:maxLength="4"
                         android:textIsSelectable="false"
                         android:textSize="24dp"
