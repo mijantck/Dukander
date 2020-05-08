@@ -13,6 +13,10 @@
            android:icon="@drawable/customer"
             android:title="customer information" />
         <item
+            android:id="@+id/Unknown_customer"
+            android:icon="@drawable/customer"
+            android:title="Unknown information" />
+        <item
             android:id="@+id/nav_chat"
             android:icon="@drawable/produclist"
             android:title="products list" />

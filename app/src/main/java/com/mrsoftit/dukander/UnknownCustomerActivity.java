@@ -1,6 +1,5 @@
 package com.mrsoftit.dukander;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -16,10 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,12 +25,8 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.List;
-
-public class CustumarActivity extends AppCompatActivity {
+public class UnknownCustomerActivity extends AppCompatActivity {
 
     FloatingActionButton floating_action_button_customer;
 
@@ -44,19 +38,14 @@ public class CustumarActivity extends AppCompatActivity {
     String user_id = currentUser.getUid();
 
     CollectionReference customer = FirebaseFirestore.getInstance()
-            .collection("users").document(user_id).collection("Customers");
-
-
-    List<CustomerNote> exampleList;
-
+            .collection("users").document(user_id).collection("UnknownCustomer");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_custumar);
+        setContentView(R.layout.activity_unknown_customer);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_support);
-        toolbar.setTitle("Dukandar");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -65,7 +54,7 @@ public class CustumarActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CustumarActivity.this,MainActivity.class);
+                Intent intent = new Intent(UnknownCustomerActivity.this,MainActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -77,21 +66,7 @@ public class CustumarActivity extends AppCompatActivity {
         recyclear();
 
 
-        floating_action_button_customer = findViewById(R.id.floating_action_button_customer);
-
-
-        floating_action_button_customer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(CustumarActivity.this,CustomerAddActivity.class);
-
-                startActivity(intent);
-
-            }
-        });
     }
-
 
     private void recyclear() {
         Query query = customer.orderBy("nameCUstomer", Query.Direction.ASCENDING);
@@ -102,7 +77,7 @@ public class CustumarActivity extends AppCompatActivity {
 
         adapter = new CusomareAdapter(options);
 
-        RecyclerView recyclerView = findViewById(R.id.customar_info_recyclerView);
+        RecyclerView recyclerView = findViewById(R.id.unknown_cutomer_info_recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -113,8 +88,8 @@ public class CustumarActivity extends AppCompatActivity {
             @Override
             public void onItemClick(final DocumentSnapshot documentSnapshot, final int position) {
 
-                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CustumarActivity.this);
-                String[] option = {"Profile Edite ", "View Profile","Delete"};
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(UnknownCustomerActivity.this);
+                String[] option = {"View Profile","Delete"};
                 builder.setItems(option, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -123,6 +98,7 @@ public class CustumarActivity extends AppCompatActivity {
 
                         if (which == 0) {
 
+
                             CustomerNote customerNote = documentSnapshot.toObject(CustomerNote.class);
                             String id = documentSnapshot.getId();
                             String imageurl = customerNote.getImageUrl();
@@ -134,9 +110,10 @@ public class CustumarActivity extends AppCompatActivity {
 
                             String addreds = customerNote.getAddres();
 
-                            Intent pdfIntent = new Intent(CustumarActivity.this, CustomerAddActivity.class);
+                            Intent pdfIntent = new Intent(UnknownCustomerActivity.this, CustomerProfileViewActivity.class);
 
-                            pdfIntent.putExtra("id", id);
+                            pdfIntent.putExtra("uid", id);
+
                             if (imageurl != null) {
                                 pdfIntent.putExtra("imageurl", imageurl);
                             }
@@ -152,47 +129,10 @@ public class CustumarActivity extends AppCompatActivity {
                                 pdfIntent.putExtra("addreds", addreds);
                             }
                             startActivity(pdfIntent);
-
-
                         }
-                        if (which == 1) {
+                        if(which == 1){
 
-
-                            CustomerNote customerNote = documentSnapshot.toObject(CustomerNote.class);
-                            String id = documentSnapshot.getId();
-                            String imageurl = customerNote.getImageUrl();
-                            String name = customerNote.getNameCUstomer();
-                            String phone = customerNote.getPhone();
-                            double takadobul = customerNote.getTaka();
-
-                            String taka = Double.toString(takadobul);
-
-                            String addreds = customerNote.getAddres();
-
-                            Intent pdfIntent = new Intent(CustumarActivity.this, CustomerProfileViewActivity.class);
-
-                            pdfIntent.putExtra("id", id);
-                            if (imageurl != null) {
-                                pdfIntent.putExtra("imageurl", imageurl);
-                            }
-                            pdfIntent.putExtra("name", name);
-
-                            pdfIntent.putExtra("phone", phone);
-                            if (taka != null) {
-
-                                pdfIntent.putExtra("taka", taka);
-                            }
-
-                            if (addreds != null) {
-                                pdfIntent.putExtra("addreds", addreds);
-                            }
-                            startActivity(pdfIntent);
-
-
-                        }
-                        if(which == 2){
-
-                            new AlertDialog.Builder(CustumarActivity.this).setTitle("Confirm Delete?")
+                            new AlertDialog.Builder(UnknownCustomerActivity.this).setTitle("Confirm Delete?")
                                     .setMessage("Are you sure?")
                                     .setPositiveButton("YES",
                                             new DialogInterface.OnClickListener() {
@@ -232,7 +172,7 @@ public class CustumarActivity extends AppCompatActivity {
 
         adapter = new CusomareAdapter(options);
 
-        RecyclerView recyclerView = findViewById(R.id.customar_info_recyclerView);
+        RecyclerView recyclerView = findViewById(R.id.unknown_cutomer_info_recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -243,8 +183,8 @@ public class CustumarActivity extends AppCompatActivity {
             @Override
             public void onItemClick(final DocumentSnapshot documentSnapshot, final int position) {
 
-                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CustumarActivity.this);
-                String[] option = {"Profile Edite ", "View Profile","Delete"};
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(UnknownCustomerActivity.this);
+                String[] option = {"View Profile","Delete"};
                 builder.setItems(option, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -252,7 +192,6 @@ public class CustumarActivity extends AppCompatActivity {
                         db = FirebaseFirestore.getInstance();
 
                         if (which == 0) {
-
                             CustomerNote customerNote = documentSnapshot.toObject(CustomerNote.class);
                             String id = documentSnapshot.getId();
                             String imageurl = customerNote.getImageUrl();
@@ -264,9 +203,9 @@ public class CustumarActivity extends AppCompatActivity {
 
                             String addreds = customerNote.getAddres();
 
-                            Intent pdfIntent = new Intent(CustumarActivity.this, CustomerAddActivity.class);
+                            Intent pdfIntent = new Intent(UnknownCustomerActivity.this, CustomerProfileViewActivity.class);
 
-                            pdfIntent.putExtra("id", id);
+                            pdfIntent.putExtra("uid", id);
                             if (imageurl != null) {
                                 pdfIntent.putExtra("imageurl", imageurl);
                             }
@@ -281,48 +220,11 @@ public class CustumarActivity extends AppCompatActivity {
                             if (addreds != null) {
                                 pdfIntent.putExtra("addreds", addreds);
                             }
-                            startActivity(pdfIntent);
-
-
+                           startActivity(pdfIntent);
                         }
-                        if (which == 1) {
+                        if(which == 1){
 
-
-                            CustomerNote customerNote = documentSnapshot.toObject(CustomerNote.class);
-                            String id = documentSnapshot.getId();
-                            String imageurl = customerNote.getImageUrl();
-                            String name = customerNote.getNameCUstomer();
-                            String phone = customerNote.getPhone();
-                            double takadobul = customerNote.getTaka();
-
-                            String taka = Double.toString(takadobul);
-
-                            String addreds = customerNote.getAddres();
-
-                            Intent pdfIntent = new Intent(CustumarActivity.this, CustomerProfileViewActivity.class);
-
-                            pdfIntent.putExtra("id", id);
-                            if (imageurl != null) {
-                                pdfIntent.putExtra("imageurl", imageurl);
-                            }
-                            pdfIntent.putExtra("name", name);
-
-                            pdfIntent.putExtra("phone", phone);
-                            if (taka != null) {
-
-                                pdfIntent.putExtra("taka", taka);
-                            }
-
-                            if (addreds != null) {
-                                pdfIntent.putExtra("addreds", addreds);
-                            }
-                            startActivity(pdfIntent);
-
-
-                        }
-                        if(which == 2){
-
-                            new AlertDialog.Builder(CustumarActivity.this).setTitle("Confirm Delete?")
+                            new AlertDialog.Builder(UnknownCustomerActivity.this).setTitle("Confirm Delete?")
                                     .setMessage("Are you sure?")
                                     .setPositiveButton("YES",
                                             new DialogInterface.OnClickListener() {

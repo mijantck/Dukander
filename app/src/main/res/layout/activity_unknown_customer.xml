@@ -1,0 +1,50 @@
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Main content -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_support"
+            android:layout_width="match_parent"
+            app:titleTextColor="#ffff"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@drawable/main_header_bk"
+            >
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                >
+
+                <TextView
+                    android:textSize="20sp"
+                    android:textColor="#FFFF"
+                    android:gravity="center_vertical"
+                    android:text="Customer List"
+                    style="@style/headerText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/unknown_cutomer_info_recyclerView"
+            android:layout_below="@id/toolbar_support"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+
+    </RelativeLayout>
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -223,7 +223,13 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 File newFile = new File(docsFolder1,"01743.jpeg");
 
                 if (!newFile.exists()) {
-                    dwnld(MainActivity.this, urlImage, "01743.jpeg");
+
+                    if (urlImage!=null){
+
+                        dwnld(MainActivity.this, urlImage, "01743.jpeg");
+
+                    }
+
                 }
             }
         });
@@ -248,6 +254,11 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             case R.id.nav_message:
                 Intent homeIntnt =new Intent(MainActivity.this,CustumarActivity.class);
                 startActivity(homeIntnt);
+                finish();
+                break;
+            case R.id.Unknown_customer:
+                Intent unKnownUsomer =new Intent(MainActivity.this,UnknownCustomerActivity.class);
+                startActivity(unKnownUsomer);
                 finish();
                 break;
             case R.id.nav_chat:
@@ -419,8 +430,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     }
 
     public void dwnld(Context context, String pdfUrl1, String name) {
-
-
         ProgressDialog progressDialog =new ProgressDialog(MainActivity.this);
         progressDialog.setCancelable(false);
         progressDialog.setTitle("Wait...");
@@ -431,8 +440,13 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         if (!direct.exists()) {
             direct.mkdirs();
         }
+
+        if (direct.exists()){
+
+
         // Create request for android download manager
         DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+
         Uri uri = Uri.parse(pdfUrl1);
         DownloadManager.Request request = new DownloadManager.Request(uri);
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI |
@@ -451,5 +465,11 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         downloadManager.enqueue(request);
 
         progressDialog.dismiss();
+        }else {
+            progressDialog.dismiss();
+        }
+
     }
+
+
 }

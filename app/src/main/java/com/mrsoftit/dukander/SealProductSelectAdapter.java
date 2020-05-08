@@ -273,7 +273,7 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
                 }else if ( unknownCustomerID!=null){
 
                     final CollectionReference unkonwnCustomar = FirebaseFirestore.getInstance()
-                            .collection("users").document(user_id).collection("UnknownCustomer").document(unknownCustomerID).collection("salePrucuct");
+                            .collection("users").document(user_id).collection("UnknownCustomer").document(unknownCustomerID).collection("saleProduct");
 
                     unkonwnCustomar.add(new SaleProductCutomerNote(null, productName, price, totalQantidy, total, datenew, 0,update,paid)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                         @Override

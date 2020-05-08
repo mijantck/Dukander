@@ -206,7 +206,14 @@ public class SeleTwoActivity extends AppCompatActivity {
             }
         });
 
-        unKnoneName.setText("Customer("+datenew+")");
+
+        Date calendar1 = Calendar.getInstance().getTime();
+        DateFormat df1 = new SimpleDateFormat("yyMMddhhmm");
+        String todayStringUn = df1.format(calendar1);
+        final int dateun = Integer.parseInt(todayStringUn);
+
+
+        unKnoneName.setText("Customer("+dateun+")");
         invoiceINt = Integer.parseInt(invoiseIdTextView.getText().toString());
         if (invoiceINt == 0){
             invoiseIdTextView.setText("1");
@@ -386,7 +393,10 @@ public class SeleTwoActivity extends AppCompatActivity {
                         CollectionReference myInfo = FirebaseFirestore.getInstance()
                                 .collection("users").document(user_id).collection("DukanInfo");
 
-                        myInfo.document(myinfoid).update("activeBalance",activeBalance,"totalpaybil",dueBalance,"date",datenew);
+                        if (myinfoid!=null){
+                            myInfo.document(myinfoid).update("activeBalance",activeBalance,"totalpaybil",dueBalance,"date",datenew);
+
+                        }
 
                         if (invoisenumberID == null) {
 
@@ -466,7 +476,7 @@ public class SeleTwoActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                             final CollectionReference unkonwnCustomar = FirebaseFirestore.getInstance()
-                                                    .collection("users").document(user_id).collection("UnknownCustomer").document(unknonwnCustomerId).collection("salePrucuct");
+                                                    .collection("users").document(user_id).collection("UnknownCustomer").document(unknonwnCustomerId).collection("saleProduct");
                                             Query query = unkonwnCustomar.whereEqualTo("update", false);
                                             query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                 @Override
@@ -743,7 +753,7 @@ public class SeleTwoActivity extends AppCompatActivity {
     private void UnkownCustumerrecyclearinvoiser() {
 
         final CollectionReference unkonwnCustomar = FirebaseFirestore.getInstance()
-                .collection("users").document(user_id).collection("UnknownCustomer").document(unknonwnCustomerId).collection("salePrucuct");
+                .collection("users").document(user_id).collection("UnknownCustomer").document(unknonwnCustomerId).collection("saleProduct");
 
         Query query = unkonwnCustomar.whereEqualTo("update",false).whereEqualTo("date",datenew);
 
@@ -932,7 +942,7 @@ public class SeleTwoActivity extends AppCompatActivity {
 
             // Update each list item
             DocumentReference ref = db.collection("users").document(user_id).collection("UnknownCustomer")
-                    .document(unknonwnCustomerId).collection("salePrucuct").document((String) list.get(k));
+                    .document(unknonwnCustomerId).collection("saleProduct").document((String) list.get(k));
 
             batch.update(ref, "paid", true,"invoiceNumber",i);
 
