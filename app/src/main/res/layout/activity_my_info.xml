@@ -46,11 +46,18 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+
             <ImageView
                 android:id="@+id/appCompatImageView"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:scaleType="fitXY"
+
                 android:gravity="center"
                 android:src="@drawable/textimage"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -59,7 +66,20 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:contentDescription="TODO" />
 
-
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/imageSelet"
+                    android:visibility="visible"
+                    style="@style/Widget.MaterialComponents.FloatingActionButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="23dp"
+                    android:layout_marginRight="5dp"
+                    app:backgroundTint="@color/colorAccent"
+                    app:srcCompat="@drawable/ic_edit_black"
+                    app:tint="#FFF" />
+    </RelativeLayout>
 
             <com.google.android.material.textfield.TextInputLayout
 
@@ -129,6 +149,7 @@
         </LinearLayout>
 
         <LinearLayout
+
             android:id="@+id/shopdelaisView"
             android:visibility="visible"
             android:orientation="vertical"
@@ -143,16 +164,12 @@
                 android:id="@+id/shopeImageView"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:scaleType="fitXY"
                 android:gravity="center"
                 android:src="@drawable/textimage"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-
-
 
             </RelativeLayout>
 

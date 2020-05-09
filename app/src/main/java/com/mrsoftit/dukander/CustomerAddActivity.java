@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.dd.CircularProgressButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mrsoftit.dukander.CustomerNote;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -66,6 +67,7 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
     FirebaseFirestore firebaseFirestore;
     ProgressDialog progressDialog;
     String  idup, nameup,phoneup,takaup,addresup,imageup;
+    FloatingActionButton imageSeletcutomer;
 
     boolean image = false;
 
@@ -116,6 +118,7 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
         customerTaka = findViewById(R.id.custumar_taka_add);
         CustomerAddress = findViewById(R.id.custumar_address_add);
         addCustomer = findViewById(R.id.addedCustomer);
+        imageSeletcutomer = findViewById(R.id.imageSeletcutomer);
 
         final Bundle bundle = getIntent().getExtras();
 
@@ -260,7 +263,7 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
 
         });
 
-        circleCutomerImageView.setOnClickListener(new View.OnClickListener() {
+        imageSeletcutomer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 

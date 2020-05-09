@@ -1,5 +1,6 @@
 package com.mrsoftit.dukander;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -15,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -23,8 +25,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class UnknownCustomerActivity extends AppCompatActivity {
 
@@ -40,10 +46,18 @@ public class UnknownCustomerActivity extends AppCompatActivity {
     CollectionReference customer = FirebaseFirestore.getInstance()
             .collection("users").document(user_id).collection("UnknownCustomer");
 
+    double cutomartk;
+
+    TextView TotalunKnownDue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_unknown_customer);
+
+
+        TotalunKnownDue = findViewById(R.id.TotalunKnownDue);
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_support);
         setSupportActionBar(toolbar);
@@ -65,6 +79,31 @@ public class UnknownCustomerActivity extends AppCompatActivity {
 
         recyclear();
 
+
+
+        CollectionReference custumertaka = FirebaseFirestore.getInstance()
+                .collection("users").document(user_id).collection("UnknownCustomer");
+
+        Query query1 = custumertaka;
+        query1.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    return;
+                }
+                cutomartk = 00.00;
+                assert queryDocumentSnapshots != null;
+                for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                    if (doc.get("taka") != null) {
+                        double d = Double.parseDouble(doc.get("taka").toString());
+                        cutomartk += d;
+
+                    }
+                    TotalunKnownDue.setText(cutomartk+"");
+
+                }
+            }
+        });
 
     }
 
@@ -131,9 +170,13 @@ public class UnknownCustomerActivity extends AppCompatActivity {
                             startActivity(pdfIntent);
                         }
                         if(which == 1){
+                            CustomerNote customerNote = documentSnapshot.toObject(CustomerNote.class);
+                            String name = customerNote.getNameCUstomer();
 
-                            new AlertDialog.Builder(UnknownCustomerActivity.this).setTitle("Confirm Delete?")
-                                    .setMessage("Are you sure?")
+                            new AlertDialog.Builder(UnknownCustomerActivity.this)
+                                    .setIcon(R.drawable.ic_delete)
+                                    .setTitle(name)
+                                    .setMessage("Confirm Delete?")
                                     .setPositiveButton("YES",
                                             new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int which) {
@@ -224,8 +267,13 @@ public class UnknownCustomerActivity extends AppCompatActivity {
                         }
                         if(which == 1){
 
-                            new AlertDialog.Builder(UnknownCustomerActivity.this).setTitle("Confirm Delete?")
-                                    .setMessage("Are you sure?")
+                            CustomerNote customerNote = documentSnapshot.toObject(CustomerNote.class);
+                            String name = customerNote.getNameCUstomer();
+
+                            new AlertDialog.Builder(UnknownCustomerActivity.this)
+                                    .setIcon(R.drawable.ic_delete)
+                                    .setTitle(name)
+                                    .setMessage("Confirm Delete?")
                                     .setPositiveButton("YES",
                                             new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int which) {

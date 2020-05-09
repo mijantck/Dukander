@@ -15,13 +15,35 @@
         android:background="@color/colorPrimary"
 
         />
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/customar_add_pictur"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_margin="10dp"
-        android:layout_gravity="center"
-        android:src="@drawable/person" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:gravity="center">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/customar_add_pictur"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:layout_gravity="center"
+            android:src="@drawable/person" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/imageSeletcutomer"
+            android:visibility="visible"
+            style="@style/Widget.MaterialComponents.FloatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="5dp"
+            app:backgroundTint="@color/colorAccent"
+            app:srcCompat="@drawable/ic_edit_black"
+            app:tint="#FFF" />
+
+
+
+    </RelativeLayout>
+
 
     <LinearLayout
         android:orientation="vertical"

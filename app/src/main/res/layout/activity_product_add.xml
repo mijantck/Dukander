@@ -16,16 +16,33 @@
 
         />
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
     <ImageView
         android:id="@+id/pruductPic"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:scaleType="fitXY"
         android:gravity="center"
         android:src="@drawable/textimage"
         />
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/imageSeletprioduct"
+            android:visibility="visible"
+            style="@style/Widget.MaterialComponents.FloatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="5dp"
+            app:backgroundTint="@color/colorAccent"
+            app:srcCompat="@drawable/ic_edit_black"
+            app:tint="#FFF" />
 
+
+    </RelativeLayout>
     <LinearLayout
         android:layout_marginTop="5dp"
         android:orientation="vertical"

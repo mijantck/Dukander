@@ -25,6 +25,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthCredential;
@@ -86,6 +87,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
     private boolean vigivity =true;
     private ImageView appCompatImageView,shopeImageView;
     private TextView shopname,shopphone,shopaddres;
+    private FloatingActionButton imageSelet;
 
 
 
@@ -191,6 +193,8 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
         newPindButton = findViewById(R.id.newPindButton);
         chagepintextview = findViewById(R.id.chagepintextview);
         PinLayout = findViewById(R.id.PinLayout);
+
+        imageSelet = findViewById(R.id.imageSelet);
 
 
 
@@ -328,7 +332,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
 
                     Random rand = new Random();
                     String picname = String.format("%05d", rand.nextInt(10000));
-                    myInfo.add(new MyInfoNote(null, dukanName1, dukanphon1, dukanAddres1,true,picname,0.0,0.0,0.0,0)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    myInfo.add(new MyInfoNote(null, dukanName1, dukanphon1, dukanAddres1,true,picname,0.0,1.0,1.0,0)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentReference> task) {
 
@@ -362,7 +366,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
             }
         });
 
-        appCompatImageView.setOnClickListener(new View.OnClickListener() {
+        imageSelet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -581,7 +585,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
 
                                     Random rand = new Random();
                                     String picname = String.format("%05d", rand.nextInt(10000));
-                                    myInfo.add(new MyInfoNote(null, dukanName1, dukanphon1, dukanAddres1, uri.toString(),true,picname,00.00,00.0,00.0,0)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                    myInfo.add(new MyInfoNote(null, dukanName1, dukanphon1, dukanAddres1, uri.toString(),true,picname,1.0,1.0,1.0,0)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                         @Override
                                         public void onComplete(@NonNull Task<DocumentReference> task) {
 

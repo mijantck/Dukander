@@ -28,6 +28,8 @@ tools:context=".WitdrawActivity">
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </androidx.appcompat.widget.Toolbar>
+
+
     <RelativeLayout
         android:gravity="center"
         android:id="@+id/headerLayout"
@@ -112,6 +114,9 @@ tools:context=".WitdrawActivity">
 
 
     </RelativeLayout>
+
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_below="@+id/headerLayout"
         android:id="@+id/cashOutrecycleariew"

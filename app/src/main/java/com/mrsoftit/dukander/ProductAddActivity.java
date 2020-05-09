@@ -24,6 +24,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -58,6 +59,7 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     String   proIdup, productNameup, productPriceup,productQuantaynup,pruductMinup,addresup,pruductImageup;
 
+    FloatingActionButton imageSeletprioduct;
 
 
 
@@ -110,6 +112,7 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
         productQuantayn = findViewById(R.id.pruductquntidy);
         pruductMin = findViewById(R.id.pruductMini);
         addProduct = findViewById(R.id.addpruduct);
+        imageSeletprioduct = findViewById(R.id.imageSeletprioduct);
 
 
 
@@ -139,7 +142,8 @@ if (pruductImageup!=null){
             pruductMin.setText(pruductMinup);
 
         }
-        pruductImage.setOnClickListener(new View.OnClickListener() {
+
+        imageSeletprioduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 

@@ -9,17 +9,17 @@ public class MyInfoNote {
     private String dukanaddpicurl;
     private boolean firsttime;
     private String picName;
-    private Double invesment;
-    private Double withdrow;
-    private Double activeBalance;
-    private Double totalpaybil;
+    private double invesment;
+    private double withdrow;
+    private double activeBalance;
+    private double totalpaybil;
     private int date;
     private String investmentDeleils;
     private String withdrowDeleils;
 
     public MyInfoNote(){}
 
-    public MyInfoNote(String myid, String dukanName, String dukanphone, String dukanaddress, String dukanaddpicurl, boolean firsttime, String picName, Double invesment, Double activeBalance, Double totalpaybil,int date) {
+    public MyInfoNote(String myid, String dukanName, String dukanphone, String dukanaddress, String dukanaddpicurl, boolean firsttime, String picName, double invesment, double activeBalance, double totalpaybil,int date) {
         this.myid = myid;
         this.dukanName = dukanName;
         this.dukanphone = dukanphone;
@@ -33,7 +33,7 @@ public class MyInfoNote {
         this.date = date;
     }
 
-    public MyInfoNote(String myid, String dukanName, String dukanphone, String dukanaddress,  boolean firsttime, String picName, Double invesment, Double activeBalance, Double totalpaybil,int date) {
+    public MyInfoNote(String myid, String dukanName, String dukanphone, String dukanaddress,  boolean firsttime, String picName, double invesment, double activeBalance, double totalpaybil,int date) {
         this.myid = myid;
         this.dukanName = dukanName;
         this.dukanphone = dukanphone;

@@ -191,9 +191,13 @@ public class CustumarActivity extends AppCompatActivity {
 
                         }
                         if(which == 2){
+                            CustomerNote customerNote = documentSnapshot.toObject(CustomerNote.class);
+                            String name = customerNote.getNameCUstomer();
 
-                            new AlertDialog.Builder(CustumarActivity.this).setTitle("Confirm Delete?")
-                                    .setMessage("Are you sure?")
+                            new AlertDialog.Builder(CustumarActivity.this)
+                                    .setIcon(R.drawable.ic_delete)
+                                    .setTitle(name)
+                                    .setMessage("Confirm Delete?")
                                     .setPositiveButton("YES",
                                             new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int which) {
@@ -322,8 +326,13 @@ public class CustumarActivity extends AppCompatActivity {
                         }
                         if(which == 2){
 
-                            new AlertDialog.Builder(CustumarActivity.this).setTitle("Confirm Delete?")
-                                    .setMessage("Are you sure?")
+                            CustomerNote customerNote = documentSnapshot.toObject(CustomerNote.class);
+                            String name = customerNote.getNameCUstomer();
+
+                            new AlertDialog.Builder(CustumarActivity.this)
+                                    .setIcon(R.drawable.ic_delete)
+                                    .setTitle(name)
+                                    .setMessage("Confirm Delete?")
                                     .setPositiveButton("YES",
                                             new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int which) {

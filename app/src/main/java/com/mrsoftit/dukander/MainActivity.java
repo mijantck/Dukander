@@ -3,6 +3,7 @@ package com.mrsoftit.dukander;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
@@ -17,6 +18,7 @@ import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -146,19 +148,60 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         sale.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,SaleoOneActivity.class);
-
-                startActivity(intent);
+                if (id!=null) {
+                    Intent intent = new Intent(MainActivity.this, SaleoOneActivity.class);
+                    startActivity(intent);
+                }else {
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setMessage("Fill up the your dukan info ")
+                            .setPositiveButton("YES",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            Intent intent = new Intent(MainActivity.this, MyInfoActivity.class);
+                                            startActivity(intent);
+                                            dialog.dismiss();
+                                        }
+                                    })
+                            .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Do nothing
+                                    dialog.dismiss();
+                                }
+                            })
+                            .create()
+                            .show();
+                }
             }
         });
         todaysale.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(MainActivity.this, TodaySaleActivity.class);
-
-
-                startActivity(intent);
+                if (id!=null) {
+                    Intent intent = new Intent(MainActivity.this, TodaySaleActivity.class);
+                    startActivity(intent);
+                }else {
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setMessage("Fill up the your dukan info ")
+                            .setPositiveButton("YES",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            Intent intent = new Intent(MainActivity.this, MyInfoActivity.class);
+                                            startActivity(intent);
+                                            dialog.dismiss();
+                                        }
+                                    })
+                            .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Do nothing
+                                    dialog.dismiss();
+                                }
+                            })
+                            .create()
+                            .show();
+                }
             }
         });
         invemet.setOnClickListener(new View.OnClickListener() {
@@ -172,6 +215,26 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
                     startActivity(intent);
 
+                }else {
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setMessage("Fill up the your dukan info ")
+                            .setPositiveButton("YES",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            Intent intent = new Intent(MainActivity.this, MyInfoActivity.class);
+                                            startActivity(intent);
+                                            dialog.dismiss();
+                                        }
+                                    })
+                            .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Do nothing
+                                    dialog.dismiss();
+                                }
+                            })
+                            .create()
+                            .show();
                 }
 
             }
@@ -182,10 +245,29 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
                 if (id!=null) {
                     Intent intent = new Intent(MainActivity.this, WitdrawActivity.class);
-
                     intent.putExtra("id", id);
-
                     startActivity(intent);
+                }
+                else {
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setMessage("Fill up the your dukan info ")
+                            .setPositiveButton("YES",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            Intent intent = new Intent(MainActivity.this, MyInfoActivity.class);
+                                            startActivity(intent);
+                                            dialog.dismiss();
+                                        }
+                                    })
+                            .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Do nothing
+                                    dialog.dismiss();
+                                }
+                            })
+                            .create()
+                            .show();
                 }
             }
         });
