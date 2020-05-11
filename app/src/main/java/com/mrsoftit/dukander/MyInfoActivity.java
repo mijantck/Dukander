@@ -82,7 +82,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
     MaterialButton newPindButton ;
     PinEntryEditText old_pin_entry,new_pin_entry;
 
-    private LinearLayout shopediteView,shopdelaisView,passChange,PinLayout;
+    private LinearLayout shopediteView,shopdelaisView,passChange,PinLayout,rechercid;
     private MaterialButton etideButton;
     private boolean vigivity =true;
     private ImageView appCompatImageView,shopeImageView;
@@ -98,6 +98,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
     FirebaseFirestore firestore;
     TextView chagepasswordtextview;
     TextView chagepintextview;
+    TextView recharchButton;
 
     String oldpin,newpin;
 
@@ -154,7 +155,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MyInfoActivity.this,SaleoOneActivity.class);
+                Intent intent = new Intent(MyInfoActivity.this,MainActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -195,6 +196,18 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
         PinLayout = findViewById(R.id.PinLayout);
 
         imageSelet = findViewById(R.id.imageSelet);
+
+       recharchButton = findViewById(R.id.recharchButton);
+        rechercid = findViewById(R.id.rechercid);
+        recharchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MyInfoActivity.this,rechargeActivity.class));
+                finish();
+
+
+            }
+        });
 
 
 
@@ -238,11 +251,17 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
                     chagepasswordtextview.setVisibility(View.GONE);
                     passChange.setVisibility(View.GONE);
                     shopdelaisView.setVisibility(View.GONE);
+                    rechercid.setVisibility(View.GONE);
                     shopediteView.setVisibility(View.VISIBLE);
                     vigivity=false;
                     etideButton.setVisibility(View.GONE);
 
                 }else if (vigivity == false){
+
+                    chagepasswordtextview.setVisibility(View.VISIBLE);
+                    passChange.setVisibility(View.VISIBLE);
+                    shopdelaisView.setVisibility(View.VISIBLE);
+                    rechercid.setVisibility(View.VISIBLE);
 
                     shopediteView.setVisibility(View.GONE);
                     shopdelaisView.setVisibility(View.VISIBLE);

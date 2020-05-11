@@ -57,7 +57,6 @@
                 android:id="@+id/appCompatImageView"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-
                 android:gravity="center"
                 android:src="@drawable/textimage"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -232,10 +231,32 @@
     android:layout_height="01dp"
     android:background="@color/colorPrimary"/>
         </LinearLayout>
+        <TableLayout
+            android:id="@+id/rechercid"
+            android:layout_below="@+id/editeshopbuttton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/recharchButton"
+                android:textColor="@color/colorPrimary"
+                android:padding="10dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:text="Recharge "
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="01dp"
+                android:background="@color/colorPrimary"/>
+        </TableLayout>
+
 
         <LinearLayout
             android:id="@+id/chagepintextviewLiniarlayout"
-            android:layout_below="@+id/editeshopbuttton"
+            android:layout_below="@+id/rechercid"
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -247,6 +268,8 @@
                 android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:text="Change pin"
+                android:textStyle="bold"
+                android:textSize="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <View
@@ -347,6 +370,8 @@
                 android:padding="10dp"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="20dp"
                 android:text="Change Password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
