@@ -90,20 +90,30 @@ public class recharech_buy_list extends Fragment {
         sendbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Long time = System.currentTimeMillis()/1000;
-                String gmail = currentUser.getEmail().toString();
-                String sms  = editText.getText().toString();
+                final Long time = System.currentTimeMillis()/1000;
+                final String gmail = currentUser.getEmail().toString();
+                final String sms  = editText.getText().toString();
                 Buy.add(new BuyNote(time,null,user_id,gmail,sms)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentReference> task) {
                    if (task.isSuccessful()){
                        editText.setText(null);
 
-                    String id =    task.getResult().getId();
+                    final String id =    task.getResult().getId();
                     Buy.document(id).update("id",id).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
 
+                            CollectionReference offer = FirebaseFirestore.getInstance()
+                                    .collection("offer").document().collection("usersSMS");
+
+                            offer.add(new BuyNote(time,id,user_id,gmail,sms)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentReference> task) {
+
+
+                                }
+                            });
 
                         }
                     });
