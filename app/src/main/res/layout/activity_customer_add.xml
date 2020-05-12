@@ -13,8 +13,14 @@
         app:titleTextColor="#ffff"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
+        >
 
-        />
+        <TextView
+            style="@style/headerText"
+            android:text="গ্রাহক যুক্ত"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </androidx.appcompat.widget.Toolbar>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
@@ -59,7 +65,7 @@
             android:layout_marginBottom="12dp"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
-            android:hint="Customer Name"
+            android:hint="ক্রেতার নাম"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -76,7 +82,7 @@
             android:layout_marginBottom="12dp"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
-            android:hint="Customer Phone Number "
+            android:hint="গ্রাহক ফোন নম্বর "
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -94,7 +100,7 @@
             android:layout_marginBottom="12dp"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
-            android:hint="Taka"
+            android:hint="টাকা"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -112,7 +118,7 @@
             android:layout_marginBottom="12dp"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
-            android:hint="Customer Address"
+            android:hint="গ্রাহকের ঠিকানা"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -127,7 +133,7 @@
             android:id="@+id/addedCustomer"
             android:gravity="center"
             android:layout_width="wrap_content"
-            android:text="Customer added"
+            android:text="@string/cutomer_added"
             style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_height="wrap_content"/>
 

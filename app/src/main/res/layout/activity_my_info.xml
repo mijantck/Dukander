@@ -15,21 +15,15 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@drawable/main_header_bk"
         >
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
 
             <TextView
-
                 android:textSize="20sp"
                 android:textColor="#FFFF"
                 android:gravity="center"
-                android:text="My Information"
+                android:text="আমার দোকান তথ্য"
                 style="@style/headerText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
-        </LinearLayout>
 
     </androidx.appcompat.widget.Toolbar>
 
@@ -50,8 +44,6 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
-
 
             <ImageView
                 android:id="@+id/appCompatImageView"
@@ -80,55 +72,155 @@
                     app:tint="#FFF" />
     </RelativeLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
 
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:background="#FFF"
-                android:hint="Shop Name"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/DukantName"
-                    android:layout_width="match_parent"
+                android:weightSum="7"
+                >
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_vertical"
+                        android:textStyle="bold"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:text="@string/shop_name"
+                        android:fontFamily="@font/adamina"
+                        android:textSize="15sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="#FFF"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_weight="5">
 
-            <com.google.android.material.textfield.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="#FFF"
+                        android:hint="@string/shop_name"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/DukantName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            />
+                    </com.google.android.material.textfield.TextInputLayout>
 
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:background="#FFF"
-                android:hint="Shop Phone Number"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/DukantPhone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:weightSum="7"
+                >
 
-            <com.google.android.material.textfield.TextInputLayout
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2">
+
+                    <TextView
+                        android:gravity="center_vertical"
+                        android:text="@string/shop_phone"
+                        android:textSize="10sp"
+                        android:fontFamily="@font/adamina"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="#FFF"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="#FFF"
+                        android:hint="@string/shop_phone"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/DukantPhone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:background="#FFF"
-                android:hint="Shop Address"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/DukantAddres"
-                    android:layout_width="match_parent"
+                android:weightSum="7"
+                >
+
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_weight="2">
+
+                    <TextView
+                        android:gravity="center_vertical"
+                        android:text="@string/shop_addres"
+                        android:textSize="10sp"
+                        android:fontFamily="@font/adamina"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="#FFF"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="#FFF"
+                        android:hint="@string/shop_addres"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/DukantAddres"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
 
             <LinearLayout
                 android:gravity="center"
@@ -139,7 +231,7 @@
                     android:id="@+id/addedmyinfo"
                     android:gravity="center"
                     android:layout_width="wrap_content"
-                    android:text="Shop Info added"
+                    android:text="দোকান তথ্য যুক্ত করোন"
                     style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
                     android:layout_height="wrap_content"/>
 
@@ -148,13 +240,13 @@
         </LinearLayout>
 
         <LinearLayout
-
             android:id="@+id/shopdelaisView"
             android:visibility="visible"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <RelativeLayout
+                android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -171,42 +263,141 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="7"
+               >
 
-            <TextView
-                android:id="@+id/shopNamneView"
-                android:gravity="center_vertical"
-                android:textStyle="bold"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:text="@string/shop_name"
-                android:fontFamily="@font/adamina"
-                android:textSize="20sp"
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2">
+
+                    <TextView
+                        android:gravity="center_vertical"
+                        android:textStyle="bold"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:text="@string/shop_name"
+                        android:fontFamily="@font/adamina"
+                        android:textSize="10sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="#FFF"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5">
+
+                    <TextView
+                        android:id="@+id/shopNamneView"
+                        android:gravity="center_vertical"
+                        android:textStyle="bold"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:text="@string/shop_name"
+                        android:fontFamily="@font/adamina"
+                        android:textSize="15sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="#FFF"/>
+
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:background="#FFF"/>
-            <TextView
-                android:gravity="center_vertical"
-                android:id="@+id/shopphnoneView"
-                android:text="@string/shop_phone"
-                android:textSize="15sp"
-                android:fontFamily="@font/adamina"
+                android:layout_height="wrap_content"
+                android:weightSum="7"
+                >
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2">
+
+                    <TextView
+                        android:gravity="center_vertical"
+                        android:text="@string/shop_phone"
+                        android:textSize="10sp"
+                        android:fontFamily="@font/adamina"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="#FFF"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5">
+
+                    <TextView
+                        android:gravity="center_vertical"
+                        android:id="@+id/shopphnoneView"
+                        android:text="@string/shop_phone"
+                        android:textSize="10sp"
+                        android:fontFamily="@font/adamina"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="#FFF"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:background="#FFF"/>
-            <TextView
-                android:id="@+id/shopAddresView"
-                android:gravity="center_vertical"
-                android:text="@string/shop_name"
-                android:textSize="15sp"
-                android:fontFamily="@font/adamina"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:background="#FFF"/>
+                android:layout_height="wrap_content"
+                android:weightSum="7"
+                >
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2">
+
+                    <TextView
+                        android:gravity="center_vertical"
+                        android:text="@string/shop_addres"
+                        android:textSize="10sp"
+                        android:fontFamily="@font/adamina"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="#FFF"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5">
+
+                    <TextView
+                        android:id="@+id/shopAddresView"
+                        android:gravity="center_vertical"
+                        android:text="@string/shop_name"
+                        android:textSize="10sp"
+                        android:fontFamily="@font/adamina"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="#FFF"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+
 
         </LinearLayout>
 
@@ -222,7 +413,7 @@
                 android:id="@+id/myinfoEditeButton"
                 android:gravity="center"
                 android:layout_width="wrap_content"
-                android:text="Edit Shop "
+                android:text="তথ্য পরিবর্তন"
                 style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
                 android:layout_height="wrap_content"/>
 
@@ -267,7 +458,7 @@
                 android:padding="10dp"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:text="Change pin"
+                android:text="পিন পরিবর্তন"
                 android:textStyle="bold"
                 android:textSize="20dp"
                 android:layout_width="match_parent"
@@ -290,7 +481,7 @@
                     android:orientation="vertical">
                 <TextView
                     android:id="@+id/text1"
-                    android:text="Enter Your old pin"
+                    android:text="পুরানো পিন প্রবেশ করুন"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
                 <com.alimuzaffar.lib.pin.PinEntryEditText
@@ -319,7 +510,7 @@
                     android:orientation="vertical">
                 <TextView
                     android:id="@+id/text3"
-                    android:text="Enter Your new pin"
+                    android:text="নতুন পিন প্রবেশ করুন"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
@@ -348,7 +539,7 @@
                     android:id="@+id/newPindButton"
                     android:gravity="center"
                     android:layout_width="wrap_content"
-                    android:text="CONFIRM"
+                    android:text="নিশ্চিত করন"
                     style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
                     android:layout_height="wrap_content"/>
 
@@ -372,7 +563,7 @@
                 android:gravity="center"
                 android:textStyle="bold"
                 android:textSize="20dp"
-                android:text="Change Password"
+                android:text="পাসওয়ার্ড পরিবর্তন"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <View
@@ -393,7 +584,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:background="#FFF"
-                    android:hint="Old Password"
+                    android:hint="পুরানো পাসওয়ার্ড"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/oldPasword"
@@ -409,7 +600,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:background="#FFF"
-                    android:hint="New Password "
+                    android:hint="নতুন পাসওয়ার্ড "
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/newPassword"
@@ -422,7 +613,7 @@
                     android:id="@+id/newPasswordButton"
                     android:gravity="center"
                     android:layout_width="wrap_content"
-                    android:text="CONFIRM"
+                    android:text="নিশ্চিত করন"
                     style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
                     android:layout_height="wrap_content"/>
 

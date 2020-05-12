@@ -70,7 +70,7 @@
         android:textStyle="bold"
         android:layout_marginTop="30dp"
         android:gravity="center"
-        android:text="Choose  the customer "
+        android:text="গ্রাহক চয়ন করুন "
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
@@ -100,20 +100,22 @@
                 android:orientation="vertical">
 
                 <ImageView
+
                     android:id="@+id/customerList"
                     android:background="@drawable/rounded_corner"
                     android:src="@drawable/iconlist"
                     android:layout_width="100dp"
                     android:layout_height="100dp"/>
-                <TextView
-                    android:gravity="center"
-                    android:textColor="#2ECC71"
-                    android:textStyle="bold"
-                    android:textSize="15sp"
-                    android:text="Save Customer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
             </LinearLayout>
+            <TextView
+                android:layout_gravity="bottom"
+                android:gravity="center"
+                android:textColor="#2ECC71"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:text="সংরক্ষিত গ্রাহক"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
         </androidx.cardview.widget.CardView>
 
@@ -133,20 +135,21 @@
                     android:src="@drawable/iconcustomer"
                     android:layout_width="100dp"
                     android:layout_height="100dp"/>
-                <TextView
-                    android:gravity="center"
-                    android:textColor="#2ECC71"
-                    android:textStyle="bold"
-                    android:textSize="15sp"
-                    android:text="Unknown"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+
             </LinearLayout>
 
+            <TextView
+                android:layout_gravity="bottom"
+                android:gravity="center"
+                android:textColor="#2ECC71"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:text="অজানা গ্রাহক"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
         </androidx.cardview.widget.CardView>
+
     </LinearLayout>
-
-
     <LinearLayout
         android:visibility="gone"
         android:id="@+id/salecustomerlist"

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -83,10 +84,6 @@ public class recharech_buy_list extends Fragment {
         sendbutton = view.findViewById(R.id.sendbutton);
         editText = view.findViewById(R.id.editText);
 
-
-
-
-
         sendbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,25 +96,22 @@ public class recharech_buy_list extends Fragment {
                    if (task.isSuccessful()){
                        editText.setText(null);
 
-                    final String id =    task.getResult().getId();
+                    final String id =task.getResult().getId();
                     Buy.document(id).update("id",id).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
 
-                            CollectionReference offer = FirebaseFirestore.getInstance()
-                                    .collection("offer").document().collection("usersSMS");
-
-                            offer.add(new BuyNote(time,id,user_id,gmail,sms)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DocumentReference> task) {
-
-
-                                }
-                            });
-
                         }
                     });
                    }
+                    }
+                });
+
+                CollectionReference usersSMS = FirebaseFirestore.getInstance().collection("usersSMS");
+                usersSMS.add(new BuyNote(time,null,user_id,gmail,sms)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentReference> task) {
+
                     }
                 });
             }

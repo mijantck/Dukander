@@ -118,8 +118,6 @@ public class TodaySaleActivity extends AppCompatActivity {
                 if (e != null) {
                     return;
                 }
-
-
                 totalsum = 00.00;
                 assert queryDocumentSnapshots != null;
                 for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
@@ -133,15 +131,10 @@ public class TodaySaleActivity extends AppCompatActivity {
                         double totalpaybil  = (double) doc.get("totalpaybil");
 
                         totalpaybilint = totalpaybil;
-
                         Toast.makeText(TodaySaleActivity.this, totalpaybilint+" tk", Toast.LENGTH_SHORT).show();
                     }
                 }
-
                 TodayTotalSale.setText(totalsum+"");
-
-
-
             }
         });
         myInfo.addSnapshotListener(new EventListener<QuerySnapshot>() {

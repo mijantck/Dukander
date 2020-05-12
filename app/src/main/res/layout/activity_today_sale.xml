@@ -24,7 +24,7 @@
                     android:textSize="20sp"
                     android:textColor="#FFFF"
                     android:gravity="center_vertical"
-                    android:text="Today Sale list"
+                    android:text="আজ মোট বিক্রয় তালিকা"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
         </androidx.appcompat.widget.Toolbar>
@@ -54,14 +54,14 @@
                 android:id="@+id/salesHeaderTextView"
                 style="@style/reportContentText"
                 android:layout_marginTop="30dp"
-                android:text=" Today Total Sale" />
+                android:text=" আজ মোট বিক্রয়" />
             <TextView
                 android:layout_alignParentRight="true"
                 android:id="@+id/dueHeaderTextView"
                 style="@style/reportContentText"
                 android:textSize="15dp"
                 android:layout_marginTop="50dp"
-                android:text=" Today Due" />
+                android:text=" আজ বকি " />
 
             <TextView
                 android:id="@+id/todayTotalSale"

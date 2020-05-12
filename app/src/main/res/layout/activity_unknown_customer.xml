@@ -56,7 +56,7 @@
                         style="@style/reportContentText"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="  Due balance  "
+                        android:text=" বকেয়া টাকা "
                         android:textColor="@color/colorPrimary" />
                     <TextView
 
@@ -84,20 +84,14 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@drawable/main_header_bk"
             >
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                >
-
                 <TextView
                     android:textSize="20sp"
                     android:textColor="#FFFF"
                     android:gravity="center_vertical"
-                    android:text="Customer List"
+                    android:text="অজানা গ্রাহকের তথ্য"
                     style="@style/headerText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
-            </LinearLayout>
 
         </androidx.appcompat.widget.Toolbar>
 

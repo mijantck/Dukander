@@ -7,23 +7,23 @@
         <item
             android:id="@+id/my_info"
             android:icon="@drawable/ic_person"
-            android:title="My information" />
+            android:title="আমার দোকান তথ্য" />
         <item
             android:id="@+id/nav_message"
            android:icon="@drawable/customer"
-            android:title="customer information" />
+            android:title="গ্রাহকের তথ্য" />
         <item
             android:id="@+id/Unknown_customer"
             android:icon="@drawable/customer"
-            android:title="Unknown information" />
+            android:title="অজানা গ্রাহকের তথ্য" />
         <item
             android:id="@+id/nav_chat"
             android:icon="@drawable/produclist"
-            android:title="products list" />
+            android:title="পণ্য তালিকা" />
         <item
             android:id="@+id/nav_profile"
             android:icon="@drawable/producthisstory"
-            android:title="sale history" />
+            android:title="মোট বিক্রয়" />
     </group>
 
     <item android:title="Communicate">
@@ -31,7 +31,7 @@
             <item
                 android:id="@+id/nav_share"
                android:icon="@drawable/logout"
-                android:title="log out" />
+                android:title="প্রস্থান " />
 
         </menu>
     </item>

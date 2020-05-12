@@ -17,31 +17,33 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@drawable/main_header_bk"
             >
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                >
 
                 <TextView
                     android:textSize="20sp"
                     android:textColor="#FFFF"
                     android:gravity="center_vertical"
-                    android:text="Customer List"
+                    android:text="গ্রাহক তালিকা"
                     style="@style/headerText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
-            </LinearLayout>
 
         </androidx.appcompat.widget.Toolbar>
 
 
 
         <androidx.recyclerview.widget.RecyclerView
+            android:visibility="gone"
            android:id="@+id/customar_info_recyclerView"
            android:layout_below="@id/toolbar_support"
            android:layout_width="match_parent"
            android:layout_height="match_parent"/>
 
+        <TextView
+            android:id="@+id/customer_text_view"
+            android:text="গ্রাহক তালিকা যুক্ত করুন"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
     </RelativeLayout>
 

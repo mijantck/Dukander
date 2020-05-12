@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -50,6 +51,8 @@ public class ProductListActivity extends AppCompatActivity {
     CollectionReference product = FirebaseFirestore.getInstance()
             .collection("users").document(user_id).collection("Product");
 
+    TextView product_text_view;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +79,7 @@ public class ProductListActivity extends AppCompatActivity {
 
 
         floating_action_button_customer = findViewById(R.id.floating_action_button_product);
-
+        product_text_view = findViewById(R.id.product_text_view);
 
         recyclear();
 
@@ -113,6 +116,8 @@ public class ProductListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+        product_text_view.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
 
 
         adapter.setOnItemClickListener(new ProductAdapter.OnItemClickListener(){

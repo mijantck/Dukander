@@ -16,16 +16,34 @@
         android:background="@drawable/main_header_bk"
         android:elevation="10dp"
         >
-        <TextView
-            android:id="@+id/invoiseId"
-            android:gravity="center|right"
-            android:text="0"
-            android:textColor="#FFF"
-            android:textSize="15dp"
-            android:layout_marginRight="5dp"
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:ignore="RtlHardcoded" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/headerText"
+                android:text="@string/sale"
+                android:textColor="#FFF"
+                android:textSize="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+            <TextView
+                android:id="@+id/invoiseId"
+                android:text="0"
+                android:gravity="right"
+                android:textColor="#FFF"
+                android:textSize="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+               />
+
+        </LinearLayout>
+
 
     </androidx.appcompat.widget.Toolbar>
 
@@ -279,7 +297,7 @@
         android:id="@+id/addItemButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add ITEMS"
+        android:text="পণ্য যুক্ত করুন"
         app:icon="@drawable/ic_add_black_24dp"
         style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
 
@@ -288,91 +306,93 @@
 
 </RelativeLayout>
 
-    <androidx.cardview.widget.CardView
-       android:elevation="4dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/titele"
+            android:layout_below="@+id/biliid"
+            android:elevation="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
 
 
-    <LinearLayout
-        android:background="#C0C0C0"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:weightSum="7">
-
-        <LinearLayout
-            android:gravity="center"
-            android:layout_width="0dp"
-            android:layout_height="20dp"
-            android:layout_weight="2">
-            <TextView
-                android:textColor="@color/colorPrimary"
-                android:gravity="center"
-                android:text="Items"
+            <LinearLayout
+                android:background="#C0C0C0"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:weightSum="7">
 
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="20dp"
-            android:layout_weight="1">
+                <LinearLayout
+                    android:gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="2">
+                    <TextView
+                        android:textColor="@color/colorPrimary"
+                        android:gravity="center"
+                        android:text="পণ্য"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
 
-            <TextView
-                android:textColor="@color/colorPrimary"
-                android:gravity="center"
-                android:text="QTY"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="1">
 
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="20dp"
-            android:layout_weight="1">
-            <TextView
-                android:textColor="@color/colorPrimary"
-                android:id="@+id/receptsinglepric"
-                android:gravity="center_vertical"
-                android:text="S price "
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                    <TextView
+                        android:textColor="@color/colorPrimary"
+                        android:gravity="center"
+                        android:text="পরিমাণ"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
 
-        </LinearLayout>
-        <LinearLayout
-            android:gravity="center"
-            android:layout_width="0dp"
-            android:layout_height="20dp"
-            android:layout_weight="1.8">
-            <TextView
-                android:textColor="@color/colorPrimary"
-                android:gravity="center"
-                android:text="Price"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="1">
+                    <TextView
+                        android:textColor="@color/colorPrimary"
+                        android:id="@+id/receptsinglepric"
+                        android:gravity="center_vertical"
+                        android:text=" একটি"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
 
-        </LinearLayout>
-        <LinearLayout
-            android:gravity="center"
-            android:layout_width="0dp"
-            android:layout_height="20dp"
-            android:layout_weight=".8">
-            <TextView
-                android:textColor="@color/colorPrimary"
-                android:gravity="center"
-                android:text="Status"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="1.8">
+                    <TextView
+                        android:textColor="@color/colorPrimary"
+                        android:gravity="center"
+                        android:text="মূল্য"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
 
-        </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_weight=".8">
+                    <TextView
+                        android:textColor="@color/colorPrimary"
+                        android:gravity="center"
+                        android:text="অবস্থা"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
 
-    </LinearLayout>
+                </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
 
 
-    <androidx.recyclerview.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/invoiceRecyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
@@ -396,7 +416,7 @@
             <TextView
                 android:layout_marginLeft="10dp"
                 android:textColor="#0F6E19"
-                android:text="Total Amount "
+                android:text="সর্বমোট পরিমাণ "
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 

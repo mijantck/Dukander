@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,6 +33,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.Objects;
 
 public class UnknownCustomerActivity extends AppCompatActivity {
 
@@ -58,11 +62,12 @@ public class UnknownCustomerActivity extends AppCompatActivity {
 
         TotalunKnownDue = findViewById(R.id.TotalunKnownDue);
 
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_support);
+        Toolbar toolbar =  findViewById(R.id.toolbar_support);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        Objects.requireNonNull(toolbar.getNavigationIcon()).setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
+
 
         toolbar.setSubtitleTextColor(getResources().getColor(R.color.grey));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -73,6 +78,8 @@ public class UnknownCustomerActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+
 
 
 

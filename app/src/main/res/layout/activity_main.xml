@@ -138,18 +138,18 @@
                                 android:layout_marginBottom="5dp"
                                 android:src="@drawable/iconcustomer" />
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="bottom"
-                                android:fontFamily="@font/adamina"
-                                android:gravity="center"
-                                android:text="@string/sale"
-                                style="@style/headerText"
-                                android:textColor="#2ECC71"
-                                android:textStyle="bold"
-                                android:textSize="15sp" />
                         </LinearLayout>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:fontFamily="@font/adamina"
+                            android:gravity="center"
+                            android:text="@string/sale"
+                            style="@style/headerText"
+                            android:textColor="#2ECC71"
+                            android:textStyle="bold"
+                            android:textSize="15sp" />
 
                     </androidx.cardview.widget.CardView>
 
@@ -169,23 +169,20 @@
                                 android:layout_width="80dp"
                                 android:layout_height="80dp"
                                 android:src="@drawable/icontoday"
-                                android:layout_marginBottom="15dp"
                                 android:contentDescription="@string/todo" />
 
-                            <TextView
-                                android:layout_gravity="bottom"
-                                android:gravity="center"
-                                android:fontFamily="@font/adamina"
-                                android:text="@string/today_sale"
-                                android:textColor="#2ECC71"
-                                android:textStyle="bold"
-                                android:textSize="15sp"
-                                style="@style/headerText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"/>
-
-
                         </LinearLayout>
+                        <TextView
+                            android:layout_gravity="bottom"
+                            android:gravity="center"
+                            android:fontFamily="@font/adamina"
+                            android:text="@string/today_sale"
+                            android:textColor="#2ECC71"
+                            android:textStyle="bold"
+                            android:textSize="15sp"
+                            style="@style/headerText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
 
                     </androidx.cardview.widget.CardView>
                 </LinearLayout>
@@ -214,7 +211,7 @@
                                 android:layout_width="100dp"
                                 android:layout_height="100dp"
                                 android:layout_gravity="center"
-                                android:layout_marginBottom="15dp"
+
                                 android:src="@drawable/iconmoneybag" />
 
                             <TextView
@@ -247,23 +244,20 @@
                                 android:src="@drawable/iconwithdrawallimit"
                                 android:layout_width="100dp"
                                 android:layout_height="80dp"
-                                android:layout_marginBottom="15dp"
                                 android:contentDescription="@string/todo" />
-
-                            <TextView
-                                android:layout_gravity="bottom"
-                                android:gravity="center"
-                                android:text="Cash out "
-                                android:textColor="#2ECC71"
-                                android:textStyle="bold"
-                                android:textSize="15sp"
-                                android:fontFamily="@font/adamina"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"/>
-
 
                         </LinearLayout>
 
+                        <TextView
+                            android:layout_gravity="bottom"
+                            android:gravity="center"
+                            android:text="উত্তোলন"
+                            android:textColor="#2ECC71"
+                            android:textStyle="bold"
+                            android:textSize="15sp"
+                            android:fontFamily="@font/adamina"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
                     </androidx.cardview.widget.CardView>
                 </LinearLayout>
 

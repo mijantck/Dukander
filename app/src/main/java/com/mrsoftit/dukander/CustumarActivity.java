@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -31,6 +34,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
+import java.util.Objects;
 
 public class CustumarActivity extends AppCompatActivity {
 
@@ -46,20 +50,21 @@ public class CustumarActivity extends AppCompatActivity {
     CollectionReference customer = FirebaseFirestore.getInstance()
             .collection("users").document(user_id).collection("Customers");
 
-
     List<CustomerNote> exampleList;
-
+ TextView customer_text_view;
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custumar);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_support);
-        toolbar.setTitle("Dukandar");
+        Toolbar toolbar =  findViewById(R.id.toolbar_support);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        Objects.requireNonNull(toolbar.getNavigationIcon()).setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
+
 
         toolbar.setSubtitleTextColor(getResources().getColor(R.color.grey));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -73,9 +78,16 @@ public class CustumarActivity extends AppCompatActivity {
 
 
 
+        customer_text_view = findViewById(R.id.customer_text_view);
+
 
         recyclear();
 
+
+        if (recyclerView != null){
+            customer_text_view.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+    }
 
         floating_action_button_customer = findViewById(R.id.floating_action_button_customer);
 
@@ -102,11 +114,13 @@ public class CustumarActivity extends AppCompatActivity {
 
         adapter = new CusomareAdapter(options);
 
-        RecyclerView recyclerView = findViewById(R.id.customar_info_recyclerView);
+        recyclerView = findViewById(R.id.customar_info_recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         recyclerView.setAdapter(adapter);
+
 
 
         adapter.setOnItemClickListener(new CusomareAdapter.OnItemClickListener(){

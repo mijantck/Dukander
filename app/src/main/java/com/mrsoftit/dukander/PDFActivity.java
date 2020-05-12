@@ -384,8 +384,8 @@ public class PDFActivity extends AppCompatActivity {
 
         PdfPTable FromTable  = new PdfPTable(2);
         FromTable.setWidthPercentage(100);
-        FromTable.addCell(getFROMCell("Bill To ",PdfPTable.ALIGN_LEFT));
-        FromTable.addCell(getFROMCell("Shop From ",PdfPTable.ALIGN_RIGHT));
+        FromTable.addCell(getFROMCell("ক্রেতা ",PdfPTable.ALIGN_LEFT));
+        FromTable.addCell(getFROMCell("দোকান ",PdfPTable.ALIGN_RIGHT));
         String cName = BilCutomerName.getText().toString();
         FromTable.addCell(getCell(" "+cName, PdfPCell.ALIGN_LEFT));
         FromTable.addCell(getCell(" "+BilShopName.getText().toString(), PdfPCell.ALIGN_RIGHT));
@@ -419,11 +419,11 @@ public class PDFActivity extends AppCompatActivity {
         table.setTotalWidth(PageSize.A4.getWidth());
         table.setWidthPercentage(100);
         table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
-        table.addCell("Items");
-        table.addCell("Quantity");
-        table.addCell("Single Price");
-        table.addCell("Price");
-        table.addCell("Status");
+        table.addCell("পণ্য");
+        table.addCell("পরিমাণ");
+        table.addCell("একটি মূল্য");
+        table.addCell("মূল্য");
+        table.addCell("অবস্থা");
         table.setHeaderRows(1);
 
         PdfPCell[] cells = table.getRow(0).getCells();
@@ -463,7 +463,7 @@ public class PDFActivity extends AppCompatActivity {
         PdfPTable  validity = new PdfPTable(1);
         validity.setWidthPercentage(100);
         validity.addCell(getValidityCell(" "));
-        validity.addCell(getValidityCell("Warranty"));
+        validity.addCell(getValidityCell("নির্ভরপত্র"));
        // validity.addCell(getValidityCell(" * Products purchased comes with 1 year national warranty \n   (if applicable)"));
        // validity.addCell(getValidityCell(" * Warranty should be claimed only from the respective manufactures"));
         PdfPCell summaryL = new PdfPCell (validity);
@@ -473,15 +473,15 @@ public class PDFActivity extends AppCompatActivity {
 
         PdfPTable accounts = new PdfPTable(2);
         accounts.setWidthPercentage(100);
-        accounts.addCell(getAccountsCell("Subtotal"));
+        accounts.addCell(getAccountsCell("উপমোট"));
         accounts.addCell(getAccountsCellR(SubTottal.getText().toString()));
-        accounts.addCell(getAccountsCell("Dau"));
+        accounts.addCell(getAccountsCell("বাকি"));
         accounts.addCell(getAccountsCellR(dautaka.getText().toString()));
-        accounts.addCell(getAccountsCell("Total"));
+        accounts.addCell(getAccountsCell("মোট"));
         accounts.addCell(getAccountsCellR(Total.getText().toString()));
-        accounts.addCell(getAccountsCell("Amount Paid"));
+        accounts.addCell(getAccountsCell("পরিশোধিত অঙ্ক"));
         accounts.addCell(getAccountsCellR("        "));
-        accounts.addCell(getAccountsCell("Total Due"));
+        accounts.addCell(getAccountsCell("মোট বাকি"));
         accounts.addCell(getAccountsCellR("        "));
         PdfPCell summaryR = new PdfPCell (accounts);
         summaryR.setColspan (2);
@@ -490,7 +490,7 @@ public class PDFActivity extends AppCompatActivity {
         PdfPTable describer = new PdfPTable(1);
         describer.setWidthPercentage(100);
         describer.addCell(getdescCell(" "));
-        describer.addCell(getdescCell("Operation and maintenance by MR.SOFT.IT || © MR.SOFT.IT 2020 || http://www.mrsoftit.com"));
+        describer.addCell(getdescCell("Operation and maintenance by MR.SOFT.IT || © MR.SOFT.IT 2020 || http://www.mrsoftit.com || 01733-883310 "));
 
         document.open();
 
@@ -554,7 +554,7 @@ if (id!=null){
 if (unkcutomarId!=null){
 
                 CollectionReference UNcustomerProductSale = FirebaseFirestore.getInstance()
-                        .collection("users").document(user_id).collection("UnknownCustomer").document(unkcutomarId).collection("salePrucuct");
+                        .collection("users").document(user_id).collection("UnknownCustomer").document(unkcutomarId).collection("saleProduct");
 
                 Query query = UNcustomerProductSale.whereEqualTo("update",false).whereEqualTo("paid",true);
 
@@ -651,7 +651,7 @@ if (unkcutomarId!=null){
     }
     public  void  UnknownloadData(){
         CollectionReference UNcustomerProductSale = FirebaseFirestore.getInstance()
-                .collection("users").document(user_id).collection("UnknownCustomer").document(unkcutomarId).collection("salePrucuct");
+                .collection("users").document(user_id).collection("UnknownCustomer").document(unkcutomarId).collection("saleProduct");
 
         Query query = UNcustomerProductSale.whereEqualTo("update",false).whereEqualTo("paid",true);
 
@@ -850,7 +850,7 @@ if (unkcutomarId!=null){
     private void UnkownCustumerrecyclearinvoiser() {
 
         final CollectionReference unkonwnCustomar = FirebaseFirestore.getInstance()
-                .collection("users").document(user_id).collection("UnknownCustomer").document(unkcutomarId).collection("salePrucuct");
+                .collection("users").document(user_id).collection("UnknownCustomer").document(unkcutomarId).collection("saleProduct");
 
         Query query = unkonwnCustomar.whereEqualTo("update",false).whereEqualTo("paid",true);
 
@@ -935,7 +935,7 @@ if (unkcutomarId!=null){
 
             // Update each list item
             DocumentReference ref = db.collection("users").document(user_id).collection("UnknownCustomer")
-                    .document(unkcutomarId).collection("salePrucuct").document((String) list.get(k));
+                    .document(unkcutomarId).collection("saleProduct").document((String) list.get(k));
 
             batch.update(ref, "update",true);
 

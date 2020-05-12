@@ -24,7 +24,7 @@ tools:context=".InvesmentActivity">
             android:textSize="20sp"
             android:textColor="#FFFF"
             android:gravity="center_vertical"
-            android:text="Investment"
+            android:text="বিনিয়োগের তালিকা"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </androidx.appcompat.widget.Toolbar>
@@ -42,7 +42,7 @@ tools:context=".InvesmentActivity">
             android:id="@+id/salesHeaderTextView"
             style="@style/reportContentText"
             android:layout_marginTop="10dp"
-            android:text=" Total Investment" />
+            android:text=" মোট বিনিয়োগ "/>
 
         <TextView
             android:id="@+id/Totalinvestment"
@@ -54,11 +54,14 @@ tools:context=".InvesmentActivity">
             android:layout_marginTop="10dp" />
 
     </RelativeLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_below="@+id/headerLayout"
         android:id="@+id/Totalinvestmentrecycleariew"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+
 
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

@@ -28,7 +28,7 @@
             android:layout_alignParentLeft="true"
             style="@style/viewParent.headerText.NoMode"
             android:textColor="#FFF"
-            android:text="Here’s\nEnter your \nsecurity  \ncode! "/>
+            android:text="এখানে \n আপনার \n সুরক্ষা \n কোড দিন!"/>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -40,7 +40,6 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
             <androidx.cardview.widget.CardView
                 android:id="@+id/newPinCode"
                 android:visibility="gone"
@@ -57,7 +56,7 @@
                     <TextView
                         android:textColor="@color/colorPrimary"
                         style="@style/headerText"
-                        android:text="set security code "
+                        android:text="সুরক্ষা কোড সেট করুন "
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
                     <com.alimuzaffar.lib.pin.PinEntryEditText
@@ -73,20 +72,18 @@
                         android:textIsSelectable="false"
                         android:textSize="24dp"
                         app:pinAnimationType="fromBottom"
-                        app:pinBackgroundDrawable="@drawable/bg_pin"
+                        app:pinBackgroundDrawable="@drawable/home_bg_pin"
                         app:pinBackgroundIsSquare="true"
                         app:pinCharacterSpacing="4dp"
                         app:pinTextBottomPadding="16dp"
                         tools:ignore="SpUsage" />
-
-
                     <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
                         android:id="@+id/cirPincodeButton"
                         android:layout_marginTop="10dp"
                         style="@style/loginButton"
                         app:spinning_bar_width="4dp"
                         app:spinning_bar_color="#FFF"
-                        android:text="CONFIRM PIN"
+                        android:text="কনফার্ম পিন"
                         android:layout_gravity="center_horizontal"
                         app:initialCornerAngle="27dp"
                         app:spinning_bar_padding="6dp" />
@@ -98,21 +95,22 @@
                 android:layout_marginTop="100dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:cardBackgroundColor="@color/whiteTextColor"
+                android:padding="5dp"
+                app:cardBackgroundColor="@color/register_bk_color"
                 app:cardCornerRadius="10dp">
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
+                    android:padding="5dp"
+                    android:background="@color/register_bk_color"
                     android:orientation="vertical">
                     <TextView
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/whiteCardColor"
                         style="@style/headerText"
-                        android:text="Enter Pin "
+                        android:text="পিন প্রবেশ করুন"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
-
                     <com.alimuzaffar.lib.pin.PinEntryEditText
                         android:id="@+id/txt_pin_entry"
                         android:layout_width="match_parent"
@@ -126,17 +124,14 @@
                         android:textIsSelectable="false"
                         android:textSize="24dp"
                         app:pinAnimationType="fromBottom"
-                        app:pinBackgroundDrawable="@drawable/bg_pin"
+                        app:pinBackgroundDrawable="@drawable/home_bg_pin"
                         app:pinBackgroundIsSquare="true"
                         app:pinCharacterSpacing="4dp"
                         app:pinTextBottomPadding="16dp"
                         tools:ignore="SpUsage" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-
         </RelativeLayout>
-
-
     </LinearLayout>
     </LinearLayout>
 </ScrollView>

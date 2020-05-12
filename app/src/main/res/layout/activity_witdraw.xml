@@ -24,7 +24,7 @@ tools:context=".WitdrawActivity">
             android:textSize="20sp"
             android:textColor="#FFFF"
             android:gravity="center_vertical"
-            android:text="Cash out "
+            android:text="উত্তোলন তালিকা "
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </androidx.appcompat.widget.Toolbar>
@@ -59,7 +59,7 @@ tools:context=".WitdrawActivity">
                     android:id="@+id/salesHeaderTextView"
                     style="@style/reportContentText"
                     android:layout_marginTop="10dp"
-                    android:text=" Total Cash out " />
+                    android:text=" মোট উত্তোলন" />
                 <TextView
                     android:textSize="15sp"
                     android:textAllCaps="true"
@@ -95,7 +95,7 @@ tools:context=".WitdrawActivity">
                     android:id="@+id/acticHeaderTextView"
                     style="@style/reportContentText"
                     android:layout_marginTop="10dp"
-                    android:text=" Active balance  " />
+                    android:text=" বর্তমান টাকা  " />
                 <TextView
 
                     android:textSize="15sp"

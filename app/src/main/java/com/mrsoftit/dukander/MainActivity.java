@@ -59,6 +59,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
@@ -84,6 +86,14 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     CollectionReference customer = FirebaseFirestore.getInstance()
             .collection("users").document(user_id).collection("Customers");
 
+           Boolean coinFirst = false;
+           int coin;
+           int date;
+           String customerStatus ;
+
+
+    CollectionReference coainCollecton = FirebaseFirestore.getInstance()
+            .collection("users").document(user_id).collection("Coian");
 
     String id;
     Uri myUri ;
@@ -136,6 +146,77 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         pd.setCancelable(false);
 
 
+        coainCollecton.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    return;
+                }
+                assert queryDocumentSnapshots != null;
+                for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+
+                    if (doc.get("coinFirst") != null) {
+                        boolean coinFirstSirver = Boolean.parseBoolean(doc.get("coinFirst").toString());
+                        coinFirst = coinFirstSirver;
+
+                    }
+                    if (doc.get("coin") != null) {
+                        int totalcoin =Integer.parseInt(doc.get("coin").toString());
+                        coin = totalcoin;
+
+                    }
+                    if (doc.get("date") != null) {
+
+                        int datecoin =Integer.parseInt(doc.get("date").toString());
+                        date = datecoin;
+
+                    }
+                    if (doc.get("customerStatus") != null) {
+                        String stutus  = (String) doc.get("customerStatus");
+                        customerStatus = stutus;
+                    }
+
+                }
+
+                if (coinFirst == false ){
+                    coin = 28;
+                    date = datenew;
+                    Map<String, Object> coinObject = new HashMap<>();
+                    coinObject.put("coinFirst",true);
+                    coinObject.put("coin", coin);
+                    coinObject.put("date", date);
+                    coinObject.put("customerStatus", null);
+
+                    coainCollecton.document("Mycoin").set(coinObject).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Toast.makeText(MainActivity.this, "coin Create ", Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+                }
+                else if (customerStatus == null) {
+                    {
+                        if (date !=datenew && coin > 0){
+                            coin = coin-1;
+                            Toast.makeText(MainActivity.this, coin + "Update Coin ", Toast.LENGTH_SHORT).show();
+
+                            coainCollecton.document("Mycoin").update("coin",coin,"date",datenew).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+
+                                    Toast.makeText(MainActivity.this, "Update Coin ", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+
+                    }
+
+                }
+
+            }
+        });
+
         // Configure sign-in to request the user's ID, email address, and basic
 // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -144,6 +225,13 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
 // Build a GoogleSignInClient with the options specified by gso.
         googleSignInClient = GoogleSignIn.getClient(this, gso);
+
+
+
+
+        //Coin Create
+
+
 
         sale.setOnClickListener(new View.OnClickListener() {
             @Override

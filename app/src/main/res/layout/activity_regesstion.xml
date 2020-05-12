@@ -28,7 +28,7 @@ android:layout_gravity="center">
                 android:layout_alignParentLeft="true"
                 style="@style/viewParent.headerText.NoMode"
                 android:textColor="@color/whiteTextColor"
-                android:text="Here’s\nyour first\nstep with \nus! "/>
+                android:text="আমাদের সাথে \n আপনার প্রথম \n পদক্ষেপ \n এখানে! "/>
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -65,7 +65,7 @@ android:layout_gravity="center">
                         style="@style/modifiedEditText"
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
-                        android:hint="@string/login_email_hint"/>
+                        android:hint="ই-মেইল"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -85,7 +85,7 @@ android:layout_gravity="center">
                         style="@style/modifiedEditText"
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
-                        android:hint="@string/login_password_hint"/>
+                        android:hint="পাসওয়ার্ড"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -109,7 +109,7 @@ android:layout_gravity="center">
                     android:textStyle="bold"
                     android:textColor="@color/themeColor"
                     android:textSize="17sp"
-                    android:text="Already have an account?"
+                    android:text="ইতিমধ্যে একটি সদস্যপদ আছে?"
                     android:layout_marginTop="@dimen/loginViewsMargin"
                    />
 
@@ -135,7 +135,7 @@ android:layout_gravity="center">
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/whiteTextColor"
-                android:text="Use other Methods"
+                android:text=""
                 android:layout_weight="6"
                 android:textSize="12sp"
                 android:textAlignment="center"/>

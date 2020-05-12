@@ -13,8 +13,14 @@
         app:titleTextColor="#ffff"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
+        >
 
-        />
+        <TextView
+            style="@style/headerText"
+            android:text="পণ্য তালিকা যুক্ত"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </androidx.appcompat.widget.Toolbar>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -59,7 +65,7 @@
             android:layout_marginBottom="12dp"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
-            android:hint="Product Name"
+            android:hint="পণ্যের নাম"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -75,7 +81,7 @@
             android:layout_marginBottom="12dp"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
-            android:hint="Price "
+            android:hint="মূল্য "
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -93,7 +99,7 @@
             android:layout_marginBottom="12dp"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
-            android:hint="Quantity"
+            android:hint="পরিমাণ"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -112,7 +118,7 @@
             android:layout_marginBottom="12dp"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
-            android:hint=" Minimum Quantity"
+            android:hint=" ন্যূনতম পরিমাণ"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -128,7 +134,7 @@
             android:id="@+id/addpruduct"
             android:gravity="center"
             android:layout_width="wrap_content"
-            android:text="Product added"
+            android:text="পণ্য সংযোজন"
             style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_height="wrap_content"/>
 
