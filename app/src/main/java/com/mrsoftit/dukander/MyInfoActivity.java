@@ -1,6 +1,7 @@
 package com.mrsoftit.dukander;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -36,7 +37,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -82,7 +85,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
     MaterialButton newPindButton ;
     PinEntryEditText old_pin_entry,new_pin_entry;
 
-    private LinearLayout shopediteView,shopdelaisView,passChange,PinLayout,rechercid;
+    private LinearLayout shopediteView,shopdelaisView,passChange,PinLayout;
     private MaterialButton etideButton;
     private boolean vigivity =true;
     private ImageView appCompatImageView,shopeImageView;
@@ -126,12 +129,21 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
                         id = myInfoNote.getMyid();
                         firstTime = myInfoNote.isFirsttime();
 
+                    }
 
+                    if (TextUtils.isEmpty(id)){
+                        chagepasswordtextview.setVisibility(View.GONE);
+                        passChange.setVisibility(View.GONE);
+                        shopdelaisView.setVisibility(View.GONE);
+                        etideButton.setVisibility(View.GONE);
+                        shopediteView.setVisibility(View.VISIBLE);
                     }
                 }
+
+                progressDialog.dismiss();
+
             }
         });
-
 
 
     }
@@ -149,6 +161,13 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         Objects.requireNonNull(toolbar.getNavigationIcon()).setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
+
+
+        progressDialog = new ProgressDialog(MyInfoActivity.this);
+        // Setting Message
+        progressDialog.setTitle("তথ্য প্রস্তুত হচ্ছে..."); // Setting Title
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
 
 
         toolbar.setSubtitleTextColor(getResources().getColor(R.color.grey));
@@ -197,17 +216,6 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
 
         imageSelet = findViewById(R.id.imageSelet);
 
-       recharchButton = findViewById(R.id.recharchButton);
-        rechercid = findViewById(R.id.rechercid);
-        recharchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MyInfoActivity.this,rechargeActivity.class));
-                finish();
-
-
-            }
-        });
 
 
 
@@ -225,7 +233,6 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
                         pinNote.setFairtTime((Boolean) document.get("fairtTime"));
                         pin = Objects.requireNonNull(document.get("pin")).toString();
                         idpin = Objects.requireNonNull(document.get("id")).toString();
-
                     }
 
 
@@ -233,11 +240,10 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
         });
 
 
+
         etideButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
 
                 final File docsFolder1 = new File(Environment.getExternalStorageDirectory() +"/Dukandar/dont_delete/");
                 File newFile = new File(docsFolder1,"01743.jpeg");
@@ -251,17 +257,14 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
                     chagepasswordtextview.setVisibility(View.GONE);
                     passChange.setVisibility(View.GONE);
                     shopdelaisView.setVisibility(View.GONE);
-                    rechercid.setVisibility(View.GONE);
                     shopediteView.setVisibility(View.VISIBLE);
                     vigivity=false;
                     etideButton.setVisibility(View.GONE);
 
                 }else if (vigivity == false){
-
                     chagepasswordtextview.setVisibility(View.VISIBLE);
                     passChange.setVisibility(View.VISIBLE);
                     shopdelaisView.setVisibility(View.VISIBLE);
-                    rechercid.setVisibility(View.VISIBLE);
 
                     shopediteView.setVisibility(View.GONE);
                     shopdelaisView.setVisibility(View.VISIBLE);
@@ -273,6 +276,8 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
 
 
         updateadtaall();
+
+
 
         addmyinfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -296,9 +301,9 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
                 }
 
 
-                if (imageuploadurl==null && id!=null){
+                if (imageuploadurl==null && id!=null && mImageUri!=null){
 
-                    MyInfoUploadWithpicnew( mImageUri);
+                    MyInfoUploadWithpicnew(mImageUri);
 
                 }
                 if ( image == false && imageuploadurl != null) {
@@ -384,6 +389,8 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
 
             }
         });
+
+
 
         imageSelet.setOnClickListener(new View.OnClickListener() {
             @Override

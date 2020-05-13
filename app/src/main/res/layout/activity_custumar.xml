@@ -30,9 +30,8 @@
         </androidx.appcompat.widget.Toolbar>
 
 
-
         <androidx.recyclerview.widget.RecyclerView
-            android:visibility="gone"
+            android:visibility="visible"
            android:id="@+id/customar_info_recyclerView"
            android:layout_below="@id/toolbar_support"
            android:layout_width="match_parent"

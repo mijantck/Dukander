@@ -24,6 +24,10 @@
             android:id="@+id/nav_profile"
             android:icon="@drawable/producthisstory"
             android:title="মোট বিক্রয়" />
+        <item
+            android:id="@+id/recharge"
+            android:icon="@drawable/producthisstory"
+            android:title=" রিচার্জ করুন" />
     </group>
 
     <item android:title="Communicate">

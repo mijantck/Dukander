@@ -106,7 +106,7 @@
                 android:layout_marginBottom="12dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginLeft="5dp"
-                android:hint="Email"
+                android:hint="ইমেইল"
                 android:background="#FFF"
                 style="@style/parent"
                 android:layout_marginTop="@dimen/loginViewsMargin">
@@ -126,7 +126,7 @@
                 style="@style/loginButton"
                 app:spinning_bar_width="4dp"
                 app:spinning_bar_color="#FFF"
-                android:text="SEND FORGET PASSWORD LINK"
+                android:text=" পাসওয়ার্ড লিঙ্ক পাঠান"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/loginViewsMargin"
                 app:spinning_bar_padding="6dp"

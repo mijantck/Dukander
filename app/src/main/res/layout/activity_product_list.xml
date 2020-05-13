@@ -17,7 +17,6 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@drawable/main_header_bk"
             >
-
                 <TextView
                     android:textSize="20sp"
                     android:textColor="#FFFF"
@@ -29,10 +28,8 @@
 
         </androidx.appcompat.widget.Toolbar>
 
-
-
         <androidx.recyclerview.widget.RecyclerView
-            android:visibility="gone"
+            android:visibility="visible"
             android:id="@+id/product_info_recyclerView"
             android:layout_below="@id/toolbar_support"
             android:layout_width="match_parent"

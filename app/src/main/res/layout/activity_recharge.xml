@@ -80,7 +80,6 @@
                     android:text="  আপনার কয়েন আছে "
                     android:textColor="@color/colorPrimary" />
                 <TextView
-
                     android:textSize="15sp"
                     android:textAllCaps="true"
                     android:layout_width="match_parent"

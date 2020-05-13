@@ -1,6 +1,7 @@
 package com.mrsoftit.dukander;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,7 +20,9 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -30,7 +33,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -52,8 +57,9 @@ public class SaleoOneActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
     private ImageView customerList,unknowncustomer;
 
-    private LinearLayout linearLayout1,cardLayoutchosecustomer,linearLayout2;
-
+    private LinearLayout linearLayout1,cardLayoutchosecustomer;
+      RelativeLayout linearLayout2;
+     TextView customer_text_view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +94,28 @@ public class SaleoOneActivity extends AppCompatActivity {
 
       //  setCustomerList();
 
+
+        customer_text_view = findViewById(R.id.customer_text_view);
+        customer.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    return;
+                }
+                assert queryDocumentSnapshots != null;
+                for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                    if (doc.get("nameCUstomer") != null) {
+                        String name = doc.get("nameCUstomer").toString();
+
+                        if (name!=null){
+                            customer_text_view.setVisibility(View.GONE);
+                        }
+                    }
+
+                }
+
+            }
+        });
         recyclear();
 
         customerList.setOnClickListener(new View.OnClickListener() {

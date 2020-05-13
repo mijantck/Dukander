@@ -42,6 +42,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -145,6 +146,16 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         pd.show();
         pd.setCancelable(false);
 
+        // Configure sign-in to request the user's ID, email address, and basic
+// profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+// Build a GoogleSignInClient with the options specified by gso.
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
+
+
 
         coainCollecton.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -163,6 +174,22 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                     if (doc.get("coin") != null) {
                         int totalcoin =Integer.parseInt(doc.get("coin").toString());
                         coin = totalcoin;
+                        if (coin == 0){
+
+                            new MaterialAlertDialogBuilder(MainActivity.this, R.style.CutShapeTheme)
+                                    .setTitle("কয়েন রিচার্জ")
+                                    .setMessage("আপনার কয়েন শেষ | অনুগ্রহ  করে রিচার্জ করুন")
+                                    .setCancelable(false)
+                                    .setPositiveButton("বুঝেছি ", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            startActivity(new Intent(MainActivity.this,rechargeActivity.class));
+
+                                        }
+                                    })
+                                    .show();
+
+                        }
 
                     }
                     if (doc.get("date") != null) {
@@ -216,15 +243,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
             }
         });
-
-        // Configure sign-in to request the user's ID, email address, and basic
-// profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-
-// Build a GoogleSignInClient with the options specified by gso.
-        googleSignInClient = GoogleSignIn.getClient(this, gso);
 
 
 
@@ -441,6 +459,11 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 Intent resultIntnt2 =new Intent(MainActivity.this, TotalSaleActivity.class);
                 startActivity(resultIntnt2);
             finish();
+                break;
+            case R.id.recharge:
+                Intent rechargeInte =new Intent(MainActivity.this, rechargeActivity.class);
+                startActivity(rechargeInte);
+                finish();
                 break;
             case R.id.nav_share:
 

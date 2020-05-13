@@ -1,5 +1,6 @@
 package com.mrsoftit.dukander;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -27,8 +29,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.Objects;
@@ -70,7 +76,7 @@ public class ProductListActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ProductListActivity.this,SaleoOneActivity.class);
+                Intent intent = new Intent(ProductListActivity.this,MainActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -80,6 +86,34 @@ public class ProductListActivity extends AppCompatActivity {
 
         floating_action_button_customer = findViewById(R.id.floating_action_button_product);
         product_text_view = findViewById(R.id.product_text_view);
+
+
+        product.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    return;
+                }
+                assert queryDocumentSnapshots != null;
+                for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                    if (doc.get("proName") != null) {
+                        String name = doc.get("proName").toString();
+
+
+                        if (name!=null){
+                            product_text_view.setVisibility(View.GONE);
+                        }
+                        Toast.makeText(ProductListActivity.this, name+"", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+
+            }
+        });
+
+
+
+
 
         recyclear();
 

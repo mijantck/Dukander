@@ -90,7 +90,7 @@ public class RegestationActivity extends AppCompatActivity {
 
                 progressDialog = new ProgressDialog(RegestationActivity.this);
                 // Setting Message
-                progressDialog.setTitle("Loading..."); // Setting Title
+                progressDialog.setTitle("তথ্য প্রস্তুত হচ্ছে..."); // Setting Title
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 progressDialog.show();
 

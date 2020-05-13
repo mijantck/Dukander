@@ -1,6 +1,7 @@
 package com.mrsoftit.dukander;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,7 +30,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -51,6 +55,8 @@ public class CustumarActivity extends AppCompatActivity {
             .collection("users").document(user_id).collection("Customers");
 
     List<CustomerNote> exampleList;
+
+
  TextView customer_text_view;
     RecyclerView recyclerView;
 
@@ -81,13 +87,33 @@ public class CustumarActivity extends AppCompatActivity {
         customer_text_view = findViewById(R.id.customer_text_view);
 
 
+
+        customer.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    return;
+                }
+                assert queryDocumentSnapshots != null;
+                for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                    if (doc.get("nameCUstomer") != null) {
+                        String name = doc.get("nameCUstomer").toString();
+
+                        if (name!=null){
+
+                            customer_text_view.setVisibility(View.GONE);
+                            recyclerView.setVisibility(View.VISIBLE);
+                        }
+                    }
+
+                }
+
+            }
+        });
+
         recyclear();
 
 
-        if (recyclerView != null){
-            customer_text_view.setVisibility(View.GONE);
-            recyclerView.setVisibility(View.VISIBLE);
-    }
 
         floating_action_button_customer = findViewById(R.id.floating_action_button_customer);
 

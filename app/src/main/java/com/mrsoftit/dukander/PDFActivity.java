@@ -384,8 +384,8 @@ public class PDFActivity extends AppCompatActivity {
 
         PdfPTable FromTable  = new PdfPTable(2);
         FromTable.setWidthPercentage(100);
-        FromTable.addCell(getFROMCell("ক্রেতা ",PdfPTable.ALIGN_LEFT));
-        FromTable.addCell(getFROMCell("দোকান ",PdfPTable.ALIGN_RIGHT));
+        FromTable.addCell(getFROMCell("Bill To ",PdfPTable.ALIGN_LEFT));
+        FromTable.addCell(getFROMCell("Bill From ",PdfPTable.ALIGN_RIGHT));
         String cName = BilCutomerName.getText().toString();
         FromTable.addCell(getCell(" "+cName, PdfPCell.ALIGN_LEFT));
         FromTable.addCell(getCell(" "+BilShopName.getText().toString(), PdfPCell.ALIGN_RIGHT));
@@ -419,11 +419,11 @@ public class PDFActivity extends AppCompatActivity {
         table.setTotalWidth(PageSize.A4.getWidth());
         table.setWidthPercentage(100);
         table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
-        table.addCell("পণ্য");
-        table.addCell("পরিমাণ");
-        table.addCell("একটি মূল্য");
-        table.addCell("মূল্য");
-        table.addCell("অবস্থা");
+        table.addCell("Products");
+        table.addCell("Quantity");
+        table.addCell("S price");
+        table.addCell("price");
+        table.addCell("Status");
         table.setHeaderRows(1);
 
         PdfPCell[] cells = table.getRow(0).getCells();
@@ -463,7 +463,7 @@ public class PDFActivity extends AppCompatActivity {
         PdfPTable  validity = new PdfPTable(1);
         validity.setWidthPercentage(100);
         validity.addCell(getValidityCell(" "));
-        validity.addCell(getValidityCell("নির্ভরপত্র"));
+        validity.addCell(getValidityCell("warranty"));
        // validity.addCell(getValidityCell(" * Products purchased comes with 1 year national warranty \n   (if applicable)"));
        // validity.addCell(getValidityCell(" * Warranty should be claimed only from the respective manufactures"));
         PdfPCell summaryL = new PdfPCell (validity);
@@ -473,15 +473,15 @@ public class PDFActivity extends AppCompatActivity {
 
         PdfPTable accounts = new PdfPTable(2);
         accounts.setWidthPercentage(100);
-        accounts.addCell(getAccountsCell("উপমোট"));
+        accounts.addCell(getAccountsCell("Sub total"));
         accounts.addCell(getAccountsCellR(SubTottal.getText().toString()));
-        accounts.addCell(getAccountsCell("বাকি"));
+        accounts.addCell(getAccountsCell("Due"));
         accounts.addCell(getAccountsCellR(dautaka.getText().toString()));
-        accounts.addCell(getAccountsCell("মোট"));
+        accounts.addCell(getAccountsCell("Total"));
         accounts.addCell(getAccountsCellR(Total.getText().toString()));
-        accounts.addCell(getAccountsCell("পরিশোধিত অঙ্ক"));
+        accounts.addCell(getAccountsCell("Amount paid"));
         accounts.addCell(getAccountsCellR("        "));
-        accounts.addCell(getAccountsCell("মোট বাকি"));
+        accounts.addCell(getAccountsCell("Total Due"));
         accounts.addCell(getAccountsCellR("        "));
         PdfPCell summaryR = new PdfPCell (accounts);
         summaryR.setColspan (2);
