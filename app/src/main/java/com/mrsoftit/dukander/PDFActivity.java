@@ -10,12 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Dialog;
-import android.app.DownloadManager;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -30,10 +26,8 @@ import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -46,10 +40,6 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
-import com.itextpdf.io.font.PdfEncodings;
-import com.itextpdf.layout.font.FontProvider;
-import com.itextpdf.layout.font.FontSet;
-import com.itextpdf.layout.property.Property;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -96,7 +86,7 @@ public class PDFActivity extends AppCompatActivity {
     SaleProductIndevicualAdapter saleProductIndevicualAdapter;
 
 
-    public static final String FONT = "/assets/fonts/bangla.ttf";
+    public static final String FONT = "/assets/fonts/solaiman_lipi.ttf";
     ArrayList<SaleProductCutomerNote> PDFList = new ArrayList<>();
 
     SaleProductCutomerNote saleProductCutomerNote;
@@ -399,6 +389,7 @@ public class PDFActivity extends AppCompatActivity {
         FromTable.addCell(getFROMCell("Bill To ",PdfPTable.ALIGN_LEFT));
         FromTable.addCell(getFROMCell("Bill From ",PdfPTable.ALIGN_RIGHT));
         String cName = BilCutomerName.getText().toString();
+
         FromTable.addCell(getCell(" "+cName, PdfPCell.ALIGN_LEFT));
         FromTable.addCell(getCell(" "+BilShopName.getText().toString(), PdfPCell.ALIGN_RIGHT));
         FromTable.addCell(getCell(" "+BilCustomerPhone.getText().toString(), PdfPCell.ALIGN_LEFT));
@@ -440,7 +431,6 @@ public class PDFActivity extends AppCompatActivity {
 
         PdfPCell[] cells = table.getRow(0).getCells();
         for (PdfPCell cell : cells) {
-
             cell.setBackgroundColor(BaseColor.GRAY);
         }
 
@@ -461,32 +451,8 @@ public class PDFActivity extends AppCompatActivity {
             String TotalPrice = price.getTotalPrice()+"";
 
 
-           Paragraph paragraph ;
 
-           String pattern = "^[A-Za-z0-9. ]+$";
-           if (namen.matches(pattern)){
-
-               paragraph = new Paragraph(namen);
-
-           }else {
-
-
-               BaseFont bf = null;
-               try {
-                   bf = BaseFont.createFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-                   Toast.makeText(this, " font ", Toast.LENGTH_SHORT).show();
-
-               } catch (IOException e) {
-                   e.printStackTrace();
-                   Toast.makeText(this, e + "", Toast.LENGTH_SHORT).show();
-               }
-               Font font1 = new Font(bf, 10, Font.NORMAL);
-
-               paragraph = new Paragraph(namen, font1);
-           }
-
-
-            table.addCell(paragraph);
+            table.addCell(fontCoveter(namen));
             table.addCell(quantidy);
             table.addCell(sprice);
             table.addCell(TotalPrice);
@@ -811,8 +777,7 @@ if (unkcutomarId!=null){
 
     public PdfPCell getCell(String text, int alignment) {
 
-
-        PdfPCell cell = new PdfPCell(new Phrase(text));
+        PdfPCell cell = new PdfPCell(fontCoveter(text));
         cell.setPadding(0);
         cell.setHorizontalAlignment(alignment);
         cell.setBorder(PdfPCell.NO_BORDER);
@@ -989,6 +954,33 @@ if (unkcutomarId!=null){
             }
         });
 
+    }
+
+    public Paragraph fontCoveter(String name ){
+
+        Paragraph paragraph ;
+
+        String pattern = "^[A-Za-z0-9. ]+$";
+        if (name.matches(pattern)){
+            paragraph = new Paragraph(name);
+
+        }else {
+
+
+            BaseFont bf = null;
+            try {
+                bf = BaseFont.createFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+
+            } catch (IOException | DocumentException e) {
+                e.printStackTrace();
+            }
+
+            Font font1 = new Font(bf, 10, Font.NORMAL);
+
+            paragraph = new Paragraph(name, font1);
+        }
+
+        return paragraph;
     }
 
 }
