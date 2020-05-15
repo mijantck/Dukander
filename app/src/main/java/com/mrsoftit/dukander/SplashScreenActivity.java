@@ -19,8 +19,8 @@ public class SplashScreenActivity extends AppCompatActivity {
                 .withTargetActivity(LoginActivity.class)
                 .withSplashTimeOut(3000)
                 .withBackgroundColor(Color.parseColor("#11CFC5"))
-
-                .withLogo(R.mipmap.ic_launcher);
+                .withAfterLogoText("দোকানদার অ্যাপ্লিকেশনে স্বাগতম")
+                .withLogo(R.mipmap.ic_launcher_foreground);
 
 
         View easySplashScreen = config.create();

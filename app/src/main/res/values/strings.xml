@@ -32,7 +32,7 @@
     <string name="login_email_hint">Email</string>
     <string name="login_password_hint">Password</string>
 
-    <string name="shop_phone">দোকানের মোঃ নাম্বার</string>
+    <string name="shop_phone">দোকানের ফোন নাম্বার</string>
     <string name="shop_name">দোকানের নাম </string>
     <string name="shop_addres">দোকানের ঠিকানা </string>
     <string name="cutomer_added">গ্রাহক যুক্ত</string>

@@ -46,6 +46,10 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
+import com.itextpdf.io.font.PdfEncodings;
+import com.itextpdf.layout.font.FontProvider;
+import com.itextpdf.layout.font.FontSet;
+import com.itextpdf.layout.property.Property;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -56,6 +60,7 @@ import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.FontSelector;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -65,6 +70,7 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -79,7 +85,7 @@ import static java.lang.Double.parseDouble;
 public class PDFActivity extends AppCompatActivity {
 
 
-    String id,unkcutomarId,name,phone,taka,addrs,invoise,totaltaka,takacutomerup;
+    String id,unkcutomarId,name,phone,taka,addrs,invoise,totaltaka,takacutomerup,paymonysendup;
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 111;
 
@@ -90,6 +96,7 @@ public class PDFActivity extends AppCompatActivity {
     SaleProductIndevicualAdapter saleProductIndevicualAdapter;
 
 
+    public static final String FONT = "/assets/fonts/bangla.ttf";
     ArrayList<SaleProductCutomerNote> PDFList = new ArrayList<>();
 
     SaleProductCutomerNote saleProductCutomerNote;
@@ -116,7 +123,7 @@ public class PDFActivity extends AppCompatActivity {
 
 
     TextView invoiceNmaber,invoiceDate,BilCutomerName,BilCustomerPhone,
-            BilCutomerAddress,BilShopName,BilShopPhone,BilShopAddrss,SubTottal,Total,dautaka;
+            BilCutomerAddress,BilShopName,BilShopPhone,BilShopAddrss,SubTottal,Total,dautaka,PDFpayment;
     TextView BilShoppiciname;
 
     String BilShopImage;
@@ -202,6 +209,7 @@ public class PDFActivity extends AppCompatActivity {
                     SubTottal=findViewById(R.id.Subtotal);
                     Total=findViewById(R.id.PDFtotal);
                     dautaka=findViewById(R.id.dautaka);
+                    PDFpayment=findViewById(R.id.PDFpayment);
                     BilShoppiciname = findViewById(R.id.BilShoppiciname);
 
                    ExtendedFloatingActionButton createPDF = (ExtendedFloatingActionButton) findViewById(R.id.PDFcreate);
@@ -221,6 +229,7 @@ public class PDFActivity extends AppCompatActivity {
                 invoise = bundle.getString("invoise");
                 totaltaka = bundle.getString("totaltaka");
                 takacutomerup = bundle.getString("takacutomerup");
+                paymonysendup = bundle.getString("paymonysend");
 
 
                 if (name!=null){
@@ -350,6 +359,9 @@ public class PDFActivity extends AppCompatActivity {
         PdfWriter.getInstance(document, output);
 
 
+
+
+
         try {
             final File docsFolder1 = new File(Environment.getExternalStorageDirectory() +"/Dukandar/dont_delete/");
             File newFile1 = new File(docsFolder1,"01743.jpeg");
@@ -449,10 +461,32 @@ public class PDFActivity extends AppCompatActivity {
             String TotalPrice = price.getTotalPrice()+"";
 
 
+           Paragraph paragraph ;
+
+           String pattern = "^[A-Za-z0-9. ]+$";
+           if (namen.matches(pattern)){
+
+               paragraph = new Paragraph(namen);
+
+           }else {
 
 
+               BaseFont bf = null;
+               try {
+                   bf = BaseFont.createFont(FONT, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                   Toast.makeText(this, " font ", Toast.LENGTH_SHORT).show();
 
-            table.addCell(namen);
+               } catch (IOException e) {
+                   e.printStackTrace();
+                   Toast.makeText(this, e + "", Toast.LENGTH_SHORT).show();
+               }
+               Font font1 = new Font(bf, 10, Font.NORMAL);
+
+               paragraph = new Paragraph(namen, font1);
+           }
+
+
+            table.addCell(paragraph);
             table.addCell(quantidy);
             table.addCell(sprice);
             table.addCell(TotalPrice);
@@ -473,16 +507,14 @@ public class PDFActivity extends AppCompatActivity {
 
         PdfPTable accounts = new PdfPTable(2);
         accounts.setWidthPercentage(100);
-        accounts.addCell(getAccountsCell("Sub total"));
-        accounts.addCell(getAccountsCellR(SubTottal.getText().toString()));
         accounts.addCell(getAccountsCell("Due"));
         accounts.addCell(getAccountsCellR(dautaka.getText().toString()));
         accounts.addCell(getAccountsCell("Total"));
-        accounts.addCell(getAccountsCellR(Total.getText().toString()));
+        accounts.addCell(getAccountsCellR(SubTottal.getText().toString()));
         accounts.addCell(getAccountsCell("Amount paid"));
-        accounts.addCell(getAccountsCellR("        "));
-        accounts.addCell(getAccountsCell("Total Due"));
-        accounts.addCell(getAccountsCellR("        "));
+        accounts.addCell(getAccountsCellR(paymonysendup.toString()));
+        accounts.addCell(getAccountsCell("Current due"));
+        accounts.addCell(getAccountsCellR(Total.getText().toString()));
         PdfPCell summaryR = new PdfPCell (accounts);
         summaryR.setColspan (2);
         table.addCell(summaryR);
@@ -764,6 +796,7 @@ if (unkcutomarId!=null){
     }
 
     public static PdfPCell getFROMCell(String text, int alignment) {
+
         FontSelector fs = new FontSelector();
         Font font = FontFactory.getFont(FontFactory.TIMES_ROMAN, 13, Font.BOLD);
         /*	font.setColor(BaseColor.GRAY);*/
@@ -777,6 +810,8 @@ if (unkcutomarId!=null){
     }
 
     public PdfPCell getCell(String text, int alignment) {
+
+
         PdfPCell cell = new PdfPCell(new Phrase(text));
         cell.setPadding(0);
         cell.setHorizontalAlignment(alignment);
@@ -833,11 +868,13 @@ if (unkcutomarId!=null){
                 SubTottal.setText(sum+"");
 
                 double setTotaltaka = Double.parseDouble(takacutomerup);
+                double setPymenttaka = Double.parseDouble(paymonysendup);
 
-               double calculate= setTotaltaka + sum;
+                double calculate1= setTotaltaka + sum;
+                double calculate = calculate1 - setPymenttaka;
 
                 dautaka.setText(setTotaltaka+"");
-
+                PDFpayment.setText(paymonysendup);
                 Total.setText(calculate+"");
 
             }
@@ -884,11 +921,14 @@ if (unkcutomarId!=null){
                 SubTottal.setText(sum+"");
 
                 double setTotaltaka = Double.parseDouble(totaltaka);
+                double setPymenttaka = Double.parseDouble(paymonysendup);
 
-                double calculate= setTotaltaka + sum;
+                double calculate1= setTotaltaka + sum;
+
+                double calculate = calculate1 - setPymenttaka;
 
                 dautaka.setText(setTotaltaka+"");
-
+                PDFpayment.setText(paymonysendup);
                 Total.setText(calculate+"");
 
             }

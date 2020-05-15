@@ -100,6 +100,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override public void onClick(View view) {
                 // Launch Sign In
                 signInToGoogle();
+
             }
         });
 
@@ -134,13 +135,13 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 progressDialog = new ProgressDialog(LoginActivity.this);
                 // Setting Message
-                progressDialog.setTitle("Loading..."); // Setting Title
+                progressDialog.setTitle("তথ্য প্রস্তুত হচ্ছে..."); // Setting Title
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 progressDialog.show();
                 if(checkIntert()){
                     loginUserAccount();
                 }else {
-                    Toast.makeText(LoginActivity.this, " No internet ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, " ", Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -177,7 +178,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 progressDialog = new ProgressDialog(LoginActivity.this);
                 // Setting Message
-                progressDialog.setTitle("Loading..."); // Setting Title
+                progressDialog.setTitle("তথ্য প্রস্তুত হচ্ছে..."); // Setting Title
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 progressDialog.show();
 
@@ -199,6 +200,7 @@ public class LoginActivity extends AppCompatActivity {
     }
     public void onRegestetionClick(View View){
         startActivity(new Intent(this, RegestationActivity.class));
+        finish();
 
     }
     private void loginUserAccount() {
@@ -208,12 +210,12 @@ public class LoginActivity extends AppCompatActivity {
         password = passwordTV.getText().toString();
 
         if (TextUtils.isEmpty(email)) {
-            Toast.makeText(getApplicationContext(), "Please enter email...", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "ইমেল প্রবেশ করুন...", Toast.LENGTH_LONG).show();
             progressDialog.dismiss();
             return;
         }
         if (TextUtils.isEmpty(password)) {
-            Toast.makeText(getApplicationContext(), "Please enter password!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "পাসওয়ার্ড প্রবেশ করুন!", Toast.LENGTH_LONG).show();
             progressDialog.dismiss();
             return;
         }
@@ -222,7 +224,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "সফল লগইন!", Toast.LENGTH_LONG).show();
 
                                 progressDialog.dismiss();
 
@@ -231,7 +233,7 @@ public class LoginActivity extends AppCompatActivity {
                             finish();
                         }
                         else {
-                            Toast.makeText(getApplicationContext(), "Login failed! Please try again later", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "লগইন ব্যর্থ! পরে আবার চেষ্টা করুন", Toast.LENGTH_LONG).show();
                             progressDialog.dismiss();
 
                         }
@@ -273,6 +275,7 @@ public class LoginActivity extends AppCompatActivity {
     public void signInToGoogle() {
         Intent signInIntent = googleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
+
     }
 
     @Override

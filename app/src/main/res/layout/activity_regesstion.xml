@@ -83,7 +83,7 @@ android:layout_gravity="center">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextPassword"
                         style="@style/modifiedEditText"
-                        android:inputType="textEmailAddress"
+                        android:inputType="textPassword"
                         android:maxLines="1"
                         android:hint="পাসওয়ার্ড"/>
 

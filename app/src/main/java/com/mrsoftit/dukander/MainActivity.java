@@ -25,17 +25,11 @@ import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.telephony.mbms.DownloadProgressListener;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.DownloadListener;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.common.Priority;
-import com.androidnetworking.error.ANError;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -217,7 +211,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                     coainCollecton.document("Mycoin").set(coinObject).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            Toast.makeText(MainActivity.this, "coin Create ", Toast.LENGTH_SHORT).show();
 
                         }
                     });
@@ -226,13 +219,11 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                     {
                         if (date !=datenew && coin > 0){
                             coin = coin-1;
-                            Toast.makeText(MainActivity.this, coin + "Update Coin ", Toast.LENGTH_SHORT).show();
 
                             coainCollecton.document("Mycoin").update("coin",coin,"date",datenew).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
 
-                                    Toast.makeText(MainActivity.this, "Update Coin ", Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }

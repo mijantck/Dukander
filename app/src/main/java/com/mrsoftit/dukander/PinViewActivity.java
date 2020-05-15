@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.alimuzaffar.lib.pin.PinEntryEditText;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -55,12 +57,11 @@ public class PinViewActivity extends AppCompatActivity {
 
         newPinLayout = findViewById(R.id.newPinCode);
         pinLayout = findViewById(R.id.pin_code);
-        button = findViewById(R.id.cirPincodeButton);
         titeleTaxt = findViewById(R.id.titeleTaxt);
         final PinEntryEditText pinNewPin = findViewById(R.id.txt_pin_entry_new);
 
         progressDialog = new ProgressDialog(PinViewActivity.this);
-        progressDialog.setTitle("Loding...");
+        progressDialog.setTitle("তথ্য প্রস্তুত হচ্ছে...");
         progressDialog.setCancelable(false);
 
         pinNote = new PinNote();
@@ -101,55 +102,58 @@ public class PinViewActivity extends AppCompatActivity {
                 @Override
                 public void onPinEntered(CharSequence str) {
                     pin = str.toString();
+
+                    new MaterialAlertDialogBuilder(PinViewActivity.this, R.style.CutShapeTheme)
+                            .setTitle("আপনার সুরক্ষা কোড সেট করন ")
+                            .setMessage("আপনার সুরক্ষা কোড :" +pin)
+                            .setPositiveButton("বুঝেছি ", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                    progressDialog.show();
+                                    myPin.add(new PinNote(null,cutomerGmail,pin,true)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentReference> task) {
+                                            if (task.isSuccessful()){
+
+                                                final String idnew = task.getResult().getId();
+
+                                                myPin.document(idnew).update("id",idnew).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        final CollectionReference myPin = FirebaseFirestore.getInstance()
+                                                                .collection("AllPin");
+
+                                                        Map<String, Object> PinData = new HashMap<>();
+                                                        PinData.put("id",idnew);
+                                                        PinData.put("gmail",cutomerGmail);
+                                                        PinData.put("pin",pin);
+                                                        PinData.put("fairtTime",true);
+
+
+                                                        myPin.document(idnew).set(PinData).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                progressDialog.dismiss();
+                                                                newPinLayout.setVisibility(View.GONE);
+                                                                pinLayout.setVisibility(View.VISIBLE);
+
+                                                            }
+                                                        });
+                                                    }
+                                                });
+
+                                            }
+                                        }
+                                    });
+
+                                }
+                            })
+                            .show();
                 }
             });
         }
 
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                progressDialog.show();
-
-
-                myPin.add(new PinNote(null,cutomerGmail,pin,true)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentReference> task) {
-                        if (task.isSuccessful()){
-
-                            final String idnew = task.getResult().getId();
-
-                            myPin.document(idnew).update("id",idnew).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    final CollectionReference myPin = FirebaseFirestore.getInstance()
-                                            .collection("AllPin");
-
-                                    Map<String, Object> PinData = new HashMap<>();
-                                    PinData.put("id",idnew);
-                                    PinData.put("gmail",cutomerGmail);
-                                    PinData.put("pin",pin);
-                                    PinData.put("fairtTime",true);
-
-
-                                    myPin.document(idnew).set(PinData).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            progressDialog.dismiss();
-                                            newPinLayout.setVisibility(View.GONE);
-                                            pinLayout.setVisibility(View.VISIBLE);
-
-                                        }
-                                    });
-                                }
-                            });
-
-                        }
-                    }
-                });
-            }
-        });
 
         final PinEntryEditText pinEntry2 = findViewById(R.id.txt_pin_entry);
         if (pinEntry2 != null) {

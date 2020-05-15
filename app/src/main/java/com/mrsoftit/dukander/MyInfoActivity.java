@@ -72,7 +72,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
     CollectionReference myInfo = FirebaseFirestore.getInstance()
             .collection("users").document(user_id).collection("DukanInfo");
 
-      boolean open = true;
+
 
     private static final int PICK_IMAGE_REQUEST = 1;
     public Uri mImageUri;
@@ -82,8 +82,8 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
     boolean firstTime = false;
 
 
-    MaterialButton newPindButton ;
-    PinEntryEditText old_pin_entry,new_pin_entry;
+
+
 
     private LinearLayout shopediteView,shopdelaisView,passChange,PinLayout;
     private MaterialButton etideButton;
@@ -94,7 +94,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
 
 
 
-    String pin,idpin;
+
     private TextInputEditText dukanName, dukanPhone,dukanaddess,orldpass,newpass;
     private MaterialButton addmyinfo,confirm;
 
@@ -103,7 +103,8 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
     TextView chagepintextview;
     TextView recharchButton;
 
-    String oldpin,newpin;
+    boolean open = true;
+
 
     @Override
     public void onStart() {
@@ -147,7 +148,6 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
 
 
     }
-
 
 
 
@@ -208,36 +208,15 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
         confirm =findViewById(R.id.newPasswordButton);
 
         passChange = findViewById(R.id.chagepintextviewLiniarlayout);
-        old_pin_entry = findViewById(R.id.old_pin_entry);
-        new_pin_entry = findViewById(R.id.new_pin_entry);
-        newPindButton = findViewById(R.id.newPindButton);
+
         chagepintextview = findViewById(R.id.chagepintextview);
-        PinLayout = findViewById(R.id.PinLayout);
+
 
         imageSelet = findViewById(R.id.imageSelet);
 
 
 
 
-        final CollectionReference myPin = FirebaseFirestore.getInstance()
-                .collection("users").document(user_id).collection("Pin");
-
-        myPin.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-
-                    PinNote pinNote = new PinNote();
-                    for (DocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-
-                        pinNote.setFairtTime((Boolean) document.get("fairtTime"));
-                        pin = Objects.requireNonNull(document.get("pin")).toString();
-                        idpin = Objects.requireNonNull(document.get("id")).toString();
-                    }
-
-
-                }}
-        });
 
 
 
@@ -422,13 +401,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
             @Override
             public void onClick(View v) {
 
-                if ( open == true){
-                    PinLayout.setVisibility(View.VISIBLE);
-                    open = false;
-                }else  if (open == false){
-                    PinLayout.setVisibility(View.GONE);
-                    open = true;
-                }
+              startActivity(new Intent(MyInfoActivity.this,ChangePinActivity.class));
 
             }
         });
@@ -478,64 +451,9 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
             }
         });
 
-        if (old_pin_entry != null) {
-            old_pin_entry.setAnimateText(true);
-            old_pin_entry.setOnPinEnteredListener(new PinEntryEditText.OnPinEnteredListener() {
-                @Override
-                public void onPinEntered(CharSequence str) {
-                    oldpin = str.toString();
-
-                }
-            });
-        }
-        if (new_pin_entry != null) {
-            new_pin_entry.setAnimateText(true);
-            new_pin_entry.setOnPinEnteredListener(new PinEntryEditText.OnPinEnteredListener() {
-                @Override
-                public void onPinEntered(CharSequence str) {
-                    newpin = str.toString();
-
-                }
-            });
-        }
-
-        newPindButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (oldpin.isEmpty()){
-
-                    Toast.makeText(MyInfoActivity.this, "Old Pin is Empty", Toast.LENGTH_SHORT).show();
-                    return;
-                } if (oldpin.isEmpty()){
-
-                    Toast.makeText(MyInfoActivity.this, "New Pin is Empty", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (oldpin.equals(pin)){
-                    progressDialog = new ProgressDialog(MyInfoActivity.this);
-                    progressDialog.setTitle("Changing pin");
-                    progressDialog.show();
 
 
-                    myPin.document(idpin).update("pin",newpin).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
 
-                            progressDialog.dismiss();
-                            PinLayout.setVisibility(View.GONE);
-                            open = true;
-
-                        }
-                    });
-
-                }else {
-                    Toast.makeText(MyInfoActivity.this, "OLD PIN  INCORRECT  ", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
 
 
     }

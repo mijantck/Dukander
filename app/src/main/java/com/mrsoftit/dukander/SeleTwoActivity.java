@@ -89,7 +89,7 @@ public class SeleTwoActivity extends AppCompatActivity {
     List<ProductNote> exampleList;
 
     SealProductSelectAdapter adapter1 ;
-
+     String paymonysend;
 
     int invoisenumber;
 
@@ -343,8 +343,9 @@ public class SeleTwoActivity extends AppCompatActivity {
                         if (paymony.isEmpty()){
                             Toast.makeText(SeleTwoActivity.this, " Empty", Toast.LENGTH_SHORT).show();
                             return;
-
                         }
+
+                        paymonysend = paymony;
                         payeditetext.setVisibility(View.GONE);
                         paymentLooding.setVisibility(View.VISIBLE);
                         okButton.setVisibility(View.GONE);
@@ -544,6 +545,7 @@ public class SeleTwoActivity extends AppCompatActivity {
                     pdfIntent.putExtra("invoise",invoice);
                     pdfIntent.putExtra("totaltaka",totaltaka);
                     pdfIntent.putExtra("takacutomerup",takacutomerup);
+                    pdfIntent.putExtra("paymonysend",paymonysend);
 
 
 
@@ -563,6 +565,7 @@ public class SeleTwoActivity extends AppCompatActivity {
                     pdfIntent.putExtra("customerAddres",customerAddres);
                     pdfIntent.putExtra("invoise",invoice);
                     pdfIntent.putExtra("totaltaka",totaltaka);
+                    pdfIntent.putExtra("paymonysend",paymonysend);
                     pdfIntent.putExtra("takacutomerup",takacutomerup);
 
 
