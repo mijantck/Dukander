@@ -5,13 +5,18 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.ShareCompat;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -122,6 +127,8 @@ public class PDFActivity extends AppCompatActivity {
     String picName2;
     ImageView imageView;
     double sum =00.00;
+
+    String pdfname;
 
     String urlImage;
     String filename;
@@ -244,7 +251,7 @@ public class PDFActivity extends AppCompatActivity {
 
 
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Creating pdf...");
+        progressDialog.setMessage("তথ্য প্রস্তুত হচ্ছে...");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
 
@@ -333,6 +340,7 @@ public class PDFActivity extends AppCompatActivity {
 
     private void createPdf() throws FileNotFoundException, DocumentException {
 
+
         final File docsFolder = new File(Environment.getExternalStorageDirectory() + "/Dukandar");
 
          if (!docsFolder.exists()) {
@@ -340,8 +348,13 @@ public class PDFActivity extends AppCompatActivity {
 
         }
 
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("তথ্য প্রস্তুত হচ্ছে...");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
 
-        String pdfname = name+datenew+".pdf";
+
+         pdfname = name+datenew+".pdf";
         pdfFile = new File(docsFolder.getAbsolutePath(), pdfname);
         OutputStream output = new FileOutputStream(pdfFile);
         final Document document = new Document(PageSize.A4);
@@ -396,20 +409,6 @@ public class PDFActivity extends AppCompatActivity {
         FromTable.addCell(getCell(" "+BilShopPhone.getText().toString(), PdfPCell.ALIGN_RIGHT));
         FromTable.addCell(getCell(" "+BilCutomerAddress.getText().toString(), PdfPCell.ALIGN_LEFT));
         FromTable.addCell(getCell(" "+BilShopAddrss.getText().toString(), PdfPCell.ALIGN_RIGHT));
-
-
-
-        /*FontSelector fs = new FontSelector();
-        Font font = FontFactory.getFont(FontFactory.TIMES_ROMAN, 13, Font.BOLD);
-        fs.addFont(font);
-        Phrase bill = fs.process(" "); // customer information
-        Paragraph name = new Paragraph(" ");
-        name.setAlignment(Paragraph.ALIGN_RIGHT);
-        name.setIndentationLeft(20);
-        Paragraph contact = new Paragraph(" ");
-        contact.setIndentationLeft(20);
-        Paragraph address = new Paragraph(" ");
-        address.setIndentationLeft(20);*/
 
 
 
@@ -509,24 +508,12 @@ public class PDFActivity extends AppCompatActivity {
 
         previewPdf();
 
-        progressDialog.dismiss();
 
     }
 
 
     private void previewPdf() {
-       /* PackageManager packageManager = PDFActivity.this.getPackageManager();
-        Intent testIntent = new Intent(Intent.ACTION_VIEW);
-        testIntent.setType("application/pdf");
-        List list = packageManager.queryIntentActivities(testIntent, PackageManager.MATCH_DEFAULT_ONLY);
-        if (list.size() > 0) {
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_VIEW);
-            Uri uri = Uri.fromFile(pdfFile);
-            intent.setDataAndType(uri, "application/pdf");
-            startActivity(intent);
 
-        } else {*/
 
 if (id!=null){
 
@@ -543,6 +530,28 @@ if (id!=null){
                     list.add(document.getId());
                 }
                 saveCustomerupdateData((ArrayList) list); // *** new ***
+
+                progressDialog.dismiss();
+
+                final File docsFolder = new File(Environment.getExternalStorageDirectory() + "/Dukandar");
+
+                pdfFile = new File(docsFolder.getAbsolutePath(), pdfname);
+                Uri uri = FileProvider.getUriForFile(PDFActivity.this, getPackageName(), pdfFile);
+                if(pdfFile.exists()) {
+                    Intent target = new Intent(Intent.ACTION_VIEW);
+                    target.setDataAndType(Uri.fromFile(pdfFile), "application/pdf");
+                    target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+                    Intent intent = Intent.createChooser(target, "Open File");
+                    try {
+                        startActivity(intent);
+                    } catch (ActivityNotFoundException e) {
+                        // Instruct the user to install a PDF reader here, or something
+                    }
+                }
+                else
+                    Toast.makeText(getApplicationContext(), "File path is incorrect." , Toast.LENGTH_LONG).show();
+
             }
         }
 
@@ -565,6 +574,28 @@ if (unkcutomarId!=null){
                                 list.add(document.getId());
                             }
                             unknowCustomerupdateData((ArrayList) list); // *** new ***
+
+                            progressDialog.dismiss();
+
+                            final File docsFolder = new File(Environment.getExternalStorageDirectory() + "/Dukandar");
+
+                            pdfFile = new File(docsFolder.getAbsolutePath(), pdfname);
+                            Uri uri = FileProvider.getUriForFile(PDFActivity.this, getPackageName(), pdfFile);
+                            if(pdfFile.exists()) {
+                                Intent target = new Intent(Intent.ACTION_VIEW);
+                                target.setDataAndType(Uri.fromFile(pdfFile), "application/pdf");
+                                target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+                                Intent intent = Intent.createChooser(target, "Open File");
+                                try {
+                                    startActivity(intent);
+                                } catch (ActivityNotFoundException e) {
+                                    // Instruct the user to install a PDF reader here, or something
+                                }
+                            }
+                            else
+                                Toast.makeText(getApplicationContext(), "File path is incorrect." , Toast.LENGTH_LONG).show();
+
                         }
                     }
 
@@ -572,21 +603,7 @@ if (unkcutomarId!=null){
                 });
             }
 
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(PDFActivity.this);
-        builder1.setTitle("PDF Create ");
-        builder1.setMessage(pdfFile+"");
-        builder1.setCancelable(true);
 
-        builder1.setPositiveButton(
-                "Yes",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-
-        AlertDialog alert11 = builder1.create();
-        alert11.show();
     }
 
     private void showMessageOKCancel(DialogInterface.OnClickListener okListener) {

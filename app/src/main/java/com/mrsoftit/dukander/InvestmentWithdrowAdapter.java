@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,10 +31,11 @@ public class InvestmentWithdrowAdapter extends FirestoreRecyclerAdapter<MyInfoNo
     protected void onBindViewHolder(@NonNull NotViewHolde holder, int position, @NonNull MyInfoNote model) {
 
 
-        if (model.getInvesment()!=null){
+        if (model.getInvesment()>0){
             holder.investmoney.setText(model.getInvesment()+"");
         }
-        if (model.getWithdrow()!=null){
+
+        if (model.getWithdrow()>0){
             holder.investmoney.setText(model.getWithdrow()+"");
         }
         if (model.getInvestmentDeleils()!=null){
@@ -76,7 +78,7 @@ public class InvestmentWithdrowAdapter extends FirestoreRecyclerAdapter<MyInfoNo
             super(itemView);
               investmoney = itemView.findViewById(R.id.totalproductName);
               detaisl = itemView.findViewById(R.id.dilaslepariceto);
-            date = itemView.findViewById(R.id.datein_cash);
+              date = itemView.findViewById(R.id.datein_cash);
 
 
 

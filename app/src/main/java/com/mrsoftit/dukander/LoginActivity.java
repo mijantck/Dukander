@@ -173,7 +173,7 @@ public class LoginActivity extends AppCompatActivity {
                 String email = forgetEmail.getText().toString();
 
                 if(TextUtils.isEmpty(email)){
-                    Toast.makeText(getApplicationContext(),"Please fill e-mail",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"দয়া করে ইমেলটি পূরণ করুন",Toast.LENGTH_SHORT).show();
                     return;
                 }
                 progressDialog = new ProgressDialog(LoginActivity.this);
@@ -187,10 +187,10 @@ public class LoginActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
-                                    Toast.makeText(getApplicationContext(),"Password reset link was sent your email address",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(),"পাসওয়ার্ড রিসেট লিঙ্কটি আপনার ইমেল ঠিকানা প্রেরণ করা হয়েছিল",Toast.LENGTH_SHORT).show();
                                 }
                                 else{
-                                    Toast.makeText(getApplicationContext(),"Mail sending error",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(),"মেল প্রেরণে ত্রুটি",Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });

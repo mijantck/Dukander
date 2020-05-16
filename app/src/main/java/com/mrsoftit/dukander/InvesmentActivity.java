@@ -240,9 +240,8 @@ public class InvesmentActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        if (myId!=null){
             adapter.startListening();
-        }
+
     }
 
     @Override
