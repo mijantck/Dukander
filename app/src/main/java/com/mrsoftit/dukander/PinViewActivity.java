@@ -34,7 +34,6 @@ import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
 
 public class PinViewActivity extends AppCompatActivity {
 
-     CircularProgressButton button ;
      CardView newPinLayout,pinLayout;
      String pin ;
      TextView titeleTaxt;
@@ -85,9 +84,8 @@ public class PinViewActivity extends AppCompatActivity {
                         }
 
                         if (pin==null){
-                            titeleTaxt.setText(newPinString);
-                            newPinLayout.setVisibility(View.VISIBLE);
-                            pinLayout.setVisibility(View.GONE);
+                           startActivity(new Intent(PinViewActivity.this,PinSetActivity.class));
+                           finish();
                         }
 
                 }}
@@ -96,63 +94,7 @@ public class PinViewActivity extends AppCompatActivity {
 
 
 
-        if (pinNewPin != null) {
-            pinNewPin.setAnimateText(true);
-            pinNewPin.setOnPinEnteredListener(new PinEntryEditText.OnPinEnteredListener() {
-                @Override
-                public void onPinEntered(CharSequence str) {
-                    pin = str.toString();
 
-                    new MaterialAlertDialogBuilder(PinViewActivity.this, R.style.CutShapeTheme)
-                            .setTitle("আপনার সুরক্ষা কোড সেট করন ")
-                            .setMessage("আপনার সুরক্ষা কোড :" +pin)
-                            .setPositiveButton("বুঝেছি ", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-
-                                    progressDialog.show();
-                                    myPin.add(new PinNote(null,cutomerGmail,pin,true)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DocumentReference> task) {
-                                            if (task.isSuccessful()){
-
-                                                final String idnew = task.getResult().getId();
-
-                                                myPin.document(idnew).update("id",idnew).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                        final CollectionReference myPin = FirebaseFirestore.getInstance()
-                                                                .collection("AllPin");
-
-                                                        Map<String, Object> PinData = new HashMap<>();
-                                                        PinData.put("id",idnew);
-                                                        PinData.put("gmail",cutomerGmail);
-                                                        PinData.put("pin",pin);
-                                                        PinData.put("fairtTime",true);
-
-
-                                                        myPin.document(idnew).set(PinData).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                            @Override
-                                                            public void onComplete(@NonNull Task<Void> task) {
-                                                                progressDialog.dismiss();
-                                                                newPinLayout.setVisibility(View.GONE);
-                                                                pinLayout.setVisibility(View.VISIBLE);
-
-                                                            }
-                                                        });
-                                                    }
-                                                });
-
-                                            }
-                                        }
-                                    });
-
-                                }
-                            })
-                            .show();
-                }
-            });
-        }
 
 
         final PinEntryEditText pinEntry2 = findViewById(R.id.txt_pin_entry);

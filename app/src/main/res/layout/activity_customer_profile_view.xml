@@ -78,6 +78,7 @@
                             android:id="@+id/cutomer_profile_name"
                             style="@style/headerText"
                             android:text="Mijanur Rahman"
+                            android:textSize="17dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
                         <TextView
@@ -133,6 +134,7 @@
                                             style="@style/reportContentText"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
+                                            android:textSize="15dp"
                                             android:gravity="center"
                                             android:text="মোট পরিশোধ"
                                             android:textColor="#79D0A3" />
@@ -166,6 +168,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:gravity="center"
+                                            android:textSize="15dp"
                                             android:text="মোট কেনা "
                                             android:textColor="#79D0A3" />
 
@@ -196,6 +199,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:gravity="center"
+                                            android:textSize="15dp"
                                             android:text="মোট বাকি"
                                             android:textColor="#79D0A3" />
 

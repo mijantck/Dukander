@@ -103,7 +103,6 @@ public class ProductListActivity extends AppCompatActivity {
                         if (name!=null){
                             product_text_view.setVisibility(View.GONE);
                         }
-                        Toast.makeText(ProductListActivity.this, name+"", Toast.LENGTH_SHORT).show();
                     }
 
                 }

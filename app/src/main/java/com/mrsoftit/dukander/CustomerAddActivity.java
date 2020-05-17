@@ -169,27 +169,28 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
 
 
                     progressDialog = new ProgressDialog(CustomerAddActivity.this);
-                    progressDialog.setMessage("Loading..."); // Setting Message
+                    progressDialog.setMessage("লোড করছে..."); // Setting Message
                     progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    progressDialog.setCancelable(false);
                     progressDialog.show();
 
                     if (image!=false){
 
                         CustomerInfoUpload(mImageUri);
                     }
+
                     final String name = customerName.getText().toString();
                     final String phone = customerPhone.getText().toString();
                     final String taka = customerTaka.getText().toString();
                     double dtaka = Double.parseDouble(taka);
                     final String addres = CustomerAddress.getText().toString();
 
-
                     customer.document(id).update("customerIdDucunt", id,"nameCUstomer",name,"phone",phone,"taka",dtaka,"addres",addres).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
 
                             progressDialog.dismiss();
-                            Toast.makeText(CustomerAddActivity.this, " successful ", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CustomerAddActivity.this, " সফল ", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(CustomerAddActivity.this,CustumarActivity.class);
                             startActivity(intent);
                             finish();
@@ -202,11 +203,11 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
                 final String phone1 = customerPhone.getText().toString();
 
                 if (TextUtils.isEmpty(name1)) {
-                    Toast.makeText(getApplicationContext(), "Please enter Customer Name...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "কাস্টমার নাম লিখুন...", Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (TextUtils.isEmpty(phone1)) {
-                    Toast.makeText(getApplicationContext(), "Please enter Customer phone Number", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "গ্রাহক ফোন নাম্বার লিখুন", Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -214,8 +215,9 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
 
 
                     progressDialog = new ProgressDialog(CustomerAddActivity.this);
-                    progressDialog.setMessage("Loading..."); // Setting Message
+                    progressDialog.setMessage("লোড করছে..."); // Setting Message
                     progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    progressDialog.setCancelable(false);
                     progressDialog.show();
                     final String name = customerName.getText().toString();
                     final String phone = customerPhone.getText().toString();
@@ -240,7 +242,7 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
 
                                         progressDialog.dismiss();
 
-                                        Toast.makeText(CustomerAddActivity.this, " sucsecfull ", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(CustomerAddActivity.this, " সফল ", Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(CustomerAddActivity.this,CustumarActivity.class);
                                         startActivity(intent);
                                         finish();
@@ -337,7 +339,8 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
     public void CustomerInfoUpload(final Uri mImageUri) {
         progressDialog = new ProgressDialog(this);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progressDialog.setTitle("Uploading...");
+        progressDialog.setCancelable(false);
+        progressDialog.setTitle("আপলোড হচ্ছে...");
         progressDialog.setProgress(0);
         progressDialog.show();
         progressDialog.setCanceledOnTouchOutside(false);
@@ -393,7 +396,7 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
                                                 public void onComplete(@NonNull Task<Void> task) {
 
 
-                                                    Toast.makeText(CustomerAddActivity.this, " successful ", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(CustomerAddActivity.this, " সফল ", Toast.LENGTH_SHORT).show();
 
                                                 }
                                             });

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -39,7 +40,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -62,11 +65,13 @@ public class CustomerProfileViewActivity extends AppCompatActivity {
 
     TotalAdapter adapter ;
 
-    Double totalsum;
-    Double cutomartk;
-    Double activeBalance;
-    Double dueBalance;
-    String myinfoid;
+    ProgressDialog progressDialog ;
+
+    Double totalsum = 0.0;
+    Double cutomartk = 0.0;
+    Double activeBalance = 0.0;
+    Double dueBalance=0.0;
+    String myinfoid ;
 
 
     @Override
@@ -242,7 +247,6 @@ if (id!=null){
                 @Override
                 public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
 
-
                     if (e != null) {
                         return;
                     }
@@ -319,108 +323,355 @@ if (id!=null){
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Dialog dialog = new Dialog(CustomerProfileViewActivity.this);
-                // Include dialog.xml file
-                dialog.setContentView(R.layout.cutomar_pay_taka);
-                // Set dialog title
-                dialog.setTitle("Bill Pay ");
-                dialog.show();
-                dialog.setCanceledOnTouchOutside(false);
-                final Button okButton = dialog.findViewById(R.id.okButton);
-                Button cancelButton = dialog.findViewById(R.id.cancelButton);
 
-                final TextView payeditetext,TitleTExt,paymentLooding;
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CustomerProfileViewActivity.this);
+                String[] option = {" অর্থ প্রদান", "পণ্য বিক্রয়"};
 
-                payeditetext= dialog.findViewById(R.id.dialogpayMoney);
-                TitleTExt= dialog.findViewById(R.id.TitleTExt);
-                paymentLooding = dialog.findViewById(R.id.loadingTExt);
-                final TextView loadingTExt = dialog.findViewById(R.id.loadingTExt);
-
-
-                okButton.setOnClickListener(new View.OnClickListener() {
+                builder.setItems(option, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        payeditetext.setVisibility(View.GONE);
-                        paymentLooding.setVisibility(View.VISIBLE);
-                        okButton.setVisibility(View.GONE);
-                        loadingTExt.setVisibility(View.VISIBLE);
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {
 
-                        String paymony = payeditetext.getText().toString();
-                        if (paymony.isEmpty()){
-                            return;
-                        }
+                            final Dialog dialogpayment = new Dialog(CustomerProfileViewActivity.this);
+                            // Include dialogpayment.xml file
+                            dialogpayment.setContentView(R.layout.cutomar_pay_taka);
+                            // Set dialogpayment title
+                            dialogpayment.setTitle("বিল পরিশোধ");
+                            dialogpayment.show();
+                            dialogpayment.setCanceledOnTouchOutside(false);
+                            final Button okButton = dialogpayment.findViewById(R.id.okButton);
+                            Button cancelButton = dialogpayment.findViewById(R.id.cancelButton);
 
-                        double paymonyDouable  = Double.parseDouble(paymony);
+                            final TextView payeditetext,TitleTExt,paymentLooding;
 
-
-                        double dautakaccustomer = 00.0;
-                        if (id!=null){
-                            dautakaccustomer = Double.parseDouble(totaldue.getText().toString().trim());
-                        }
-                        if (uid!=null){
-                            dautakaccustomer = Double.parseDouble(totaldue.getText().toString().trim());
-                        }
-                        if (dautakaccustomer <paymonyDouable ){
-
-                            Toast.makeText(CustomerProfileViewActivity.this, "invalid input", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        double withpaytaka = dautakaccustomer - paymonyDouable;
-                        double daubill = withpaytaka;
-
-                        if (activeBalance!=null){
-                            activeBalance += paymonyDouable;
-                        }
-
-                        if (dueBalance != null){
-                            dueBalance += paymonyDouable;
-
-                        }
+                            payeditetext= dialogpayment.findViewById(R.id.dialogpayMoney);
+                            TitleTExt= dialogpayment.findViewById(R.id.TitleTExt);
+                            paymentLooding = dialogpayment.findViewById(R.id.loadingTExt);
+                            final TextView loadingTExt = dialogpayment.findViewById(R.id.loadingTExt);
 
 
-
-                       myInfo.document(myinfoid).update("activeBalance",activeBalance,"totalpaybil",dueBalance,"date",datenew);
-
-
-                        if (id!=null) {
-                            final CollectionReference customer = FirebaseFirestore.getInstance()
-                                    .collection("users").document(user_id).collection("Customers");
-                            customer.document(id).update("taka", daubill).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            okButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    customer.document(id).update("lastTotal", 00.0).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            dialog.dismiss();
-                                        }
-                                    });
+                                public void onClick(View v) {
+
+                                    progressDialog = new ProgressDialog(CustomerProfileViewActivity.this);
+                                    // Setting Message
+                                    progressDialog.setTitle("তথ্য প্রস্তুত হচ্ছে..."); // Setting Title
+                                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                                    progressDialog.setCancelable(false);
+                                    progressDialog.show();
+
+                                    payeditetext.setVisibility(View.GONE);
+                                    paymentLooding.setVisibility(View.VISIBLE);
+                                    okButton.setVisibility(View.GONE);
+                                    loadingTExt.setVisibility(View.VISIBLE);
+
+                                    String paymony = payeditetext.getText().toString();
+                                    if (paymony.isEmpty()){
+                                        return;
+                                    }
+
+                                    double paymonyDouable  = Double.parseDouble(paymony);
+
+
+                                    double dautakaccustomer = 00.0;
+                                    if (id!=null){
+                                        dautakaccustomer = Double.parseDouble(totaldue.getText().toString().trim());
+                                    }
+                                    if (uid!=null){
+                                        dautakaccustomer = Double.parseDouble(totaldue.getText().toString().trim());
+                                    }
+                                    if (dautakaccustomer <paymonyDouable ){
+
+                                        Toast.makeText(CustomerProfileViewActivity.this, "ভুল ইনপুট", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+                                    double withpaytaka = dautakaccustomer - paymonyDouable;
+                                    double daubill = withpaytaka;
+
+                                    if (activeBalance!=null){
+                                        activeBalance += paymonyDouable;
+                                    }
+
+                                    if (dueBalance != null){
+                                        dueBalance += paymonyDouable;
+
+                                    }
+
+
+
+                                    myInfo.document(myinfoid).update("activeBalance",activeBalance,"totalpaybil",dueBalance,"date",datenew);
+
+
+                                    if (id!=null) {
+                                        final CollectionReference customer = FirebaseFirestore.getInstance()
+                                                .collection("users").document(user_id).collection("Customers");
+                                        customer.document(id).update("taka", daubill).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                customer.document(id).update("lastTotal", 00.0).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        dialogpayment.dismiss();
+                                                        progressDialog.dismiss();
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }if (uid!=null) {
+                                        final CollectionReference customer = FirebaseFirestore.getInstance()
+                                                .collection("users").document(user_id).collection("UnknownCustomer");
+                                        customer.document(uid).update("taka", daubill).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                customer.document(uid).update("lastTotal", 00.0).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        dialogpayment.dismiss();
+                                                        progressDialog.dismiss();
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
                                 }
                             });
-                        }if (uid!=null) {
-                            final CollectionReference customer = FirebaseFirestore.getInstance()
-                                    .collection("users").document(user_id).collection("UnknownCustomer");
-                            customer.document(uid).update("taka", daubill).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                            cancelButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    customer.document(uid).update("lastTotal", 00.0).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            dialog.dismiss();
-                                        }
-                                    });
+                                public void onClick(View v) {
+
+                                    dialogpayment.dismiss();
                                 }
                             });
+
+
                         }
-                    }
-                });
+                        if (which == 1) {
 
-                cancelButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
 
-                        dialog.dismiss();
+                            final Dialog dialogpayment = new Dialog(CustomerProfileViewActivity.this);
+                            // Include dialogpayment.xml file
+                            dialogpayment.setContentView(R.layout.sale_product_with_customer_profile);
+                            // Set dialogpayment title
+                            dialogpayment.setTitle("Bill Pay ");
+                            dialogpayment.show();
+                            dialogpayment.setCanceledOnTouchOutside(false);
+                            final Button okButton = dialogpayment.findViewById(R.id.addMoneyButtonproductsale);
+                            Button cancelButton = dialogpayment.findViewById(R.id.cancelButtonproductsale);
+
+                            final TextView productname,productSinglePrice,paymentProductQuantidy,paymentProductToatalPrice;
+
+                            productname= dialogpayment.findViewById(R.id.productname);
+                            productSinglePrice= dialogpayment.findViewById(R.id.productSinglePrice);
+                            paymentProductQuantidy= dialogpayment.findViewById(R.id.paymentProductQuantidy);
+                            paymentProductToatalPrice = dialogpayment.findViewById(R.id.paymentProductToatalPrice);
+
+
+                            okButton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    okButton.setVisibility(View.GONE);
+
+
+                                    final String proname = productname.getText().toString();
+                                    String proSingPrice = productSinglePrice.getText().toString();
+                                    final String proQuatidy = paymentProductQuantidy.getText().toString();
+                                    final String paymony = paymentProductToatalPrice.getText().toString();
+
+                                    if (proname.isEmpty()){
+                                        Toast.makeText(CustomerProfileViewActivity.this, "  সব পূরণ করুন ", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+                                    if (proSingPrice.isEmpty()){
+                                        Toast.makeText(CustomerProfileViewActivity.this, "সব পূরণ করুন", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+                                    if (proQuatidy.isEmpty()){
+                                        Toast.makeText(CustomerProfileViewActivity.this, "সব পূরণ করুন", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+                                    if (paymony.isEmpty()){
+                                        Toast.makeText(CustomerProfileViewActivity.this, "সব পূরণ করুন", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+
+
+
+                                    progressDialog = new ProgressDialog(CustomerProfileViewActivity.this);
+                                    // Setting Message
+                                    progressDialog.setTitle("তথ্য প্রস্তুত হচ্ছে..."); // Setting Title
+                                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                                    progressDialog.setCancelable(false);
+                                    progressDialog.show();
+
+                                    final double prosPrice  = Double.parseDouble(proSingPrice);
+                                    final double proquantdy  = Double.parseDouble(proQuatidy);
+                                    final double proTotal  = Double.parseDouble(paymony);
+
+
+                                    double dautakaccustomer = 00.0;
+                                    if (id!=null){
+                                        dautakaccustomer = Double.parseDouble(totaldue.getText().toString().trim());
+                                    }
+                                    if (uid!=null){
+                                        dautakaccustomer = Double.parseDouble(totaldue.getText().toString().trim());
+                                    }
+
+                                    double withpaytaka = dautakaccustomer + proTotal;
+                                    final double daubill = withpaytaka;
+
+
+                                    if (dueBalance != null){
+
+                                        dueBalance += proTotal;
+
+                                    }
+
+                                    myInfo.document(myinfoid).update("activeBalance",activeBalance,"totalpaybil",dueBalance,"date",datenew);
+
+                                    if (id!=null){
+
+                                        final CollectionReference customer = FirebaseFirestore.getInstance()
+                                                .collection("users").document(user_id).collection("Customers").document(id).collection("saleProduct");
+
+                                        customer.add(new SaleProductCutomerNote(null,proname,prosPrice,proquantdy,proTotal,datenew,0,true,true))
+                                                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<DocumentReference> task) {
+
+                                                        if ( task.isSuccessful()){
+                                                            final String ids = task.getResult().getId();
+                                                            customer.document(ids).update("saleProductId",ids).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<Void> task) {
+
+                                                                    final CollectionReference customer = FirebaseFirestore.getInstance()
+                                                                            .collection("users").document(user_id).collection("Customers");
+                                                                           customer.document(id).update("taka", daubill).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                        @Override
+                                                                        public void onComplete(@NonNull Task<Void> task) {
+
+
+                                                                            //total sale
+                                                                            final CollectionReference TotalcustomerProductSale = FirebaseFirestore.getInstance()
+                                                                                    .collection("users").document(user_id).collection("Sales");
+
+
+
+
+
+                                                                            Map<String, Object> user = new HashMap<>();
+                                                                            user.put("saleProductId",ids);
+                                                                            user.put("date",datenew);
+                                                                            user.put("itemName",proname);
+                                                                            user.put("quantedt", proquantdy);
+                                                                            user.put("totalPrice", proTotal);
+                                                                            user.put("paid", true);
+
+                                                                            TotalcustomerProductSale.document(ids).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                @Override
+                                                                                public void onComplete(@NonNull Task<Void> task) {
+
+                                                                                }
+                                                                            });
+
+
+                                                                                    dialogpayment.dismiss();
+                                                                                    progressDialog.dismiss();
+                                                                        }
+                                                                    });
+
+
+
+                                                                }
+                                                            });
+                                                        }
+                                                    }
+                                                });
+                                    }
+                                    if (uid!=null){
+
+                                        final CollectionReference customer = FirebaseFirestore.getInstance()
+                                                .collection("users").document(user_id).collection("UnknownCustomer").document(uid).collection("saleProduct");
+
+                                        customer.add(new SaleProductCutomerNote(null,proname,prosPrice,proquantdy,proTotal,datenew,0,true,true))
+                                                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                                                         if ( task.isSuccessful()){
+                                                             final String id = task.getResult().getId();
+                                                             customer.document(id).update("saleProductId",id).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                 @Override
+                                                                 public void onComplete(@NonNull Task<Void> task) {
+
+                                                                     final CollectionReference customer = FirebaseFirestore.getInstance()
+                                                                             .collection("users").document(user_id).collection("UnknownCustomer");
+                                                                     customer.document(uid).update("taka", daubill).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                         @Override
+                                                                         public void onComplete(@NonNull Task<Void> task) {
+                                                                             customer.document(uid).update("lastTotal", 00.0).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                 @Override
+                                                                                 public void onComplete(@NonNull Task<Void> task) {
+
+
+                                                                                     //total sale
+                                                                                     final CollectionReference TotalcustomerProductSale = FirebaseFirestore.getInstance()
+                                                                                             .collection("users").document(user_id).collection("Sales");
+
+
+                                                                                     Map<String, Object> user = new HashMap<>();
+                                                                                     user.put("saleProductId",id);
+                                                                                     user.put("date",datenew);
+                                                                                     user.put("itemName",proname);
+                                                                                     user.put("quantedt", proquantdy);
+                                                                                     user.put("totalPrice", proTotal);
+                                                                                     user.put("paid", true);
+
+                                                                                     TotalcustomerProductSale.document(id).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                         @Override
+                                                                                         public void onComplete(@NonNull Task<Void> task) {
+
+                                                                                         }
+                                                                                     });
+
+
+                                                                                     dialogpayment.dismiss();
+                                                                                     progressDialog.dismiss();
+                                                                                 }
+                                                                             });
+                                                                         }
+                                                                     });
+
+
+
+                                                                 }
+                                                             });
+                                                         }
+                                                    }
+                                                });
+
+                                    }
+
+
+
+
+                                }
+                            });
+
+                            cancelButton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+
+                                    dialogpayment.dismiss();
+                                }
+                            });
+
+
+                        }
+
                     }
-                });
+                }).create().show();
 
 
             }
@@ -435,16 +686,8 @@ if (id!=null){
 
     private void recyclear() {
 
-        Date calendar1 = Calendar.getInstance().getTime();
-        DateFormat df1 = new SimpleDateFormat("yyyyMMdd");
-        String todayString = df1.format(calendar1);
-        final int datenew = Integer.parseInt(todayString);
-
-
         CollectionReference TotalcustomerProductSale = FirebaseFirestore.getInstance()
                 .collection("users").document(user_id).collection("Customers").document(id).collection("saleProduct");
-
-
 
 
         Query query = TotalcustomerProductSale.orderBy("itemName", Query.Direction.ASCENDING);

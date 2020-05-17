@@ -108,7 +108,7 @@ public class InvesmentActivity extends AppCompatActivity {
                 dialoginvest.setCanceledOnTouchOutside(false);
                 final Button okButton = dialoginvest.findViewById(R.id.addmoney);
                 final TextView Titel = dialoginvest.findViewById(R.id.TitleTExt);
-                Titel.setText("INVESTMENT ");
+                Titel.setText("বিনিয়োগ ");
                 Button cancelButton = dialoginvest.findViewById(R.id.cancelButton);
 
 
@@ -124,12 +124,12 @@ public class InvesmentActivity extends AppCompatActivity {
                     public void onClick(View v) {
 
                         final ProgressDialog pd = new ProgressDialog(InvesmentActivity.this);
-                        pd.setMessage("loading");
+                        pd.setMessage("লোড করছে...");
                         pd.setCancelable(false);
                         String investmenttaka=    payeditetext.getText().toString();
 
                         if (investmenttaka.isEmpty()){
-                            Toast.makeText(InvesmentActivity.this, "Investment is empty ", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(InvesmentActivity.this, "বিনিয়োগ ফাঁকা ", Toast.LENGTH_SHORT).show();
                             return;
                         }
                    double aDoubleinvestmenttaka = Double.parseDouble(investmenttaka);

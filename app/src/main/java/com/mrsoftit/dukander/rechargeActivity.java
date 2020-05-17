@@ -94,7 +94,13 @@ public class rechargeActivity extends AppCompatActivity {
                 assert queryDocumentSnapshots != null;
                 for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
 
-                    if (doc.get("coin") != null) {
+
+                    if (doc.get("customerStatus")!=null){
+                       acticHeaderTextView.setText("আপনি আছেন  ");
+
+                        activeCoine.setText("অগ্রিম");
+
+                    }else if (doc.get("coin") != null) {
 
                         int totalcoin =Integer.parseInt(doc.get("coin").toString());
                         activeCoine.setText(totalcoin+"");

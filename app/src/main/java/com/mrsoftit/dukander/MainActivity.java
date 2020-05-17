@@ -428,33 +428,33 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             case R.id.my_info:
                 Intent myinten =new Intent(MainActivity.this,MyInfoActivity.class);
                 startActivity(myinten);
-                finish();
+
                 break;
             case R.id.nav_message:
                 Intent homeIntnt =new Intent(MainActivity.this,CustumarActivity.class);
                 startActivity(homeIntnt);
-                finish();
+
                 break;
             case R.id.Unknown_customer:
                 Intent unKnownUsomer =new Intent(MainActivity.this,UnknownCustomerActivity.class);
                 startActivity(unKnownUsomer);
-                finish();
+
                 break;
             case R.id.nav_chat:
                 Intent resultIntnt =new Intent(MainActivity.this,ProductListActivity.class);
                 startActivity(resultIntnt);
 
-                finish();
+
                 break;
             case R.id.nav_profile:
                 Intent resultIntnt2 =new Intent(MainActivity.this, TotalSaleActivity.class);
                 startActivity(resultIntnt2);
-            finish();
+
                 break;
             case R.id.recharge:
                 Intent rechargeInte =new Intent(MainActivity.this, rechargeActivity.class);
                 startActivity(rechargeInte);
-                finish();
+
                 break;
             case R.id.nav_share:
 
@@ -463,7 +463,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 revokeAccess();
                Intent resultIntnt1 =new Intent(MainActivity.this,LoginActivity.class);
                startActivity(resultIntnt1);
-               finish();
+
                 break;
 
         }

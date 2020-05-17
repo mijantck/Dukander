@@ -167,30 +167,30 @@ if (pruductImageup!=null){
                 String pmq = pruductMin.getText().toString();
 
                 if (TextUtils.isEmpty(name) ){
-                    Toast.makeText(getApplicationContext(), "Please enter Name...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "নাম লিখুন...", Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (TextUtils.isEmpty(price) ){
-                    Toast.makeText(getApplicationContext(), "Please enter Price...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), " দাম লিখুন ...", Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (TextUtils.isEmpty(ppq) ){
-                    Toast.makeText(getApplicationContext(), "Please enter Quantity...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "পরিমাণ লিখুন ...", Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (TextUtils.isEmpty(pmq) ){
-                    Toast.makeText(getApplicationContext(), "Please enter Quantity...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "পরিমাণ প্রবেশ করুন...", Toast.LENGTH_LONG).show();
                     return;
                 }
 
                 progressDialog = new ProgressDialog(ProductAddActivity.this);
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                progressDialog.setTitle("Uploading...");
+                progressDialog.setTitle("আপলোড হচ্ছে...");
                 progressDialog.setProgress(0);
                 progressDialog.show();
                 progressDialog.setCanceledOnTouchOutside(false);
 
-                if (mImageUri == null  ){
+                if ( bundle == null && mImageUri == null  ){
 
 
                     final String pnmae = productName.getText().toString();
@@ -216,7 +216,7 @@ if (pruductImageup!=null){
                                     public void onComplete(@NonNull Task<Void> task) {
 
 
-                                        Toast.makeText(ProductAddActivity.this, " successful ", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(ProductAddActivity.this, " সফলভাবে সম্পন্ন ", Toast.LENGTH_SHORT).show();
 
                                     }
                                 });
@@ -229,7 +229,6 @@ if (pruductImageup!=null){
                     startActivity(intent);
                     finish();
 
-                    Toast.makeText(getApplicationContext(), " Photo is empty ", Toast.LENGTH_LONG).show();
                 }
 
                 final String pnmae = productName.getText().toString();
@@ -242,17 +241,15 @@ if (pruductImageup!=null){
 
                 if (bundle!=null && image == false) {
 
-
                     product.document(id).update("proId", id, "proName", pnmae, "proPrice", pp, "proQua", pq, "proMin", pm, "proImgeUrl", pruductImageup)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
 
-
                                     Intent intent = new Intent(ProductAddActivity.this, ProductListActivity.class);
                                     startActivity(intent);
                                     finish();
-                                    progressDialog.dismiss();
+
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -389,7 +386,7 @@ if (pruductImageup!=null){
                                                         public void onComplete(@NonNull Task<Void> task) {
 
 
-                                                            Toast.makeText(ProductAddActivity.this, " successful ", Toast.LENGTH_SHORT).show();
+                                                            Toast.makeText(ProductAddActivity.this, " সফলভাবে সম্পন্ন ", Toast.LENGTH_SHORT).show();
 
                                                         }
                                                     });

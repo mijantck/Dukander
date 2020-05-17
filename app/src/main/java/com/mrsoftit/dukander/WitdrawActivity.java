@@ -141,19 +141,19 @@ public class WitdrawActivity extends AppCompatActivity {
                 // Include dialog.xml file
                 dialoginvest.setContentView(R.layout.investment_withdrow_dialog);
                 // Set dialog title
-                dialoginvest.setTitle("Bill Pay ");
+                dialoginvest.setTitle("বিল পরিশোধ ");
                 dialoginvest.show();
                 dialoginvest.setCanceledOnTouchOutside(false);
                 final Button okButton = dialoginvest.findViewById(R.id.addmoney);
                 final TextView Titel = dialoginvest.findViewById(R.id.TitleTExt);
-                Titel.setText("CASH OUT");
-                okButton.setText("CASH OUT");
+                Titel.setText("ক্যাশ আউট");
+                okButton.setText("ক্যাশ আউট");
                 Button cancelButton = dialoginvest.findViewById(R.id.cancelButton);
 
 
 
                 final ProgressDialog pd = new ProgressDialog(WitdrawActivity.this);
-                pd.setMessage("loading");
+                pd.setMessage("লোড করছে...");
 
                 payeditetext= dialoginvest.findViewById(R.id.moneyInvest_withdrow_Money);
                 moneyInvest_withdrow_ditails_editeTEaxt= dialoginvest.findViewById(R.id.moneyInvest_withdrow_ditails_editeTEaxt);
@@ -168,7 +168,7 @@ public class WitdrawActivity extends AppCompatActivity {
 
                         String investmenttaka=    payeditetext.getText().toString();
                         if (investmenttaka.isEmpty()){
-                            Toast.makeText(WitdrawActivity.this, "Cashout file is empty ", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(WitdrawActivity.this, "নগদ আউট ফিল্ড খালি ", Toast.LENGTH_SHORT).show();
                             return;
                         }
 
@@ -220,7 +220,7 @@ public class WitdrawActivity extends AppCompatActivity {
 
                         }else {
 
-                            Toast.makeText(WitdrawActivity.this, "You have to available  balance   ", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(WitdrawActivity.this, "আপনার কাছে পর্যাপ্ত টাকা নাই   ", Toast.LENGTH_SHORT).show();
                             pd.dismiss();
                         }
 

@@ -1,42 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="20dp">
-
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginRight="10dp">
     <TextView
-        android:id="@+id/TitleTExt"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
         android:gravity="center"
-        android:textSize="30dp"
-        android:textColor="@color/colorPrimaryDark"
-        android:fontFamily="@font/reciptfont"
-        android:text="টাকা প্রদান"/>
-
-    <TextView
-        android:visibility="gone"
-        android:id="@+id/loadingTExt"
-        android:layout_below="@+id/TitleTExt"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:gravity="center"
-        android:textSize="15dp"
-        android:textColor="@color/colorPrimaryDark"
-        android:fontFamily="@font/reciptfont"
-        android:text=" payment Loding..."/>
+        android:layout_height="wrap_content"
+        android:text="পণ্য বিক্রয়"
+        android:textSize="29dp"
+        android:textColor="@color/colorPrimary"/>
 
     <com.google.android.material.textfield.TextInputLayout
 
         android:layout_below="@+id/TitleTExt"
-        android:id="@+id/moneyInvest_withdrow_fild"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="টাকা "
+        android:hint="পণ্যের নাম "
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/moneyInvest_withdrow_Money"
+            android:id="@+id/productname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+
+        android:layout_below="@+id/TitleTExt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="একক পণ্য মূল্য "
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/productSinglePrice"
+            android:inputType="numberDecimal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+
+        android:layout_below="@+id/TitleTExt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint=" পণ্য পরিমাণ  "
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/paymentProductQuantidy"
+            android:inputType="numberDecimal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+
+        android:layout_below="@+id/TitleTExt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint=" মোট দাম "
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/paymentProductToatalPrice"
             android:inputType="numberDecimal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -45,21 +80,6 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_below="@+id/moneyInvest_withdrow_fild"
-        android:id="@+id/moneyInvest_withdrow_ditails"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="বিস্তারিত"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/moneyInvest_withdrow_ditails_editeTEaxt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-
-
-    </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
         android:id="@+id/buttonid"
@@ -80,10 +100,10 @@
 
             <Button
                 android:elevation="1dp"
-                android:id="@+id/cancelButton"
+                android:id="@+id/cancelButtonproductsale"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="বাতিল"
+                android:text=" বাতিল "
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 />
 
@@ -99,10 +119,10 @@
             <Button
                 android:elevation="1dp"
                 android:layout_marginLeft="5dp"
-                android:id="@+id/addmoney"
+                android:id="@+id/addMoneyButtonproductsale"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="অর্থ যোগ করুন"
+                android:text=" যোগ করুন "
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 />
 
@@ -112,4 +132,4 @@
 
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

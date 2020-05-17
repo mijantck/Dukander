@@ -13,7 +13,7 @@
       android:textSize="30dp"
       android:textColor="@color/colorPrimaryDark"
       android:fontFamily="@font/reciptfont"
-      android:text="Payment"/>
+      android:text="টাকা প্রদান "/>
 
     <TextView
         android:visibility="gone"
@@ -32,7 +32,7 @@
         android:id="@+id/outlinedTextField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="pay money "
+        android:hint="টাকা পরিশোধ "
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/dialogpayMoney"
@@ -67,7 +67,7 @@
                 android:id="@+id/cancelButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="cancle"
+                android:text="বাতিল"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 />
 
@@ -86,7 +86,7 @@
                 android:id="@+id/okButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="pay"
+                android:text="পরিশোধ "
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 />
 

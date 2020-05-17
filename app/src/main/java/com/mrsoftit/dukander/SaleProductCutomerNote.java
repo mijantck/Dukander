@@ -28,17 +28,6 @@ public SaleProductCutomerNote(){}
         this.paid = paid;
     }
 
-  /*  public SaleProductCutomerNote(String saleProductId, String itemName, Double price, Double quantedt, Double totalPrice, int date, int invoiceNumber, String totalSaleid) {
-        SaleProductId = saleProductId;
-        this.itemName = itemName;
-        this.price = price;
-        this.quantedt = quantedt;
-        this.totalPrice = totalPrice;
-        this.date = date;
-        this.invoiceNumber = invoiceNumber;
-        TotalSaleid = totalSaleid;
-    }*/
-
     public String getSaleProductId() {
         return saleProductId;
     }
