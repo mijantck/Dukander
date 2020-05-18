@@ -424,7 +424,7 @@ public class SeleTwoActivity extends AppCompatActivity {
 
                         if (bundelId!=null) {
                             final ProgressDialog pd = new ProgressDialog(SeleTwoActivity.this);
-                            pd.setMessage("loading");
+                            pd.setMessage("তথ্য প্রস্তুত হচ্ছে...");
                             pd.setCancelable(false);
                             pd.show();
                             final CollectionReference customer = FirebaseFirestore.getInstance()
@@ -466,7 +466,7 @@ public class SeleTwoActivity extends AppCompatActivity {
                         }if (unknonwnCustomerId!=null){
 
                             final ProgressDialog pd = new ProgressDialog(SeleTwoActivity.this);
-                            pd.setMessage("loading");
+                            pd.setMessage("তথ্য প্রস্তুত হচ্ছে...");
                             pd.setCancelable(false);
                             pd.show();
                             String name = unKnoneName.getText().toString();

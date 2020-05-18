@@ -29,6 +29,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -616,18 +617,17 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     public void dwnld(Context context, String pdfUrl1, String name) {
         ProgressDialog progressDialog =new ProgressDialog(MainActivity.this);
         progressDialog.setCancelable(false);
-        progressDialog.setTitle("Wait...");
+        progressDialog.setTitle("তথ্য প্রস্তুত হচ্ছে...");
         progressDialog.show();
 
         File direct = new File("/Dukandar/dont_delete");
 
         if (!direct.exists()) {
             direct.mkdirs();
+
         }
 
         if (direct.exists()){
-
-
         // Create request for android download manager
         DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
 

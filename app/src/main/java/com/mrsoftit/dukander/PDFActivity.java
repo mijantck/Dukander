@@ -291,11 +291,14 @@ public class PDFActivity extends AppCompatActivity {
         createPDF.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                progressDialog = new ProgressDialog(PDFActivity.this);
+                progressDialog.setMessage("তথ্য প্রস্তুত হচ্ছে...");
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.setCancelable(false);
+                progressDialog.show();
 
                 try {
                     createPdfWrapper();
-                    progressDialog.dismiss();
                 } catch (FileNotFoundException | DocumentException e) {
                     e.printStackTrace();
                 }
@@ -333,7 +336,6 @@ public class PDFActivity extends AppCompatActivity {
 
             createPdf();
 
-            progressDialog.dismiss();
         }
     }
 
@@ -348,10 +350,7 @@ public class PDFActivity extends AppCompatActivity {
 
         }
 
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("তথ্য প্রস্তুত হচ্ছে...");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
+
 
 
          pdfname = name+datenew+".pdf";
@@ -497,10 +496,6 @@ public class PDFActivity extends AppCompatActivity {
 
         document.add(irhTable);
         document.add(FromTable);
-        //document.add(bill);
-       // document.add(name);
-        //document.add(contact);
-       // document.add(address);
         document.add(table);
         document.add(describer);
 
@@ -514,14 +509,13 @@ public class PDFActivity extends AppCompatActivity {
 
     private void previewPdf() {
 
+            if (id!=null){
 
-if (id!=null){
-
-    CollectionReference customerProductSale = FirebaseFirestore.getInstance()
+             CollectionReference customerProductSale = FirebaseFirestore.getInstance()
             .collection("users").document(user_id).collection("Customers").document(id).collection("saleProduct");
 
-    Query query = customerProductSale.whereEqualTo("update",false).whereEqualTo("date",datenew).whereEqualTo("paid",true);
-    query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+             Query query = customerProductSale.whereEqualTo("update",false).whereEqualTo("date",datenew).whereEqualTo("paid",true);
+             query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
         @Override
         public void onComplete(@NonNull Task<QuerySnapshot> task) {
             if (task.isSuccessful()) {
@@ -531,20 +525,26 @@ if (id!=null){
                 }
                 saveCustomerupdateData((ArrayList) list); // *** new ***
 
-                progressDialog.dismiss();
+
 
                 final File docsFolder = new File(Environment.getExternalStorageDirectory() + "/Dukandar");
-
                 pdfFile = new File(docsFolder.getAbsolutePath(), pdfname);
-                Uri uri = FileProvider.getUriForFile(PDFActivity.this, getPackageName(), pdfFile);
+                Intent target = new Intent(Intent.ACTION_VIEW);
+                target.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 if(pdfFile.exists()) {
-                    Intent target = new Intent(Intent.ACTION_VIEW);
-                    target.setDataAndType(Uri.fromFile(pdfFile), "application/pdf");
-                    target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                        Uri uri = FileProvider.getUriForFile(getApplicationContext(), getPackageName(), pdfFile);
+                        target.setDataAndType(uri, "application/pdf");
+                        target.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    }else {
+                        target.setDataAndType(Uri.fromFile(pdfFile), "application/pdf");
+                    }
                     Intent intent = Intent.createChooser(target, "Open File");
                     try {
+                        progressDialog.dismiss();
+
                         startActivity(intent);
+
                     } catch (ActivityNotFoundException e) {
                         // Instruct the user to install a PDF reader here, or something
                     }
@@ -553,12 +553,14 @@ if (id!=null){
                     Toast.makeText(getApplicationContext(), "File path is incorrect." , Toast.LENGTH_LONG).show();
 
             }
+            progressDialog.dismiss();
+
         }
 
 
-    });
+                 });
 }
-if (unkcutomarId!=null){
+                if (unkcutomarId!=null){
 
                 CollectionReference UNcustomerProductSale = FirebaseFirestore.getInstance()
                         .collection("users").document(user_id).collection("UnknownCustomer").document(unkcutomarId).collection("saleProduct");
@@ -575,19 +577,22 @@ if (unkcutomarId!=null){
                             }
                             unknowCustomerupdateData((ArrayList) list); // *** new ***
 
-                            progressDialog.dismiss();
-
                             final File docsFolder = new File(Environment.getExternalStorageDirectory() + "/Dukandar");
-
                             pdfFile = new File(docsFolder.getAbsolutePath(), pdfname);
-                            Uri uri = FileProvider.getUriForFile(PDFActivity.this, getPackageName(), pdfFile);
+                            Intent target = new Intent(Intent.ACTION_VIEW);
+                            target.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             if(pdfFile.exists()) {
-                                Intent target = new Intent(Intent.ACTION_VIEW);
-                                target.setDataAndType(Uri.fromFile(pdfFile), "application/pdf");
-                                target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                                    Uri uri = FileProvider.getUriForFile(getApplicationContext(), getPackageName(), pdfFile);
+                                    target.setDataAndType(uri, "application/pdf");
+                                    target.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                                }else {
+                                    target.setDataAndType(Uri.fromFile(pdfFile), "application/pdf");
+                                }
                                 Intent intent = Intent.createChooser(target, "Open File");
                                 try {
+                                    progressDialog.dismiss();
+
                                     startActivity(intent);
                                 } catch (ActivityNotFoundException e) {
                                     // Instruct the user to install a PDF reader here, or something
@@ -597,6 +602,8 @@ if (unkcutomarId!=null){
                                 Toast.makeText(getApplicationContext(), "File path is incorrect." , Toast.LENGTH_LONG).show();
 
                         }
+                        progressDialog.dismiss();
+
                     }
 
 
@@ -662,6 +669,7 @@ if (unkcutomarId!=null){
                 progressDialog.dismiss();
             }
         });
+
 
     }
     public  void  UnknownloadData(){
@@ -991,12 +999,6 @@ if (unkcutomarId!=null){
             } catch (IOException | DocumentException e) {
                 e.printStackTrace();
             }
-
-
-
-
-
-
 
             Font font1 = new Font(bf, 10, Font.NORMAL);
 
