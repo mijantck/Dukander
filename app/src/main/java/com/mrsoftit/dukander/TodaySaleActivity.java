@@ -2,11 +2,14 @@ package com.mrsoftit.dukander;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -47,6 +50,7 @@ public class TodaySaleActivity extends AppCompatActivity {
 
     private TextView dateView,TodayTotalSale,todayTotaldue;
 
+    ProgressDialog progressDialog;
 
     CollectionReference product = FirebaseFirestore.getInstance()
             .collection("users").document(user_id).collection("Product");
@@ -152,7 +156,7 @@ public class TodaySaleActivity extends AppCompatActivity {
 
                     if (doc.get("totalpaybil") != null) {
                         double d = Double.parseDouble(doc.get("totalpaybil").toString());
-                      //  double totalpaybil  = (double) doc.get("totalpaybil");
+
                         totalpaybilint = d;
                     } if (doc.get("totalpaybil") != null) {
                         id = doc.getId();
@@ -205,6 +209,139 @@ public class TodaySaleActivity extends AppCompatActivity {
         // recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
+
+        adapter.setOnItemClickListener(new TotalAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(DocumentSnapshot documentSnapshot, final int position) {
+                TotalSaleNote totalSaleNote = documentSnapshot.toObject(TotalSaleNote.class);
+
+                final String customerID = totalSaleNote.getCustomerID();
+                final String uncustomerID = totalSaleNote.getUnknownCustomerID();
+                String name = totalSaleNote.getItemName();
+                final double taka = totalSaleNote.getTotalPrice();
+                final String saleID= totalSaleNote.getSaleProductId();
+
+
+                new AlertDialog.Builder(TodaySaleActivity.this)
+                        .setIcon(R.drawable.ic_delete)
+                        .setTitle(name)
+                        .setMessage("আপনি কি নিশ্চিত মুছে ফেলেন?")
+                        .setPositiveButton("হ্যাঁ",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+
+
+                                        if (customerID!=null) {
+
+                                            progressDialog = new ProgressDialog(TodaySaleActivity.this);
+                                            progressDialog.setMessage("লোড করছে..."); // Setting Message
+                                            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                                            progressDialog.setCancelable(false);
+                                            progressDialog.show();
+
+                                            final CollectionReference customerProductSale = FirebaseFirestore.getInstance()
+                                                    .collection("users").document(user_id).collection("Customers").document(customerID).collection("saleProduct");
+                                            customerProductSale.document(saleID).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+
+                                                    final CollectionReference customerTakaUpdate = FirebaseFirestore.getInstance()
+                                                            .collection("users").document(user_id).collection("Customers");
+
+                                                    Query query1 = customerTakaUpdate.whereEqualTo("customerIdDucunt",customerID);
+                                                    query1.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                                        @Override
+                                                        public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                                                            if (e != null) {
+                                                                return;
+                                                            }
+                                                            double presentTaka = 0.0;
+                                                            assert queryDocumentSnapshots != null;
+                                                            for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                                                                if (doc.get("taka") != null) {
+                                                                    double totaltest = (double) doc.get("taka");
+                                                                    presentTaka = totaltest - taka;
+                                                                }
+                                                            }
+
+                                                            customerProductSale.document(saleID).update("taka",presentTaka).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<Void> task) {
+
+                                                                    adapter.deleteItem(position);
+                                                                    progressDialog.dismiss();
+
+                                                                }
+                                                            });
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                            }
+                                        else  if (uncustomerID!=null) {
+
+                                            progressDialog = new ProgressDialog(TodaySaleActivity.this);
+                                            progressDialog.setMessage("লোড করছে..."); // Setting Message
+                                            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                                            progressDialog.setCancelable(false);
+                                            progressDialog.show();
+
+                                            final CollectionReference unkonwnCustomar = FirebaseFirestore.getInstance()
+                                                    .collection("users").document(user_id).collection("UnknownCustomer").document(uncustomerID).collection("saleProduct");
+                                            unkonwnCustomar.document(saleID).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+
+                                                    final CollectionReference customerTakaUpdate = FirebaseFirestore.getInstance()
+                                                            .collection("users").document(user_id).collection("Customers");
+
+                                                    Query query1 = customerTakaUpdate.whereEqualTo("customerIdDucunt",uncustomerID);
+                                                    query1.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                                        @Override
+                                                        public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                                                            if (e != null) {
+                                                                return;
+                                                            }
+
+                                                            double presentTaka = 0.0;
+                                                            assert queryDocumentSnapshots != null;
+                                                            for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                                                                if (doc.get("taka") != null) {
+                                                                    double totaltest = (double) doc.get("taka");
+                                                                    presentTaka = totaltest - taka;
+                                                                }
+                                                            }
+
+                                                            unkonwnCustomar.document(uncustomerID).update("taka",presentTaka).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<Void> task) {
+
+                                                                    adapter.deleteItem(position);
+                                                                    progressDialog.dismiss();
+
+                                                                }
+                                                            });
+                                                        }
+                                                    });
+
+                                                }
+                                            });
+                                        }
+                                        dialog.dismiss();
+                                    }
+                                })
+                        .setNegativeButton("না", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Do nothing
+                                dialog.dismiss();
+                            }
+                        })
+                        .create()
+                        .show();
+
+            }
+        });
 
     }
 

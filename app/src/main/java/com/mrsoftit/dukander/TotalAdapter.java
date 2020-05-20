@@ -76,7 +76,16 @@ public class TotalAdapter extends FirestoreRecyclerAdapter<TotalSaleNote, TotalA
             product_quantedy_textview = itemView.findViewById(R.id.Totalquantidy);
             product_price_textview = itemView.findViewById(R.id.Totalpariceto);
             dateproductsale = itemView.findViewById(R.id.dateproductsale);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION && listener != null) {
+                        listener.onItemClick(getSnapshots().getSnapshot(position), position);
+                    }
+                }
+            });
         }
     }
 

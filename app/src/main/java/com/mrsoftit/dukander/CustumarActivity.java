@@ -241,7 +241,6 @@ public class CustumarActivity extends AppCompatActivity {
                                     .setPositiveButton("YES",
                                             new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int which) {
-
                                                     adapter.deleteItem(position);
                                                     dialog.dismiss();
                                                 }
