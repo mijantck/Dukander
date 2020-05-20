@@ -17,12 +17,15 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.OpenableColumns;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.androidnetworking.interceptors.HttpLoggingInterceptor;
 import com.dd.CircularProgressButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mrsoftit.dukander.CustomerNote;
@@ -46,9 +49,22 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
+import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -165,9 +181,13 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
             public void onClick(View v) {
 
 
+                if(!checkIntert()) {
+
+                    Toast.makeText(CustomerAddActivity.this, " কোনও ইন্টারনেট সংযোগ নেই ", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 if (bundle!=null){
-
-
                     progressDialog = new ProgressDialog(CustomerAddActivity.this);
                     progressDialog.setMessage("লোড করছে..."); // Setting Message
                     progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -176,27 +196,29 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
 
                     if (image!=false){
 
-                        CustomerInfoUpload(mImageUri);
+                       // CustomerInfoUpload(mImageUri);
+                        uploadImageUri(mImageUri);
                     }
+                    else {
+                        final String name = customerName.getText().toString();
+                        final String phone = customerPhone.getText().toString();
+                        final String taka = customerTaka.getText().toString();
+                        double dtaka = Double.parseDouble(taka);
+                        final String addres = CustomerAddress.getText().toString();
 
-                    final String name = customerName.getText().toString();
-                    final String phone = customerPhone.getText().toString();
-                    final String taka = customerTaka.getText().toString();
-                    double dtaka = Double.parseDouble(taka);
-                    final String addres = CustomerAddress.getText().toString();
+                        customer.document(id).update("customerIdDucunt", id, "nameCUstomer", name, "phone", phone, "taka", dtaka, "addres", addres).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
 
-                    customer.document(id).update("customerIdDucunt", id,"nameCUstomer",name,"phone",phone,"taka",dtaka,"addres",addres).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
+                                progressDialog.dismiss();
+                                Toast.makeText(CustomerAddActivity.this, " সফল ", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(CustomerAddActivity.this, CustumarActivity.class);
+                                startActivity(intent);
+                                finish();
 
-                            progressDialog.dismiss();
-                            Toast.makeText(CustomerAddActivity.this, " সফল ", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(CustomerAddActivity.this,CustumarActivity.class);
-                            startActivity(intent);
-                            finish();
-
-                        }
-                    });
+                            }
+                        });
+                    }
                 }else {
 
                 final String name1 = customerName.getText().toString();
@@ -210,11 +232,7 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
                     Toast.makeText(getApplicationContext(), "গ্রাহক ফোন নাম্বার লিখুন", Toast.LENGTH_LONG).show();
                     return;
                 }
-
-                if (mImageUri == null) {
-
-
-                    progressDialog = new ProgressDialog(CustomerAddActivity.this);
+                if (mImageUri == null) { progressDialog = new ProgressDialog(CustomerAddActivity.this);
                     progressDialog.setMessage("লোড করছে..."); // Setting Message
                     progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                     progressDialog.setCancelable(false);
@@ -254,12 +272,13 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
                         }
                     });
 
-                }else {
-
-                    CustomerInfoUpload(mImageUri);
-
                 }
+                else {
+                   // CustomerInfoUpload(mImageUri);
+                    uploadImageUri( mImageUri);
+                   }
                 }
+
             }
 
 
@@ -431,10 +450,192 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
 
     }
 
+
+
     public boolean checkIntert(){
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         return networkInfo !=null && networkInfo.isConnected();
+    }
+
+    private void uploadImageUri(Uri imageUri){
+
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setTitle("Uploading...");
+        progressDialog.setProgress(0);
+        progressDialog.show();
+        progressDialog.setCanceledOnTouchOutside(false);
+
+
+        try {
+            File file = new File(Environment.getExternalStorageDirectory(), "profilePicTemp");
+
+            InputStream in = getContentResolver().openInputStream(imageUri);
+            OutputStream out = new FileOutputStream(file);
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf)) > 0) {
+                out.write(buf, 0, len);
+            }
+            out.close();
+            in.close();
+
+
+
+            Log.d("Test", "uploadImageUri: " + imageUri.getPath());
+
+            upload(file, new UploadCallback() {
+                @Override
+                public void onSuccess(String downloadLink) {
+
+
+                    final String name = customerName.getText().toString();
+                    final String phone = customerPhone.getText().toString();
+                    final String taka = customerTaka.getText().toString();
+                    double dtaka = Double.parseDouble(taka);
+                    final String addres = CustomerAddress.getText().toString();
+
+                    if (image!=false){
+
+                        customer.document(id).update("customerIdDucunt", id,"nameCUstomer",name,"phone",phone,"taka",dtaka,"addres",addres,"imageUrl",downloadLink)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        progressDialog.dismiss();
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                progressDialog.dismiss();
+                            }
+                        });
+
+                    }else {
+
+                        customer.add(new CustomerNote(null,name,phone,dtaka,addres,downloadLink,00.00,00.00)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentReference> task) {
+
+                                if (task.isSuccessful()){
+
+                                    String id = task.getResult().getId();
+
+
+                                    customer.document(id).update("customerIdDucunt",id).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+
+
+                                            Toast.makeText(CustomerAddActivity.this, " সফল ", Toast.LENGTH_SHORT).show();
+
+                                        }
+                                    });
+                                }
+
+                            }
+                        });}
+
+                    progressDialog.dismiss();
+                    Intent intent = new Intent(CustomerAddActivity.this,CustumarActivity.class);
+                    startActivity(intent);
+                    finish();
+
+
+
+
+
+                    progressDialog.dismiss();
+                }
+
+                @Override
+                public void onFailed(String message) {
+                }
+            });
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private void upload(File file, final UploadCallback uploadCallback) {
+
+        //this is for log message
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+
+        //create file to request body and request
+        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
+        RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("image", "filename.png", requestBody)
+                .build();
+
+        //request create for imgur
+        final Request request = new Request.Builder()
+                .url("https://api.imgur.com/3/image")
+                .method("POST", body)
+                .addHeader("Authorization", "Client-ID 2f4dd94e6dbf1f1")
+                .build();
+
+        //okhttp client create
+        final OkHttpClient client = new OkHttpClient().newBuilder()
+                .addInterceptor(loggingInterceptor)
+                .build();
+
+
+
+        //network request so we need to run on new thread
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    final Response response = client.newCall(request).execute();
+
+                    if(response.isSuccessful()){
+                        JSONObject jsonObject = new JSONObject(response.body().string());
+
+                        final String link =  jsonObject.getJSONObject("data").getString("link");
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                uploadCallback.onSuccess(link);
+                            }
+                        });
+
+
+                    } else {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                uploadCallback.onFailed("Error message: " + response.message());
+                            }
+                        });
+
+                    }
+
+                } catch (Exception e) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            uploadCallback.onFailed("Io Exception");
+                        }
+                    });
+
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+    }
+
+    interface UploadCallback{
+        void onSuccess(String downloadLink);
+        void onFailed(String message);
     }
 }

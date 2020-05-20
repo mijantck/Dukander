@@ -111,15 +111,23 @@
                     tools:ignore="SpUsage" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
-        <com.google.android.material.button.MaterialButton
+        <LinearLayout
+            android:gravity="center"
             android:layout_below="@+id/oldPinCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <com.google.android.material.button.MaterialButton
+            android:gravity="center"
             android:id="@+id/newPindButton"
            android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
+            android:background="@drawable/main_header_bk"
             android:text="নিশ্চিত করন"
             style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_height="wrap_content"/>
 
+        </LinearLayout>
     </RelativeLayout>
 
 </LinearLayout>

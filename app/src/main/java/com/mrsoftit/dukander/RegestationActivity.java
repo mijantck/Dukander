@@ -4,7 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -69,6 +72,16 @@ public class RegestationActivity extends AppCompatActivity {
         cirRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+
+                if(checkIntert()) {
+
+                    Toast.makeText(RegestationActivity.this, " কোনও ইন্টারনেট সংযোগ নেই ", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
 
                 final String email = editTextEmail.getText().toString();
                 final String password = editTextPassword.getText().toString();
@@ -149,6 +162,14 @@ public class RegestationActivity extends AppCompatActivity {
     public void onLoginClick(){
         startActivity(new Intent(this,LoginActivity.class));
         overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
+    }
+
+
+    public boolean checkIntert(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo !=null && networkInfo.isConnected();
     }
 
 }

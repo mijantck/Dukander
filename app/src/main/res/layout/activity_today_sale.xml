@@ -83,6 +83,8 @@
                 android:text="00.00"
                 android:layout_marginTop="10dp" />
         </RelativeLayout>
+
+
        <androidx.recyclerview.widget.RecyclerView
            android:layout_below="@+id/headerLayout"
            android:id="@+id/totalsaletoday"

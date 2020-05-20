@@ -1,12 +1,15 @@
 package com.mrsoftit.dukander;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -18,9 +21,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -219,8 +225,68 @@ public class TotalSaleActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
 
+    adapter.setOnItemClickListener(new TotalAdapter.OnItemClickListener() {
+    @Override
+    public void onItemClick(DocumentSnapshot documentSnapshot, final int position) {
+
+
+        TotalSaleNote totalSaleNote = documentSnapshot.toObject(TotalSaleNote.class);
+
+        final String customerID = totalSaleNote.getCustomerID();
+        final String uncustomerID = totalSaleNote.getUnknownCustomerID();
+        String name = totalSaleNote.getItemName();
+        final String saleID= totalSaleNote.getSaleProductId();
+
+
+
+        new AlertDialog.Builder(TotalSaleActivity.this)
+                .setIcon(R.drawable.ic_delete)
+                .setTitle(name)
+                .setMessage("Confirm Delete?")
+                .setPositiveButton("YES",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (customerID!=null) {
+
+                                    final CollectionReference customerProductSale = FirebaseFirestore.getInstance()
+                                            .collection("users").document(user_id).collection("Customers").document(customerID).collection("saleProduct");
+                                    customerProductSale.document(saleID).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            adapter.deleteItem(position);
+
+                                        }
+                                    });
+                                }
+                                else  if (uncustomerID!=null) {
+
+                                    final CollectionReference unkonwnCustomar = FirebaseFirestore.getInstance()
+                                            .collection("users").document(user_id).collection("UnknownCustomer").document(uncustomerID).collection("saleProduct");
+                                    unkonwnCustomar.document(saleID).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            adapter.deleteItem(position);
+
+                                        }
+                                    });
+                                }
+                                dialog.dismiss();
+                            }
+                        })
+                .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do nothing
+                        dialog.dismiss();
+                    }
+                })
+                .create()
+                .show();
+
+               }
+                       });
+        recyclerView.setAdapter(adapter);
 
     }
     private void recyclear(int date) {

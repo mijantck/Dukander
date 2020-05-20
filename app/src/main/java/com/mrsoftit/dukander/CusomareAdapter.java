@@ -68,6 +68,7 @@ public class CusomareAdapter extends FirestoreRecyclerAdapter<CustomerNote,Cusom
 
     public void deleteItem(int position) {
         getSnapshots().getSnapshot(position).getReference().delete();
+
     }
 
 

@@ -7,13 +7,17 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alimuzaffar.lib.pin.PinEntryEditText;
+import com.androidnetworking.interceptors.HttpLoggingInterceptor;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -46,14 +51,27 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
 import com.squareup.picasso.Picasso;
 
+
+import org.json.JSONObject;
+
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
 import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -262,20 +280,33 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
             @Override
             public void onClick(View v) {
 
+
+
+                if(!checkIntert()) {
+
+                    Toast.makeText(MyInfoActivity.this, " কোনও ইন্টারনেট সংযোগ নেই ", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
+
+
+
+
                 String name = dukanName.getText().toString();
                 String price = dukanPhone.getText().toString();
                 String ppq = dukanaddess.getText().toString();
 
                 if (TextUtils.isEmpty(name) ){
-                    Toast.makeText(getApplicationContext(), "Please enter Name...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "নাম লিখুন...", Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (TextUtils.isEmpty(price) ){
-                    Toast.makeText(getApplicationContext(), "Please enter phnone...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "মোবাইল নম্বর লিখুন...", Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (TextUtils.isEmpty(ppq) ){
-                    Toast.makeText(getApplicationContext(), "Please enter address...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "ঠিকানা লিখুন...", Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -323,7 +354,9 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
                 }
                 else if (mImageUri!=null){
 
-                    MyInfoUpload(mImageUri);
+                //   MyInfoUpload(mImageUri);
+
+                    uploadImageUri(mImageUri);
                 }
                 else if (mImageUri == null ){
 
@@ -353,7 +386,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
                                         etideButton.setVisibility(View.GONE);
                                         updateadtaall();
 
-                                        Toast.makeText(MyInfoActivity.this, " successful ", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(MyInfoActivity.this, " সফল ", Toast.LENGTH_SHORT).show();
 
                                     }
                                 });
@@ -362,7 +395,6 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
                         }
                     });
 
-                    Toast.makeText(getApplicationContext(), " Photo is empty ", Toast.LENGTH_LONG).show();
                 }
 
 
@@ -415,12 +447,18 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
               final String newdpassowr=  newpass.getText().toString();
 
               if (olrdpassowr.isEmpty()){
-                  Toast.makeText(MyInfoActivity.this, " Enter Old password", Toast.LENGTH_SHORT).show();
+                  Toast.makeText(MyInfoActivity.this, " পুরানো পাসওয়ার্ড লিখুন", Toast.LENGTH_SHORT).show();
+                  return;
               }
               if (newdpassowr.isEmpty()){
-                    Toast.makeText(MyInfoActivity.this, " Enter new password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MyInfoActivity.this, "নতুন  পাসওয়ার্ড লিখুন", Toast.LENGTH_SHORT).show();
+                    return;
                 }
                 final String email = currentUser.getEmail();
+                if (email.isEmpty()){
+                    return;
+                }
+
                 AuthCredential credential = EmailAuthProvider.getCredential(email,olrdpassowr);
 
                 currentUser.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -432,18 +470,18 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(!task.isSuccessful()){
                                         Snackbar snackbar_fail = Snackbar
-                                                .make(v, "Something went wrong. Please try again later", Snackbar.LENGTH_LONG);
+                                                .make(v, "কিছু ভুল হয়েছে. পরে আবার চেষ্টা করুন", Snackbar.LENGTH_LONG);
                                         snackbar_fail.show();
                                     }else {
                                         Snackbar snackbar_su = Snackbar
-                                                .make(v, "Password Successfully Modified", Snackbar.LENGTH_LONG);
+                                                .make(v, "পাসওয়ার্ড সফলভাবে সংশোধিত হয়েছে", Snackbar.LENGTH_LONG);
                                         snackbar_su.show();
                                     }
                                 }
                             });
                         }else {
                             Snackbar snackbar_su = Snackbar
-                                    .make(v, "Authentication Failed", Snackbar.LENGTH_LONG);
+                                    .make(v, "প্রমাণীকরণ ব্যর্থ হয়েছে", Snackbar.LENGTH_LONG);
                             snackbar_su.show();
                         }
                     }
@@ -468,10 +506,10 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
             Intent intent = new Intent();
             intent.setType("image/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+            startActivityForResult(Intent.createChooser(intent, "চিত্র নির্বাচন করুন"), PICK_IMAGE_REQUEST);
 
         } else {
-            EasyPermissions.requestPermissions(this, "We need permissions because this and that",
+            EasyPermissions.requestPermissions(this, "আমাদের অনুমতি দরকার",
                     PICK_IMAGE_REQUEST , perms);
         }
     }
@@ -479,7 +517,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
     public void MyInfoUpload(final Uri mImageUri) {
         progressDialog = new ProgressDialog(this);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progressDialog.setTitle("Uploading...");
+        progressDialog.setTitle("আপলোড হচ্ছে...");
         progressDialog.setProgress(0);
         progressDialog.show();
         progressDialog.setCanceledOnTouchOutside(false);
@@ -550,7 +588,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
                                                         etideButton.setVisibility(View.GONE);
                                                         updateadtaall();
 
-                                                        Toast.makeText(MyInfoActivity.this, " successful ", Toast.LENGTH_SHORT).show();
+                                                        Toast.makeText(MyInfoActivity.this, " সফল ", Toast.LENGTH_SHORT).show();
 
                                                     }
                                                 });
@@ -664,7 +702,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
                 mImageUri = data.getData();
                 Picasso.get().load(mImageUri).into(appCompatImageView);
             } else {
-                Toast.makeText(this, "No file chosen", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "কোনো ফাইল পছন্দ করা হইনি", Toast.LENGTH_SHORT).show();
             }
         }}
 
@@ -674,6 +712,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+
     }
 
     @Override
@@ -727,6 +766,201 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
                 }
             }
         });
+    }
+
+
+    private void uploadImageUri(Uri imageUri){
+
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setTitle("Uploading...");
+        progressDialog.setProgress(0);
+        progressDialog.show();
+        progressDialog.setCanceledOnTouchOutside(false);
+
+
+        try {
+            File file = new File(Environment.getExternalStorageDirectory(), "profilePicTemp");
+
+            InputStream in = getContentResolver().openInputStream(imageUri);
+            OutputStream out = new FileOutputStream(file);
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf)) > 0) {
+                out.write(buf, 0, len);
+            }
+            out.close();
+            in.close();
+
+
+
+
+            Log.d("Test", "uploadImageUri: " + imageUri.getPath());
+
+            upload(file, new UploadCallback() {
+                @Override
+                public void onSuccess(String downloadLink) {
+
+
+
+
+
+                    final String dukanName1 = dukanName.getText().toString();
+                    final String dukanphon1 = dukanPhone.getText().toString();
+                    final String dukanAddres1 = dukanaddess.getText().toString();
+
+
+                    if (image != false && id !=null) {
+
+                        myInfo.document(id).update("myid", id, "dukanName", dukanName1, "dukanphone", dukanphon1, "dukanaddress", dukanAddres1,  "dukanaddpicurl", downloadLink,"firsttime",firstTime)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        progressDialog.dismiss();
+                                        shopdelaisView.setVisibility(View.VISIBLE);
+                                        shopediteView.setVisibility(View.GONE);
+                                        etideButton.setVisibility(View.GONE);
+                                        updateadtaall();
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                progressDialog.dismiss();
+                            }
+                        });
+
+                    } else if(firstTime == false && image == true ){
+
+                        Random rand = new Random();
+                        String picname = String.format("%05d", rand.nextInt(10000));
+                        myInfo.add(new MyInfoNote(null, dukanName1, dukanphon1, dukanAddres1, downloadLink,true,picname,1.0,1.0,1.0,0)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentReference> task) {
+
+                                if (task.isSuccessful()) {
+
+                                    String id = task.getResult().getId();
+
+
+                                    myInfo.document(id).update("myid", id).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+
+
+                                            shopdelaisView.setVisibility(View.VISIBLE);
+                                            shopediteView.setVisibility(View.GONE);
+
+                                            etideButton.setVisibility(View.GONE);
+                                            updateadtaall();
+
+                                            Toast.makeText(MyInfoActivity.this, " সফল ", Toast.LENGTH_SHORT).show();
+
+                                        }
+                                    });
+                                }
+
+                            }
+                        });
+                    }
+
+                    progressDialog.dismiss();
+                }
+
+                @Override
+                public void onFailed(String message) {
+                }
+            });
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private void upload(File file, final UploadCallback uploadCallback) {
+
+        //this is for log message
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+
+        //create file to request body and request
+        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
+        RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("image", "filename.png", requestBody)
+                .build();
+
+        //request create for imgur
+        final Request request = new Request.Builder()
+                .url("https://api.imgur.com/3/image")
+                .method("POST", body)
+                .addHeader("Authorization", "Client-ID 2f4dd94e6dbf1f1")
+                .build();
+
+        //okhttp client create
+        final OkHttpClient client = new OkHttpClient().newBuilder()
+                .addInterceptor(loggingInterceptor)
+                .build();
+
+
+
+        //network request so we need to run on new thread
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    final Response response = client.newCall(request).execute();
+
+                    if(response.isSuccessful()){
+                        JSONObject jsonObject = new JSONObject(response.body().string());
+
+                        final String link =  jsonObject.getJSONObject("data").getString("link");
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                uploadCallback.onSuccess(link);
+                            }
+                        });
+
+
+                    } else {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                uploadCallback.onFailed("Error message: " + response.message());
+                            }
+                        });
+
+                    }
+
+                } catch (Exception e) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            uploadCallback.onFailed("Io Exception");
+                        }
+                    });
+
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+    }
+
+    interface UploadCallback{
+        void onSuccess(String downloadLink);
+        void onFailed(String message);
+    }
+
+    public boolean checkIntert(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo !=null && networkInfo.isConnected();
     }
 }
 

@@ -248,6 +248,7 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
                                         // Create a new user with a first and last name
                                         Map<String, Object> user = new HashMap<>();
                                         user.put("saleProductId",id);
+                                        user.put("customerID",cutomerId);
                                         user.put("date",datenew);
                                         user.put("itemName",productName);
                                         user.put("quantedt", totalQantidy);
@@ -260,8 +261,6 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
 
                                             }
                                         });
-
-
 
                                         Toast.makeText(v.getContext(), " Complete ", Toast.LENGTH_SHORT).show();
                                     }
@@ -323,31 +322,6 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
                                             }
                                         });
 
-                                       /* if (productNote.getInvoiseid() == null) {
-
-                                            final CollectionReference invoiseFb = FirebaseFirestore.getInstance()
-                                                    .collection("users").document(user_id).collection("invoise");
-                                            invoiseFb.add(new InvoiceseNote(null, 1)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<DocumentReference> task) {
-                                                    if (task.isSuccessful()) {
-                                                        String id = task.getResult().getId();
-                                                        invoiseFb.document(id).update("id", id);
-
-                                                    }
-                                                }
-                                            });
-
-                                        }*/
-                                        /* else {
-
-                                            TotalcustomerProductSale.add(new SaleProductCutomerNote(id, productName, price, totalQantidy, total, datenew, tinvoicenumber,update,paid)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<DocumentReference> task) {
-
-                                                }
-                                            });
-                                        }*/
                                     }
                                 });
                                 unkonwnCustomar.document(id).update("saleProductId", id).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -357,6 +331,7 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
                                         // Create a new user with a first and last name
                                         Map<String, Object> user = new HashMap<>();
                                         user.put("saleProductId",id);
+                                        user.put("unknownCustomerID",unknownCustomerID);
                                         user.put("date",datenew);
                                         user.put("itemName",productName);
                                         user.put("quantedt", totalQantidy);

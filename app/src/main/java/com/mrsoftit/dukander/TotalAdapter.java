@@ -60,6 +60,11 @@ public class TotalAdapter extends FirestoreRecyclerAdapter<TotalSaleNote, TotalA
         return new NotViewHolde(v);
     }
 
+    public void deleteItem(int position) {
+        getSnapshots().getSnapshot(position).getReference().delete();
+
+    }
+
     public class NotViewHolde extends RecyclerView.ViewHolder {
 
         TextView product_name_textview,product_price_textview,product_quantedy_textview,dateproductsale;

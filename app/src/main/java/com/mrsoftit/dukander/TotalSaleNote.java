@@ -5,6 +5,8 @@ public class TotalSaleNote {
     private String itemName;
     private boolean paid;
     private String saleProductId;
+    private String customerID;
+    private String unknownCustomerID;
     private double quantedt;
     private double totalPrice;
 
@@ -49,6 +51,22 @@ public class TotalSaleNote {
 
     public void setSaleProductId(String saleProductId) {
         this.saleProductId = saleProductId;
+    }
+
+    public String getCustomerID() {
+        return customerID;
+    }
+
+    public void setCustomerID(String customerID) {
+        this.customerID = customerID;
+    }
+
+    public String getUnknownCustomerID() {
+        return unknownCustomerID;
+    }
+
+    public void setUnknownCustomerID(String unknownCustomerID) {
+        this.unknownCustomerID = unknownCustomerID;
     }
 
     public double getQuantedt() {

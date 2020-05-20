@@ -141,7 +141,7 @@ public class LoginActivity extends AppCompatActivity {
                 if(checkIntert()){
                     loginUserAccount();
                 }else {
-                    Toast.makeText(LoginActivity.this, " ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "কোনও ইন্টারনেট সংযোগ নেই ", Toast.LENGTH_SHORT).show();
                 }
 
 

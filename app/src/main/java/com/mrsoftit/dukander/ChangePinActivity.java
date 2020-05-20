@@ -119,18 +119,16 @@ public class ChangePinActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (oldpin.isEmpty()){
-
-                    Toast.makeText(ChangePinActivity.this, "Old Pin is Empty", Toast.LENGTH_SHORT).show();
+                if (oldpin == null || oldpin.isEmpty() ){
+                    Toast.makeText(ChangePinActivity.this, "পুরাতন পিন খালি", Toast.LENGTH_SHORT).show();
                     return;
-                } if (oldpin.isEmpty()){
+                } if (newpin ==null ||newpin.isEmpty()){
 
-                    Toast.makeText(ChangePinActivity.this, "New Pin is Empty", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ChangePinActivity.this, "নতুন পিন খালি", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                if (pin.isEmpty()){
-
+                if (pin.isEmpty() ){
                     return;
                 }
                 if (oldpin.equals(pin)){
@@ -149,7 +147,7 @@ public class ChangePinActivity extends AppCompatActivity {
                     });
 
                 }else {
-                    Toast.makeText(ChangePinActivity.this, "OLD PIN  INCORRECT  ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ChangePinActivity.this, "পুরানো পিন ভুল  ", Toast.LENGTH_SHORT).show();
                 }
 
             }
