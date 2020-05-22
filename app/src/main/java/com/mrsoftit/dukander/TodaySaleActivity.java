@@ -316,6 +316,10 @@ public class TodaySaleActivity extends AppCompatActivity {
                                                                 @Override
                                                                 public void onComplete(@NonNull Task<Void> task) {
 
+
+
+
+
                                                                     adapter.deleteItem(position);
                                                                     progressDialog.dismiss();
 

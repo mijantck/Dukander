@@ -2,6 +2,7 @@ package com.mrsoftit.dukander;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -144,9 +146,9 @@ public class InvesmentActivity extends AppCompatActivity {
                         final int datenew = Integer.parseInt(todayString);
 
                         final CollectionReference investment = FirebaseFirestore.getInstance()
-                                .collection("users").document(user_id).collection("DukanInfo").document(myId).collection("investment");
+                                .collection("users").document(user_id).collection("investment");
 
-                        investment.add(new MyInfoNote(null,aDoubleinvestmenttaka,datenew,details)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                        investment.add(new MyInfoNote(" ",0,null,aDoubleinvestmenttaka,datenew,details)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentReference> task) {
 
@@ -185,7 +187,7 @@ public class InvesmentActivity extends AppCompatActivity {
 
 
         CollectionReference investment = FirebaseFirestore.getInstance()
-                .collection("users").document(user_id).collection("DukanInfo").document(myId).collection("investment");
+                .collection("users").document(user_id).collection("investment");
 
         investment.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -217,7 +219,7 @@ public class InvesmentActivity extends AppCompatActivity {
     private void recyclear() {
 
         CollectionReference investment = FirebaseFirestore.getInstance()
-                .collection("users").document(user_id).collection("DukanInfo").document(myId).collection("investment");
+                .collection("users").document(user_id).collection("investment");
 
         Query query = investment.orderBy("date", Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<MyInfoNote> options = new FirestoreRecyclerOptions.Builder<MyInfoNote>()
@@ -233,6 +235,36 @@ public class InvesmentActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         adapter.startListening();
+        adapter.setOnItemClickListener(new InvestmentWithdrowAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(DocumentSnapshot documentSnapshot, final int position) {
+
+                MyInfoNote myInfoNote = documentSnapshot.toObject(MyInfoNote.class);
+
+                double invest = myInfoNote.getInvesment();
+                new AlertDialog.Builder(InvesmentActivity.this)
+                        .setIcon(R.drawable.ic_delete)
+                        .setTitle(invest+"")
+                        .setMessage("আপনি কি নিশ্চিত মুছে ফেলেন?")
+                        .setPositiveButton("হ্যাঁ",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                        adapter.deleteItem(position);
+                                    }
+                                })
+                        .setNegativeButton("না", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Do nothing
+                                dialog.dismiss();
+                            }
+                        })
+                        .create()
+                        .show();
+            }
+        });
+
 
     }
 

@@ -16,6 +16,8 @@ public class MyInfoNote {
     private int date;
     private String investmentDeleils;
     private String withdrowDeleils;
+    private String productname;
+    private double product;
 
     public MyInfoNote(){}
 
@@ -46,7 +48,9 @@ public class MyInfoNote {
         this.date = date;
     }
 
-    public MyInfoNote(String myid, Double invesment, int date, String investmentDeleils) {
+    public MyInfoNote(String productname,double product,String myid, Double invesment, int date, String investmentDeleils) {
+       this.productname = productname;
+       this.product = product;
         this.myid = myid;
         this.invesment = invesment;
         this.date = date;
@@ -59,6 +63,14 @@ public class MyInfoNote {
         this.withdrow = withdrow;
         this.date = date;
         this.withdrowDeleils = withdrowDeleils;
+    }
+
+    public String getProductname() {
+        return productname;
+    }
+
+    public void setProductname(String productname) {
+        this.productname = productname;
     }
 
     public String getMyid() {
@@ -171,5 +183,14 @@ public class MyInfoNote {
 
     public void setDate(int date) {
         this.date = date;
+    }
+
+
+    public double getProduct() {
+        return product;
+    }
+
+    public void setProduct(double product) {
+        this.product = product;
     }
 }

@@ -43,6 +43,12 @@ public class InvestmentWithdrowAdapter extends FirestoreRecyclerAdapter<MyInfoNo
         }
         if (model.getWithdrowDeleils()!=null){
             holder.detaisl.setText(model.getWithdrowDeleils()+"");
+
+        }  if (model.getProductname()!=null){
+            holder.productName.setText(model.getProductname());
+        }
+        if (model.getProduct()>0){
+            holder.producthave.setText(model.getProduct()+"");
         }
 
         Integer value = model.getDate();
@@ -72,13 +78,15 @@ public class InvestmentWithdrowAdapter extends FirestoreRecyclerAdapter<MyInfoNo
 
     class NotViewHolde extends RecyclerView.ViewHolder {
 
-        TextView investmoney,detaisl,date;
+        TextView investmoney,detaisl,date,productName,producthave;
 
         NotViewHolde(@NonNull View itemView) {
             super(itemView);
               investmoney = itemView.findViewById(R.id.totalproductName);
               detaisl = itemView.findViewById(R.id.dilaslepariceto);
               date = itemView.findViewById(R.id.datein_cash);
+              productName = itemView.findViewById(R.id.productName);
+            producthave = itemView.findViewById(R.id.producthave);
 
 
 

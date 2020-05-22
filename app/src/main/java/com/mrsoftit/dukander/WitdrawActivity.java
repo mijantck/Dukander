@@ -191,7 +191,7 @@ public class WitdrawActivity extends AppCompatActivity {
                             final double lastactiveBalance = activBalence-aDoubleinvestmenttaka;
 
                             final CollectionReference investmentadd = FirebaseFirestore.getInstance()
-                                    .collection("users").document(user_id).collection("DukanInfo").document(myId).collection("cashout");
+                                    .collection("users").document(user_id).collection("cashout");
 
                             investmentadd.add(new MyInfoNote(null, true, aDoubleinvestmenttaka, datenew, details)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                 @Override
@@ -242,7 +242,7 @@ public class WitdrawActivity extends AppCompatActivity {
        recyclear();
 
         CollectionReference investmentgetacticBalance = FirebaseFirestore.getInstance()
-                .collection("users").document(user_id).collection("DukanInfo").document(myId).collection("cashout");
+                .collection("users").document(user_id).collection("cashout");
 
         investmentgetacticBalance.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -273,7 +273,7 @@ public class WitdrawActivity extends AppCompatActivity {
     private void recyclear() {
 
         CollectionReference investment = FirebaseFirestore.getInstance()
-                .collection("users").document(user_id).collection("DukanInfo").document(myId).collection("cashout");
+                .collection("users").document(user_id).collection("cashout");
 
         Query query = investment.orderBy("date", Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<MyInfoNote> options = new FirestoreRecyclerOptions.Builder<MyInfoNote>()
@@ -293,8 +293,13 @@ public class WitdrawActivity extends AppCompatActivity {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, final int position) {
 
+                MyInfoNote myInfoNote = documentSnapshot.toObject(MyInfoNote.class);
+
+                double withdo = myInfoNote.getWithdrow();
+
                 new AlertDialog.Builder(WitdrawActivity.this)
                         .setIcon(R.drawable.ic_delete)
+                        .setTitle(withdo+"")
                         .setMessage("আপনি কি নিশ্চিত মুছে ফেলেন?")
                         .setPositiveButton("হ্যাঁ",
                                 new DialogInterface.OnClickListener() {

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -47,6 +48,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -67,9 +72,7 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
     private TextInputEditText productName, productPrice,productQuantayn,pruductMin;
     private MaterialButton addProduct;
 
-    StorageReference mStorageReference;
     StorageReference mStorageReferenceImage;
-    DatabaseReference mDatabaseReference;
     FirebaseFirestore firebaseFirestore;
     ProgressDialog progressDialog;
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -81,6 +84,7 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
 
     boolean image = false;
 
+    double haveProductInvestment,totalPriceInvestment;
 
     private static final int PICK_IMAGE_REQUEST = 1;
     public Uri mImageUri;
@@ -143,7 +147,6 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
             productQuantaynup = bundle.getString("pQuan");
             pruductMinup = bundle.getString("pmini");
             pruductImageup = bundle.getString("imageurl");
-
             id = proIdup;
 if (pruductImageup!=null){
     Uri myUri = Uri.parse(pruductImageup);
@@ -213,32 +216,46 @@ if (pruductImageup!=null){
                 progressDialog.show();
                 progressDialog.setCanceledOnTouchOutside(false);
 
+                final String pnmae = productName.getText().toString();
+                final String pps = productPrice.getText().toString();
+                double pp = Double.parseDouble(pps);
+                final String pqs = productQuantayn.getText().toString();
+                double pq = Double.parseDouble(pqs);
+                final String pms = pruductMin.getText().toString();
+                double pm = Double.parseDouble(pms);
+
+
+
+                if ( productQuantaynup !=null && !productQuantaynup.equals(pqs)) {
+                    if (productQuantaynup != null) {
+                        double pqinvestment = Double.parseDouble(productQuantaynup);
+                        if (pqinvestment < pq) {
+                            haveProductInvestment = pq - pqinvestment;
+                            totalPriceInvestment = haveProductInvestment * pp;
+                            invest( pnmae,haveProductInvestment,totalPriceInvestment);
+                        } else {
+                            haveProductInvestment = pqinvestment - pq;
+                            totalPriceInvestment = haveProductInvestment * pp;
+                            invest( pnmae,haveProductInvestment,totalPriceInvestment);
+                        }
+                    }
+
+                }else if ( pps!= null ){
+                        haveProductInvestment = pq;
+                        totalPriceInvestment = haveProductInvestment * pp;
+                        invest( pnmae,haveProductInvestment,totalPriceInvestment);
+
+                }
+
                 if ( bundle == null && mImageUri == null  ){
-
-
-                    final String pnmae = productName.getText().toString();
-                    final String pps = productPrice.getText().toString();
-                    double pp = Double.parseDouble(pps);
-                    final String pqs = productQuantayn.getText().toString();
-                    int pq = Integer.parseInt(pqs);
-                    final String pms = pruductMin.getText().toString();
-                    int pm = Integer.parseInt(pms);
-
-
                     product.add(new ProductNote(null, pnmae, pp, pq, pm)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentReference> task) {
-
                             if (task.isSuccessful()) {
-
                                 String id = task.getResult().getId();
-
-
                                 product.document(id).update("proId", id).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-
-
                                         Toast.makeText(ProductAddActivity.this, " সফলভাবে সম্পন্ন ", Toast.LENGTH_SHORT).show();
 
                                     }
@@ -254,13 +271,6 @@ if (pruductImageup!=null){
 
                 }
 
-                final String pnmae = productName.getText().toString();
-                final String pps = productPrice.getText().toString();
-                double pp = Double.parseDouble(pps);
-                final String pqs = productQuantayn.getText().toString();
-                int pq = Integer.parseInt(pqs);
-                final String pms = pruductMin.getText().toString();
-                int pm = Integer.parseInt(pms);
 
                 if (bundle!=null && image == false) {
 
@@ -282,11 +292,13 @@ if (pruductImageup!=null){
                     });
 
                 }
+
                 else if (mImageUri!=null){
 
                   //  CustomerInfoUpload( mImageUri);
                     uploadImageUri( mImageUri);
                 }
+
 
             }
         });
@@ -641,6 +653,34 @@ if (pruductImageup!=null){
     }
 
 
+    public  void invest(String pnmae ,double haveProductInvestment,double totalPriceInvestment){
+
+        final CollectionReference investment = FirebaseFirestore.getInstance()
+                .collection("users").document(user_id).collection("investment");
+
+        Date calendar1 = Calendar.getInstance().getTime();
+        @SuppressLint("SimpleDateFormat")
+        DateFormat df1 = new SimpleDateFormat("yyyyMMdd");
+        String todayString = df1.format(calendar1);
+        final int datenew = Integer.parseInt(todayString);
+
+
+        investment.add(new MyInfoNote(pnmae, haveProductInvestment, null, totalPriceInvestment, datenew, "")).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentReference> task) {
+
+                if (task.isSuccessful()) {
+                    String id = task.getResult().getId();
+                    investment.document(id).update("myid", id).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+
+                        }
+                    });
+                }
+            }
+        });
+    }
 
     public boolean checkIntert(){
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
