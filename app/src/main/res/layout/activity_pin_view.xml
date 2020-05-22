@@ -26,7 +26,9 @@
             android:layout_marginTop="50dp"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
-            style="@style/viewParent.headerText.NoMode"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="20dp"
             android:textColor="#FFF"
             android:text="এখানে \n আপনার \n সুরক্ষা \n কোড দিন!"/>
         <ImageView
@@ -58,8 +60,9 @@
                     android:orientation="vertical">
                     <TextView
                         android:textColor="@color/whiteCardColor"
-                        style="@style/headerText"
                         android:text="পিন প্রবেশ করুন"
+                        android:gravity="center"
+                        android:textSize="20dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
                     <com.alimuzaffar.lib.pin.PinEntryEditText

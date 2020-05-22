@@ -87,9 +87,8 @@
                 <TextView
                     android:textSize="20sp"
                     android:textColor="#FFFF"
-                    android:gravity="center_vertical"
+                    android:gravity="center"
                     android:text="অজানা গ্রাহকের তথ্য"
-                    style="@style/headerText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 

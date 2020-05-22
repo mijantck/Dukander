@@ -34,10 +34,9 @@
 
 
                             <TextView
-                                style="@style/headerText"
                                 android:textSize="20sp"
                                 android:textColor="#FFFF"
-                                android:gravity="center_vertical"
+                                android:gravity="center"
                                 android:text="ক্রেতা বিবরণ"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"/>

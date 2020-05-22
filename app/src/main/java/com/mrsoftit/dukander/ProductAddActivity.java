@@ -105,7 +105,7 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_support);
-        toolbar.setTitle("Dukandar ");
+        toolbar.setTitle("দোকান্দার");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -226,25 +226,24 @@ if (pruductImageup!=null){
 
 
 
-                if ( productQuantaynup !=null && !productQuantaynup.equals(pqs)) {
+                if ( productQuantaynup != null && !productQuantaynup.equals(pqs)) {
                     if (productQuantaynup != null) {
                         double pqinvestment = Double.parseDouble(productQuantaynup);
                         if (pqinvestment < pq) {
                             haveProductInvestment = pq - pqinvestment;
                             totalPriceInvestment = haveProductInvestment * pp;
-                            invest( pnmae,haveProductInvestment,totalPriceInvestment);
+                            invest(pnmae,haveProductInvestment,totalPriceInvestment);
                         } else {
                             haveProductInvestment = pqinvestment - pq;
                             totalPriceInvestment = haveProductInvestment * pp;
-                            invest( pnmae,haveProductInvestment,totalPriceInvestment);
+                            invest(pnmae,haveProductInvestment,totalPriceInvestment);
                         }
                     }
 
-                }else if ( pps!= null ){
+                }else if ( productQuantaynup == null && pps != null ){
                         haveProductInvestment = pq;
                         totalPriceInvestment = haveProductInvestment * pp;
-                        invest( pnmae,haveProductInvestment,totalPriceInvestment);
-
+                        invest(pnmae,haveProductInvestment,totalPriceInvestment);
                 }
 
                 if ( bundle == null && mImageUri == null  ){
@@ -467,7 +466,7 @@ if (pruductImageup!=null){
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progressDialog.setTitle("Uploading...");
+        progressDialog.setTitle("আপলোড হচ্ছে...");
         progressDialog.setProgress(0);
         progressDialog.show();
         progressDialog.setCanceledOnTouchOutside(false);

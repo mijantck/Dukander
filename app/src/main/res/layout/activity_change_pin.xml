@@ -21,7 +21,6 @@
             android:textColor="#FFFF"
             android:gravity="center"
             android:text="পিন পরিবর্তন"
-            style="@style/headerText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 

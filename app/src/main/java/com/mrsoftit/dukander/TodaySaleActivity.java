@@ -232,7 +232,6 @@ public class TodaySaleActivity extends AppCompatActivity {
 
 
                                         if (customerID!=null) {
-
                                             progressDialog = new ProgressDialog(TodaySaleActivity.this);
                                             progressDialog.setMessage("লোড করছে..."); // Setting Message
                                             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);

@@ -16,7 +16,9 @@
         >
 
         <TextView
-            style="@style/headerText"
+            android:gravity="center"
+            android:textSize="20dp"
+            android:textColor="#FFFF"
             android:text="গ্রাহক যুক্ত"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

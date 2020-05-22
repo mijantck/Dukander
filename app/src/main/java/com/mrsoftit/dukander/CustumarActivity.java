@@ -154,7 +154,7 @@ public class CustumarActivity extends AppCompatActivity {
             public void onItemClick(final DocumentSnapshot documentSnapshot, final int position) {
 
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CustumarActivity.this);
-                String[] option = {"Profile Edite ", "View Profile","Delete"};
+                String[] option = {"প্রোফাইল এডিট ", "প্রোফাইল দেখুন","মুছে ফেলা"};
                 builder.setItems(option, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -237,15 +237,15 @@ public class CustumarActivity extends AppCompatActivity {
                             new AlertDialog.Builder(CustumarActivity.this)
                                     .setIcon(R.drawable.ic_delete)
                                     .setTitle(name)
-                                    .setMessage("Confirm Delete?")
-                                    .setPositiveButton("YES",
+                                    .setMessage("নিশ্চিত বাতিল?")
+                                    .setPositiveButton("হ্যাঁ",
                                             new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     adapter.deleteItem(position);
                                                     dialog.dismiss();
                                                 }
                                             })
-                                    .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                                    .setNegativeButton("না", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             // Do nothing
@@ -287,7 +287,7 @@ public class CustumarActivity extends AppCompatActivity {
             public void onItemClick(final DocumentSnapshot documentSnapshot, final int position) {
 
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CustumarActivity.this);
-                String[] option = {"Profile Edite ", "View Profile","Delete"};
+                String[] option = {"প্রোফাইল এডিট ", "প্রোফাইল দেখুন","মুছে ফেলা"};
                 builder.setItems(option, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -352,16 +352,12 @@ public class CustumarActivity extends AppCompatActivity {
 
                             pdfIntent.putExtra("phone", phone);
                             if (taka != null) {
-
                                 pdfIntent.putExtra("taka", taka);
                             }
-
                             if (addreds != null) {
                                 pdfIntent.putExtra("addreds", addreds);
                             }
                             startActivity(pdfIntent);
-
-
                         }
                         if(which == 2){
 
@@ -371,16 +367,15 @@ public class CustumarActivity extends AppCompatActivity {
                             new AlertDialog.Builder(CustumarActivity.this)
                                     .setIcon(R.drawable.ic_delete)
                                     .setTitle(name)
-                                    .setMessage("Confirm Delete?")
-                                    .setPositiveButton("YES",
+                                    .setMessage("নিশ্চিত বাতিল?")
+                                    .setPositiveButton("হ্যাঁ",
                                             new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int which) {
-
                                                     adapter.deleteItem(position);
                                                     dialog.dismiss();
                                                 }
                                             })
-                                    .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                                    .setNegativeButton("না", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             // Do nothing

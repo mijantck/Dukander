@@ -160,7 +160,7 @@ public class ProductListActivity extends AppCompatActivity {
 
 
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(ProductListActivity.this);
-                String[] option = {"Product Edite ","Delete"};
+                String[] option = {"প্রোডাক্ট এডিট ","মুছে ফেলা"};
                 builder.setItems(option, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -193,9 +193,9 @@ public class ProductListActivity extends AppCompatActivity {
 
                         }
                         if(which == 1){
-                            new AlertDialog.Builder(ProductListActivity.this).setTitle("Confirm Delete?")
-                                    .setMessage("Are you sure?")
-                                    .setPositiveButton("YES",
+                            new AlertDialog.Builder(ProductListActivity.this).setTitle("নিশ্চিত বাতিল?")
+                                    .setMessage("তুমি কি নিশ্চিত?")
+                                    .setPositiveButton("হ্যাঁ",
                                             new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int which) {
 
@@ -203,7 +203,7 @@ public class ProductListActivity extends AppCompatActivity {
                                                     dialog.dismiss();
                                                 }
                                             })
-                                    .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                                    .setNegativeButton("না", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             // Do nothing
@@ -252,7 +252,7 @@ public class ProductListActivity extends AppCompatActivity {
 
 
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(ProductListActivity.this);
-                String[] option = {"Product Edite ","Delete"};
+                String[] option = {"প্রোডাক্ট এডিট ","মুছে ফেলা"};
                 builder.setItems(option, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -285,9 +285,9 @@ public class ProductListActivity extends AppCompatActivity {
 
                         }
                         if(which == 1){
-                            new AlertDialog.Builder(ProductListActivity.this).setTitle("Confirm Delete?")
-                                    .setMessage("Are you sure?")
-                                    .setPositiveButton("YES",
+                            new AlertDialog.Builder(ProductListActivity.this).setTitle("নিশ্চিত বাতিল?")
+                                    .setMessage("তুমি কি নিশ্চিত?")
+                                    .setPositiveButton("হ্যাঁ",
                                             new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int which) {
 
@@ -295,7 +295,7 @@ public class ProductListActivity extends AppCompatActivity {
                                                     dialog.dismiss();
                                                 }
                                             })
-                                    .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                                    .setNegativeButton("না", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             // Do nothing
