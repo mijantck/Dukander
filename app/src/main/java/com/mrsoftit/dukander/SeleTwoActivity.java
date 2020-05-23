@@ -665,7 +665,9 @@ public class SeleTwoActivity extends AppCompatActivity {
                     assert queryDocumentSnapshots != null;
                     for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                         if (doc.get("lastTotal") != null) {
-                            double totaltest  = (double) doc.get("lastTotal");
+
+                            double totaltest = Double.parseDouble(Objects.requireNonNull(doc.get("lastTotal")).toString());
+
                             totallestAvount = totaltest;
                             TotalAmount.setText(totaltest+"");
 
@@ -673,8 +675,8 @@ public class SeleTwoActivity extends AppCompatActivity {
 
                         if (doc.get("taka") != null) {
 
-                            double totaltaka  = (double) doc.get("taka");
 
+                            double totaltaka = Double.parseDouble(Objects.requireNonNull(doc.get("taka")).toString());
                             bundelCustomertaka.setText(totaltaka+"");
                         }
 

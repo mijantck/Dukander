@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -72,6 +73,7 @@ public class CustomerProfileViewActivity extends AppCompatActivity {
     Double activeBalance = 0.0;
     Double dueBalance=0.0;
     String myinfoid ;
+    SwipeRefreshLayout swipeLayout;
 
 
     @Override
@@ -103,6 +105,7 @@ public class CustomerProfileViewActivity extends AppCompatActivity {
         totalpayment = findViewById(R.id.cutomer_profile_total_payment);
         totalbuy = findViewById(R.id.cutomer_profile_total_buy);
         floatingActionButton = findViewById(R.id.floating_action_button);
+        swipeLayout = findViewById(R.id.swiperefreshlayout);
 
 
         final Bundle bundle = getIntent().getExtras();

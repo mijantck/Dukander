@@ -110,7 +110,7 @@ public class PinViewActivity extends AppCompatActivity {
                         finish();
                     } else {
                         pinEntry2.setError(true);
-                        Toast.makeText(PinViewActivity.this, "FAIL", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PinViewActivity.this, "ভূল", Toast.LENGTH_SHORT).show();
 
                         pinEntry2.postDelayed(new Runnable() {
                             @Override

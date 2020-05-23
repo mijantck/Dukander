@@ -15,7 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:weightSum="6"
-        android:background="@drawable/main_header_bk"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp">
     <LinearLayout
@@ -50,9 +49,11 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/adamina"
             android:paddingLeft="5dp"
+
             android:text="mijan"
             style="@style/reportContentText"
-            android:textColor="#FFF"
+            android:textStyle="bold"
+            android:textColor="#25C0DE"
             android:textSize="14dp" />
         <TextView
             android:paddingLeft="5dp"

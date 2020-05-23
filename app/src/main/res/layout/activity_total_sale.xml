@@ -6,6 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".TotalSaleActivity">
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -99,5 +104,5 @@
     </RelativeLayout>
 
 
-
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>
