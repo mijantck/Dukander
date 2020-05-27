@@ -73,6 +73,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import static java.lang.Double.parseDouble;
@@ -272,8 +273,11 @@ public class PDFActivity extends AppCompatActivity {
 
         String pattern = "dd-MM-yyyy";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+
         String date = simpleDateFormat.format(new Date());
-        invoiceDate.setText(date);
+        String currentTime = new SimpleDateFormat("hh:mm:ss", Locale.getDefault()).format(new Date());
+
+        invoiceDate.setText(date+"\n"+currentTime);
 
         if (id!=null) {
             loadData();
@@ -429,7 +433,7 @@ public class PDFActivity extends AppCompatActivity {
 
         PdfPCell[] cells = table.getRow(0).getCells();
         for (PdfPCell cell : cells) {
-            cell.setBackgroundColor(BaseColor.GRAY);
+            cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
         }
 
 

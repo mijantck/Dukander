@@ -23,7 +23,15 @@
         <item
             android:id="@+id/nav_profile"
             android:icon="@drawable/producthisstory"
-            android:title="মোট বিক্রয়" />
+            android:title=" অনুমোদিত বিক্রয়" />
+        <item
+            android:id="@+id/confarlSaleList"
+            android:icon="@drawable/producthisstory"
+            android:title=" মোট বিক্রয়  " />
+        <item
+            android:id="@+id/Profite"
+            android:icon="@drawable/producthisstory"
+            android:title="লাভ" />
         <item
             android:id="@+id/recharge"
             android:icon="@drawable/producthisstory"

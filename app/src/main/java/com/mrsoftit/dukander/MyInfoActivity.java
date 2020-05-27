@@ -9,6 +9,8 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.net.ConnectivityManager;
@@ -58,6 +60,7 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -114,7 +117,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
 
 
     private TextInputEditText dukanName, dukanPhone,dukanaddess,orldpass,newpass;
-    private MaterialButton addmyinfo,confirm;
+    private MaterialButton addmyinfo,confirm,HomeId;
 
     FirebaseFirestore firestore;
     TextView chagepasswordtextview;
@@ -205,6 +208,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
         dukanPhone = findViewById(R.id.DukantPhone);
         dukanaddess = findViewById(R.id.DukantAddres);
         addmyinfo = findViewById(R.id.addedmyinfo);
+        HomeId = findViewById(R.id.HomeId);
 
         chagepasswordtextview = findViewById(R.id.chagepasswordtextview);
         chagepintextview = findViewById(R.id.chagepintextview);
@@ -257,12 +261,12 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
                     shopediteView.setVisibility(View.VISIBLE);
                     vigivity=false;
                     etideButton.setVisibility(View.GONE);
+                    HomeId.setVisibility(View.GONE);
 
                 }else if (vigivity == false){
                     chagepasswordtextview.setVisibility(View.VISIBLE);
                     passChange.setVisibility(View.VISIBLE);
                     shopdelaisView.setVisibility(View.VISIBLE);
-
                     shopediteView.setVisibility(View.GONE);
                     shopdelaisView.setVisibility(View.VISIBLE);
 
@@ -274,24 +278,25 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
 
         updateadtaall();
 
+        HomeId.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MyInfoActivity.this,MainActivity.class));
+                finish();
+
+            }
+        });
 
 
         addmyinfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-
-
                 if(!checkIntert()) {
 
                     Toast.makeText(MyInfoActivity.this, " কোনও ইন্টারনেট সংযোগ নেই ", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-
-
-
-
 
                 String name = dukanName.getText().toString();
                 String price = dukanPhone.getText().toString();
@@ -310,18 +315,16 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
                     return;
                 }
 
-
                 if (imageuploadurl==null && id!=null && mImageUri!=null){
 
-                    MyInfoUploadWithpicnew(mImageUri);
-
+                  //  MyInfoUploadWithpicnew(mImageUri);
+                    uploadImageUri(mImageUri);
                 }
                 if ( image == false && imageuploadurl != null) {
 
                     progressDialog = new ProgressDialog(MyInfoActivity.this);
-                    progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                    progressDialog.setTitle("Uploading...");
-                    progressDialog.setProgress(0);
+                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    progressDialog.setTitle("আপলোড হচ্ছে...");
                     progressDialog.show();
                     progressDialog.setCanceledOnTouchOutside(false);
 
@@ -357,15 +360,15 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
                 //   MyInfoUpload(mImageUri);
 
                     uploadImageUri(mImageUri);
+
+
+
                 }
                 else if (mImageUri == null ){
 
                     final String dukanName1 = dukanName.getText().toString();
                     final String dukanphon1 = dukanPhone.getText().toString();
                     final String dukanAddres1 = dukanaddess.getText().toString();
-
-
-
                     Random rand = new Random();
                     String picname = String.format("%05d", rand.nextInt(10000));
                     myInfo.add(new MyInfoNote(null, dukanName1, dukanphon1, dukanAddres1,true,picname,0.0,1.0,1.0,0)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
@@ -382,8 +385,8 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
                                     public void onComplete(@NonNull Task<Void> task) {
                                         shopdelaisView.setVisibility(View.VISIBLE);
                                         shopediteView.setVisibility(View.GONE);
-
                                         etideButton.setVisibility(View.GONE);
+                                        HomeId.setVisibility(View.VISIBLE);
                                         updateadtaall();
 
                                         Toast.makeText(MyInfoActivity.this, " সফল ", Toast.LENGTH_SHORT).show();
@@ -623,7 +626,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
     public void MyInfoUploadWithpicnew(final Uri mImageUri) {
         progressDialog = new ProgressDialog(this);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progressDialog.setTitle("Uploading...");
+        progressDialog.setTitle("আপলোড হচ্ছে...");
         progressDialog.setProgress(0);
         progressDialog.show();
         progressDialog.setCanceledOnTouchOutside(false);
@@ -773,9 +776,8 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
 
 
         progressDialog = new ProgressDialog(this);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progressDialog.setTitle("Uploading...");
-        progressDialog.setProgress(0);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setTitle("আপলোড হচ্ছে...");
         progressDialog.show();
         progressDialog.setCanceledOnTouchOutside(false);
 
@@ -794,22 +796,13 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
             in.close();
 
 
-
-
-            Log.d("Test", "uploadImageUri: " + imageUri.getPath());
-
             upload(file, new UploadCallback() {
                 @Override
                 public void onSuccess(String downloadLink) {
 
-
-
-
-
                     final String dukanName1 = dukanName.getText().toString();
                     final String dukanphon1 = dukanPhone.getText().toString();
                     final String dukanAddres1 = dukanaddess.getText().toString();
-
 
                     if (image != false && id !=null) {
 
@@ -865,6 +858,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
                     }
 
                     progressDialog.dismiss();
+                    HomeId.setVisibility(View.VISIBLE);
                 }
 
                 @Override
@@ -887,7 +881,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
 
 
         //create file to request body and request
-        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), saveBitmapToFile(file));
         RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("image", "filename.png", requestBody)
                 .build();
@@ -962,6 +956,52 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         return networkInfo !=null && networkInfo.isConnected();
     }
+
+
+
+    public File saveBitmapToFile(File file){
+        try {
+
+            // BitmapFactory options to downsize the image
+            BitmapFactory.Options o = new BitmapFactory.Options();
+            o.inJustDecodeBounds = true;
+            o.inSampleSize = 6;
+            // factor of downsizing the image
+
+            FileInputStream inputStream = new FileInputStream(file);
+            //Bitmap selectedBitmap = null;
+            BitmapFactory.decodeStream(inputStream, null, o);
+            inputStream.close();
+
+            // The new size we want to scale to
+            final int REQUIRED_SIZE=75;
+
+            // Find the correct scale value. It should be the power of 2.
+            int scale = 1;
+            while(o.outWidth / scale / 2 >= REQUIRED_SIZE &&
+                    o.outHeight / scale / 2 >= REQUIRED_SIZE) {
+                scale *= 2;
+            }
+
+            BitmapFactory.Options o2 = new BitmapFactory.Options();
+            o2.inSampleSize = scale;
+            inputStream = new FileInputStream(file);
+
+            Bitmap selectedBitmap = BitmapFactory.decodeStream(inputStream, null, o2);
+            inputStream.close();
+
+            // here i override the original image file
+            file.createNewFile();
+            FileOutputStream outputStream = new FileOutputStream(file);
+
+            selectedBitmap.compress(Bitmap.CompressFormat.JPEG, 100 , outputStream);
+
+            return file;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 }
 
 

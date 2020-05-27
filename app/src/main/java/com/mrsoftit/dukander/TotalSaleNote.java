@@ -4,6 +4,7 @@ public class TotalSaleNote {
     private int date;
     private String itemName;
     private boolean paid;
+    private boolean confirm;
     private String saleProductId;
     private String customerID;
     private String unknownCustomerID;
@@ -43,6 +44,14 @@ public class TotalSaleNote {
 
     public void setPaid(boolean paid) {
         this.paid = paid;
+    }
+
+    public boolean isConfirm() {
+        return confirm;
+    }
+
+    public void setConfirm(boolean confirm) {
+        this.confirm = confirm;
     }
 
     public String getSaleProductId() {

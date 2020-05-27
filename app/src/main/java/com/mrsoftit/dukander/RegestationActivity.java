@@ -75,29 +75,27 @@ public class RegestationActivity extends AppCompatActivity {
 
 
 
-                if(checkIntert()) {
-
+                if(!checkIntert()) {
                     Toast.makeText(RegestationActivity.this, " কোনও ইন্টারনেট সংযোগ নেই ", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-
 
                 final String email = editTextEmail.getText().toString();
                 final String password = editTextPassword.getText().toString();
 
                 if(TextUtils.isEmpty(email)){
-                    Toast.makeText(getApplicationContext(),"Please fill in the required fields",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"দয়া করে ইমেলটি পূরণ করুন",Toast.LENGTH_SHORT).show();
+
                     return;
                 }
                 if(TextUtils.isEmpty(password)){
-                    Toast.makeText(getApplicationContext(),"Please fill in the required fields",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"দয়া করে পাসওয়ার্ড পূরণ করুন",Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 if(password.length()<6){
 
-                    Toast.makeText(getApplicationContext(),"Password must be at least 6 characters",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"পাসওয়ার্ড কমপক্ষে ৬ টি অক্ষর হতে হবে",Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -106,38 +104,38 @@ public class RegestationActivity extends AppCompatActivity {
                 progressDialog.setTitle("তথ্য প্রস্তুত হচ্ছে..."); // Setting Title
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 progressDialog.show();
-
-
-
                 //check email already exist or not.
                 Auth.fetchSignInMethodsForEmail(email)
                         .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
                             @Override
                             public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+try {
+    boolean isNewUser = task.getResult().getSignInMethods().isEmpty();
+    if (isNewUser) {
+        Auth.createUserWithEmailAndPassword(email,password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            progressDialog.dismiss();
+                            startActivity(new Intent(getApplicationContext(),MyInfoActivity.class));
+                            finish();
 
-                                boolean isNewUser = task.getResult().getSignInMethods().isEmpty();
+                        }
+                        else{
+                            progressDialog.dismiss();
+                        }
+                    }
+                });
+    } else {
+        progressDialog.dismiss();
+        Toast.makeText(getApplicationContext(),email+" ইতিমধ্যে সাইন আপ ",Toast.LENGTH_SHORT).show();
 
-                                if (isNewUser) {
-                                    Auth.createUserWithEmailAndPassword(email,password)
-                                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                                    if(task.isSuccessful()){
-                                                        progressDialog.dismiss();
-                                                        startActivity(new Intent(getApplicationContext(),MyInfoActivity.class));
-                                                        finish();
+    }
+}catch (Exception e){
+    Toast.makeText(RegestationActivity.this, e+"", Toast.LENGTH_SHORT).show();
+}
 
-                                                    }
-                                                    else{
-                                                        progressDialog.dismiss();
-                                                    }
-                                                }
-                                            });
-                                } else {
-                                    progressDialog.dismiss();
-                                    Toast.makeText(getApplicationContext(),email+" Already SingUp ",Toast.LENGTH_SHORT).show();
-
-                                }
 
                             }
                         });

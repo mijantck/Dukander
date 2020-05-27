@@ -28,7 +28,11 @@
                 <TextView
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
-                    style="@style/viewParent.headerText.NoMode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:textColor="@color/black"
                     android:text="ইতিমধ্যে \n একটি \n অ্যাকাউন্ট \n আছে?"/>
 
                 <ImageView

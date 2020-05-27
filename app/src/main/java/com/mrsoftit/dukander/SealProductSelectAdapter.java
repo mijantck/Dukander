@@ -2,6 +2,7 @@ package com.mrsoftit.dukander;
 
 import android.content.Context;
 import android.icu.text.DecimalFormat;
+import android.icu.util.LocaleData;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,11 +29,13 @@ import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -44,9 +47,12 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
     private List<ProductNote> exampleList;
     private String cutomerId;
     private String unknownCustomerID;
+    private double profit = 0.0;
+    private double profitePrice,profiteQuandety,totalProfit;
 
     boolean update = false;
     boolean paid = false;
+    boolean confram = false;
 
 
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -73,7 +79,8 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
 
     public class ExampleViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView ImageView,calculatebutton,cutomerAddButton;
+        ImageView ImageView;
+        TextView calculatebutton,cutomerAddButton;
         TextView product_name_textview;
         EditText product_price_textview,product_quantedy_Editetview,product_total_editetview;
 
@@ -109,7 +116,8 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
 
 
         final ProductNote productNote = exampleList.get(position);
-
+        // profit
+        profitePrice = productNote.getProPrice();
 
         if (productNote.getProImgeUrl()!=null) {
             String Url = productNote.getProImgeUrl();
@@ -126,11 +134,23 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
 
                 double totalQantidy = Double.parseDouble(holder.product_quantedy_Editetview.getText().toString());
                 double price= Double.parseDouble(holder.product_price_textview.getText().toString());
-
                 double total = totalQantidy * price;
 
+                profiteQuandety = totalQantidy;
 
-                holder.product_total_editetview.setText(df2.format(total)+"");
+                profit = profitePrice * profiteQuandety;
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    holder.product_total_editetview.setText(df2.format(total)+"");
+                }
+
+                double pricePro= Double.parseDouble(df2.format(total));
+                double pricePro1= Double.parseDouble(df2.format(profit));
+
+                totalProfit = pricePro - pricePro1 ;
+
+                Toast.makeText(v.getContext(),  totalProfit+"", Toast.LENGTH_LONG).show();
+                
                 holder.calculatebutton.setVisibility(View.GONE);
                 holder.cutomerAddButton.setVisibility(View.VISIBLE);
 
@@ -149,23 +169,29 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
             @Override
             public void onClick(final View v) {
 
-
                 holder.calculatebutton.setVisibility(View.VISIBLE);
                 holder.cutomerAddButton.setVisibility(View.GONE);
 
 
                 final String productName = holder.product_name_textview.getText().toString();
-
                 final double totalQantidy = Double.parseDouble(holder.product_quantedy_Editetview.getText().toString());
-
                 final double price = Double.parseDouble(holder.product_price_textview.getText().toString());
-
                 final double total = totalQantidy * price;
+
+
+
+
 
                 Date calendar1 = Calendar.getInstance().getTime();
                 DateFormat df1 = new SimpleDateFormat("yyyyMMdd");
                 String todayString = df1.format(calendar1);
                 final int datenew = Integer.parseInt(todayString);
+
+
+                String currentTime = new SimpleDateFormat("MMyyyy", Locale.getDefault()).format(new Date());
+
+
+                Toast.makeText(v.getContext(), currentTime+"", Toast.LENGTH_SHORT).show();
 
 
 
@@ -254,6 +280,8 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
                                         user.put("quantedt", totalQantidy);
                                         user.put("totalPrice", total);
                                         user.put("paid", paid);
+                                        user.put("paid", paid);
+                                        user.put("confirm", confram);
 
                                         TotalcustomerProductSale.document(id).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
@@ -262,7 +290,7 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
                                             }
                                         });
 
-                                        Toast.makeText(v.getContext(), " Complete ", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(v.getContext(), " সম্পূর্ণ ", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                             }
@@ -337,6 +365,7 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
                                         user.put("quantedt", totalQantidy);
                                         user.put("totalPrice", total);
                                         user.put("paid", paid);
+                                        user.put("confirm", confram);
 
                                         TotalcustomerProductSale.document(id).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
@@ -361,10 +390,9 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
         });
 
         holder.product_name_textview.setText(productNote.getProName());
+
         String pp = String.valueOf(productNote.getProPrice());
         holder.product_price_textview.setText(pp);
-
-
 
 
     }

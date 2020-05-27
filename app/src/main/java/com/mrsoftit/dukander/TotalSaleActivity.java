@@ -313,7 +313,7 @@ public class TotalSaleActivity extends AppCompatActivity {
 
     private void recyclear() {
 
-        Query query = TotalcustomerProductSale.orderBy("itemName", Query.Direction.ASCENDING).whereEqualTo("paid",true);
+        Query query = TotalcustomerProductSale.orderBy("itemName", Query.Direction.ASCENDING).whereEqualTo("confirm", true);
 
         FirestoreRecyclerOptions<TotalSaleNote> options = new FirestoreRecyclerOptions.Builder<TotalSaleNote>()
                 .setQuery(query, TotalSaleNote.class)
@@ -525,7 +525,7 @@ public class TotalSaleActivity extends AppCompatActivity {
     }
     private void recyclear(int date) {
 
-        Query query = TotalcustomerProductSale.orderBy("itemName", Query.Direction.ASCENDING).whereEqualTo("paid",true).whereEqualTo("date",date);
+        Query query = TotalcustomerProductSale.orderBy("itemName", Query.Direction.ASCENDING).whereEqualTo("confirm", true).whereEqualTo("date",date);
 
         FirestoreRecyclerOptions<TotalSaleNote> options = new FirestoreRecyclerOptions.Builder<TotalSaleNote>()
                 .setQuery(query, TotalSaleNote.class)

@@ -14,6 +14,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -170,7 +171,7 @@ public class CustomerProfileViewActivity extends AppCompatActivity {
         CollectionReference custumertaka = FirebaseFirestore.getInstance()
                 .collection("users").document(user_id).collection("Customers");
 
-if (id!=null){
+        if (id!=null){
 
 
         CollectionReference TotalcustomerProductSale = FirebaseFirestore.getInstance()
@@ -228,18 +229,11 @@ if (id!=null){
                         totaldue.setText(staka);
                         //  cutomartk = totaltest;
                     }
-
-
                 }
-
-
             }
         });
-
-
     }
-
-        if (uid!=null){
+        else if (uid!=null){
             CollectionReference TotalcustomerProductSale = FirebaseFirestore.getInstance()
                     .collection("users").document(user_id).collection("UnknownCustomer").document(uid).collection("saleProduct");
 
@@ -296,9 +290,6 @@ if (id!=null){
             });
 
         }
-
-
-
 
 
         final CollectionReference myInfo = FirebaseFirestore.getInstance()
@@ -681,6 +672,161 @@ if (id!=null){
         });
 
 
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code her
+                // To keep animation for 4 seconds
+
+
+                Date calendar1 = Calendar.getInstance().getTime();
+                DateFormat df1 = new SimpleDateFormat("yyyyMMdd");
+                String todayString = df1.format(calendar1);
+                final int datenew = Integer.parseInt(todayString);
+
+
+                CollectionReference custumertaka = FirebaseFirestore.getInstance()
+                        .collection("users").document(user_id).collection("Customers");
+
+                if (id!=null){
+
+
+                    CollectionReference TotalcustomerProductSale = FirebaseFirestore.getInstance()
+                            .collection("users").document(user_id).collection("Customers").document(id).collection("saleProduct");
+
+
+                    Query query = TotalcustomerProductSale.whereEqualTo("paid", true);
+
+
+                    query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+
+
+                            if (e != null) {
+                                return;
+                            }
+                            totalsum = 00.00;
+                            assert queryDocumentSnapshots != null;
+                            for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                                if (doc.get("totalPrice") != null) {
+                                    // double totaltest = (double) ;
+                                    double totaltest = Double.parseDouble(doc.get("totalPrice").toString());
+                                    totalsum += totaltest;
+                                }
+
+                                totalbuy.setText(totalsum + "");
+
+                            }
+
+
+                            double takaD = Double.parseDouble(takaup);
+
+                            Double payment = totalsum - takaD;
+
+
+                            totalpayment.setText(payment + "");
+                        }
+                    });
+
+                    Query query1 = custumertaka.whereEqualTo("customerIdDucunt", id);
+                    query1.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                            if (e != null) {
+                                return;
+                            }
+                            cutomartk = 00.00;
+                            assert queryDocumentSnapshots != null;
+                            for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                                if (doc.get("taka") != null) {
+                                    double totaltest = (double) doc.get("taka");
+                                    String staka = Double.toString((Double) doc.get("taka"));
+                                    takaup = staka;
+                                    totaldue.setText(staka);
+                                    //  cutomartk = totaltest;
+                                }
+                            }
+                        }
+                    });
+                }
+                else if (uid!=null){
+                    CollectionReference TotalcustomerProductSale = FirebaseFirestore.getInstance()
+                            .collection("users").document(user_id).collection("UnknownCustomer").document(uid).collection("saleProduct");
+
+                    Query query = TotalcustomerProductSale.whereEqualTo("paid", true);
+
+
+                    query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+
+                            if (e != null) {
+                                return;
+                            }
+                            totalsum = 00.00;
+                            assert queryDocumentSnapshots != null;
+                            for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                                if (doc.get("totalPrice") != null) {
+                                    // double totaltest = (double) ;
+                                    double totaltest = Double.parseDouble(doc.get("totalPrice").toString());
+                                    totalsum += totaltest;
+                                }
+                                totalbuy.setText(totalsum + "");
+                            }
+                            double takaD = Double.parseDouble(takaup);
+
+                            Double payment = totalsum - takaD;
+
+                            totalpayment.setText(payment + "");
+                        }
+                    });
+
+                    Query query1 = custumertaka.whereEqualTo("customerIdDucunt", uid);
+                    query1.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                            if (e != null) {
+                                return;
+                            }
+                            cutomartk = 00.00;
+                            assert queryDocumentSnapshots != null;
+                            for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                                if (doc.get("taka") != null) {
+                                    double totaltest = (double) doc.get("taka");
+                                    String staka = Double.toString((Double) doc.get("taka"));
+                                    takaup = staka;
+                                    //  cutomartk = totaltest;
+                                }
+                                totaldue.setText(takaup);
+
+                            }
+
+
+                        }
+                    });
+
+                }
+
+
+
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override public void run() {
+                        // Stop animation (This will be after 3 seconds)
+                        swipeLayout.setRefreshing(false);
+                    }
+                }, 1000); // Delay in millis
+            }
+        });
+
+        // Scheme colors for animation
+        swipeLayout.setColorSchemeColors(
+                getResources().getColor(android.R.color.holo_blue_bright),
+                getResources().getColor(android.R.color.holo_green_light),
+                getResources().getColor(android.R.color.holo_orange_light),
+                getResources().getColor(android.R.color.holo_red_light)
+        );
 
     }
 

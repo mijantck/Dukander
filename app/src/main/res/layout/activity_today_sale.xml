@@ -6,6 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".TodaySaleActivity">
 
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/todaysaleRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -60,7 +65,7 @@
                 style="@style/reportContentText"
                 android:textSize="15dp"
                 android:layout_marginTop="50dp"
-                android:text=" আজ বকি " />
+                android:text=" আজ বাকি " />
 
             <TextView
                 android:id="@+id/todayTotalSale"
@@ -84,13 +89,32 @@
         </RelativeLayout>
 
 
-       <androidx.recyclerview.widget.RecyclerView
-           android:layout_below="@+id/headerLayout"
-           android:id="@+id/totalsaletoday"
-           android:layout_width="match_parent"
-           android:layout_height="match_parent"/>
-    </RelativeLayout>
 
+
+        <LinearLayout
+            android:id="@+id/buttonLayout"
+            android:gravity="center"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/ApprovedsalesButton"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="অনুমোদন"/>
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_below="@+id/headerLayout"
+            android:layout_above="@+id/buttonLayout"
+            android:id="@+id/totalsaletoday"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </RelativeLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>
 
 

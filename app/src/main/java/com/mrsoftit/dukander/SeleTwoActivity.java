@@ -324,7 +324,7 @@ public class SeleTwoActivity extends AppCompatActivity {
                 // Include dialog.xml file
                 dialog.setContentView(R.layout.cutomar_pay_taka);
                 // Set dialog title
-                dialog.setTitle("Bill Pay ");
+                dialog.setTitle("বিল পরিশোধ");
                 dialog.show();
                 dialog.setCanceledOnTouchOutside(false);
                 final Button okButton = dialog.findViewById(R.id.okButton);
@@ -341,7 +341,7 @@ public class SeleTwoActivity extends AppCompatActivity {
                     public void onClick(View v) {
                        String paymony = payeditetext.getText().toString();
                         if (paymony.isEmpty()){
-                            Toast.makeText(SeleTwoActivity.this, " Empty", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SeleTwoActivity.this, "খালি ", Toast.LENGTH_SHORT).show();
                             return;
                         }
 
@@ -376,7 +376,7 @@ public class SeleTwoActivity extends AppCompatActivity {
 
                         if (conditonBil < paymonyDouable){
 
-                            Toast.makeText(SeleTwoActivity.this, "Invalid Input", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SeleTwoActivity.this, "ভুল ইনপুট", Toast.LENGTH_SHORT).show();
 
                             dialog.dismiss();
                             return;

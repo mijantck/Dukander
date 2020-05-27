@@ -400,6 +400,7 @@
 
         </LinearLayout>
 
+
         <LinearLayout
             android:id="@+id/editeshopbuttton"
             android:layout_below="@+id/shopdelaisView"
@@ -525,6 +526,22 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:gravity="center"
+            android:layout_below="@+id/shopdelaisView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+        <com.google.android.material.button.MaterialButton
+            android:visibility="gone"
+            android:id="@+id/HomeId"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:text="হোমপেজে যান"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            android:layout_height="wrap_content"/>
+        </LinearLayout>
     </RelativeLayout>
 
 </ScrollView>

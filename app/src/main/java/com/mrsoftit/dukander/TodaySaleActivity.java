@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -15,16 +16,23 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -32,11 +40,14 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 public class TodaySaleActivity extends AppCompatActivity {
@@ -48,10 +59,17 @@ public class TodaySaleActivity extends AppCompatActivity {
 
     //ProductAdapter adapter;
     TotalAdapter adapter;
+    FirebaseFirestore db;
 
     private TextView dateView,TodayTotalSale,todayTotaldue;
+    private MaterialButton ApprovedsalesButton;
 
     ProgressDialog progressDialog;
+    SwipeRefreshLayout swipeLayout;
+
+    boolean firstTimeComfirm = false ;
+    String code ;
+
 
     CollectionReference product = FirebaseFirestore.getInstance()
             .collection("users").document(user_id).collection("Product");
@@ -59,6 +77,9 @@ public class TodaySaleActivity extends AppCompatActivity {
     //total sale
     CollectionReference TotalcustomerProductSale = FirebaseFirestore.getInstance()
             .collection("users").document(user_id).collection("Sales");
+    CollectionReference confirmSaleCode = FirebaseFirestore.getInstance()
+            .collection("users").document(user_id).collection("confirmSaleCode");
+
 
 
     final CollectionReference customerTakaUpdate = FirebaseFirestore.getInstance()
@@ -97,13 +118,17 @@ public class TodaySaleActivity extends AppCompatActivity {
         });
 
 
+        db = FirebaseFirestore.getInstance();
+
+
+        swipeLayout = findViewById(R.id.todaysaleRefresh);
         dateView = findViewById(R.id.dateTextView);
         TodayTotalSale = findViewById(R.id.todayTotalSale);
         todayTotaldue = findViewById(R.id.todayTotaldue);
+        ApprovedsalesButton = findViewById(R.id.ApprovedsalesButton);
 
         final CollectionReference myInfo = FirebaseFirestore.getInstance()
                 .collection("users").document(user_id).collection("DukanInfo");
-
 
         recyclear();
 
@@ -193,8 +218,221 @@ public class TodaySaleActivity extends AppCompatActivity {
         });
 
 
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code her
+                // To keep animation for 4 seconds
 
-    }
+
+                final CollectionReference myInfo = FirebaseFirestore.getInstance()
+                        .collection("users").document(user_id).collection("DukanInfo");
+
+
+                recyclear();
+
+
+                String pattern = "dd MMMM yyyy";
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+                String date = simpleDateFormat.format(new Date());
+                dateView.setText(date);
+
+                //  recyclear();
+
+
+                Date calendar1 = Calendar.getInstance().getTime();
+                DateFormat df1 = new SimpleDateFormat("yyyyMMdd");
+                String todayString = df1.format(calendar1);
+                final int datenew = Integer.parseInt(todayString);
+
+
+
+                Query query = TotalcustomerProductSale.whereEqualTo("date",datenew).whereEqualTo("paid",true);
+
+                query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            return;
+                        }
+                        totalsum = 00.00;
+                        assert queryDocumentSnapshots != null;
+                        for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                            if (doc.get("totalPrice") != null) {
+                                double totaltest  = (double) doc.get("totalPrice");
+                                totalsum += totaltest;
+                            }
+
+
+                            if (doc.get("totalpaybil") != null) {
+                                double totalpaybil  = (double) doc.get("totalpaybil");
+
+                                totalpaybilint = totalpaybil;
+                                Toast.makeText(TodaySaleActivity.this, totalpaybilint+" tk", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        TodayTotalSale.setText(totalsum+"");
+                    }
+                });
+                myInfo.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            return;
+                        }
+                        totalpaybilint = 00.00;
+
+                        String id = null;
+                        int  date = 0;
+                        assert queryDocumentSnapshots != null;
+                        for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+
+                            if (doc.get("totalpaybil") != null) {
+                                double d = Double.parseDouble(doc.get("totalpaybil").toString());
+
+                                totalpaybilint = d;
+                            } if (doc.get("totalpaybil") != null) {
+                                id = doc.getId();
+                            }
+                            if (doc.get("date") != null) {
+                                String dateS =  doc.get("date").toString();
+                                int i =Integer.parseInt(dateS);
+                                date = i;
+                            }
+                            todayTotaldue.setText(totalsum - totalpaybilint+"");
+                        }
+
+                        if (datenew != date ) {
+
+                            myInfo.document(id).update("date",datenew,"totalpaybil",0.0).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+
+                                }
+                            });
+                        }
+
+
+                    }
+                });
+
+                recyclear();
+
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override public void run() {
+                        // Stop animation (This will be after 3 seconds)
+                        swipeLayout.setRefreshing(false);
+                    }
+                }, 1000); // Delay in millis
+            }
+        });
+
+        // Scheme colors for animation
+        swipeLayout.setColorSchemeColors(
+                getResources().getColor(android.R.color.holo_blue_bright),
+                getResources().getColor(android.R.color.holo_green_light),
+                getResources().getColor(android.R.color.holo_orange_light),
+                getResources().getColor(android.R.color.holo_red_light)
+        );
+
+
+
+
+        ApprovedsalesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+
+                confirmSaleCode.document("confirmCode").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                        if (task.isSuccessful()) {
+                            // Document found in the offline cache
+                            DocumentSnapshot document = task.getResult();
+
+                            if (document.get("firstTime")!=null){
+                                boolean firstTi = Boolean.valueOf(document.get("firstTime").toString());
+                                firstTimeComfirm = firstTi;
+                            }
+                            if (document.get("code")!=null){
+                                code = document.get("code").toString();
+                            }
+
+                        } else {
+
+                        }
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(TodaySaleActivity.this);
+                        ViewGroup viewGroup = findViewById(android.R.id.content);
+                        View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.confirm_dialog, viewGroup, false);
+                        builder.setView(dialogView);
+                        final AlertDialog alertDialog = builder.create();
+                        TextView TitailText = dialogView.findViewById(R.id.TitelId);
+                        final EditText EnterConfirmCode = dialogView.findViewById(R.id.EnterConfirmCode);
+                        final EditText SetConfirmCode = dialogView.findViewById(R.id.SetConfirmCode);
+                        final MaterialButton okButton = dialogView.findViewById(R.id.confirmButton);
+
+                        if (firstTimeComfirm == false) {
+                            TitailText.setText("আপনার অনুমোদিত বিক্রয় গুলো আলাদা দেখাবে।");
+                            EnterConfirmCode.setVisibility(View.GONE);
+                            SetConfirmCode.setVisibility(View.VISIBLE);
+
+                        }
+                        okButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                if (firstTimeComfirm == false) {
+                                    String setCode = SetConfirmCode.getText().toString();
+                                    confirmSaleCode.document("confirmCode").set(new ConfirmNot(null, true, setCode)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            alertDialog.dismiss();
+                                            Toast.makeText(TodaySaleActivity.this, "  ", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                } else {
+                                    String EnterCode = EnterConfirmCode.getText().toString();
+                                    if (EnterCode.equals(code)) {
+
+                                        Query query = TotalcustomerProductSale.whereEqualTo("date", datenew).whereEqualTo("paid", true);
+                                        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if (task.isSuccessful()) {
+
+                                                    List<String> list = new ArrayList<>();
+                                                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                                                        list.add(document.getId());
+                                                    }
+                                                    Approved((ArrayList) list);
+                                                    alertDialog.dismiss();
+                                                }
+                                            }
+
+
+                                        });
+
+                                    }
+                                    else {
+                                        Toast.makeText(TodaySaleActivity.this, "ভূল পিন ", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+
+                            }
+                        });
+
+                        alertDialog.show();
+
+                    }
+                });
+
+            }
+        });
+
+            }
 
     private void recyclear() {
 
@@ -217,8 +455,7 @@ public class TodaySaleActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-
-
+        adapter.startListening();
         adapter.setOnItemClickListener(new TotalAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, final int position) {
@@ -422,4 +659,34 @@ public class TodaySaleActivity extends AppCompatActivity {
         adapter.stopListening();
     }
 
+
+    public void Approved(ArrayList list) {
+
+        // Get a new write batch
+        WriteBatch batch = db.batch();
+
+        // Iterate through the list
+        for (int k = 0; k < list.size(); k++) {
+
+            // Update each list item
+            DocumentReference ref = db.collection("users").document(user_id).collection("Sales")
+                   .document((String) list.get(k));
+
+            batch.update(ref, "confirm", true);
+
+        }
+
+        // Commit the batch
+        batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                // Yay its all done in one go!
+            }
+        });
+
+    }
+
 }
+
+
+

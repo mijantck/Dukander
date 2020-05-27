@@ -87,6 +87,7 @@ public class PinSetActivity extends AppCompatActivity {
                                                         myPin.document(idnew).set(PinData).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                             @Override
                                                             public void onComplete(@NonNull Task<Void> task) {
+
                                                                 progressDialog.dismiss();
                                                                 startActivity(new Intent(PinSetActivity.this,PinViewActivity.class));
                                                                 finish();

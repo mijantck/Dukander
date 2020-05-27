@@ -82,14 +82,15 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     CollectionReference customer = FirebaseFirestore.getInstance()
             .collection("users").document(user_id).collection("Customers");
 
+    CollectionReference coainCollecton = FirebaseFirestore.getInstance()
+            .collection("users").document(user_id).collection("Coian");
+
            Boolean coinFirst = false;
            int coin;
            int date;
            String customerStatus ;
 
 
-    CollectionReference coainCollecton = FirebaseFirestore.getInstance()
-            .collection("users").document(user_id).collection("Coian");
 
     String id;
     Uri myUri ;
@@ -121,6 +122,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.navigationView);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setItemIconTintList(null);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -150,8 +152,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 // Build a GoogleSignInClient with the options specified by gso.
         googleSignInClient = GoogleSignIn.getClient(this, gso);
 
-
-
         coainCollecton.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -169,6 +169,9 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                     if (doc.get("coin") != null) {
                         int totalcoin =Integer.parseInt(doc.get("coin").toString());
                         coin = totalcoin;
+
+                        Toast.makeText(MainActivity.this, coin+" before ", Toast.LENGTH_SHORT).show();
+
                         if (coin == 0){
 
                             new MaterialAlertDialogBuilder(MainActivity.this, R.style.CutShapeTheme)
@@ -184,6 +187,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                                     })
                                     .show();
 
+                            Toast.makeText(MainActivity.this, coin+"", Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -238,8 +242,25 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
 
 
+        final CollectionReference myInfo = FirebaseFirestore.getInstance()
+                .collection("users").document(user_id).collection("DukanInfo");
 
-        //Coin Create
+        myInfo.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                        MyInfoNote myInfoNote = document.toObject(MyInfoNote.class);
+
+                        id = document.get("myid").toString();
+
+                        mydate = myInfoNote.getDate();
+                    }
+                }
+            }
+        });
+
+
 
 
 
@@ -250,25 +271,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                     Intent intent = new Intent(MainActivity.this, SaleoOneActivity.class);
                     startActivity(intent);
                 }else {
-                    new AlertDialog.Builder(MainActivity.this)
-                            .setMessage("Fill up the your dukan info ")
-                            .setPositiveButton("YES",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            Intent intent = new Intent(MainActivity.this, MyInfoActivity.class);
-                                            startActivity(intent);
-                                            dialog.dismiss();
-                                        }
-                                    })
-                            .setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // Do nothing
-                                    dialog.dismiss();
-                                }
-                            })
-                            .create()
-                            .show();
+                    dialogInformetionSet();
                 }
             }
         });
@@ -280,25 +283,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                     Intent intent = new Intent(MainActivity.this, TodaySaleActivity.class);
                     startActivity(intent);
                 }else {
-                    new AlertDialog.Builder(MainActivity.this)
-                            .setMessage("Fill up the your dukan info ")
-                            .setPositiveButton("YES",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            Intent intent = new Intent(MainActivity.this, MyInfoActivity.class);
-                                            startActivity(intent);
-                                            dialog.dismiss();
-                                        }
-                                    })
-                            .setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // Do nothing
-                                    dialog.dismiss();
-                                }
-                            })
-                            .create()
-                            .show();
+                    dialogInformetionSet();
                 }
             }
         });
@@ -314,25 +299,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                     startActivity(intent);
 
                 }else {
-                    new AlertDialog.Builder(MainActivity.this)
-                            .setMessage("Fill up the your dukan info ")
-                            .setPositiveButton("YES",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            Intent intent = new Intent(MainActivity.this, MyInfoActivity.class);
-                                            startActivity(intent);
-                                            dialog.dismiss();
-                                        }
-                                    })
-                            .setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // Do nothing
-                                    dialog.dismiss();
-                                }
-                            })
-                            .create()
-                            .show();
+                    dialogInformetionSet();
                 }
 
             }
@@ -347,25 +314,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                     startActivity(intent);
                 }
                 else {
-                    new AlertDialog.Builder(MainActivity.this)
-                            .setMessage("Fill up the your dukan info ")
-                            .setPositiveButton("YES",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            Intent intent = new Intent(MainActivity.this, MyInfoActivity.class);
-                                            startActivity(intent);
-                                            dialog.dismiss();
-                                        }
-                                    })
-                            .setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // Do nothing
-                                    dialog.dismiss();
-                                }
-                            })
-                            .create()
-                            .show();
+                    dialogInformetionSet();
                 }
             }
         });
@@ -452,10 +401,17 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 startActivity(resultIntnt2);
 
                 break;
+            case R.id.confarlSaleList:
+                Intent confermList =new Intent(MainActivity.this, ConfirmSaleActivity.class);
+                startActivity(confermList);
+                break;
+            case R.id.Profite:
+                Intent profiteIntet =new Intent(MainActivity.this, ProfitActivity.class);
+                startActivity(profiteIntet);
+                break;
             case R.id.recharge:
                 Intent rechargeInte =new Intent(MainActivity.this, rechargeActivity.class);
                 startActivity(rechargeInte);
-
                 break;
             case R.id.nav_share:
 
@@ -514,8 +470,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                              myUri = uri;
                             Picasso.get().load(uri).into(appCompatImageView);
                         }
-
-                        id = myInfoNote.getMyid().toString();
+                        id = document.get("myid").toString();
 
                         mydate = myInfoNote.getDate();
                         picname = myInfoNote.getPicName();
@@ -653,6 +608,28 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             progressDialog.dismiss();
         }
 
+    }
+
+    public void dialogInformetionSet(){
+        new AlertDialog.Builder(MainActivity.this)
+                .setMessage("আপনার দোকানের তথ্য পূরণ করুন")
+                .setPositiveButton("হ্যাঁ",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(MainActivity.this, MyInfoActivity.class);
+                                startActivity(intent);
+                                dialog.dismiss();
+                            }
+                        })
+                .setNegativeButton("না", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do nothing
+                        dialog.dismiss();
+                    }
+                })
+                .create()
+                .show();
     }
 
 

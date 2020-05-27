@@ -39,7 +39,9 @@ public class TotalAdapter extends FirestoreRecyclerAdapter<TotalSaleNote, TotalA
         holder.product_quantedy_textview.setText(model.getQuantedt()+"");
         holder.product_price_textview.setText(model.getTotalPrice()+"");
 
-
+if (model.isConfirm() == true){
+    holder.confirmTextView.setVisibility(View.VISIBLE);
+}
         Integer value = model.getDate();
         SimpleDateFormat originalFormat = new SimpleDateFormat("yyyyMMdd");
         try {
@@ -67,7 +69,7 @@ public class TotalAdapter extends FirestoreRecyclerAdapter<TotalSaleNote, TotalA
 
     public class NotViewHolde extends RecyclerView.ViewHolder {
 
-        TextView product_name_textview,product_price_textview,product_quantedy_textview,dateproductsale;
+        TextView product_name_textview,product_price_textview,product_quantedy_textview,dateproductsale,confirmTextView;
 
         public NotViewHolde(@NonNull View itemView) {
             super(itemView);
@@ -76,6 +78,7 @@ public class TotalAdapter extends FirestoreRecyclerAdapter<TotalSaleNote, TotalA
             product_quantedy_textview = itemView.findViewById(R.id.Totalquantidy);
             product_price_textview = itemView.findViewById(R.id.Totalpariceto);
             dateproductsale = itemView.findViewById(R.id.dateproductsale);
+            confirmTextView = itemView.findViewById(R.id.confirmTextView);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
