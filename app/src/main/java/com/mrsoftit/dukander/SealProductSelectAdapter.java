@@ -1,5 +1,6 @@
 package com.mrsoftit.dukander;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.icu.text.DecimalFormat;
 import android.icu.util.LocaleData;
@@ -54,6 +55,7 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
     boolean paid = false;
     boolean confram = false;
 
+    ProgressDialog progressDialog;
 
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -115,6 +117,7 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
     public void onBindViewHolder(@NonNull final ExampleViewHolder holder, final int position) {
 
 
+
         final ProductNote productNote = exampleList.get(position);
         // profit
         profitePrice = productNote.getProPrice();
@@ -149,8 +152,7 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
 
                 totalProfit = pricePro - pricePro1 ;
 
-                Toast.makeText(v.getContext(),  totalProfit+"", Toast.LENGTH_LONG).show();
-                
+
                 holder.calculatebutton.setVisibility(View.GONE);
                 holder.cutomerAddButton.setVisibility(View.VISIBLE);
 
@@ -171,6 +173,10 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
 
                 holder.calculatebutton.setVisibility(View.VISIBLE);
                 holder.cutomerAddButton.setVisibility(View.GONE);
+                progressDialog = new ProgressDialog(v.getContext());
+                progressDialog.setTitle("বিক্রি হচ্ছে...");
+                progressDialog.setCancelable(false);
+                progressDialog.show();
 
 
                 final String productName = holder.product_name_textview.getText().toString();
@@ -179,25 +185,31 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
                 final double total = totalQantidy * price;
 
 
-
-
-
                 Date calendar1 = Calendar.getInstance().getTime();
                 DateFormat df1 = new SimpleDateFormat("yyyyMMdd");
                 String todayString = df1.format(calendar1);
                 final int datenew = Integer.parseInt(todayString);
 
 
-                String currentTime = new SimpleDateFormat("MMyyyy", Locale.getDefault()).format(new Date());
+                final String currentMaonth = new SimpleDateFormat("MMyyyy", Locale.getDefault()).format(new Date());
+                final int currentMaonthint = Integer.parseInt(currentMaonth);
+                final String currentYear = new SimpleDateFormat("yyyy", Locale.getDefault()).format(new Date());
+                final int currentYearint = Integer.parseInt(currentYear);
 
 
-                Toast.makeText(v.getContext(), currentTime+"", Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext(), currentMaonth+"", Toast.LENGTH_SHORT).show();
+
+                Toast.makeText(v.getContext(),  totalProfit+"", Toast.LENGTH_LONG).show();
 
 
 
                 //total sale
                 final CollectionReference TotalcustomerProductSale = FirebaseFirestore.getInstance()
                         .collection("users").document(user_id).collection("Sales");
+
+                //profit
+                final CollectionReference Profit = FirebaseFirestore.getInstance()
+                        .collection("users").document(user_id).collection("profit");
 
 
                 //product update
@@ -287,6 +299,33 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
 
+                                                if (task.isSuccessful()) {
+
+
+                                                    Map<String, Object> ProfiteObject = new HashMap<>();
+                                                    ProfiteObject.put("saleProductId", id);
+                                                    ProfiteObject.put("customerID", cutomerId);
+                                                    ProfiteObject.put("date", datenew);
+                                                    ProfiteObject.put("itemName", productName);
+                                                    ProfiteObject.put("quantedt", totalQantidy);
+                                                    ProfiteObject.put("totalPrice", total);
+                                                    ProfiteObject.put("Profit", totalProfit);
+                                                    ProfiteObject.put("currentMonth", currentMaonthint);
+                                                    ProfiteObject.put("currentYear", currentYearint);
+
+
+                                                    Profit.document(id).set(ProfiteObject).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+
+
+                                                            progressDialog.dismiss();
+
+
+                                                        }
+                                                    });
+                                                }
+
                                             }
                                         });
 
@@ -370,6 +409,35 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
                                         TotalcustomerProductSale.document(id).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
+
+
+                                                if (task.isSuccessful()){
+
+
+                                                    Map<String, Object> ProfiteObject = new HashMap<>();
+                                                    ProfiteObject.put("saleProductId",id);
+                                                    ProfiteObject.put("customerID",cutomerId);
+                                                    ProfiteObject.put("date",datenew);
+                                                    ProfiteObject.put("itemName",productName);
+                                                    ProfiteObject.put("quantedt", totalQantidy);
+                                                    ProfiteObject.put("totalPrice", total);
+                                                    ProfiteObject.put("Profit", totalProfit);
+                                                    ProfiteObject.put("currentMonth", currentMaonthint);
+                                                    ProfiteObject.put("currentYear", currentYearint);
+
+
+                                                    Profit.document(id).set(ProfiteObject).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+
+
+                                                            progressDialog.dismiss();
+
+
+
+                                                        }
+                                                    });
+                                                }
 
                                             }
                                         });

@@ -29,7 +29,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -170,7 +169,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                         int totalcoin =Integer.parseInt(doc.get("coin").toString());
                         coin = totalcoin;
 
-                        Toast.makeText(MainActivity.this, coin+" before ", Toast.LENGTH_SHORT).show();
 
                         if (coin == 0){
 
@@ -187,7 +185,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                                     })
                                     .show();
 
-                            Toast.makeText(MainActivity.this, coin+"", Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -397,12 +394,12 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
                 break;
             case R.id.nav_profile:
-                Intent resultIntnt2 =new Intent(MainActivity.this, TotalSaleActivity.class);
+                Intent resultIntnt2 =new Intent(MainActivity.this, ConfirmUnerSaleActivity.class);
                 startActivity(resultIntnt2);
 
                 break;
             case R.id.confarlSaleList:
-                Intent confermList =new Intent(MainActivity.this, ConfirmSaleActivity.class);
+                Intent confermList =new Intent(MainActivity.this, TotalSaleActivity.class);
                 startActivity(confermList);
                 break;
             case R.id.Profite:

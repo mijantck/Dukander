@@ -34,11 +34,58 @@
 
 
     </LinearLayout>
-    <LinearLayout
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft="5dp"
+            >
+
+            <TextView
+                android:paddingLeft="5dp"
+                android:textColor="@color/colorPrimary"
+                android:textSize="14dp"
+                android:fontFamily="@font/adamina"
+                android:text="নাম"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:paddingLeft="5dp"
+                android:textColor="@color/colorPrimary"
+                android:fontFamily="@font/adamina"
+                android:textSize="10dp"
+                android:text="মোবাইল"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:paddingLeft="8dp"
+                android:textColor="@color/colorPrimary"
+                android:fontFamily="@font/adamina"
+                android:textSize="10dp"
+                android:text="টাকা"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:paddingLeft="5dp"
+                android:textColor="@color/colorPrimary"
+                android:textSize="10dp"
+                android:text="ঠিকানা"
+                android:fontFamily="@font/adamina"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
         android:orientation="vertical"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="4"
+        android:layout_weight="3"
         android:id="@+id/customerFullcard1"
         android:paddingLeft="5dp"
         >

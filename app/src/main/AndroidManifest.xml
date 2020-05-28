@@ -17,7 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ConfirmSaleActivity"></activity>
+        <activity android:name=".TotalSaleActivity"></activity>
         <activity android:name=".ProfitActivity" />
         <activity android:name=".PinSetActivity" />
         <activity android:name=".ChangePinActivity" />
@@ -25,7 +25,7 @@
         <activity android:name=".UnknownCustomerActivity" />
         <activity android:name=".PinViewActivity" />
         <activity android:name=".CustomerProfileViewActivity" />
-        <activity android:name=".TotalSaleActivity" />
+        <activity android:name=".ConfirmUnerSaleActivity" />
         <activity android:name=".TodaySaleActivity" />
         <activity android:name=".PDFActivity" />
         <activity android:name=".RegestationActivity" />

@@ -1,50 +1,50 @@
 package com.mrsoftit.dukander;
 
-        import androidx.annotation.NonNull;
-        import androidx.annotation.Nullable;
-        import androidx.appcompat.app.AlertDialog;
-        import androidx.appcompat.app.AppCompatActivity;
-        import androidx.appcompat.widget.Toolbar;
-        import androidx.recyclerview.widget.LinearLayoutManager;
-        import androidx.recyclerview.widget.RecyclerView;
-        import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-        import android.annotation.SuppressLint;
-        import android.app.Dialog;
-        import android.app.ProgressDialog;
-        import android.content.DialogInterface;
-        import android.content.Intent;
-        import android.graphics.Color;
-        import android.graphics.PorterDuff;
-        import android.os.Bundle;
-        import android.os.Handler;
-        import android.view.View;
-        import android.widget.DatePicker;
-        import android.widget.ImageView;
-        import android.widget.TextView;
-        import android.widget.Toast;
+import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
+import android.widget.DatePicker;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
-        import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-        import com.google.android.gms.tasks.OnCompleteListener;
-        import com.google.android.gms.tasks.Task;
-        import com.google.firebase.auth.FirebaseAuth;
-        import com.google.firebase.auth.FirebaseUser;
-        import com.google.firebase.firestore.CollectionReference;
-        import com.google.firebase.firestore.DocumentSnapshot;
-        import com.google.firebase.firestore.EventListener;
-        import com.google.firebase.firestore.FirebaseFirestore;
-        import com.google.firebase.firestore.FirebaseFirestoreException;
-        import com.google.firebase.firestore.Query;
-        import com.google.firebase.firestore.QueryDocumentSnapshot;
-        import com.google.firebase.firestore.QuerySnapshot;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
-        import java.text.DateFormat;
-        import java.text.SimpleDateFormat;
-        import java.util.Calendar;
-        import java.util.Date;
-        import java.util.Objects;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Objects;
 
-public class TotalSaleActivity extends AppCompatActivity {
+public class ConfirmUnerSaleActivity extends AppCompatActivity {
 
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -83,8 +83,7 @@ public class TotalSaleActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_total_sale);
-
+        setContentView(R.layout.activity_confirm_woner_sale);
 
 
         Toolbar toolbar =  findViewById(R.id.toolbar_support);
@@ -98,19 +97,19 @@ public class TotalSaleActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TotalSaleActivity.this,MainActivity.class);
+                Intent intent = new Intent(ConfirmUnerSaleActivity.this,MainActivity.class);
                 startActivity(intent);
                 finish();
             }
         });
 
 
-        swipeLayout = findViewById(R.id.TotalswipeLayout);
-        calanderid = findViewById(R.id.Totalcalanderid);
+        swipeLayout = findViewById(R.id.swipeLayout);
+        calanderid = findViewById(R.id.calanderid);
 
-        final TextView viewdate = findViewById(R.id.TotaldateTextView);
-        TodayTotalSale = findViewById(R.id.TotaltodayTotalSale);
-        Totaldue = findViewById(R.id.TotalTotaldue);
+        final TextView viewdate = findViewById(R.id.dateTextView);
+        TodayTotalSale = findViewById(R.id.todayTotalSale);
+        Totaldue = findViewById(R.id.Totaldue);
 
 
         String pattern = "dd MMMM yyyy";
@@ -126,7 +125,7 @@ public class TotalSaleActivity extends AppCompatActivity {
 
 
 
-        Query query = TotalcustomerProductSale.whereEqualTo("paid",true);
+        Query query = TotalcustomerProductSale.whereEqualTo("paid",true).whereEqualTo("confirm", true);
 
         query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -181,69 +180,70 @@ public class TotalSaleActivity extends AppCompatActivity {
             public void onRefresh() {
                 // Your code her
 
-                String pattern = "dd MMMM yyyy";
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-                String date = simpleDateFormat.format(new Date());
-                viewdate.setText(date);
+        String pattern = "dd MMMM yyyy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        String date = simpleDateFormat.format(new Date());
+        viewdate.setText(date);
+
+
+
+        final CollectionReference myInfo = FirebaseFirestore.getInstance()
+                .collection("users").document(user_id).collection("DukanInfo");
+
+
+
 
                 recyclear();
 
-                final CollectionReference myInfo = FirebaseFirestore.getInstance()
-                        .collection("users").document(user_id).collection("DukanInfo");
+        Query query = TotalcustomerProductSale.whereEqualTo("paid",true).whereEqualTo("confirm", true);
 
+        query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    return;
+                }
+                totalsum = 00.00;
+                assert queryDocumentSnapshots != null;
+                for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                    if (doc.get("totalPrice") != null) {
+                        double totaltest  = (double) doc.get("totalPrice");
 
-
-
-
-                Query query = TotalcustomerProductSale.whereEqualTo("paid",true);
-
-                query.addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                        if (e != null) {
-                            return;
-                        }
-                        totalsum = 00.00;
-                        assert queryDocumentSnapshots != null;
-                        for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                            if (doc.get("totalPrice") != null) {
-                                double totaltest  = (double) doc.get("totalPrice");
-
-                                totalsum += totaltest;
-
-                            }
-                        }
-                        TodayTotalSale.setText(totalsum+"");
+                        totalsum += totaltest;
 
                     }
-                });
+                }
+                TodayTotalSale.setText(totalsum+"");
 
-                myInfo.addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+            }
+        });
 
-                        if (e != null) {
-                            return;
-                        }
+        myInfo.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
 
-                        totalpaybilint = 00.00;
+                if (e != null) {
+                    return;
+                }
 
-                        assert queryDocumentSnapshots != null;
-                        for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                totalpaybilint = 00.00;
 
-                            if (doc.get("totalpaybil") != null) {
+                assert queryDocumentSnapshots != null;
+                for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
 
-                                double d = Double.parseDouble(doc.get("totalpaybil").toString());
+                    if (doc.get("totalpaybil") != null) {
 
-                                totalpaybilint = d;
+                        double d = Double.parseDouble(doc.get("totalpaybil").toString());
 
-                            }
+                        totalpaybilint = d;
 
-                            Totaldue.setText(totalsum - totalpaybilint+"");
-
-                        }
                     }
-                });
+
+                    Totaldue.setText(totalsum - totalpaybilint+"");
+
+                }
+            }
+        });
 
 
 
@@ -270,7 +270,7 @@ public class TotalSaleActivity extends AppCompatActivity {
         calanderid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Dialog dialog = new Dialog(TotalSaleActivity.this);
+                final Dialog dialog = new Dialog(ConfirmUnerSaleActivity.this);
                 // Include dialog.xml file
                 dialog.setContentView(R.layout.calnder);
                 // Set dialog title
@@ -279,7 +279,7 @@ public class TotalSaleActivity extends AppCompatActivity {
                 dialog.setCanceledOnTouchOutside(false);
 
                 TextView getdate =dialog.findViewById(R.id.getdate);
-                final DatePicker picker = dialog.findViewById(R.id.datePicker1);
+                final DatePicker  picker = dialog.findViewById(R.id.datePicker1);
 
 
 
@@ -315,219 +315,220 @@ public class TotalSaleActivity extends AppCompatActivity {
 
     private void recyclear() {
 
-        Query query = TotalcustomerProductSale.orderBy("itemName", Query.Direction.ASCENDING);
+        Query query = TotalcustomerProductSale.orderBy("itemName", Query.Direction.ASCENDING).whereEqualTo("confirm", true);
 
         FirestoreRecyclerOptions<TotalSaleNote> options = new FirestoreRecyclerOptions.Builder<TotalSaleNote>()
                 .setQuery(query, TotalSaleNote.class)
                 .build();
 
         adapter = new TotalAdapter(options);
-        RecyclerView recyclerView = findViewById(R.id.Totaltotalsaletoday);
+        RecyclerView recyclerView = findViewById(R.id.totalsaletoday);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
 
-        adapter.setOnItemClickListener(new TotalAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(DocumentSnapshot documentSnapshot, final int position) {
-                TotalSaleNote totalSaleNote = documentSnapshot.toObject(TotalSaleNote.class);
+        adapter.startListening();
+    adapter.setOnItemClickListener(new TotalAdapter.OnItemClickListener() {
+    @Override
+    public void onItemClick(DocumentSnapshot documentSnapshot, final int position) {
+        TotalSaleNote totalSaleNote = documentSnapshot.toObject(TotalSaleNote.class);
 
-                final String customerID = totalSaleNote.getCustomerID();
-                final String uncustomerID = totalSaleNote.getUnknownCustomerID();
-                String name = totalSaleNote.getItemName();
-                final double taka = totalSaleNote.getTotalPrice();
-                final String saleID= totalSaleNote.getSaleProductId();
-                int date = totalSaleNote.getDate();
-
-
-                Date calendar1 = Calendar.getInstance().getTime();
-                @SuppressLint("SimpleDateFormat")
-                DateFormat df1 = new SimpleDateFormat("yyyyMMdd");
-                String todayString = df1.format(calendar1);
-                final int datenew = Integer.parseInt(todayString);
-
-                double d = Double.parseDouble(Totaldue.getText().toString());
-
-                Toast.makeText(TotalSaleActivity.this, Totaldue.getText().toString()+"", Toast.LENGTH_SHORT).show();
-
-                new AlertDialog.Builder(TotalSaleActivity.this)
-                        .setIcon(R.drawable.ic_delete)
-                        .setTitle(name)
-                        .setMessage("আপনি কি নিশ্চিত মুছে ফেলেন?")
-                        .setPositiveButton("হ্যাঁ",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-
-                                        progressDialog = new ProgressDialog(TotalSaleActivity.this);
-                                        progressDialog.setMessage("লোড করছে..."); // Setting Message
-                                        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                                        progressDialog.setCancelable(false);
-                                        progressDialog.show();
+        final String customerID = totalSaleNote.getCustomerID();
+        final String uncustomerID = totalSaleNote.getUnknownCustomerID();
+        String name = totalSaleNote.getItemName();
+        final double taka = totalSaleNote.getTotalPrice();
+        final String saleID= totalSaleNote.getSaleProductId();
+        int date = totalSaleNote.getDate();
 
 
-                                        if (customerID!=null) {
+        Date calendar1 = Calendar.getInstance().getTime();
+        @SuppressLint("SimpleDateFormat")
+        DateFormat df1 = new SimpleDateFormat("yyyyMMdd");
+        String todayString = df1.format(calendar1);
+        final int datenew = Integer.parseInt(todayString);
 
+        double d = Double.parseDouble(Totaldue.getText().toString());
 
+        Toast.makeText(ConfirmUnerSaleActivity.this, Totaldue.getText().toString()+"", Toast.LENGTH_SHORT).show();
 
-                                            final CollectionReference customerProductSale = FirebaseFirestore.getInstance()
-                                                    .collection("users").document(user_id).collection("Customers").document(customerID).collection("saleProduct");
-                                            customerProductSale.document(saleID).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-
-                                                    final CollectionReference customerTakaUpdate = FirebaseFirestore.getInstance()
-                                                            .collection("users").document(user_id).collection("Customers");
-
-                                                    Query query1 = customerTakaUpdate.whereEqualTo("customerIdDucunt",customerID);
-                                                    query1.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                            if (task.isSuccessful()) {
-                                                                double presentTaka = 0.0;
-                                                                double presentTaka1 = 0.0;
-                                                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                                                    double totaltest = (double) document.get("taka");
-                                                                    presentTaka1 = totaltest;
-                                                                }
-                                                                presentTaka = presentTaka1 - taka;
-                                                                Toast.makeText(TotalSaleActivity.this, presentTaka+"", Toast.LENGTH_SHORT).show();
-
-                                                                customerTakaUpdate.document(customerID).update("taka",presentTaka).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                    @Override
-                                                                    public void onComplete(@NonNull Task<Void> task) {
-
-                                                                        dukandertakaUpdate.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                                            @Override
-                                                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
-                                                                                if (task.isSuccessful()) {
-                                                                                    double totalpaybil = 0.0;
-                                                                                    double presentDukantaka = 0.0;
-                                                                                    String dukandrId = null;
-                                                                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                                                                        double totaltest = (double) document.get("totalpaybil");
-                                                                                        dukandrId = document.getId();
-                                                                                        totalpaybil = totaltest;
-                                                                                    }
-                                                                                    presentDukantaka = totalpaybil - taka;
-
-                                                                                    Totaldue.setText(presentDukantaka+"");
-                                                                                    dukandertakaUpdate.document(dukandrId).update("totalpaybil",totalpaybil).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                                        @Override
-                                                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                                                            adapter.deleteItem(position);
-                                                                                            progressDialog.dismiss();
-
-                                                                                        }
-                                                                                    });
-                                                                                }
-                                                                            }
-                                                                        });
-
-
-                                                                    }
-                                                                });
-                                                            } else {
-
-                                                            }
-
-                                                        }
-                                                    });
-
-                                                }
-                                            });
-                                        }
-                                        else  if (uncustomerID!=null) {
-
-                                            final CollectionReference unkonwnCustomar = FirebaseFirestore.getInstance()
-                                                    .collection("users").document(user_id).collection("UnknownCustomer").document(uncustomerID).collection("saleProduct");
-                                            unkonwnCustomar.document(saleID).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-
-                                                    final CollectionReference unncustomerTakaUpdate = FirebaseFirestore.getInstance()
-                                                            .collection("users").document(user_id).collection("Customers");
-
-                                                    Query query1 = customerTakaUpdate.whereEqualTo("customerIdDucunt",uncustomerID);
-                                                    query1.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
-                                                            if (task.isSuccessful()) {
-                                                                double presentTaka = 0.0;
-                                                                double presentTaka1 = 0.0;
-                                                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                                                    double totaltest = (double) document.get("taka");
-                                                                    presentTaka1 = totaltest;
-                                                                }
-                                                                presentTaka = presentTaka1 - taka;
-                                                                Toast.makeText(TotalSaleActivity.this, presentTaka+"", Toast.LENGTH_SHORT).show();
-
-                                                                unncustomerTakaUpdate.document(uncustomerID).update("taka",presentTaka).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                    @Override
-                                                                    public void onComplete(@NonNull Task<Void> task) {
-
-                                                                        dukandertakaUpdate.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                                            @Override
-                                                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
-                                                                                if (task.isSuccessful()) {
-                                                                                    double totalpaybil = 0.0;
-                                                                                    double presentDukantaka = 0.0;
-                                                                                    String dukandrId = null;
-                                                                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                                                                        double totaltest = (double) document.get("totalpaybil");
-                                                                                        dukandrId = document.getId();
-                                                                                        totalpaybil = totaltest;
-                                                                                    }
-                                                                                    presentDukantaka = totalpaybil - taka;
-
-                                                                                    Totaldue.setText(presentDukantaka+"");
-                                                                                    dukandertakaUpdate.document(dukandrId).update("totalpaybil",totalpaybil).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                                        @Override
-                                                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                                                            adapter.deleteItem(position);
-                                                                                            progressDialog.dismiss();
-
-                                                                                        }
-                                                                                    });
-                                                                                }
-                                                                            }
-                                                                        });
-
-                                                                    }
-                                                                });
-                                                            } else {
-
-                                                            }
-                                                        }
-                                                    });
-
-                                                }
-                                            });
-                                        }
-                                        dialog.dismiss();
-                                    }
-                                })
-                        .setNegativeButton("না", new DialogInterface.OnClickListener() {
-                            @Override
+        new AlertDialog.Builder(ConfirmUnerSaleActivity.this)
+                .setIcon(R.drawable.ic_delete)
+                .setTitle(name)
+                .setMessage("আপনি কি নিশ্চিত মুছে ফেলেন?")
+                .setPositiveButton("হ্যাঁ",
+                        new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                // Do nothing
+
+                                progressDialog = new ProgressDialog(ConfirmUnerSaleActivity.this);
+                                progressDialog.setMessage("লোড করছে..."); // Setting Message
+                                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                                progressDialog.setCancelable(false);
+                                progressDialog.show();
+
+
+                                if (customerID!=null) {
+
+
+
+                                    final CollectionReference customerProductSale = FirebaseFirestore.getInstance()
+                                            .collection("users").document(user_id).collection("Customers").document(customerID).collection("saleProduct");
+                                    customerProductSale.document(saleID).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+
+                                            final CollectionReference customerTakaUpdate = FirebaseFirestore.getInstance()
+                                                    .collection("users").document(user_id).collection("Customers");
+
+                                            Query query1 = customerTakaUpdate.whereEqualTo("customerIdDucunt",customerID);
+                                            query1.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        double presentTaka = 0.0;
+                                                        double presentTaka1 = 0.0;
+                                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                                            double totaltest = (double) document.get("taka");
+                                                            presentTaka1 = totaltest;
+                                                        }
+                                                        presentTaka = presentTaka1 - taka;
+                                                        Toast.makeText(ConfirmUnerSaleActivity.this, presentTaka+"", Toast.LENGTH_SHORT).show();
+
+                                                        customerTakaUpdate.document(customerID).update("taka",presentTaka).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+
+                                                                dukandertakaUpdate.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                                                                        if (task.isSuccessful()) {
+                                                                            double totalpaybil = 0.0;
+                                                                            double presentDukantaka = 0.0;
+                                                                            String dukandrId = null;
+                                                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                                                double totaltest = (double) document.get("totalpaybil");
+                                                                                dukandrId = document.getId();
+                                                                                totalpaybil = totaltest;
+                                                                            }
+                                                                            presentDukantaka = totalpaybil - taka;
+
+                                                                            Totaldue.setText(presentDukantaka+"");
+                                                                            dukandertakaUpdate.document(dukandrId).update("totalpaybil",totalpaybil).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                @Override
+                                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                                    adapter.deleteItem(position);
+                                                                                    progressDialog.dismiss();
+
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    }
+                                                                });
+
+
+                                                            }
+                                                        });
+                                                    } else {
+
+                                                    }
+
+                                                }
+                                            });
+
+                                        }
+                                    });
+                                }
+                                else  if (uncustomerID!=null) {
+
+                                    final CollectionReference unkonwnCustomar = FirebaseFirestore.getInstance()
+                                            .collection("users").document(user_id).collection("UnknownCustomer").document(uncustomerID).collection("saleProduct");
+                                    unkonwnCustomar.document(saleID).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+
+                                            final CollectionReference unncustomerTakaUpdate = FirebaseFirestore.getInstance()
+                                                    .collection("users").document(user_id).collection("Customers");
+
+                                            Query query1 = customerTakaUpdate.whereEqualTo("customerIdDucunt",uncustomerID);
+                                            query1.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                                                    if (task.isSuccessful()) {
+                                                        double presentTaka = 0.0;
+                                                        double presentTaka1 = 0.0;
+                                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                                            double totaltest = (double) document.get("taka");
+                                                            presentTaka1 = totaltest;
+                                                        }
+                                                        presentTaka = presentTaka1 - taka;
+                                                        Toast.makeText(ConfirmUnerSaleActivity.this, presentTaka+"", Toast.LENGTH_SHORT).show();
+
+                                                        unncustomerTakaUpdate.document(uncustomerID).update("taka",presentTaka).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+
+                                                                dukandertakaUpdate.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                                                                        if (task.isSuccessful()) {
+                                                                            double totalpaybil = 0.0;
+                                                                            double presentDukantaka = 0.0;
+                                                                            String dukandrId = null;
+                                                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                                                double totaltest = (double) document.get("totalpaybil");
+                                                                                dukandrId = document.getId();
+                                                                                totalpaybil = totaltest;
+                                                                            }
+                                                                            presentDukantaka = totalpaybil - taka;
+
+                                                                            Totaldue.setText(presentDukantaka+"");
+                                                                            dukandertakaUpdate.document(dukandrId).update("totalpaybil",totalpaybil).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                @Override
+                                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                                    adapter.deleteItem(position);
+                                                                                    progressDialog.dismiss();
+
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    }
+                                                                });
+
+                                                            }
+                                                        });
+                                                    } else {
+
+                                                    }
+                                                }
+                                            });
+
+                                        }
+                                    });
+                                }
                                 dialog.dismiss();
                             }
                         })
-                        .create()
-                        .show();
-            }
-        });
-        adapter.startListening();
+                .setNegativeButton("না", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do nothing
+                        dialog.dismiss();
+                    }
+                })
+                .create()
+                .show();
+
+               }
+    });
 
     }
     private void recyclear(int date) {
 
-        Query query = TotalcustomerProductSale.orderBy("itemName", Query.Direction.ASCENDING).whereEqualTo("date",date);
+        Query query = TotalcustomerProductSale.orderBy("itemName", Query.Direction.ASCENDING).whereEqualTo("confirm", true).whereEqualTo("date",date);
 
         FirestoreRecyclerOptions<TotalSaleNote> options = new FirestoreRecyclerOptions.Builder<TotalSaleNote>()
                 .setQuery(query, TotalSaleNote.class)
@@ -535,7 +536,7 @@ public class TotalSaleActivity extends AppCompatActivity {
 
         adapter = new TotalAdapter(options);
 
-        RecyclerView recyclerView = findViewById(R.id.Totaltotalsaletoday);
+        RecyclerView recyclerView = findViewById(R.id.totalsaletoday);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -564,9 +565,9 @@ public class TotalSaleActivity extends AppCompatActivity {
 
                 double d = Double.parseDouble(Totaldue.getText().toString());
 
-                Toast.makeText(TotalSaleActivity.this, Totaldue.getText().toString()+"", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ConfirmUnerSaleActivity.this, Totaldue.getText().toString()+"", Toast.LENGTH_SHORT).show();
 
-                new AlertDialog.Builder(TotalSaleActivity.this)
+                new AlertDialog.Builder(ConfirmUnerSaleActivity.this)
                         .setIcon(R.drawable.ic_delete)
                         .setTitle(name)
                         .setMessage("আপনি কি নিশ্চিত মুছে ফেলেন?")
@@ -574,7 +575,7 @@ public class TotalSaleActivity extends AppCompatActivity {
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
 
-                                        progressDialog = new ProgressDialog(TotalSaleActivity.this);
+                                        progressDialog = new ProgressDialog(ConfirmUnerSaleActivity.this);
                                         progressDialog.setMessage("লোড করছে..."); // Setting Message
                                         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                                         progressDialog.setCancelable(false);
@@ -606,7 +607,7 @@ public class TotalSaleActivity extends AppCompatActivity {
                                                                     presentTaka1 = totaltest;
                                                                 }
                                                                 presentTaka = presentTaka1 - taka;
-                                                                Toast.makeText(TotalSaleActivity.this, presentTaka+"", Toast.LENGTH_SHORT).show();
+                                                                Toast.makeText(ConfirmUnerSaleActivity.this, presentTaka+"", Toast.LENGTH_SHORT).show();
 
                                                                 customerTakaUpdate.document(customerID).update("taka",presentTaka).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                     @Override
@@ -677,7 +678,7 @@ public class TotalSaleActivity extends AppCompatActivity {
                                                                     presentTaka1 = totaltest;
                                                                 }
                                                                 presentTaka = presentTaka1 - taka;
-                                                                Toast.makeText(TotalSaleActivity.this, presentTaka+"", Toast.LENGTH_SHORT).show();
+                                                                Toast.makeText(ConfirmUnerSaleActivity.this, presentTaka+"", Toast.LENGTH_SHORT).show();
 
                                                                 unncustomerTakaUpdate.document(uncustomerID).update("taka",presentTaka).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                     @Override
@@ -737,8 +738,6 @@ public class TotalSaleActivity extends AppCompatActivity {
 
             }
         });
-
-        adapter.startListening();
 
     }
 

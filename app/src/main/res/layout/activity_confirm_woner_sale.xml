@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context=".TotalSaleActivity">
-
-
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-    android:id="@+id/TotalswipeLayout"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".ConfirmUnerSaleActivity">
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -30,7 +28,7 @@ tools:context=".TotalSaleActivity">
                 android:textSize="20sp"
                 android:textColor="#FFFF"
                 android:gravity="center"
-                android:text="মোট বিক্রয় তালিকা"
+                android:text=" অনুমোদিত বিক্রয় তালিকা"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
         </androidx.appcompat.widget.Toolbar>
@@ -46,7 +44,7 @@ tools:context=".TotalSaleActivity">
             android:paddingBottom="20dp">
 
             <TextView
-                android:id="@+id/TotaldateTextView"
+                android:id="@+id/dateTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="01 April 2017 to 01 April 2019"
@@ -56,7 +54,7 @@ tools:context=".TotalSaleActivity">
                 android:textColor="@color/whiteTextColor"/>
 
             <ImageView
-                android:id="@+id/Totalcalanderid"
+                android:id="@+id/calanderid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -77,7 +75,7 @@ tools:context=".TotalSaleActivity">
                 android:layout_marginTop="50dp"
                 android:text=" বকেয়া টাকা " />
             <TextView
-                android:id="@+id/TotaltodayTotalSale"
+                android:id="@+id/todayTotalSale"
                 style="@style/viewParent.headerText"
                 android:layout_below="@id/salesHeaderTextView"
                 android:layout_centerHorizontal="true"
@@ -86,7 +84,7 @@ tools:context=".TotalSaleActivity">
                 android:textColor="@color/whiteTextColor" />
 
             <TextView
-                android:id="@+id/TotalTotaldue"
+                android:id="@+id/Totaldue"
                 style="@style/viewParent.headerText"
                 android:layout_centerHorizontal="true"
                 android:layout_alignParentRight="true"
@@ -99,12 +97,12 @@ tools:context=".TotalSaleActivity">
         </RelativeLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:layout_below="@+id/headerLayout"
-            android:id="@+id/Totaltotalsaletoday"
+            android:id="@+id/totalsaletoday"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
     </RelativeLayout>
 
 
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>
