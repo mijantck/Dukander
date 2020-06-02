@@ -49,7 +49,8 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
     private String cutomerId;
     private String unknownCustomerID;
     private double profit = 0.0;
-    private double profitePrice,profiteQuandety,totalProfit;
+    private double profiteQuandety,totalProfit;
+    private Double profitePrice;
 
     boolean update = false;
     boolean paid = false;
@@ -120,7 +121,7 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
 
         final ProductNote productNote = exampleList.get(position);
         // profit
-        profitePrice = productNote.getProPrice();
+        profitePrice = productNote.getProBuyPrice();
 
         if (productNote.getProImgeUrl()!=null) {
             String Url = productNote.getProImgeUrl();
@@ -135,13 +136,26 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
             @Override
             public void onClick(View v) {
 
+
                 double totalQantidy = Double.parseDouble(holder.product_quantedy_Editetview.getText().toString());
                 double price= Double.parseDouble(holder.product_price_textview.getText().toString());
                 double total = totalQantidy * price;
 
+                if (productNote.getProQua() < totalQantidy){
+
+                    Toast.makeText(v.getContext(), "আপনার দোকানে পর্যাপ্ত পণ্য নাই", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
                 profiteQuandety = totalQantidy;
 
-                profit = profitePrice * profiteQuandety;
+                if (profitePrice!=null){
+                    profit = profitePrice * profiteQuandety;
+                }else {
+                    profit =  productNote.getProPrice() * profiteQuandety;
+
+                }
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     holder.product_total_editetview.setText(df2.format(total)+"");
@@ -195,12 +209,6 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
                 final int currentMaonthint = Integer.parseInt(currentMaonth);
                 final String currentYear = new SimpleDateFormat("yyyy", Locale.getDefault()).format(new Date());
                 final int currentYearint = Integer.parseInt(currentYear);
-
-
-                Toast.makeText(v.getContext(), currentMaonth+"", Toast.LENGTH_SHORT).show();
-
-                Toast.makeText(v.getContext(),  totalProfit+"", Toast.LENGTH_LONG).show();
-
 
 
                 //total sale

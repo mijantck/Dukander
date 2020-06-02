@@ -58,14 +58,22 @@
                 android:id="@+id/salesHeaderTextView"
                 style="@style/reportContentText"
                 android:layout_marginTop="30dp"
-                android:text=" আজ মোট বিক্রয়" />
+                android:text=" আজকের মোট বিক্রয়" />
+            <TextView
+                android:layout_alignParentLeft="true"
+                android:id="@+id/ProfitHeaderTextView"
+                style="@style/reportContentText"
+                android:textSize="15dp"
+                android:layout_marginTop="50dp"
+                android:text=" আজকের লাভ " />
             <TextView
                 android:layout_alignParentRight="true"
                 android:id="@+id/dueHeaderTextView"
                 style="@style/reportContentText"
                 android:textSize="15dp"
                 android:layout_marginTop="50dp"
-                android:text=" আজ বাকি " />
+                android:text=" আজকের বাকি " />
+
 
             <TextView
                 android:id="@+id/todayTotalSale"
@@ -76,6 +84,17 @@
                 android:text="00.00"
                 android:layout_marginTop="10dp" />
 
+            <TextView
+                android:id="@+id/todayTotalProfite"
+                style="@style/viewParent.headerText"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="20dp"
+                android:textSize="20dp"
+                android:textColor="@color/whiteTextColor"
+                android:layout_below="@id/dueHeaderTextView"
+                android:text="00.00"
+                android:layout_marginTop="10dp" />
             <TextView
                 android:id="@+id/todayTotaldue"
                 style="@style/viewParent.headerText"

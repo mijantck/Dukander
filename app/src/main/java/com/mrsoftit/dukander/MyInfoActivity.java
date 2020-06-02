@@ -389,6 +389,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
                                         HomeId.setVisibility(View.VISIBLE);
                                         updateadtaall();
 
+                                        progressDialog.dismiss();
                                         Toast.makeText(MyInfoActivity.this, " সফল ", Toast.LENGTH_SHORT).show();
 
                                     }
@@ -846,7 +847,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
 
                                             etideButton.setVisibility(View.GONE);
                                             updateadtaall();
-
+                                            progressDialog.dismiss();
                                             Toast.makeText(MyInfoActivity.this, " সফল ", Toast.LENGTH_SHORT).show();
 
                                         }

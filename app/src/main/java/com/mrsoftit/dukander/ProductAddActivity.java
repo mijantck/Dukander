@@ -72,14 +72,14 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
 
     ImageView pruductImage;
 
-    private TextInputEditText productName, productPrice,productQuantayn,pruductMin;
+    private TextInputEditText productName, productPrice,productQuantayn,pruductMin,pruductBuyPrice;
     private MaterialButton addProduct;
 
     StorageReference mStorageReferenceImage;
     FirebaseFirestore firebaseFirestore;
     ProgressDialog progressDialog;
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-    String   proIdup, productNameup, productPriceup,productQuantaynup,pruductMinup,addresup,pruductImageup;
+    String   proIdup, productNameup,pruductBuyPriceup, productPriceup,productQuantaynup,pruductMinup,addresup,pruductImageup;
 
     FloatingActionButton imageSeletprioduct;
 
@@ -135,6 +135,7 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
         productQuantayn = findViewById(R.id.pruductquntidy);
         pruductMin = findViewById(R.id.pruductMini);
         addProduct = findViewById(R.id.addpruduct);
+        pruductBuyPrice = findViewById(R.id.pruductBuyPrice);
         imageSeletprioduct = findViewById(R.id.imageSeletprioduct);
 
 
@@ -147,6 +148,12 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
             proIdup = bundle.getString("id");
             productNameup = bundle.getString("name");
             productPriceup = bundle.getString("pprice");
+            if (bundle.getString("pBprice")!=null){
+                pruductBuyPriceup = bundle.getString("pBprice");
+                Toast.makeText(this, pruductBuyPriceup+"", Toast.LENGTH_SHORT).show();
+            }else {
+                pruductBuyPriceup = bundle.getString("pprice");
+            }
             productQuantaynup = bundle.getString("pQuan");
             pruductMinup = bundle.getString("pmini");
             pruductImageup = bundle.getString("imageurl");
@@ -154,12 +161,12 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
 if (pruductImageup!=null){
     Uri myUri = Uri.parse(pruductImageup);
     mImageUri = myUri;
-
     Picasso.get().load(myUri).into(pruductImage);
 }
 
             productName.setText(productNameup);
             productPrice.setText(productPriceup);
+            pruductBuyPrice.setText(pruductBuyPriceup);
             productQuantayn.setText(productQuantaynup);
             pruductMin.setText(pruductMinup);
 
@@ -193,6 +200,7 @@ if (pruductImageup!=null){
                 String name = productName.getText().toString();
                 String price = productPrice.getText().toString();
                 String ppq = productQuantayn.getText().toString();
+                String pBpq = pruductBuyPrice.getText().toString();
                 String pmq = pruductMin.getText().toString();
 
                 if (TextUtils.isEmpty(name) ){
@@ -200,7 +208,10 @@ if (pruductImageup!=null){
                     return;
                 }
                 if (TextUtils.isEmpty(price) ){
-                    Toast.makeText(getApplicationContext(), " দাম লিখুন ...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), " ক্রয় মূল্য লিখুন ...", Toast.LENGTH_LONG).show();
+                    return;
+                } if (TextUtils.isEmpty(pBpq) ){
+                    Toast.makeText(getApplicationContext(), " বিক্রয় মূল্য লিখুন ...", Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (TextUtils.isEmpty(ppq) ){
@@ -222,6 +233,8 @@ if (pruductImageup!=null){
                 final String pnmae = productName.getText().toString();
                 final String pps = productPrice.getText().toString();
                 double pp = Double.parseDouble(pps);
+                final String pBps = pruductBuyPrice.getText().toString();
+                final double pBp = Double.parseDouble(pBps);
                 final String pqs = productQuantayn.getText().toString();
                 double pq = Double.parseDouble(pqs);
                 final String pms = pruductMin.getText().toString();
@@ -250,10 +263,12 @@ if (pruductImageup!=null){
                 }
 
                 if ( bundle == null && mImageUri == null  ){
-                    product.add(new ProductNote(null, pnmae, pp, pq, pm)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    product.add(new ProductNote(null, pnmae, pp,pBp, pq, pm)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentReference> task) {
                             if (task.isSuccessful()) {
+                                Toast.makeText(ProductAddActivity.this, pBp+" pBp", Toast.LENGTH_SHORT).show();
+
                                 String id = task.getResult().getId();
                                 product.document(id).update("proId", id).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
@@ -276,7 +291,7 @@ if (pruductImageup!=null){
 
                 if (bundle!=null && image == false) {
 
-                    product.document(id).update("proId", id, "proName", pnmae, "proPrice", pp, "proQua", pq, "proMin", pm, "proImgeUrl", pruductImageup)
+                    product.document(id).update("proId", id, "proName", pnmae, "proPrice", pp,"proBuyPrice",pBp, "proQua", pq, "proMin", pm, "proImgeUrl", pruductImageup)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
@@ -389,6 +404,8 @@ if (pruductImageup!=null){
                                     final String pnmae = productName.getText().toString();
                                     final String pps = productPrice.getText().toString();
                                     double pp = Double.parseDouble(pps);
+                                    final String pBps = pruductBuyPrice.getText().toString();
+                                    double pBp = Double.parseDouble(pBps);
                                     final String pqs = productQuantayn.getText().toString();
                                     int pq = Integer.parseInt(pqs);
                                     final String pms = pruductMin.getText().toString();
@@ -396,7 +413,7 @@ if (pruductImageup!=null){
 
                                     if (image != false) {
 
-                                        product.document(id).update("proId", id, "proName", pnmae, "proPrice", pp, "proQua", pq, "proMin", pm, "proImgeUrl", uri.toString())
+                                        product.document(id).update("proId", id, "proName", pnmae, "proPrice", pp,"proBuyPrice",pBp, "proQua", pq, "proMin", pm, "proImgeUrl", uri.toString())
                                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
@@ -415,7 +432,7 @@ if (pruductImageup!=null){
 
                                     } else {
 
-                                        product.add(new ProductNote(null, pnmae, pp, pq, pm, uri.toString())).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                        product.add(new ProductNote(null, pnmae, pp, pq,pBp, pm, uri.toString())).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                             @Override
                                             public void onComplete(@NonNull Task<DocumentReference> task) {
 
@@ -498,6 +515,8 @@ if (pruductImageup!=null){
                     final String pnmae = productName.getText().toString();
                     final String pps = productPrice.getText().toString();
                     double pp = Double.parseDouble(pps);
+                    final String pBps = pruductBuyPrice.getText().toString();
+                    double pBp = Double.parseDouble(pBps);
                     final String pqs = productQuantayn.getText().toString();
                     double pq = Double.parseDouble(pqs);
                     final String pms = pruductMin.getText().toString();
@@ -505,7 +524,7 @@ if (pruductImageup!=null){
 
                     if (image != false) {
 
-                        product.document(id).update("proId", id, "proName", pnmae, "proPrice", pp, "proQua", pq, "proMin", pm, "proImgeUrl",downloadLink)
+                        product.document(id).update("proId", id, "proName", pnmae, "proPrice", pp,"proBuyPrice", pBp, "proQua", pq, "proMin", pm, "proImgeUrl",downloadLink)
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
@@ -523,7 +542,7 @@ if (pruductImageup!=null){
                         });
 
                     } else {
-                        product.add(new ProductNote(null, pnmae, pp, pq, pm, downloadLink)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                        product.add(new ProductNote(null, pnmae, pp,pBp, pq, pm, downloadLink)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentReference> task) {
 
@@ -535,7 +554,6 @@ if (pruductImageup!=null){
                                     product.document(id).update("proId", id).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
-
 
                                             Toast.makeText(ProductAddActivity.this, " সফলভাবে সম্পন্ন ", Toast.LENGTH_SHORT).show();
 

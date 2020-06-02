@@ -104,10 +104,10 @@ public class WitdrawActivity extends AppCompatActivity {
             myId = bundle.getString("id");
         }
 
-        final CollectionReference investment = FirebaseFirestore.getInstance()
+        final CollectionReference Witdrow = FirebaseFirestore.getInstance()
                 .collection("users").document(user_id).collection("DukanInfo");
 
-        investment.addSnapshotListener(new EventListener<QuerySnapshot>() {
+        Witdrow.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 if (e !=null){
@@ -204,7 +204,7 @@ public class WitdrawActivity extends AppCompatActivity {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
 
-                                               investment.document(myId).update("activeBalance",lastactiveBalance).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                Witdrow.document(myId).update("activeBalance",lastactiveBalance).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                    @Override
                                                    public void onComplete(@NonNull Task<Void> task) {
                                                        dialoginvest.dismiss();

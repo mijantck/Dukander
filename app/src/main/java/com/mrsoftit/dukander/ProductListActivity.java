@@ -173,6 +173,7 @@ public class ProductListActivity extends AppCompatActivity {
                             String imageurl = productNote.getProImgeUrl();
                             String name = productNote.getProName();
                             String pp = String.valueOf(productNote.getProPrice());
+                            String pBp = String.valueOf(productNote.getProBuyPrice());
                             String pq = String.valueOf(productNote.getProQua());
                             String pm = String.valueOf(productNote.getProMin());
                             Intent pdfIntent = new Intent(ProductListActivity.this, ProductAddActivity.class);
@@ -183,6 +184,8 @@ public class ProductListActivity extends AppCompatActivity {
                             pdfIntent.putExtra("name", name);
 
                             pdfIntent.putExtra("pprice", pp);
+
+                            pdfIntent.putExtra("pBprice", pBp);
 
                             pdfIntent.putExtra("pQuan", pq);
 
@@ -265,6 +268,7 @@ public class ProductListActivity extends AppCompatActivity {
                             String imageurl = productNote.getProImgeUrl();
                             String name = productNote.getProName();
                             String pp = String.valueOf(productNote.getProPrice());
+                            String pBp = String.valueOf(productNote.getProBuyPrice());
                             String pq = String.valueOf(productNote.getProQua());
                             String pm = String.valueOf(productNote.getProMin());
                             Intent pdfIntent = new Intent(ProductListActivity.this, ProductAddActivity.class);
@@ -275,6 +279,8 @@ public class ProductListActivity extends AppCompatActivity {
                             pdfIntent.putExtra("name", name);
 
                             pdfIntent.putExtra("pprice", pp);
+
+                            pdfIntent.putExtra("pBprice", pBp);
 
                             pdfIntent.putExtra("pQuan", pq);
 

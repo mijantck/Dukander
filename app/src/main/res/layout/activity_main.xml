@@ -86,7 +86,7 @@
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/minimumPruduct"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
+                                android:layout_height="242dp" />
 
 
                         </LinearLayout>
@@ -100,7 +100,7 @@
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/dueCustomer"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
+                                android:layout_height="242dp" />
 
 
                         </LinearLayout>

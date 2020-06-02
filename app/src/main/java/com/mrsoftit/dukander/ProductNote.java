@@ -4,6 +4,7 @@ public class ProductNote {
     private String proId;
     private String proName;
     private double proPrice;
+    private double proBuyPrice;
     private String userID;
     private double proQua;
     private double proMin;
@@ -14,19 +15,21 @@ public class ProductNote {
 
     public ProductNote(){}
 
-    public ProductNote(String proId, String proName, double proPrice, double proQua, double proMin, String proImgeUrl) {
+    public ProductNote(String proId, String proName, double proPrice,double proBuyPrice, double proQua, double proMin, String proImgeUrl) {
         this.proId = proId;
         this.proName = proName;
         this.proPrice = proPrice;
+        this.proBuyPrice = proBuyPrice;
         this.proQua = proQua;
         this.proMin = proMin;
         this.proImgeUrl = proImgeUrl;
     }
 
-    public ProductNote(String proId, String proName, double proPrice, double proQua, double proMin) {
+    public ProductNote(String proId, String proName, double proPrice,double proBuyPrice, double proQua, double proMin) {
         this.proId = proId;
         this.proName = proName;
         this.proPrice = proPrice;
+        this.proBuyPrice = proBuyPrice;
         this.proQua = proQua;
         this.proMin = proMin;
     }
@@ -49,6 +52,14 @@ public class ProductNote {
 
     public double getProPrice() {
         return proPrice;
+    }
+
+    public double getProBuyPrice() {
+        return proBuyPrice;
+    }
+
+    public void setProBuyPrice(double proBuyPrice) {
+        this.proBuyPrice = proBuyPrice;
     }
 
     public double getProQua() {

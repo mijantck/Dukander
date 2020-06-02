@@ -61,7 +61,7 @@ public class TodaySaleActivity extends AppCompatActivity {
     TotalAdapter adapter;
     FirebaseFirestore db;
 
-    private TextView dateView,TodayTotalSale,todayTotaldue;
+    private TextView dateView,TodayTotalSale,todayTotaldue,todayTotalProfite;
     private MaterialButton ApprovedsalesButton;
 
     ProgressDialog progressDialog;
@@ -77,6 +77,10 @@ public class TodaySaleActivity extends AppCompatActivity {
     //total sale
     CollectionReference TotalcustomerProductSale = FirebaseFirestore.getInstance()
             .collection("users").document(user_id).collection("Sales");
+
+    CollectionReference Profit = FirebaseFirestore.getInstance()
+            .collection("users").document(user_id).collection("profit");
+
     CollectionReference confirmSaleCode = FirebaseFirestore.getInstance()
             .collection("users").document(user_id).collection("confirmSaleCode");
 
@@ -92,6 +96,7 @@ public class TodaySaleActivity extends AppCompatActivity {
 
 
     double totalsum = 0.0;
+    double ProfitSum = 0.0;
     double totalpaybilint = 0.0;
 
 
@@ -125,6 +130,7 @@ public class TodaySaleActivity extends AppCompatActivity {
         dateView = findViewById(R.id.dateTextView);
         TodayTotalSale = findViewById(R.id.todayTotalSale);
         todayTotaldue = findViewById(R.id.todayTotaldue);
+        todayTotalProfite = findViewById(R.id.todayTotalProfite);
         ApprovedsalesButton = findViewById(R.id.ApprovedsalesButton);
 
         final CollectionReference myInfo = FirebaseFirestore.getInstance()
@@ -175,6 +181,7 @@ public class TodaySaleActivity extends AppCompatActivity {
                 TodayTotalSale.setText(totalsum+"");
             }
         });
+
         myInfo.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -217,7 +224,27 @@ public class TodaySaleActivity extends AppCompatActivity {
             }
         });
 
+        Query Profitquery = Profit.whereEqualTo("date",datenew);
 
+        Profitquery.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    return;
+                }
+                ProfitSum = 00.00;
+                assert queryDocumentSnapshots != null;
+                for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                    if (doc.get("Profit") != null) {
+                        double Profit1  = (double) doc.get("Profit");
+                        ProfitSum += Profit1;
+                    }
+
+
+                }
+                todayTotalProfite.setText(ProfitSum+"");
+            }
+        });
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -316,6 +343,28 @@ public class TodaySaleActivity extends AppCompatActivity {
                     }
                 });
 
+                Query Profitquery = Profit.whereEqualTo("date",datenew);
+
+                Profitquery.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            return;
+                        }
+                        ProfitSum = 00.00;
+                        assert queryDocumentSnapshots != null;
+                        for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                            if (doc.get("Profit") != null) {
+                                double Profit1  = (double) doc.get("Profit");
+                                ProfitSum += Profit1;
+                            }
+
+
+                        }
+                        todayTotalProfite.setText(ProfitSum+"");
+                    }
+                });
+
                 recyclear();
 
 
@@ -397,6 +446,7 @@ public class TodaySaleActivity extends AppCompatActivity {
                                     if (EnterCode.equals(code)) {
 
                                         Query query = TotalcustomerProductSale.whereEqualTo("date", datenew).whereEqualTo("paid", true);
+
                                         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                             @Override
                                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -406,6 +456,7 @@ public class TodaySaleActivity extends AppCompatActivity {
                                                     for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                                                         list.add(document.getId());
                                                     }
+
                                                     Approved((ArrayList) list);
                                                     alertDialog.dismiss();
                                                 }
