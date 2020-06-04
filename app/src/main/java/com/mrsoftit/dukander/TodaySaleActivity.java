@@ -15,6 +15,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.icu.text.DecimalFormat;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -69,6 +70,9 @@ public class TodaySaleActivity extends AppCompatActivity {
 
     boolean firstTimeComfirm = false ;
     String code ;
+
+
+    DecimalFormat df2 = new DecimalFormat("#.##");
 
 
     CollectionReference product = FirebaseFirestore.getInstance()
@@ -173,12 +177,12 @@ public class TodaySaleActivity extends AppCompatActivity {
 
                     if (doc.get("totalpaybil") != null) {
                         double totalpaybil  = (double) doc.get("totalpaybil");
-
                         totalpaybilint = totalpaybil;
-                        Toast.makeText(TodaySaleActivity.this, totalpaybilint+" tk", Toast.LENGTH_SHORT).show();
+
                     }
                 }
-                TodayTotalSale.setText(totalsum+"");
+
+                TodayTotalSale.setText( df2.format(totalsum)+"");
             }
         });
 
@@ -207,7 +211,10 @@ public class TodaySaleActivity extends AppCompatActivity {
                         int i =Integer.parseInt(dateS);
                         date = i;
                     }
-                    todayTotaldue.setText(totalsum - totalpaybilint+"");
+
+
+                    double todayTotaldueCal = totalsum - totalpaybilint;
+                    todayTotaldue.setText(df2.format(todayTotaldueCal)+"");
                 }
 
                 if (datenew != date ) {
@@ -224,7 +231,7 @@ public class TodaySaleActivity extends AppCompatActivity {
             }
         });
 
-        Query Profitquery = Profit.whereEqualTo("date",datenew);
+        Query Profitquery = Profit.whereEqualTo("date",datenew).whereEqualTo("ProfitTrue", true);
 
         Profitquery.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -241,8 +248,9 @@ public class TodaySaleActivity extends AppCompatActivity {
                     }
 
 
+
                 }
-                todayTotalProfite.setText(ProfitSum+"");
+                todayTotalProfite.setText(df2.format(ProfitSum)+"");
             }
         });
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -298,7 +306,9 @@ public class TodaySaleActivity extends AppCompatActivity {
                                 Toast.makeText(TodaySaleActivity.this, totalpaybilint+" tk", Toast.LENGTH_SHORT).show();
                             }
                         }
-                        TodayTotalSale.setText(totalsum+"");
+
+                        TodayTotalSale.setText( df2.format(totalsum)+"");
+
                     }
                 });
                 myInfo.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -326,7 +336,8 @@ public class TodaySaleActivity extends AppCompatActivity {
                                 int i =Integer.parseInt(dateS);
                                 date = i;
                             }
-                            todayTotaldue.setText(totalsum - totalpaybilint+"");
+                            double todayTotaldueCal = totalsum - totalpaybilint;
+                            todayTotaldue.setText(df2.format(todayTotaldueCal)+"");
                         }
 
                         if (datenew != date ) {
@@ -343,7 +354,7 @@ public class TodaySaleActivity extends AppCompatActivity {
                     }
                 });
 
-                Query Profitquery = Profit.whereEqualTo("date",datenew);
+                Query Profitquery = Profit.whereEqualTo("date",datenew).whereEqualTo("ProfitTrue",true);
 
                 Profitquery.addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
@@ -361,7 +372,7 @@ public class TodaySaleActivity extends AppCompatActivity {
 
 
                         }
-                        todayTotalProfite.setText(ProfitSum+"");
+                        todayTotalProfite.setText(df2.format(ProfitSum)+"");
                     }
                 });
 

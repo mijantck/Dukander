@@ -36,8 +36,8 @@
                 android:text="0"
                 android:gravity="right"
                 android:textColor="#FFF"
-                android:textSize="15sp"
-                android:layout_marginEnd="15dp"
+                android:textSize="15dp"
+                android:layout_marginRight="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                />
@@ -111,13 +111,13 @@
                     android:gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
-
+                
                 <TextView
                     style="@style/headerText"
                     android:text="+8801733-883310"
                     android:maxLines="1"
                     android:textColor="#FFF"
-                    android:textSize="15sp"
+                    android:textSize="15dp"
                     android:gravity="center_vertical"
                     android:id="@+id/bundelCustomerPhone"
                     android:layout_width="match_parent"
@@ -168,7 +168,7 @@
                     android:text="@string/prebeastDue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
-
+                
                 <TextView
                     style="@style/headerText"
                     android:text="310 tk"
@@ -205,12 +205,12 @@
                 android:layout_width="0dp"
                 android:orientation="horizontal"
                 android:layout_height="match_parent"
-                android:layout_weight="3.5">
+                android:layout_weight="4">
 
                 <TextView
                     android:text="@string/custumarName"
                     android:textColor="#FFF"
-                    android:textSize="15sp"
+                    android:textSize="15dp"
                     android:gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -223,8 +223,8 @@
                     android:text="Customer "
                     android:maxLines="1"
                     android:textColor="#FFF"
-                    android:textSize="15sp"
-                    android:gravity="left"
+                    android:textSize="15dp"
+                    android:gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
@@ -232,12 +232,12 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2.5">
+                android:layout_weight="2">
                 <TextView
                     android:layout_gravity="center"
                     android:text="@string/phoneNumber"
                     android:textColor="#FFF"
-                    android:textSize="15sp"
+                    android:textSize="15dp"
                     android:gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -249,7 +249,7 @@
                     android:maxLines="1"
                     android:textColor="#FFF"
                     android:textSize="15dp"
-                    android:gravity="left"
+                    android:gravity="center_vertical"
 
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
@@ -267,12 +267,12 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="40dp"
-                android:layout_weight="3.5">
+                android:layout_weight="4">
                 <TextView
                     android:layout_gravity="center"
                     android:text="@string/addres"
                     android:textColor="#FFF"
-                    android:textSize="15sp"
+                    android:textSize="15dp"
                     android:gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -284,8 +284,8 @@
                     android:text="Unknown"
                     android:maxLines="1"
                     android:textColor="#FFF"
-                    android:textSize="15sp"
-                    android:gravity="left"
+                    android:textSize="15dp"
+                    android:gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
@@ -293,7 +293,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2.5">
+                android:layout_weight="2">
 
                 <TextView
                     android:textColor="#fff"
@@ -304,11 +304,11 @@
                     style="@style/headerText"
                     android:id="@+id/unKnonetaka"
                     android:background="@null"
-                    android:text="00.00"
+                    android:text="00.0"
                     android:maxLines="1"
                     android:inputType="numberDecimal"
                     android:textColor="#FFF"
-                    android:textSize="15sp"
+                    android:textSize="15dp"
                     android:gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
@@ -327,17 +327,21 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+
+
+
     <LinearLayout
         android:visibility="gone"
         android:id="@+id/showitemLinearLayout"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
-        <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-            android:id="@+id/searchable_spinner"
+        <Spinner
+            style="@style/Widget.AppCompat.Spinner.DropDown"
+            android:id="@+id/spinner"
+            android:elevation="10dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="40dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/productseletrecyclearview"
@@ -347,7 +351,7 @@
 
     <Button
 
-        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
         android:elevation="2dp"
         android:padding="10dp"
@@ -355,7 +359,7 @@
         android:id="@+id/addItemButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/addedProduct"
+        android:text="পণ্য যুক্ত করুন"
         app:icon="@drawable/ic_add_black_24dp"
         style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
 
@@ -387,7 +391,7 @@
                     <TextView
                         android:textColor="@color/colorPrimary"
                         android:gravity="center"
-                        android:text="@string/product"
+                        android:text="পণ্য"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
 
@@ -400,7 +404,7 @@
                     <TextView
                         android:textColor="@color/colorPrimary"
                         android:gravity="center"
-                        android:text="@string/quantidy"
+                        android:text="পরিমাণ"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
 
@@ -413,7 +417,7 @@
                         android:textColor="@color/colorPrimary"
                         android:id="@+id/receptsinglepric"
                         android:gravity="center_vertical"
-                        android:text="@string/singleProduct"
+                        android:text=" একটি"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
 
@@ -426,7 +430,7 @@
                     <TextView
                         android:textColor="@color/colorPrimary"
                         android:gravity="center"
-                        android:text="@string/price"
+                        android:text="মূল্য"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
 
@@ -439,7 +443,7 @@
                     <TextView
                         android:textColor="@color/colorPrimary"
                         android:gravity="center"
-                        android:text="@string/stutas"
+                        android:text="অবস্থা"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
 
@@ -474,7 +478,7 @@
             <TextView
                 android:layout_marginLeft="10dp"
                 android:textColor="#0F6E19"
-                android:text="@string/TotalPrice"
+                android:text="সর্বমোট পরিমাণ "
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 

@@ -76,7 +76,7 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
 
     private CircleImageView circleCutomerImageView;
     private DrawerLayout drawer;
-    private TextInputEditText customerName, customerPhone,customerTaka,CustomerAddress;
+    private TextInputEditText customerName, customerPhone,customerTaka,CustomerAddress,customerTaxetId,customerNIDnumber;
     private MaterialButton addCustomer;
 
 
@@ -138,6 +138,8 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
         CustomerAddress = findViewById(R.id.custumar_address_add);
         addCustomer = findViewById(R.id.addedCustomer);
         imageSeletcutomer = findViewById(R.id.imageSeletcutomer);
+        customerTaxetId = findViewById(R.id.custumar_TaxtId);
+        customerNIDnumber = findViewById(R.id.custumar_NID_Number);
 
         final Bundle bundle = getIntent().getExtras();
 
@@ -185,8 +187,27 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
 
 
                 if(!checkIntert()) {
-
                     Toast.makeText(CustomerAddActivity.this, " কোনও ইন্টারনেট সংযোগ নেই ", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                final String name1 = customerName.getText().toString();
+                final String phone1 = customerPhone.getText().toString();
+                final String takaChake = customerTaka.getText().toString();
+                final String addreschack = CustomerAddress.getText().toString();
+
+                if (TextUtils.isEmpty(name1)) {
+                    Toast.makeText(getApplicationContext(), "কাস্টমার নাম লিখুন ", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if (TextUtils.isEmpty(phone1)) {
+                    Toast.makeText(getApplicationContext(), "গ্রাহক ফোন নাম্বার লিখুন", Toast.LENGTH_LONG).show();
+                    return;
+                } if (TextUtils.isEmpty(takaChake)) {
+                    Toast.makeText(getApplicationContext(), "গ্রাহক টাকার পরিমান লিখুন", Toast.LENGTH_LONG).show();
+                    return;
+                } if (TextUtils.isEmpty(addreschack)) {
+                    Toast.makeText(getApplicationContext(), "গ্রাহক ঠিকানা  লিখুন", Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -208,8 +229,10 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
                         final String taka = customerTaka.getText().toString();
                         double dtaka = Double.parseDouble(taka);
                         final String addres = CustomerAddress.getText().toString();
+                        final String taxtId = customerTaxetId.getText().toString();
+                        final String NID = customerNIDnumber.getText().toString();
 
-                        customer.document(id).update("customerIdDucunt", id, "nameCUstomer", name, "phone", phone, "taka", dtaka, "addres", addres).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        customer.document(id).update("customerIdDucunt", id, "nameCUstomer", name, "phone", phone, "taka", dtaka, "addres", addres,"TaxtId",taxtId,"NID",NID).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
 
@@ -224,17 +247,7 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
                     }
                 }else {
 
-                final String name1 = customerName.getText().toString();
-                final String phone1 = customerPhone.getText().toString();
 
-                if (TextUtils.isEmpty(name1)) {
-                    Toast.makeText(getApplicationContext(), "কাস্টমার নাম লিখুন...", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                if (TextUtils.isEmpty(phone1)) {
-                    Toast.makeText(getApplicationContext(), "গ্রাহক ফোন নাম্বার লিখুন", Toast.LENGTH_LONG).show();
-                    return;
-                }
                 if (mImageUri == null) { progressDialog = new ProgressDialog(CustomerAddActivity.this);
                     progressDialog.setMessage("লোড করছে..."); // Setting Message
                     progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -244,11 +257,12 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
                     final String phone = customerPhone.getText().toString();
                     final String taka = customerTaka.getText().toString();
                     double dtaka = Double.parseDouble(taka);
-
                     final String addres = CustomerAddress.getText().toString();
+                    final String taxtId = customerTaxetId.getText().toString();
+                    final String NID = customerNIDnumber.getText().toString();
 
 
-                    customer.add(new CustomerNote(null, name, phone, dtaka, addres,00.00,00.00)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    customer.add(new CustomerNote(null, name, phone, dtaka, addres,00.00,00.00,taxtId,NID)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentReference> task) {
 
@@ -385,10 +399,12 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
                                 final String taka = customerTaka.getText().toString();
                                 double dtaka = Double.parseDouble(taka);
                                 final String addres = CustomerAddress.getText().toString();
+                                final String taxtId = customerTaxetId.getText().toString();
+                                final String NID = customerNIDnumber.getText().toString();
 
                                 if (image!=false){
 
-                                    customer.document(id).update("customerIdDucunt", id,"nameCUstomer",name,"phone",phone,"taka",dtaka,"addres",addres,"imageUrl",uri.toString())
+                                    customer.document(id).update("customerIdDucunt", id,"nameCUstomer",name,"phone",phone,"taka",dtaka,"addres",addres,"imageUrl",uri.toString(),"TaxtId",taxtId,"NID",NID)
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
@@ -403,7 +419,7 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
 
                                 }else {
 
-                                customer.add(new CustomerNote(null,name,phone,dtaka,addres,uri.toString(),00.00,00.00)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                customer.add(new CustomerNote(null,name,phone,dtaka,addres,uri.toString(),00.00,00.00,taxtId,NID)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                     @Override
                                     public void onComplete(@NonNull Task<DocumentReference> task) {
 
@@ -498,10 +514,13 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
                     final String taka = customerTaka.getText().toString();
                     double dtaka = Double.parseDouble(taka);
                     final String addres = CustomerAddress.getText().toString();
+                    final String taxtId = customerTaxetId.getText().toString();
+                    final String NID = customerNIDnumber.getText().toString();
+
 
                     if (image!=false){
 
-                        customer.document(id).update("customerIdDucunt", id,"nameCUstomer",name,"phone",phone,"taka",dtaka,"addres",addres,"imageUrl",downloadLink)
+                        customer.document(id).update("customerIdDucunt", id,"nameCUstomer",name,"phone",phone,"taka",dtaka,"addres",addres,"imageUrl",downloadLink,"TaxtId",taxtId,"NID",NID)
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
@@ -516,7 +535,7 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
 
                     }else {
 
-                        customer.add(new CustomerNote(null,name,phone,dtaka,addres,downloadLink,00.00,00.00)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                        customer.add(new CustomerNote(null,name,phone,dtaka,addres,downloadLink,00.00,00.00,taxtId,NID)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentReference> task) {
 

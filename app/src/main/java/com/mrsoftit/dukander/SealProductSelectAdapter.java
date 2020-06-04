@@ -300,7 +300,6 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
                                         user.put("quantedt", totalQantidy);
                                         user.put("totalPrice", total);
                                         user.put("paid", paid);
-                                        user.put("paid", paid);
                                         user.put("confirm", confram);
 
                                         TotalcustomerProductSale.document(id).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -318,6 +317,7 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
                                                     ProfiteObject.put("quantedt", totalQantidy);
                                                     ProfiteObject.put("totalPrice", total);
                                                     ProfiteObject.put("Profit", totalProfit);
+                                                    ProfiteObject.put("ProfitTrue", false);
                                                     ProfiteObject.put("currentMonth", currentMaonthint);
                                                     ProfiteObject.put("currentYear", currentYearint);
 
@@ -430,6 +430,7 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
                                                     ProfiteObject.put("quantedt", totalQantidy);
                                                     ProfiteObject.put("totalPrice", total);
                                                     ProfiteObject.put("Profit", totalProfit);
+                                                    ProfiteObject.put("ProfitTrue", false);
                                                     ProfiteObject.put("currentMonth", currentMaonthint);
                                                     ProfiteObject.put("currentYear", currentYearint);
 
@@ -455,13 +456,7 @@ public class SealProductSelectAdapter extends RecyclerView.Adapter<SealProductSe
                         }
                     });
 
-
-
                 }
-
-
-
-
             }
         });
 

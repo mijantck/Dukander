@@ -141,7 +141,7 @@ public class SaleoOneActivity extends AppCompatActivity {
                 final CollectionReference unkonwnCustomar = FirebaseFirestore.getInstance()
                         .collection("users").document(user_id).collection("UnknownCustomer");
 
-                unkonwnCustomar.add(new CustomerNote(null,"Unknown","Unknown",00.00,"Unknown",00.0,00.00)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                unkonwnCustomar.add(new CustomerNote(null,"Unknown","Unknown",00.00,"Unknown",00.0,00.00,"Unknown","Unknown")).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentReference> task) {
 

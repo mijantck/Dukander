@@ -46,6 +46,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
+import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 
 import java.text.DateFormat;
@@ -65,6 +66,7 @@ public class SeleTwoActivity extends AppCompatActivity {
 
     TextView bundelCustomerName,bundelCustomerphone,bundelCustomeraddrss,bundelCustomertaka,invoiseIdTextView,TotalAmount;
 
+
     FirebaseFirestore firestore;
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -78,6 +80,8 @@ public class SeleTwoActivity extends AppCompatActivity {
     CollectionReference invoiseFb = FirebaseFirestore.getInstance()
             .collection("users").document(user_id).collection("invoise");
 
+
+     List<String> titleList;
 
     String  idup, nameup,phoneup,takaup,addresup,imageup;
 
@@ -106,6 +110,7 @@ public class SeleTwoActivity extends AppCompatActivity {
     Double dueBalance ;
     double withpaytaka;
 
+    SearchableSpinner searchableSpinner;
     double daubill;
 
     Date calendar1 = Calendar.getInstance().getTime();
@@ -165,6 +170,8 @@ public class SeleTwoActivity extends AppCompatActivity {
         TotalAmount = findViewById(R.id.totalAmount);
         OKfloatingActionButton = findViewById(R.id.okfab);
         PDFfloatingActionButton = findViewById(R.id.PDFfab);
+        searchableSpinner = (SearchableSpinner) findViewById(R.id.searchable_spinner);
+
 
 
         unKnoneName = findViewById(R.id.unKnoneName);
@@ -272,15 +279,18 @@ public class SeleTwoActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
 
                             QuerySnapshot queryDocumentSnapshots = task.getResult();
-                            final List<String> titleList = new ArrayList<>();
+                            titleList = new ArrayList<>();
+
                             assert queryDocumentSnapshots != null;
                             for(DocumentSnapshot readData: queryDocumentSnapshots.getDocuments()){
                                 String titlename = Objects.requireNonNull(readData.get("proName")).toString();
+
                                 titleList.add(titlename);
                             }
-                            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(SeleTwoActivity.this, android.R.layout.simple_spinner_item, titleList);
-                            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            spinner.setAdapter(arrayAdapter);
+
+
+                            ArrayAdapter arrayAdapter2 = new ArrayAdapter(SeleTwoActivity.this,android.R.layout.simple_spinner_dropdown_item,titleList);
+                            searchableSpinner.setAdapter(arrayAdapter2);
 
                         }
                     }
@@ -292,21 +302,31 @@ public class SeleTwoActivity extends AppCompatActivity {
             }
         });
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+        searchableSpinner.setTitle("Select Item");
+        searchableSpinner.setPositiveButton("OK");
+
+        searchableSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                String productName = spinner.getSelectedItem().toString();
+                String productName = searchableSpinner.getSelectedItem().toString();
 
-               // recyclear( productName);
+                // recyclear( productName);
 
                 DataLoad(productName);
                 setCustomerList();
+
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
+
+
+
         if (bundelId!=null){
             recyclearinvoiser();
         }else if ( unknonwnCustomerId!=null){
@@ -345,14 +365,6 @@ public class SeleTwoActivity extends AppCompatActivity {
                             return;
                         }
 
-                        paymonysend = paymony;
-                        payeditetext.setVisibility(View.GONE);
-                        paymentLooding.setVisibility(View.VISIBLE);
-                        okButton.setVisibility(View.GONE);
-                        TitleTExt.setVisibility(View.GONE);
-                        loadingTExt.setVisibility(View.VISIBLE);
-                        PDFfloatingActionButton.setVisibility(View.VISIBLE);
-
                         double paymonyDouable  = Double.parseDouble(paymony);
                         final double totallastbill = Double.parseDouble(TotalAmount.getText().toString());
 
@@ -365,9 +377,6 @@ public class SeleTwoActivity extends AppCompatActivity {
                             dautakaccustomer = unktotallast;
                         }
 
-
-
-
                         withpaytaka = totallastbill - paymonyDouable;
 
                         Double conditonBil = totallastbill + dautakaccustomer;
@@ -375,12 +384,18 @@ public class SeleTwoActivity extends AppCompatActivity {
                         daubill = dautakaccustomer + withpaytaka;
 
                         if (conditonBil < paymonyDouable){
-
-                            Toast.makeText(SeleTwoActivity.this, "ভুল ইনপুট", Toast.LENGTH_SHORT).show();
-
-                            dialog.dismiss();
+                            payeditetext.setError("ভুল ইনপুট");
                             return;
                         }
+
+                        paymonysend = paymony;
+                      /*  payeditetext.setVisibility(View.GONE);
+                        paymentLooding.setVisibility(View.VISIBLE);
+                        okButton.setVisibility(View.GONE);
+                        TitleTExt.setVisibility(View.GONE);
+                        loadingTExt.setVisibility(View.VISIBLE);*/
+                        PDFfloatingActionButton.setVisibility(View.VISIBLE);
+
                         if (activeBalance!=null){
                             activeBalance += paymonyDouable;
                         }
@@ -923,6 +938,12 @@ public class SeleTwoActivity extends AppCompatActivity {
 
             batch.update(ref, "paid", true,"invoiceNumber",i);
 
+            DocumentReference Profitref = db.collection("users").document(user_id).collection("profit").document((String) list.get(k));
+
+
+            batch.update(Profitref, "ProfitTrue", true);
+
+
         }
 
         // Commit the batch
@@ -978,6 +999,12 @@ public class SeleTwoActivity extends AppCompatActivity {
                     .document((String) list.get(k));
 
             batch.update(ref, "paid", true,"invoiceNumber",i);
+
+
+            DocumentReference Profitref = db.collection("users").document(user_id).collection("profit").document((String) list.get(k));
+
+            batch.update(Profitref, "ProfitTrue", true);
+
 
         }
 

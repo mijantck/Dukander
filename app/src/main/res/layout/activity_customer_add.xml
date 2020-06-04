@@ -109,7 +109,7 @@
             android:layout_marginBottom="12dp"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
-            android:hint="টাকা"
+            android:hint="@string/prebeastDue"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -121,6 +121,7 @@
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -132,6 +133,39 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/custumar_address_add"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:hint="গ্রাহকের ট্যাক্স আইড (ঐচ্ছিক)"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/custumar_TaxtId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:hint="গ্রাহকের NID (ঐচ্ছিক)"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/custumar_NID_Number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 />

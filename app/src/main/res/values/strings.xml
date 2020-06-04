@@ -36,5 +36,16 @@
     <string name="shop_name">দোকানের নাম </string>
     <string name="shop_addres">দোকানের ঠিকানা </string>
     <string name="cutomer_added">গ্রাহক যুক্ত</string>
+    <string name="prebeastDue">পূর্বের বাকী</string>
+    <string name="custumarName">নাম </string>
+    <string name="phoneNumber">নাম্বার</string>
+    <string name="quantidy">পরিমান </string>
+    <string name="addres">ঠিকানা</string>
+    <string name="addedProduct">পণ্য যুক্ত করুন</string>
+    <string name="product">পণ্য</string>
+    <string name="singleProduct">একটি</string>
+    <string name="price">মূল্য</string>
+    <string name="stutas">অবস্থা</string>
+    <string name="TotalPrice">সর্বমোট পরিমাণ</string>
 
 </resources>

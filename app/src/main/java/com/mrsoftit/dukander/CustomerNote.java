@@ -9,10 +9,12 @@ public class CustomerNote {
     private String imageUrl;
     private double lastTotal;
     private double pdfTotal;
+    private String TaxtId;
+    private String NID;
 
     public  CustomerNote(){}
 
-    public CustomerNote(String customerIdDucunt, String nameCUstomer, String phone, double taka, String addres, String imageUrl, double lastTotal,double pdfTotal) {
+    public CustomerNote(String customerIdDucunt, String nameCUstomer, String phone, double taka, String addres, String imageUrl, double lastTotal,double pdfTotal,String TaxtId,String NID) {
         this.customerIdDucunt = customerIdDucunt;
         this.nameCUstomer = nameCUstomer;
         this.phone = phone;
@@ -21,9 +23,11 @@ public class CustomerNote {
         this.imageUrl = imageUrl;
         this.lastTotal = lastTotal;
         this.pdfTotal = pdfTotal;
+        this.TaxtId = TaxtId;
+        this.NID = NID;
     }
 
-    public CustomerNote(String customerIdDucunt, String nameCUstomer, String phone, double taka, String addres, double lastTotal,double pdfTotal) {
+    public CustomerNote(String customerIdDucunt, String nameCUstomer, String phone, double taka, String addres, double lastTotal,double pdfTotal,String TaxtId,String NID) {
         this.customerIdDucunt = customerIdDucunt;
         this.nameCUstomer = nameCUstomer;
         this.phone = phone;
@@ -31,6 +35,8 @@ public class CustomerNote {
         this.addres = addres;
         this.lastTotal = lastTotal;
         this.pdfTotal = pdfTotal;
+        this.TaxtId = TaxtId;
+        this.NID = NID;
 
     }
 
@@ -69,5 +75,21 @@ public class CustomerNote {
 
     public void setPdfTotal(double pdfTotal) {
         this.pdfTotal = pdfTotal;
+    }
+
+    public String getTaxtId() {
+        return TaxtId;
+    }
+
+    public void setTaxtId(String taxtId) {
+        TaxtId = taxtId;
+    }
+
+    public String getNID() {
+        return NID;
+    }
+
+    public void setNID(String NID) {
+        this.NID = NID;
     }
 }
