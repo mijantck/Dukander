@@ -12,10 +12,11 @@ public class ProductNote {
     private String invoiseid;
     private  int invoice;
     private String unkid;
+    private String barCode;
 
     public ProductNote(){}
 
-    public ProductNote(String proId, String proName, double proPrice,double proBuyPrice, double proQua, double proMin, String proImgeUrl) {
+    public ProductNote(String proId, String proName, double proPrice,double proBuyPrice, double proQua, double proMin, String proImgeUrl,String barCode) {
         this.proId = proId;
         this.proName = proName;
         this.proPrice = proPrice;
@@ -23,15 +24,17 @@ public class ProductNote {
         this.proQua = proQua;
         this.proMin = proMin;
         this.proImgeUrl = proImgeUrl;
+        this.barCode = barCode;
     }
 
-    public ProductNote(String proId, String proName, double proPrice,double proBuyPrice, double proQua, double proMin) {
+    public ProductNote(String proId, String proName, double proPrice,double proBuyPrice, double proQua, double proMin,String barCode) {
         this.proId = proId;
         this.proName = proName;
         this.proPrice = proPrice;
         this.proBuyPrice = proBuyPrice;
         this.proQua = proQua;
         this.proMin = proMin;
+        this.barCode = barCode;
     }
 
     public void setUserID(String userID) {
@@ -104,5 +107,14 @@ public class ProductNote {
 
     public void setUnkid(String unkid) {
         this.unkid = unkid;
+    }
+
+
+    public String getBarCode() {
+        return barCode;
+    }
+
+    public void setBarCode(String barCode) {
+        this.barCode = barCode;
     }
 }

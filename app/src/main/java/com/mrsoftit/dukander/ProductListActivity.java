@@ -172,6 +172,7 @@ public class ProductListActivity extends AppCompatActivity {
                             String id = documentSnapshot.getId();
                             String imageurl = productNote.getProImgeUrl();
                             String name = productNote.getProName();
+                            String barcode = productNote.getBarCode();
                             String pp = String.valueOf(productNote.getProPrice());
                             String pBp = String.valueOf(productNote.getProBuyPrice());
                             String pq = String.valueOf(productNote.getProQua());
@@ -182,7 +183,7 @@ public class ProductListActivity extends AppCompatActivity {
                                 pdfIntent.putExtra("imageurl", imageurl);
                             }
                             pdfIntent.putExtra("name", name);
-
+                            pdfIntent.putExtra("code", barcode);
                             pdfIntent.putExtra("pprice", pp);
 
                             pdfIntent.putExtra("pBprice", pBp);
@@ -267,6 +268,7 @@ public class ProductListActivity extends AppCompatActivity {
                             String id = documentSnapshot.getId();
                             String imageurl = productNote.getProImgeUrl();
                             String name = productNote.getProName();
+                            String barcode = productNote.getBarCode();
                             String pp = String.valueOf(productNote.getProPrice());
                             String pBp = String.valueOf(productNote.getProBuyPrice());
                             String pq = String.valueOf(productNote.getProQua());
@@ -277,13 +279,13 @@ public class ProductListActivity extends AppCompatActivity {
                                 pdfIntent.putExtra("imageurl", imageurl);
                             }
                             pdfIntent.putExtra("name", name);
+                            pdfIntent.putExtra("code", barcode);
 
                             pdfIntent.putExtra("pprice", pp);
 
                             pdfIntent.putExtra("pBprice", pBp);
 
                             pdfIntent.putExtra("pQuan", pq);
-
                             pdfIntent.putExtra("pmini", pm);
 
                             startActivity(pdfIntent);

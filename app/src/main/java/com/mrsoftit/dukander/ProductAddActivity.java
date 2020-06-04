@@ -72,14 +72,14 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
 
     ImageView pruductImage;
 
-    private TextInputEditText productName, productPrice,productQuantayn,pruductMin,pruductBuyPrice;
+    private TextInputEditText productName, productPrice,productQuantayn,pruductMin,pruductBuyPrice,productBarcodeNumber;
     private MaterialButton addProduct;
 
     StorageReference mStorageReferenceImage;
     FirebaseFirestore firebaseFirestore;
     ProgressDialog progressDialog;
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-    String   proIdup, productNameup,pruductBuyPriceup, productPriceup,productQuantaynup,pruductMinup,addresup,pruductImageup;
+    String   proIdup, productNameup,pruductBuyPriceup, productPriceup,productQuantaynup,pruductMinup,addresup,pruductImageup,barcodenumber;
 
     FloatingActionButton imageSeletprioduct;
 
@@ -131,6 +131,7 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
 
         pruductImage = findViewById(R.id.pruductPic);
         productName = findViewById(R.id.productName);
+        productBarcodeNumber = findViewById(R.id.productBarcodeNumber);
         productPrice = findViewById(R.id.pruductPrice);
         productQuantayn = findViewById(R.id.pruductquntidy);
         pruductMin = findViewById(R.id.pruductMini);
@@ -147,6 +148,7 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
 
             proIdup = bundle.getString("id");
             productNameup = bundle.getString("name");
+            barcodenumber = bundle.getString("code");
             productPriceup = bundle.getString("pprice");
             if (bundle.getString("pBprice")!=null){
                 pruductBuyPriceup = bundle.getString("pBprice");
@@ -165,6 +167,10 @@ if (pruductImageup!=null){
 }
 
             productName.setText(productNameup);
+if (barcodenumber!=null){
+    productBarcodeNumber.setText(barcodenumber);
+
+}
             productPrice.setText(productPriceup);
             pruductBuyPrice.setText(pruductBuyPriceup);
             productQuantayn.setText(productQuantaynup);
@@ -198,6 +204,7 @@ if (pruductImageup!=null){
 
 
                 String name = productName.getText().toString();
+                String barCode = productBarcodeNumber.getText().toString();
                 String price = productPrice.getText().toString();
                 String ppq = productQuantayn.getText().toString();
                 String pBpq = pruductBuyPrice.getText().toString();
@@ -231,6 +238,7 @@ if (pruductImageup!=null){
                 progressDialog.setCanceledOnTouchOutside(false);
 
                 final String pnmae = productName.getText().toString();
+                String pbarCode = productBarcodeNumber.getText().toString();
                 final String pps = productPrice.getText().toString();
                 double pp = Double.parseDouble(pps);
                 final String pBps = pruductBuyPrice.getText().toString();
@@ -263,7 +271,7 @@ if (pruductImageup!=null){
                 }
 
                 if ( bundle == null && mImageUri == null  ){
-                    product.add(new ProductNote(null, pnmae, pp,pBp, pq, pm)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    product.add(new ProductNote(null, pnmae, pp,pBp, pq, pm,pbarCode)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentReference> task) {
                             if (task.isSuccessful()) {
@@ -291,7 +299,7 @@ if (pruductImageup!=null){
 
                 if (bundle!=null && image == false) {
 
-                    product.document(id).update("proId", id, "proName", pnmae, "proPrice", pp,"proBuyPrice",pBp, "proQua", pq, "proMin", pm, "proImgeUrl", pruductImageup)
+                    product.document(id).update("proId", id, "proName", pnmae, "proPrice", pp,"proBuyPrice",pBp, "proQua", pq, "proMin", pm, "proImgeUrl", pruductImageup,"barCode",pbarCode)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
@@ -513,6 +521,7 @@ if (pruductImageup!=null){
 
 
                     final String pnmae = productName.getText().toString();
+                    String barCode = productBarcodeNumber.getText().toString();
                     final String pps = productPrice.getText().toString();
                     double pp = Double.parseDouble(pps);
                     final String pBps = pruductBuyPrice.getText().toString();
@@ -524,7 +533,7 @@ if (pruductImageup!=null){
 
                     if (image != false) {
 
-                        product.document(id).update("proId", id, "proName", pnmae, "proPrice", pp,"proBuyPrice", pBp, "proQua", pq, "proMin", pm, "proImgeUrl",downloadLink)
+                        product.document(id).update("proId", id, "proName", pnmae, "proPrice", pp,"proBuyPrice", pBp, "proQua", pq, "proMin", pm, "proImgeUrl",downloadLink,"barCode",barCode)
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
@@ -542,7 +551,7 @@ if (pruductImageup!=null){
                         });
 
                     } else {
-                        product.add(new ProductNote(null, pnmae, pp,pBp, pq, pm, downloadLink)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                        product.add(new ProductNote(null, pnmae, pp,pBp, pq, pm, downloadLink,barCode)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentReference> task) {
 

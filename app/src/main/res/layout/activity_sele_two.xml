@@ -19,19 +19,37 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
 
             <TextView
+                android:gravity="center"
                 style="@style/headerText"
                 android:text="@string/sale"
                 android:textColor="#FFF"
                 android:textSize="15sp"
                 android:layout_marginEnd="15dp"
-                android:layout_width="match_parent"
+                android:layout_width="200dp"
                 android:layout_height="match_parent"
                 />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center">
+                <ImageView
+                    android:elevation="10dp"
+                    android:layout_gravity="center"
+                    android:id="@+id/barcoeScanner"
+                    android:src="@drawable/icon_barcode_reader"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    />
+            </LinearLayout>
+
             <TextView
+                android:visibility="gone"
                 android:id="@+id/invoiseId"
                 android:text="0"
                 android:gravity="right"

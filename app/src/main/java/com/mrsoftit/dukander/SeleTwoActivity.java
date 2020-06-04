@@ -6,23 +6,32 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.os.Bundle;
+import android.util.SparseArray;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -33,6 +42,11 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import com.google.android.gms.vision.CameraSource;
+import com.google.android.gms.vision.Detector;
+import com.google.android.gms.vision.barcode.Barcode;
+import com.google.android.gms.vision.barcode.BarcodeDetector;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -49,6 +63,7 @@ import com.google.firebase.firestore.WriteBatch;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -66,6 +81,7 @@ public class SeleTwoActivity extends AppCompatActivity {
 
     TextView bundelCustomerName,bundelCustomerphone,bundelCustomeraddrss,bundelCustomertaka,invoiseIdTextView,TotalAmount;
 
+    ImageView barcoeScanner;
 
     FirebaseFirestore firestore;
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -94,6 +110,21 @@ public class SeleTwoActivity extends AppCompatActivity {
 
     SealProductSelectAdapter adapter1 ;
      String paymonysend;
+
+
+     //barcode
+
+    private SurfaceView surfaceView;
+    private BarcodeDetector barcodeDetector;
+    private CameraSource cameraSource;
+    private static final int REQUEST_CAMERA_PERMISSION = 201;
+    //This class provides methods to play DTMF tones
+    private ToneGenerator toneGen1;
+    private TextView barcodeText;
+    private String barcodeData;
+    private MaterialButton barcode_Buton;
+
+
 
     int invoisenumber;
 
@@ -170,6 +201,7 @@ public class SeleTwoActivity extends AppCompatActivity {
         TotalAmount = findViewById(R.id.totalAmount);
         OKfloatingActionButton = findViewById(R.id.okfab);
         PDFfloatingActionButton = findViewById(R.id.PDFfab);
+        barcoeScanner = findViewById(R.id.barcoeScanner);
         searchableSpinner = (SearchableSpinner) findViewById(R.id.searchable_spinner);
 
 
@@ -269,6 +301,51 @@ public class SeleTwoActivity extends AppCompatActivity {
 
         }
 
+        barcoeScanner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final Dialog barDialog = new Dialog(SeleTwoActivity.this);
+                // Include dialog.xml file
+                barDialog.setContentView(R.layout.bar_code_dialog_view);
+                // Set dialog title
+                barDialog.setTitle("বিল পরিশোধ");
+                barDialog.show();
+                barDialog.setCanceledOnTouchOutside(false);
+
+                toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC,     100);
+                surfaceView = barDialog.findViewById(R.id.surface_view);
+                barcodeText = barDialog.findViewById(R.id.barcode_text);
+
+                initialiseDetectorsAndSources();
+
+
+                barcode_Buton = barDialog.findViewById(R.id.barcode_Buton);
+                barcode_Buton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        String code = barcodeText.getText().toString().trim();
+
+
+                        BarcodeDataLoad(code);
+                        setCustomerList();
+
+                        addItemButton.setVisibility(View.GONE);
+                        showitemLinearLayout.setVisibility(View.VISIBLE);
+
+                        barDialog.dismiss();
+
+
+                    }
+                });
+
+
+
+
+
+            }
+        });
         addItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -315,6 +392,7 @@ public class SeleTwoActivity extends AppCompatActivity {
                 // recyclear( productName);
 
                 DataLoad(productName);
+
                 setCustomerList();
 
             }
@@ -622,7 +700,39 @@ public class SeleTwoActivity extends AppCompatActivity {
                         exampleList.add(productNote);
                         if (bundelId!=null) {
 
+                            productNote.setUserID(bundelId);
+                        }else {
+                            productNote.setUnkid(unknonwnCustomerId);
 
+                        }
+
+                        productNote.setInvoiseid(invoisenumberID);
+
+                        productNote.setInvoice(invoisenumber);
+
+                        adapter1.notifyDataSetChanged();
+                    }
+
+                }
+
+
+            }
+        });
+    }
+    private void BarcodeDataLoad(String code){
+
+        product.whereEqualTo("barCode",code).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                if (task.isSuccessful()){
+                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+
+                        ProductNote productNote = document.toObject(ProductNote.class);
+
+                        exampleList.add(productNote);
+
+                        if (bundelId!=null) {
                             productNote.setUserID(bundelId);
                         }else {
                             productNote.setUnkid(unknonwnCustomerId);
@@ -1016,5 +1126,85 @@ public class SeleTwoActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+
+    private void initialiseDetectorsAndSources() {
+
+        //Toast.makeText(getApplicationContext(), "Barcode scanner started", Toast.LENGTH_SHORT).show();
+
+        barcodeDetector = new BarcodeDetector.Builder(this)
+                .setBarcodeFormats(Barcode.ALL_FORMATS)
+                .build();
+
+        cameraSource = new CameraSource.Builder(this, barcodeDetector)
+                .setRequestedPreviewSize(1920, 1080)
+                .setAutoFocusEnabled(true) //you should add this feature
+                .build();
+
+        surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
+            @Override
+            public void surfaceCreated(SurfaceHolder holder) {
+                try {
+                    if (ActivityCompat.checkSelfPermission(SeleTwoActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                        cameraSource.start(surfaceView.getHolder());
+                    } else {
+                        ActivityCompat.requestPermissions(SeleTwoActivity.this, new
+                                String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+
+            @Override
+            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+            }
+
+            @Override
+            public void surfaceDestroyed(SurfaceHolder holder) {
+                cameraSource.stop();
+            }
+        });
+
+
+        barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
+            @Override
+            public void release() {
+                // Toast.makeText(getApplicationContext(), "To prevent memory leaks barcode scanner has been stopped", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void receiveDetections(Detector.Detections<Barcode> detections) {
+                final SparseArray<Barcode> barcodes = detections.getDetectedItems();
+                if (barcodes.size() != 0) {
+
+
+                    barcodeText.post(new Runnable() {
+
+                        @Override
+                        public void run() {
+
+                            if (barcodes.valueAt(0).email != null) {
+                                barcodeText.removeCallbacks(null);
+                                barcodeData = barcodes.valueAt(0).email.address;
+                                barcodeText.setText(barcodeData);
+                                toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP, 150);
+                            } else {
+
+                                barcodeData = barcodes.valueAt(0).displayValue;
+                                barcodeText.setText(barcodeData);
+                                toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP, 150);
+
+                            }
+                        }
+                    });
+
+                }
+            }
+        });
     }
 }
