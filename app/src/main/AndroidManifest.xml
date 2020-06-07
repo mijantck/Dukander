@@ -38,7 +38,7 @@
         <activity android:name=".InvesmentActivity" />
         <activity android:name=".SeleTwoActivity" />
         <activity android:name=".SaleoOneActivity" />
-        <activity android:name=".CustomerProfileActivity" />
+        <activity android:name=".ContactUsActivity" />
         <activity android:name=".MyInfoActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".ProductAddActivity" />

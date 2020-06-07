@@ -33,7 +33,6 @@ import android.widget.EditText;
 
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,7 +73,7 @@ import java.util.Objects;
 
 public class SeleTwoActivity extends AppCompatActivity {
 
-    private Spinner spinner;
+
     SaleProductIndevicualAdapter saleProductIndevicualAdapter;
 
     FirebaseFirestore db;
@@ -123,7 +122,7 @@ public class SeleTwoActivity extends AppCompatActivity {
     private TextView barcodeText;
     private String barcodeData;
     private MaterialButton barcode_Buton;
-
+    Dialog barDialog;
 
 
     int invoisenumber;
@@ -186,7 +185,7 @@ public class SeleTwoActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
 
-        spinner = findViewById(R.id.spinner);
+
         bundelCustomerName = findViewById(R.id.bundelCustomerName);
         bundelCustomeraddrss = findViewById(R.id.bundelCustomerAddress);
         bundelCustomerphone= findViewById(R.id.bundelCustomerPhone);
@@ -305,7 +304,7 @@ public class SeleTwoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                final Dialog barDialog = new Dialog(SeleTwoActivity.this);
+                barDialog = new Dialog(SeleTwoActivity.this);
                 // Include dialog.xml file
                 barDialog.setContentView(R.layout.bar_code_dialog_view);
                 // Set dialog title
@@ -318,30 +317,6 @@ public class SeleTwoActivity extends AppCompatActivity {
                 barcodeText = barDialog.findViewById(R.id.barcode_text);
 
                 initialiseDetectorsAndSources();
-
-
-                barcode_Buton = barDialog.findViewById(R.id.barcode_Buton);
-                barcode_Buton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        String code = barcodeText.getText().toString().trim();
-
-
-                        BarcodeDataLoad(code);
-                        setCustomerList();
-
-                        addItemButton.setVisibility(View.GONE);
-                        showitemLinearLayout.setVisibility(View.VISIBLE);
-
-                        barDialog.dismiss();
-
-
-                    }
-                });
-
-
-
 
 
             }
@@ -1192,12 +1167,22 @@ public class SeleTwoActivity extends AppCompatActivity {
                                 barcodeText.removeCallbacks(null);
                                 barcodeData = barcodes.valueAt(0).email.address;
                                 barcodeText.setText(barcodeData);
+                                BarcodeDataLoad(barcodeData);
+                                setCustomerList();
                                 toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP, 150);
+                                barDialog.dismiss();
+                                addItemButton.setVisibility(View.GONE);
+                                showitemLinearLayout.setVisibility(View.VISIBLE);
                             } else {
 
                                 barcodeData = barcodes.valueAt(0).displayValue;
                                 barcodeText.setText(barcodeData);
+                                BarcodeDataLoad(barcodeData);
+                                setCustomerList();
                                 toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP, 150);
+                                 barDialog.dismiss();
+                                addItemButton.setVisibility(View.GONE);
+                                showitemLinearLayout.setVisibility(View.VISIBLE);
 
                             }
                         }

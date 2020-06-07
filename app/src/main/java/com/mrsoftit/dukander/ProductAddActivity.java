@@ -3,14 +3,19 @@ package com.mrsoftit.dukander;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -18,10 +23,14 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.SparseArray;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidnetworking.interceptors.HttpLoggingInterceptor;
@@ -29,6 +38,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.vision.CameraSource;
+import com.google.android.gms.vision.Detector;
+import com.google.android.gms.vision.barcode.Barcode;
+import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -49,6 +62,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DateFormat;
@@ -72,7 +86,8 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
 
     ImageView pruductImage;
 
-    private TextInputEditText productName, productPrice,productQuantayn,pruductMin,pruductBuyPrice,productBarcodeNumber;
+    private TextInputEditText productName, productPrice,productQuantayn,pruductMin,pruductBuyPrice;
+    TextView productBarcodeNumber;
     private MaterialButton addProduct;
 
     StorageReference mStorageReferenceImage;
@@ -93,6 +108,18 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
     public Uri mImageUri;
     String id;
 
+
+    private SurfaceView surfaceView;
+    private BarcodeDetector barcodeDetector;
+    private CameraSource cameraSource;
+    private static final int REQUEST_CAMERA_PERMISSION = 201;
+    //This class provides methods to play DTMF tones
+    private ToneGenerator toneGen1;
+    private TextView barcodeText;
+    private String barcodeData;
+    private MaterialButton barcode_Buton;
+
+    Dialog barDialog;
 
     String user_id = currentUser.getUid();
 
@@ -192,12 +219,33 @@ if (barcodenumber!=null){
         });
 
 
+        productBarcodeNumber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+               barDialog = new Dialog(ProductAddActivity.this);
+                // Include dialog.xml file
+                barDialog.setContentView(R.layout.bar_code_dialog_view);
+                // Set dialog title
+                barDialog.setTitle("বিল পরিশোধ");
+                barDialog.show();
+                barDialog.setCanceledOnTouchOutside(false);
+
+                toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC,     100);
+                surfaceView = barDialog.findViewById(R.id.surface_view);
+                barcodeText = barDialog.findViewById(R.id.barcode_text);
+
+                initialiseDetectorsAndSources();
+
+
+            }
+        });
+
         addProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if(!checkIntert()) {
-
                     Toast.makeText(ProductAddActivity.this, " কোনও ইন্টারনেট সংযোগ নেই ", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -755,5 +803,88 @@ if (barcodenumber!=null){
         } catch (Exception e) {
             return null;
         }
+    }
+
+
+
+    private void initialiseDetectorsAndSources() {
+
+        //Toast.makeText(getApplicationContext(), "Barcode scanner started", Toast.LENGTH_SHORT).show();
+
+        barcodeDetector = new BarcodeDetector.Builder(this)
+                .setBarcodeFormats(Barcode.ALL_FORMATS)
+                .build();
+
+        cameraSource = new CameraSource.Builder(this, barcodeDetector)
+                .setRequestedPreviewSize(1920, 1080)
+                .setAutoFocusEnabled(true) //you should add this feature
+                .build();
+
+        surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
+            @Override
+            public void surfaceCreated(SurfaceHolder holder) {
+                try {
+                    if (ActivityCompat.checkSelfPermission(ProductAddActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                        cameraSource.start(surfaceView.getHolder());
+                    } else {
+                        ActivityCompat.requestPermissions(ProductAddActivity.this, new
+                                String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+
+            @Override
+            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+            }
+
+            @Override
+            public void surfaceDestroyed(SurfaceHolder holder) {
+                cameraSource.stop();
+            }
+        });
+
+
+        barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
+            @Override
+            public void release() {
+                // Toast.makeText(getApplicationContext(), "To prevent memory leaks barcode scanner has been stopped", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void receiveDetections(Detector.Detections<Barcode> detections) {
+                final SparseArray<Barcode> barcodes = detections.getDetectedItems();
+                if (barcodes.size() != 0) {
+
+
+                    barcodeText.post(new Runnable() {
+
+                        @Override
+                        public void run() {
+
+                            if (barcodes.valueAt(0).email != null) {
+                                barcodeText.removeCallbacks(null);
+                                barcodeData = barcodes.valueAt(0).email.address;
+                                productBarcodeNumber.setText(barcodeData);
+                                toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP, 150);
+                                barDialog.dismiss();
+                            } else {
+
+                                barcodeData = barcodes.valueAt(0).displayValue;
+                                productBarcodeNumber.setText(barcodeData);
+                                toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP, 150);
+                                barDialog.dismiss();
+
+                            }
+                        }
+                    });
+
+                }
+            }
+        });
     }
 }

@@ -78,6 +78,8 @@
             android:hint="পণ্যের নাম"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
+
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/productName"
                 android:layout_width="match_parent"
@@ -85,8 +87,21 @@
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
 
+
+        <TextView
+            android:padding="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/rounded_corner_barcode_text_view"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:text="বারকোড নাম্বার(ঐচ্ছিক) "
+            android:gravity="center|left"
+            android:id="@+id/productBarcodeNumber"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"/>
+
+       <!-- <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
@@ -95,13 +110,10 @@
             android:hint="বারকোড নাম্বার (ঐচ্ছিক) "
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/productBarcodeNumber"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
 
-        </com.google.android.material.textfield.TextInputLayout>
+
+
+        </com.google.android.material.textfield.TextInputLayout>-->
 
 
         <com.google.android.material.textfield.TextInputLayout

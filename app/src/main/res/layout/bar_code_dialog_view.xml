@@ -29,30 +29,9 @@
         android:gravity="center"
         app:layout_constraintTop_toBottomOf="@id/surface_view"
         android:layout_marginTop="50dp"
-        android:text="Barcode Text"
+        android:text=""
         android:textSize="15sp"
         android:padding="5dp"/>
-
-    <LinearLayout
-        app:layout_constraintTop_toBottomOf="@id/barcode_text"
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:gravity="center"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/barcode_Buton"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:gravity="center"
-
-            android:text="confirme"
-            android:textSize="15sp"
-            android:padding="5dp"/>
-
-    </LinearLayout>
 
 
 

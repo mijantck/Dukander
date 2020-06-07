@@ -20,7 +20,7 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
 
-public class CustomerProfileActivity extends AppCompatActivity {
+public class ContactUsActivity extends AppCompatActivity {
 
     private SurfaceView surfaceView;
     private BarcodeDetector barcodeDetector;
@@ -36,7 +36,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_customer_profile);
+        setContentView(R.layout.activity_contact_us);
 
         toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC,     100);
         surfaceView = findViewById(R.id.surface_view);
@@ -65,10 +65,10 @@ public class CustomerProfileActivity extends AppCompatActivity {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
                 try {
-                    if (ActivityCompat.checkSelfPermission(CustomerProfileActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.checkSelfPermission(ContactUsActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                         cameraSource.start(surfaceView.getHolder());
                     } else {
-                        ActivityCompat.requestPermissions(CustomerProfileActivity.this, new
+                        ActivityCompat.requestPermissions(ContactUsActivity.this, new
                                 String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
                     }
 
