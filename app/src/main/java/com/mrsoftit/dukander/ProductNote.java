@@ -13,10 +13,15 @@ public class ProductNote {
     private  int invoice;
     private String unkid;
     private String barCode;
+    private String productCode;
+    private String productPrivacy;
+    private String productCategory;
+    private int date;
 
     public ProductNote(){}
 
-    public ProductNote(String proId, String proName, double proPrice,double proBuyPrice, double proQua, double proMin, String proImgeUrl,String barCode) {
+    public ProductNote(String proId, String proName, double proPrice,double proBuyPrice, double proQua, double proMin,
+                       String proImgeUrl,String barCode,String productCode,String productPrivacy,String productCategory,int date) {
         this.proId = proId;
         this.proName = proName;
         this.proPrice = proPrice;
@@ -25,9 +30,14 @@ public class ProductNote {
         this.proMin = proMin;
         this.proImgeUrl = proImgeUrl;
         this.barCode = barCode;
+        this.productCode = productCode;
+        this.productPrivacy = productPrivacy;
+        this.productCategory = productCategory;
+        this.date = date;
     }
 
-    public ProductNote(String proId, String proName, double proPrice,double proBuyPrice, double proQua, double proMin,String barCode) {
+    public ProductNote(String proId, String proName, double proPrice,double proBuyPrice, double proQua,
+                       double proMin,String barCode,String productCode,String productPrivacy,String productCategory,int date) {
         this.proId = proId;
         this.proName = proName;
         this.proPrice = proPrice;
@@ -35,6 +45,10 @@ public class ProductNote {
         this.proQua = proQua;
         this.proMin = proMin;
         this.barCode = barCode;
+        this.productCode = productCode;
+        this.productPrivacy = productPrivacy;
+        this.productCategory = productCategory;
+        this.date = date;
     }
 
     public void setUserID(String userID) {
@@ -116,5 +130,53 @@ public class ProductNote {
 
     public void setBarCode(String barCode) {
         this.barCode = barCode;
+    }
+
+    public void setProId(String proId) {
+        this.proId = proId;
+    }
+
+    public void setProName(String proName) {
+        this.proName = proName;
+    }
+
+    public void setProPrice(double proPrice) {
+        this.proPrice = proPrice;
+    }
+
+    public void setProImgeUrl(String proImgeUrl) {
+        this.proImgeUrl = proImgeUrl;
+    }
+
+    public String getProductCode() {
+        return productCode;
+    }
+
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
+    }
+
+    public String getProductPrivacy() {
+        return productPrivacy;
+    }
+
+    public void setProductPrivacy(String productPrivacy) {
+        this.productPrivacy = productPrivacy;
+    }
+
+    public String getProductCategory() {
+        return productCategory;
+    }
+
+    public void setProductCategory(String productCategory) {
+        this.productCategory = productCategory;
+    }
+
+    public int getDate() {
+        return date;
+    }
+
+    public void setDate(int date) {
+        this.date = date;
     }
 }

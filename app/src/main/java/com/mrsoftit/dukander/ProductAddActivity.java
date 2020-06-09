@@ -27,9 +27,12 @@ import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,11 +54,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import org.json.JSONObject;
 
@@ -67,9 +73,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 
 import okhttp3.MediaType;
@@ -94,11 +105,22 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
     FirebaseFirestore firebaseFirestore;
     ProgressDialog progressDialog;
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-    String   proIdup, productNameup,pruductBuyPriceup, productPriceup,productQuantaynup,pruductMinup,addresup,pruductImageup,barcodenumber;
+    String   proIdup, productNameup,pruductBuyPriceup, productPriceup,productQuantaynup,pruductMinup,addresup,pruductImageup,barcodenumber,privecyup,catagoryup;
 
     FloatingActionButton imageSeletprioduct;
 
 
+   private Spinner privacyspinner;
+    String privacyspinneritem;
+   private SearchableSpinner Categoryspinner;
+    String Categoryspinneritem;
+    String[] privacyspinnerList = { "Public", "private" };
+    String[] CategoryspinnerList = { "Mobiles","Tablets","Mobile accessories","Jewellers","Motorcycle accessories","Cosmetics","Grocery",
+    "Panjabi","Pajama","Shirts","Tee Shirt","Polo","Lungi","Man Shoes","Man Accessories","Saree", "Shalwar Kameez", "Shawls","Girls Panjabi",
+            "Nightwear", "Scarves", "Dupatta", "Girls Shoes", "Girls Accessories"};
+
+    String productCode;
+    int datenew;
 
     boolean image = false;
 
@@ -127,6 +149,12 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
 
     CollectionReference product = FirebaseFirestore.getInstance()
             .collection("users").document(user_id).collection("Product");
+
+     CollectionReference myInfo = FirebaseFirestore.getInstance()
+            .collection("users").document(user_id).collection("DukanInfo");
+
+    CollectionReference GlobleProduct = FirebaseFirestore.getInstance()
+            .collection("GlobleProduct");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,6 +194,9 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
         pruductBuyPrice = findViewById(R.id.pruductBuyPrice);
         imageSeletprioduct = findViewById(R.id.imageSeletprioduct);
 
+        privacyspinner = findViewById(R.id.privacyspinner);
+        Categoryspinner = findViewById(R.id.Categoryspinner);
+
 
 
         final Bundle bundle = getIntent().getExtras();
@@ -175,11 +206,12 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
 
             proIdup = bundle.getString("id");
             productNameup = bundle.getString("name");
+            privecyup = bundle.getString("privecy");
+            catagoryup = bundle.getString("catagory");
             barcodenumber = bundle.getString("code");
             productPriceup = bundle.getString("pprice");
             if (bundle.getString("pBprice")!=null){
                 pruductBuyPriceup = bundle.getString("pBprice");
-                Toast.makeText(this, pruductBuyPriceup+"", Toast.LENGTH_SHORT).show();
             }else {
                 pruductBuyPriceup = bundle.getString("pprice");
             }
@@ -241,6 +273,56 @@ if (barcodenumber!=null){
             }
         });
 
+        ArrayAdapter<String> privacyspinneradapter =  new ArrayAdapter<>(ProductAddActivity.this, android.R.layout.simple_spinner_dropdown_item, privacyspinnerList);
+        privacyspinner.setAdapter(privacyspinneradapter);
+
+        privacyspinner.setPrompt("privacy");
+        ArrayAdapter CategoryspinnerarrayAdapter = new ArrayAdapter(ProductAddActivity.this,android.R.layout.simple_spinner_dropdown_item,CategoryspinnerList);
+        Categoryspinner.setAdapter(CategoryspinnerarrayAdapter);
+
+        Categoryspinner.setPrompt("Category");
+
+        if (bundle!=null){
+
+            int privecyupInt = new ArrayList<String>(Arrays.asList(privacyspinnerList)).indexOf(privecyup);
+            int catagoryupInt = new ArrayList<String>(Arrays.asList(CategoryspinnerList)).indexOf(catagoryup);
+
+            privacyspinner.setSelection(privecyupInt);
+            Categoryspinner.setSelection(catagoryupInt);
+
+        }
+        privacyspinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+              privacyspinneritem = parent.getItemAtPosition(position).toString();
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        Categoryspinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+               Categoryspinneritem = parent.getItemAtPosition(position).toString();
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+
         addProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -249,6 +331,17 @@ if (barcodenumber!=null){
                     Toast.makeText(ProductAddActivity.this, " কোনও ইন্টারনেট সংযোগ নেই ", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                Random r = new Random();
+                int randomNumber = r.nextInt(1000);
+
+                Date calendar1 = Calendar.getInstance().getTime();
+                DateFormat df1 = new SimpleDateFormat("yyyyMMdd");
+                String todayString = df1.format(calendar1);
+               datenew = Integer.parseInt(todayString);
+
+                String s =String.valueOf(randomNumber);
+                productCode = todayString+s;
 
 
                 String name = productName.getText().toString();
@@ -260,6 +353,13 @@ if (barcodenumber!=null){
 
                 if (TextUtils.isEmpty(name) ){
                     Toast.makeText(getApplicationContext(), "নাম লিখুন...", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if (TextUtils.isEmpty(privacyspinneritem) ){
+                    Toast.makeText(getApplicationContext(), "Privacy লিখুন...", Toast.LENGTH_LONG).show();
+                    return;
+                }  if (TextUtils.isEmpty(Categoryspinneritem) ){
+                    Toast.makeText(getApplicationContext(), "Categorys লিখুন...", Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (TextUtils.isEmpty(price) ){
@@ -288,11 +388,11 @@ if (barcodenumber!=null){
                 final String pnmae = productName.getText().toString();
                 String pbarCode = productBarcodeNumber.getText().toString();
                 final String pps = productPrice.getText().toString();
-                double pp = Double.parseDouble(pps);
+                final double pp = Double.parseDouble(pps);
                 final String pBps = pruductBuyPrice.getText().toString();
                 final double pBp = Double.parseDouble(pBps);
                 final String pqs = productQuantayn.getText().toString();
-                double pq = Double.parseDouble(pqs);
+                final double pq = Double.parseDouble(pqs);
                 final String pms = pruductMin.getText().toString();
                 double pm = Double.parseDouble(pms);
 
@@ -319,16 +419,20 @@ if (barcodenumber!=null){
                 }
 
                 if ( bundle == null && mImageUri == null  ){
-                    product.add(new ProductNote(null, pnmae, pp,pBp, pq, pm,pbarCode)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    product.add(new ProductNote(null, pnmae, pp,pBp, pq, pm,pbarCode,productCode,privacyspinneritem,Categoryspinneritem,datenew)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentReference> task) {
                             if (task.isSuccessful()) {
                                 Toast.makeText(ProductAddActivity.this, pBp+" pBp", Toast.LENGTH_SHORT).show();
 
-                                String id = task.getResult().getId();
+                                final String id = task.getResult().getId();
                                 product.document(id).update("proId", id).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
+
+
+                                        setGlobleProduct(id,pnmae,pp,pq,productCode,privacyspinneritem,Categoryspinneritem,datenew);
+
                                         Toast.makeText(ProductAddActivity.this, " সফলভাবে সম্পন্ন ", Toast.LENGTH_SHORT).show();
 
                                     }
@@ -347,11 +451,13 @@ if (barcodenumber!=null){
 
                 if (bundle!=null && image == false) {
 
-                    product.document(id).update("proId", id, "proName", pnmae, "proPrice", pp,"proBuyPrice",pBp, "proQua", pq, "proMin", pm, "proImgeUrl", pruductImageup,"barCode",pbarCode)
+                    product.document(id).update("proId", id, "proName", pnmae, "proPrice", pp,"proBuyPrice",pBp, "proQua", pq, "proMin", pm, "proImgeUrl",
+                            pruductImageup,"barCode",pbarCode,"productPrivacy",privacyspinneritem,"productCategory",Categoryspinneritem)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
 
+                                    setGlobleProductupdate(id,pnmae,pp,pq,productCode,privacyspinneritem,Categoryspinneritem,datenew);
                                     Intent intent = new Intent(ProductAddActivity.this, ProductListActivity.class);
                                     startActivity(intent);
                                     finish();
@@ -473,6 +579,8 @@ if (barcodenumber!=null){
                                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
+
+
                                                         progressDialog.dismiss();
                                                     }
                                                 }).addOnFailureListener(new OnFailureListener() {
@@ -488,7 +596,7 @@ if (barcodenumber!=null){
 
                                     } else {
 
-                                        product.add(new ProductNote(null, pnmae, pp, pq,pBp, pm, uri.toString())).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                        product.add(new ProductNote(null, pnmae, pp, pq,pBp, pm, uri.toString(),productCode,privacyspinneritem,Categoryspinneritem,datenew)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                             @Override
                                             public void onComplete(@NonNull Task<DocumentReference> task) {
 
@@ -565,17 +673,17 @@ if (barcodenumber!=null){
 
             upload(file, new UploadCallback() {
                 @Override
-                public void onSuccess(String downloadLink) {
+                public void onSuccess(final String downloadLink) {
 
 
                     final String pnmae = productName.getText().toString();
                     String barCode = productBarcodeNumber.getText().toString();
                     final String pps = productPrice.getText().toString();
-                    double pp = Double.parseDouble(pps);
+                    final double pp = Double.parseDouble(pps);
                     final String pBps = pruductBuyPrice.getText().toString();
                     double pBp = Double.parseDouble(pBps);
                     final String pqs = productQuantayn.getText().toString();
-                    double pq = Double.parseDouble(pqs);
+                    final double pq = Double.parseDouble(pqs);
                     final String pms = pruductMin.getText().toString();
                     double pm = Double.parseDouble(pms);
 
@@ -585,6 +693,8 @@ if (barcodenumber!=null){
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
+                                        setGlobleProductupdate(id,pnmae,pp,pq,productCode,privacyspinneritem,Categoryspinneritem,datenew,downloadLink);
+
                                         progressDialog.dismiss();
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
@@ -599,18 +709,21 @@ if (barcodenumber!=null){
                         });
 
                     } else {
-                        product.add(new ProductNote(null, pnmae, pp,pBp, pq, pm, downloadLink,barCode)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                        product.add(new ProductNote(null, pnmae, pp,pBp, pq, pm, downloadLink,barCode,productCode,privacyspinneritem,Categoryspinneritem,datenew)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentReference> task) {
 
                                 if (task.isSuccessful()) {
 
-                                    String id = task.getResult().getId();
+                                    final String id = task.getResult().getId();
 
 
                                     product.document(id).update("proId", id).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
+
+
+                                            setGlobleProduct(id,pnmae,pp,pq,productCode,privacyspinneritem,Categoryspinneritem,datenew,downloadLink);
 
                                             Toast.makeText(ProductAddActivity.this, " সফলভাবে সম্পন্ন ", Toast.LENGTH_SHORT).show();
 
@@ -887,4 +1000,249 @@ if (barcodenumber!=null){
             }
         });
     }
+
+
+    public void setGlobleProduct(final String productId, final String productName, final double productPrice, final double productQuantidy, final String productCode, final String privecy, final String Catagury, final int date){
+
+        myInfo.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+
+                    String DukanName = null;
+                    String DukanImageUrl = null;
+                    String dukanderid = null;
+                    String dukanderPhone = null;
+                    String dukanderAddress = null;
+
+                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                        MyInfoNote myInfoNote = document.toObject(MyInfoNote.class);
+
+                        if (myInfoNote.getDukanName()!=null){
+                           DukanName = myInfoNote.getDukanName();
+                        }
+
+                        if (myInfoNote.getDukanaddpicurl()!=null){
+                            DukanImageUrl = myInfoNote.getDukanaddpicurl();
+                        }
+                        if (myInfoNote.getDukanphone()!=null){
+                            dukanderPhone = myInfoNote.getDukanphone();
+                        }
+                        if (myInfoNote.getDukanaddress()!=null){
+                            dukanderAddress = myInfoNote.getDukanaddress();
+                        }
+                       dukanderid = document.get("myid").toString();
+
+                    }
+
+                    Map<String, Object> GlobaleProductObject = new HashMap<>();
+                    GlobaleProductObject.put("productId", productId);
+                    GlobaleProductObject.put("productName", productName);
+                    GlobaleProductObject.put("productPrice", productPrice);
+                    GlobaleProductObject.put("productCode", productCode);
+                    GlobaleProductObject.put("productPrivacy", privecy);
+                    GlobaleProductObject.put("ShopName", DukanName);
+                    GlobaleProductObject.put("ShopPhone", dukanderPhone);
+                    GlobaleProductObject.put("ShopAddress", dukanderAddress);
+                    GlobaleProductObject.put("ShopId", dukanderid);
+                    GlobaleProductObject.put("productCategory", Catagury);
+                    GlobaleProductObject.put("date", date);
+                    GlobaleProductObject.put("proQua", productQuantidy);
+                    GlobaleProductObject.put("UserId", user_id);
+
+                    GlobleProduct.document(productId).set(GlobaleProductObject).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+
+                        }
+                    });
+                }
+            }
+        });
+
+
+    }
+    public void setGlobleProduct(final String productId, final String productName, final double productPrice, final double productQuantidy, final String productCode, final String privecy, final String Catagury, final int date, final String ImageUrl){
+
+        myInfo.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+
+                    String DukanName = null;
+                    String DukanImageUrl = null;
+                    String dukanderid = null;
+                    String dukanderPhone = null;
+                    String dukanderAddress = null;
+
+                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                        MyInfoNote myInfoNote = document.toObject(MyInfoNote.class);
+
+                        if (myInfoNote.getDukanName()!=null){
+                           DukanName = myInfoNote.getDukanName();
+                        }
+
+                        if (myInfoNote.getDukanaddpicurl()!=null){
+                            DukanImageUrl = myInfoNote.getDukanaddpicurl();
+                        }
+                        if (myInfoNote.getDukanphone()!=null){
+                            dukanderPhone = myInfoNote.getDukanphone();
+                        }
+                        if (myInfoNote.getDukanaddress()!=null){
+                            dukanderAddress = myInfoNote.getDukanaddress();
+                        }
+                       dukanderid = document.get("myid").toString();
+
+                    }
+
+                    Map<String, Object> GlobaleProductObject = new HashMap<>();
+                    GlobaleProductObject.put("productId", productId);
+                    GlobaleProductObject.put("productName", productName);
+                    GlobaleProductObject.put("productPrice", productPrice);
+                    GlobaleProductObject.put("producImagetUrl",ImageUrl);
+                    GlobaleProductObject.put("productCode", productCode);
+                    GlobaleProductObject.put("productPrivacy", privecy);
+                    GlobaleProductObject.put("ShopName", DukanName);
+                    GlobaleProductObject.put("ShopPhone", dukanderPhone);
+                    GlobaleProductObject.put("ShopAddress", dukanderAddress);
+                    GlobaleProductObject.put("ShopId", dukanderid);
+                    GlobaleProductObject.put("productCategory", Catagury);
+                    GlobaleProductObject.put("date", date);
+                    GlobaleProductObject.put("proQua", productQuantidy);
+                    GlobaleProductObject.put("UserId", user_id);
+
+                    GlobleProduct.document(productId).set(GlobaleProductObject).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+
+                        }
+                    });
+                }
+            }
+        });
+
+
+    }
+    public void setGlobleProductupdate(final String productId, final String productName, final double productPrice, final double productQuantidy, final String productCode, final String privecy, final String Catagury, final int date, final String ImageUrl){
+
+        myInfo.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+
+                    String DukanName = null;
+                    String DukanImageUrl = null;
+                    String dukanderid = null;
+                    String dukanderPhone = null;
+                    String dukanderAddress = null;
+
+                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                        MyInfoNote myInfoNote = document.toObject(MyInfoNote.class);
+
+                        if (myInfoNote.getDukanName()!=null){
+                           DukanName = myInfoNote.getDukanName();
+                        }
+
+                        if (myInfoNote.getDukanaddpicurl()!=null){
+                            DukanImageUrl = myInfoNote.getDukanaddpicurl();
+                        }
+                        if (myInfoNote.getDukanphone()!=null){
+                            dukanderPhone = myInfoNote.getDukanphone();
+                        }
+                        if (myInfoNote.getDukanaddress()!=null){
+                            dukanderAddress = myInfoNote.getDukanaddress();
+                        }
+                       dukanderid = document.get("myid").toString();
+
+                    }
+
+                    Map<String, Object> GlobaleProductObject = new HashMap<>();
+                    GlobaleProductObject.put("productId", productId);
+                    GlobaleProductObject.put("productName", productName);
+                    GlobaleProductObject.put("productPrice", productPrice);
+                    GlobaleProductObject.put("producImagetUrl",ImageUrl);
+                    GlobaleProductObject.put("productPrivacy", privecy);
+                    GlobaleProductObject.put("ShopName", DukanName);
+                    GlobaleProductObject.put("ShopPhone", dukanderPhone);
+                    GlobaleProductObject.put("ShopAddress", dukanderAddress);
+                    GlobaleProductObject.put("ShopId", dukanderid);
+                    GlobaleProductObject.put("productCategory", Catagury);
+                    GlobaleProductObject.put("date", date);
+                    GlobaleProductObject.put("proQua", productQuantidy);
+                    GlobaleProductObject.put("UserId", user_id);
+
+                    GlobleProduct.document(productId).set(GlobaleProductObject).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+
+                        }
+                    });
+                }
+            }
+        });
+
+
+    }
+    public void setGlobleProductupdate(final String productId, final String productName, final double productPrice, final double productQuantidy, final String productCode, final String privecy, final String Catagury, final int date){
+
+        myInfo.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+
+                    String DukanName = null;
+                    String DukanImageUrl = null;
+                    String dukanderid = null;
+                    String dukanderPhone = null;
+                    String dukanderAddress = null;
+
+                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                        MyInfoNote myInfoNote = document.toObject(MyInfoNote.class);
+
+                        if (myInfoNote.getDukanName()!=null){
+                            DukanName = myInfoNote.getDukanName();
+                        }
+
+                        if (myInfoNote.getDukanaddpicurl()!=null){
+                            DukanImageUrl = myInfoNote.getDukanaddpicurl();
+                        }
+                        if (myInfoNote.getDukanphone()!=null){
+                            dukanderPhone = myInfoNote.getDukanphone();
+                        }
+                        if (myInfoNote.getDukanaddress()!=null){
+                            dukanderAddress = myInfoNote.getDukanaddress();
+                        }
+                        dukanderid = document.get("myid").toString();
+
+                    }
+
+                    Map<String, Object> GlobaleProductObject = new HashMap<>();
+                    GlobaleProductObject.put("productId", productId);
+                    GlobaleProductObject.put("productName", productName);
+                    GlobaleProductObject.put("productPrice", productPrice);
+                    GlobaleProductObject.put("productPrivacy", privecy);
+                    GlobaleProductObject.put("ShopName", DukanName);
+                    GlobaleProductObject.put("ShopPhone", dukanderPhone);
+                    GlobaleProductObject.put("ShopAddress", dukanderAddress);
+                    GlobaleProductObject.put("ShopId", dukanderid);
+                    GlobaleProductObject.put("productCategory", Catagury);
+                    GlobaleProductObject.put("date", date);
+                    GlobaleProductObject.put("proQua", productQuantidy);
+                    GlobaleProductObject.put("UserId", user_id);
+
+                    GlobleProduct.document(productId).update(GlobaleProductObject).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+
+                        }
+                    });
+                }
+            }
+        });
+
+
+    }
+
+
+
 }

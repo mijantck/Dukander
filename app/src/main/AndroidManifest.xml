@@ -22,7 +22,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TotalSaleActivity"></activity>
+        <activity android:name=".GlobleProductListActivity"></activity>
+        <activity android:name=".CutomerOrShopManSeletionActivity" />
+        <activity android:name=".TotalSaleActivity" />
         <activity android:name=".ProfitActivity" />
         <activity android:name=".PinSetActivity" />
         <activity android:name=".ChangePinActivity" />
@@ -60,20 +62,13 @@
             android:exported="false"
             android:grantUriPermissions="true"
             android:requestLegacyExternalStorage="true">
-
-
-          <meta-data
+            <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
-
             <meta-data
                 android:name="preloaded_fonts"
                 android:resource="@array/preloaded_fonts" />
         </provider>
-
-
-
-
     </application>
 
 </manifest>

@@ -20,6 +20,11 @@
     <string name="investment">বিনিয়োগ</string>
 
 
+
+
+    <string name="privacy"> privacy </string>
+    <string name="Category"> Category </string>
+
     <array name="sample_list">
         <item>@string/IndeterminateProgressSample</item>
         <item>@string/IntegerProgressSample</item>

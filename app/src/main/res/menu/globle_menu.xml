@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/shoplist"
+            android:icon="@drawable/ic_person"
+            android:title="Shop List " />
+
+
+    </group>
+    <item android:title="Phones">
+        <menu>
+            <item
+                android:id="@+id/mobile"
+                android:icon="@drawable/logout"
+                android:title="Mobile " />
+            <item
+                android:id="@+id/tablet"
+                android:icon="@drawable/logout"
+                android:title="Tablet " />
+
+        </menu>
+    </item>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/Contact_us"
+                android:icon="@drawable/logout"
+                android:title="Contact us " />
+            <item
+                android:id="@+id/nav_share"
+               android:icon="@drawable/logout"
+                android:title="প্রস্থান " />
+
+        </menu>
+    </item>
+
+</menu>

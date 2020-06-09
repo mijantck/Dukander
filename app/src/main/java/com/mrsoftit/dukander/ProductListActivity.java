@@ -220,6 +220,8 @@ public class ProductListActivity extends AppCompatActivity {
                             String id = documentSnapshot.getId();
                             String imageurl = productNote.getProImgeUrl();
                             String name = productNote.getProName();
+                            String privecy = productNote.getProductPrivacy();
+                            String catagory = productNote.getProductCategory();
                             String barcode = productNote.getBarCode();
                             String pp = String.valueOf(productNote.getProPrice());
                             String pBp = String.valueOf(productNote.getProBuyPrice());
@@ -239,6 +241,8 @@ public class ProductListActivity extends AppCompatActivity {
                             pdfIntent.putExtra("pQuan", pq);
 
                             pdfIntent.putExtra("pmini", pm);
+                            pdfIntent.putExtra("privecy", privecy);
+                            pdfIntent.putExtra("catagory", catagory);
 
                             startActivity(pdfIntent);
 
@@ -413,7 +417,7 @@ public class ProductListActivity extends AppCompatActivity {
 
     private void initialiseDetectorsAndSources() {
 
-        //Toast.makeText(getApplicationContext(), "Barcode scanner started", Toast.LENGTH_SHORT).show();
+
 
         barcodeDetector = new BarcodeDetector.Builder(this)
                 .setBarcodeFormats(Barcode.ALL_FORMATS)
@@ -456,7 +460,6 @@ public class ProductListActivity extends AppCompatActivity {
         barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
             @Override
             public void release() {
-                // Toast.makeText(getApplicationContext(), "To prevent memory leaks barcode scanner has been stopped", Toast.LENGTH_SHORT).show();
             }
 
             @Override

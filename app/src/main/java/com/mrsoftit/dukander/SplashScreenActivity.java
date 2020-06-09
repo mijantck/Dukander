@@ -16,7 +16,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         EasySplashScreen config = new EasySplashScreen(SplashScreenActivity.this)
                 .withFullScreen()
-                .withTargetActivity(LoginActivity.class)
+                .withTargetActivity(CutomerOrShopManSeletionActivity.class)
                 .withSplashTimeOut(3000)
                 .withBackgroundColor(Color.parseColor("#11CFC5"))
                 .withFooterText("দোকানদার অ্যাপ্লিকেশনে স্বাগতম")
