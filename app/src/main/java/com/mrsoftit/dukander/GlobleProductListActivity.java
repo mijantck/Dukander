@@ -84,6 +84,10 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
 
         switch (item.getItemId()) {
 
+            case R.id.loginGloble:
+                startActivity(new Intent(GlobleProductListActivity.this,LoginActivity.class));
+                finish();
+                break;
             case R.id.shoplist:
                 Toast.makeText(this, " ShopList", Toast.LENGTH_SHORT).show();
                 break;
@@ -113,7 +117,7 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
     private void allProductShow() {
 
 
-        Query query = GlobleProduct.whereEqualTo("productPrivacy","Public");
+        Query query = GlobleProduct.whereEqualTo("productPrivacy","Public").orderBy("date", Query.Direction.DESCENDING).limit(15);
 
         FirestoreRecyclerOptions<GlobleProductNote> options = new FirestoreRecyclerOptions.Builder<GlobleProductNote>()
                 .setQuery(query, GlobleProductNote.class)

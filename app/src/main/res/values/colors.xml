@@ -135,5 +135,14 @@
 
     <color name="pro_cart_textcolor">#b8b8b8</color>
 
+    <color name="tcolorPrimary">#008577</color>
+    <color name="tcolorPrimaryDark">#00574B</color>
+    <color name="tcolorAccent">#03A9F4</color>
+    <color name="tcolorPrimaryText">#212121</color>
+    <color name="tcolorTextORIcon">#FFFFFF</color>
+    <color name="tcolorSecondaryText">#757575</color>
+    <color name="tcolorDivide">#BDBDBD</color>
+
+
 
 </resources>

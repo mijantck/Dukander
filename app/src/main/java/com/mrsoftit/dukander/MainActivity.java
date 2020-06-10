@@ -410,10 +410,13 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 Intent rechargeInte =new Intent(MainActivity.this, rechargeActivity.class);
                 startActivity(rechargeInte);
                 break;
+                case R.id.Market:
+                Intent MarketInte =new Intent(MainActivity.this, GlobleProductListActivity.class);
+                startActivity(MarketInte);
+                break;
             case R.id.nav_share:
 
                 signOut();
-
                 revokeAccess();
                Intent resultIntnt1 =new Intent(MainActivity.this,LoginActivity.class);
                startActivity(resultIntnt1);
@@ -437,47 +440,48 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         assert currentUser != null;
-        String user_id = currentUser.getUid();
 
-        final CollectionReference myInfo = FirebaseFirestore.getInstance()
-                .collection("users").document(user_id).collection("DukanInfo");
+        if (currentUser != null) {
+            String user_id = currentUser.getUid();
+
+            final CollectionReference myInfo = FirebaseFirestore.getInstance()
+                    .collection("users").document(user_id).collection("DukanInfo");
 
 
+            NavigationView navigationView = findViewById(R.id.navigationView);
+            View headeView = navigationView.getHeaderView(0);
 
-        NavigationView navigationView = findViewById(R.id.navigationView);
-        View headeView = navigationView.getHeaderView(0);
+            final ImageView appCompatImageView = headeView.findViewById(R.id.appCompatImageView);
+            final TextView dukanname = headeView.findViewById(R.id.dukanname);
+            final TextView dukanEmail = headeView.findViewById(R.id.dukanEmail);
 
-        final ImageView appCompatImageView = headeView.findViewById(R.id.appCompatImageView);
-        final TextView dukanname = headeView.findViewById(R.id.dukanname);
-        final TextView dukanEmail = headeView.findViewById(R.id.dukanEmail);
+            dukanEmail.setText(currentUser.getEmail() + "");
 
-        dukanEmail.setText(currentUser.getEmail()+"");
+            myInfo.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                            MyInfoNote myInfoNote = document.toObject(MyInfoNote.class);
 
-        myInfo.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                        MyInfoNote myInfoNote = document.toObject(MyInfoNote.class);
+                            dukanname.setText(myInfoNote.getDukanName());
 
-                        dukanname.setText(myInfoNote.getDukanName());
+                            if (myInfoNote.getDukanaddpicurl() != null) {
+                                Uri uri = Uri.parse(myInfoNote.getDukanaddpicurl());
+                                myUri = uri;
+                                Picasso.get().load(uri).into(appCompatImageView);
+                            }
+                            id = document.get("myid").toString();
 
-                        if (myInfoNote.getDukanaddpicurl()!=null){
-                            Uri uri = Uri.parse(myInfoNote.getDukanaddpicurl());
-                             myUri = uri;
-                            Picasso.get().load(uri).into(appCompatImageView);
+                            mydate = myInfoNote.getDate();
+                            picname = myInfoNote.getPicName();
+
+
                         }
-                        id = document.get("myid").toString();
-
-                        mydate = myInfoNote.getDate();
-                        picname = myInfoNote.getPicName();
-
-
-
                     }
                 }
-            }
-        });
+            });
+        }
 
     }
 

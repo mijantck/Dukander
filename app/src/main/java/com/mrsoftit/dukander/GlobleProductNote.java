@@ -4,7 +4,7 @@ public class GlobleProductNote {
 
     private String productId;
     private String productName;
-    private Double productPrice;
+    private double productPrice;
     private String productCode;
     private String productPrivacy;
     private String producImagetUrl;
@@ -16,7 +16,7 @@ public class GlobleProductNote {
     private String UserId;
     private String productCategory;
     private int date;
-    private Double proQua;
+    private double proQua;
 
     public GlobleProductNote() {
     }

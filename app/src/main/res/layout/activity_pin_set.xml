@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".PinViewActivity"
-    android:background="@color/register_bk_color">
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,25 +18,29 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <RelativeLayout
+                android:gravity="center"
+                android:layout_marginTop="100dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/door"
+                    android:src="@drawable/iconsopen_door"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
                 <TextView
+                    android:gravity="center"
+                    android:layout_below="@+id/door"
                     android:id="@+id/titeleTaxt"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginTop="50dp"
+                    android:layout_marginTop="30dp"
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:textSize="20dp"
-                    android:textColor="#FFF"
-                    android:text="এখানে \n আপনার \n সুরক্ষা \n কোড দিন!"/>
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_login_hero"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentRight="true"/>
+
+                    android:text="এখানে আপনার  সুরক্ষা  কোড দিন!"/>
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -46,21 +50,20 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/newPinCode"
                     android:visibility="visible"
-                    android:layout_marginTop="100dp"
+                    android:layout_marginTop="50dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="5dp"
-                    app:cardBackgroundColor="@color/register_bk_color"
                     app:cardCornerRadius="10dp">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_margin="10dp"
                         android:padding="5dp"
-                        android:background="@color/register_bk_color"
+
                         android:orientation="vertical">
                         <TextView
-                            android:textColor="@color/whiteCardColor"
+                            android:textColor="#000"
                             android:gravity="center"
                             android:textSize="20dp"
                             android:text="সুরক্ষা কোড সেট করুন "

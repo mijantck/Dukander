@@ -34,12 +34,13 @@ public class GlobleProductListAdapter  extends FirestoreRecyclerAdapter<GloblePr
             String Url = model.getProducImagetUrl();
             Picasso.get().load(Url).into(holder.productImage);
         }
-        if (model.getProQua()>=0){
-            holder.instock.setText("In stock");
-            holder.instock.setTextColor(Color.GREEN);
-        }else {
+        if (model.getProQua()<=0){
             holder.instock.setText("Stock out");
             holder.instock.setTextColor(Color.RED);
+        }else {
+            holder.instock.setText("In stock");
+            holder.instock.setTextColor(Color.GREEN);
+
         }
 
     }

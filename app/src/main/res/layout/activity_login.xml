@@ -1,245 +1,226 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".InvesmentActivity"
-    android:background="@color/login_bk_color"
-    android:focusableInTouchMode="true"
-    android:gravity="center"
-    android:layout_gravity="center">
-    <ScrollView
+    tools:context=".InvesmentActivity">
+
+    <TextView
+        android:id="@+id/tvTitleApp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_layout"
+        android:layout_marginTop="@dimen/margin_title_app"
+        android:fontFamily="@font/nunito_sans_bold"
+        android:text="@string/text_title_app"
+        android:textColor="@color/tcolorPrimaryText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvSubtitleSignIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nunito_sans_reguler"
+        android:text="@string/text_subtitle_sign_in"
+        android:textColor="@color/tcolorPrimaryText"
+        android:textSize="@dimen/text_body_size"
+        app:layout_constraintStart_toStartOf="@+id/tvTitleApp"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitleApp" />
+
+
+    <LinearLayout
+        android:id="@+id/loginLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_centerInParent="true"
-        android:paddingTop="20dp">
-        <LinearLayout
+        android:orientation="vertical"
+        app:errorEnabled="true"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginLeft="25dp"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitleApp"
+        tools:layout_editor_absoluteX="24dp">
+
+        <!--  Email Label -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="20dp">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textSize="20dp"
-                    android:textColor="@color/black"
-                    android:text="ইতিমধ্যে \n একটি \n অ্যাকাউন্ট \n আছে?"/>
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="@dimen/loginViewsMargin"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="12dp"
+            android:hint="ইমেইল">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_register_hero"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentRight="true"/>
-            </RelativeLayout>
-
-            <LinearLayout
-                android:id="@+id/loginLayout"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:inputType="textEmailAddress" />
 
-            <!--  Email Label -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginLeft="5dp"
-                android:hint="ইমেইল"
-
-                style="@style/parent"
-                android:layout_marginTop="@dimen/loginViewsMargin">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/input_email"
-                    style="@style/modifiedEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"
-
-                    />
-
-            </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
 
+        <!--  Password Label -->
 
-            <!--  Password Label -->
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginLeft="5dp"
-                android:hint="পাসওয়ার্ড"
-                style="@style/parent"
-                android:layout_marginTop="@dimen/loginViewsMargin">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/input_password"
-                    style="@style/modifiedEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPassword"
-
-                    />
-
-            </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
-
-        <LinearLayout
-            android:visibility="gone"
-            android:id="@+id/forgetPasswordLayout"
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="@dimen/loginViewsMargin"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="12dp"
+            android:hint="পাসওয়ার্ড">
 
-            <!--  Email Label -->
-            <com.google.android.material.textfield.TextInputLayout
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginLeft="5dp"
-                android:hint="ইমেইল"
-                android:background="#FFF"
-                style="@style/parent"
-                android:layout_marginTop="@dimen/loginViewsMargin">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/forgetPassword_email"
-                    style="@style/modifiedEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"
+                android:inputType="textPassword"
 
-                    />
+                />
 
-            </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
 
-            <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
-                android:id="@+id/forgetPasswordLink"
-                style="@style/loginButton"
-                app:spinning_bar_width="4dp"
-                app:spinning_bar_color="#FFF"
-                android:text=" পাসওয়ার্ড লিঙ্ক পাঠান"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/loginViewsMargin"
-                app:spinning_bar_padding="6dp"
-                app:initialCornerAngle="27dp"/>
-        </LinearLayout>
-            <TextView
-                android:id="@+id/forgetPassword"
-                style="@style/viewParent"
-                android:text="পাসওয়ার্ড ভুলে গেছেন?"
-                android:textColor="@color/primaryTextColor"
-                android:textSize="@dimen/newsMoreTextSize"
-                android:layout_gravity="end"
-                android:layout_marginTop="10dp"/>
+    <LinearLayout
+        android:id="@+id/forgetPasswordLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_layout"
+        android:layout_marginTop="@dimen/margin_input_layout"
+        android:layout_marginEnd="@dimen/margin_layout"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:errorEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvSubtitleSignIn">
 
-            <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
-                android:id="@+id/btn_login"
-                style="@style/loginButton"
-                app:spinning_bar_width="4dp"
-                app:spinning_bar_color="#FFF"
-                android:text="প্রবেশ করুন"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/loginViewsMargin"
-                app:spinning_bar_padding="6dp"
-                app:initialCornerAngle="27dp"/>
+        <!--  Email Label -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="@dimen/loginViewsMargin"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="12dp"
+            android:background="#FFF"
+            android:hint="ইমেইল">
 
-            <TextView
-                style="@style/parent"
-                android:textAlignment="center"
-                android:textStyle="bold"
-                android:textColor="@color/themeColor"
-                android:textSize="17sp"
-                android:text="নতুন ব্যবহারকারী? এখন নিবন্ধন করুন"
-                android:layout_marginTop="@dimen/loginViewsMargin"
-                android:onClick="onRegestetionClick"/>
-
-
-            <LinearLayout
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/forgetPassword_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="12"
-                android:gravity="center"
-                android:layout_marginTop="30dp">
+                android:inputType="textEmailAddress"
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:background="@color/colorPrimaryDark"
-                    android:layout_weight="3"/>
+                />
 
-                <TextView
-                    style="@style/viewParent.headerText.NoMode"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="অন্যান্য পদ্ধতি ব্যবহার করুন"
-                    android:layout_weight="6"
-                    android:textSize="12sp"
-                    android:textAlignment="center"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:background="@color/colorPrimaryDark"
-                    android:layout_weight="3"/>
+        <Button
+            android:id="@+id/forgetPasswordLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/loginViewsMargin"
+            android:text=" পাসওয়ার্ড লিঙ্ক পাঠান" />
+    </LinearLayout>
 
-            </LinearLayout>
+    <TextView
+        android:id="@+id/tvForgotPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nunito_sans_bold"
+        android:text="@string/text_btn_forgot_password"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/text_btn_size"
+        app:layout_constraintEnd_toEndOf="@+id/loginLayout"
+        app:layout_constraintTop_toBottomOf="@+id/loginLayout" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginTop="20dp"
-                >
-                <com.google.android.gms.common.SignInButton
-                    android:id="@+id/sign_in_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    />
-            </LinearLayout>
+    <Button
+        android:id="@+id/btnFirebaseSignIn"
+        android:layout_width="363dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:fontFamily="@font/nunito_sans_bold"
+        android:text="@string/text_btn_sign_in"
+        android:textColor="@color/tcolorTextORIcon"
+        android:textSize="@dimen/text_btn_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvForgotPassword" />
 
-        </LinearLayout>
-    </ScrollView>
+    <TextView
+        android:id="@+id/tvOR"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_standard"
+        android:fontFamily="@font/nunito_sans_reguler"
+        android:text="@string/text_or"
+        android:textColor="@color/tcolorSecondaryText"
+        android:textSize="@dimen/text_caption_size"
+        app:layout_constraintEnd_toEndOf="@+id/btnFirebaseSignIn"
+        app:layout_constraintStart_toStartOf="@+id/btnFirebaseSignIn"
+        app:layout_constraintTop_toBottomOf="@+id/btnFirebaseSignIn" />
+
     <View
-        android:layout_marginTop="20dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_width="11dp"
-        android:layout_height="match_parent"
-        android:background="@drawable/ic_side_bg"/>
-    <ImageView
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_add_img"
-        android:layout_marginRight="11dp"
-        android:layout_marginBottom="30dp"
-        android:onClick="onRegestetionClick"/>
+        android:id="@+id/vStrokeLeft"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginEnd="@dimen/margin_standard"
+        android:background="@color/tcolorDivide"
+        app:layout_constraintBottom_toBottomOf="@+id/tvOR"
+        app:layout_constraintEnd_toStartOf="@id/tvOR"
+        app:layout_constraintStart_toStartOf="@+id/btnFirebaseSignIn"
+        app:layout_constraintTop_toTopOf="@+id/tvOR" />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
+    <View
+        android:id="@+id/vStrokeRight"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/margin_standard"
+        android:background="@color/tcolorDivide"
+        app:layout_constraintBottom_toBottomOf="@+id/tvOR"
+        app:layout_constraintEnd_toEndOf="@id/btnFirebaseSignIn"
+        app:layout_constraintStart_toEndOf="@+id/tvOR"
+        app:layout_constraintTop_toTopOf="@+id/tvOR" />
+
+    <LinearLayout
+        android:id="@+id/googleid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/tvOR">
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/tvToSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone" />
-</RelativeLayout>
+        android:fontFamily="@font/nunito_sans_reguler"
+        android:text="@string/text_to_sign_up"
+        android:textColor="@color/tcolorPrimaryText"
+        android:textSize="@dimen/text_caption_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/googleid" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

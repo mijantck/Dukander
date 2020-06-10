@@ -3,13 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     >
 
+    <item android:title="If you have a store">
+        <menu>
+            <item
+                android:id="@+id/loginGloble"
+                android:icon="@drawable/logout"
+                android:title="Login " />
+
+
+        </menu>
+    </item>
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/shoplist"
             android:icon="@drawable/ic_person"
             android:title="Shop List " />
-
-
     </group>
     <item android:title="Phones">
         <menu>
@@ -21,9 +29,133 @@
                 android:id="@+id/tablet"
                 android:icon="@drawable/logout"
                 android:title="Tablet " />
+            <item
+                android:id="@+id/Mobile_accessories"
+                android:icon="@drawable/logout"
+                android:title="Mobile accessories " />
 
         </menu>
     </item>
+    <item android:title="Jewellers">
+        <menu>
+            <item
+                android:id="@+id/Jewellers"
+                android:icon="@drawable/logout"
+                android:title="Jewellers " />
+
+
+        </menu>
+    </item>
+
+    <item android:title="Motorcycle accessories">
+        <menu>
+            <item
+                android:id="@+id/Motorcycle_accessories"
+                android:icon="@drawable/logout"
+                android:title="Motorcycle accessories " />
+
+
+        </menu>
+    </item>
+
+    <item android:title="Cosmetics">
+        <menu>
+            <item
+                android:id="@+id/Cosmetics"
+                android:icon="@drawable/logout"
+                android:title="Cosmetics" />
+
+
+        </menu>
+    </item>
+
+    <item android:title="Grocery">
+        <menu>
+            <item
+                android:id="@+id/Grocery"
+                android:icon="@drawable/logout"
+                android:title="Grocery" />
+
+
+        </menu>
+    </item>
+    <item android:title="Mans Collection">
+        <menu>
+            <item
+                android:id="@+id/Panjabi"
+                android:icon="@drawable/logout"
+                android:title="Panjabi" />
+            <item
+                android:id="@+id/Pajama"
+                android:icon="@drawable/logout"
+                android:title="Pajama" />
+            <item
+                android:id="@+id/Shirts"
+                android:icon="@drawable/logout"
+                android:title="Shirts" />
+            <item
+                android:id="@+id/Tee_Shirt"
+                android:icon="@drawable/logout"
+                android:title="Tee Shirt" />
+            <item
+                android:id="@+id/Polo"
+                android:icon="@drawable/logout"
+                android:title="Polo" />
+            <item
+                android:id="@+id/Lungi"
+                android:icon="@drawable/logout"
+                android:title="Lungi" />
+            <item
+                android:id="@+id/Man_Shoes"
+                android:icon="@drawable/logout"
+                android:title="Man Shoes" />
+            <item
+                android:id="@+id/Man_Accessories"
+                android:icon="@drawable/logout"
+                android:title="Man Accessories" />
+        </menu>
+    </item>
+    <item android:title="Girls Collection">
+        <menu>
+            <item
+                android:id="@+id/Saree"
+                android:icon="@drawable/logout"
+                android:title="Saree" />
+            <item
+                android:id="@+id/Shalwar_Kameez"
+                android:icon="@drawable/logout"
+                android:title="Shalwar Kameez" />
+            <item
+                android:id="@+id/Shawls"
+                android:icon="@drawable/logout"
+                android:title="Shawls" />
+            <item
+                android:id="@+id/Girls_Panjabi"
+                android:icon="@drawable/logout"
+                android:title="Girls Panjabi" />
+            <item
+                android:id="@+id/Nightwear"
+                android:icon="@drawable/logout"
+                android:title="Nightwear" />
+            <item
+                android:id="@+id/Scarves"
+                android:icon="@drawable/logout"
+                android:title="Scarves" />
+            <item
+                android:id="@+id/Dupatta"
+                android:icon="@drawable/logout"
+                android:title="Dupatta" />
+            <item
+                android:id="@+id/Girls_Shoes"
+                android:icon="@drawable/logout"
+                android:title="Man Shoes" />
+            <item
+                android:id="@+id/Girls_Accessories"
+                android:icon="@drawable/logout"
+                android:title="Girls Accessories" />
+        </menu>
+    </item>
+
 
     <item android:title="Communicate">
         <menu>
@@ -31,10 +163,6 @@
                 android:id="@+id/Contact_us"
                 android:icon="@drawable/logout"
                 android:title="Contact us " />
-            <item
-                android:id="@+id/nav_share"
-               android:icon="@drawable/logout"
-                android:title="প্রস্থান " />
 
         </menu>
     </item>

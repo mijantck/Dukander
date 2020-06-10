@@ -14,6 +14,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,8 +36,7 @@ public class RegestationActivity extends AppCompatActivity {
     TextInputEditText editTextEmail,editTextPassword;
 
     TextView alredyResistetionTextView;
-    ImageView alredyResistetionImage;
-    CircularProgressButton cirRegisterButton;
+    Button cirRegisterButton;
 
     ProgressDialog progressDialog;
 
@@ -47,7 +47,7 @@ public class RegestationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_regesstion);
 
         alredyResistetionTextView =findViewById(R.id.alredyResistetionTextView);
-        alredyResistetionImage =findViewById(R.id.alredyResistetionImage);
+
         editTextEmail =findViewById(R.id.editTextEmailregistesion);
         editTextPassword =findViewById(R.id.editTextPassword);
         cirRegisterButton =findViewById(R.id.cirRegisterButton);
@@ -60,12 +60,7 @@ public class RegestationActivity extends AppCompatActivity {
                 onLoginClick();
             }
         });
-        alredyResistetionImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onLoginClick();
-            }
-        });
+
 
         changeStatusBarColor();
 
