@@ -4,14 +4,17 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.squareup.picasso.Picasso;
 
 public class GlobleProductListAdapter  extends FirestoreRecyclerAdapter<GlobleProductNote,GlobleProductListAdapter.ViewHolde> {
@@ -22,6 +25,9 @@ public class GlobleProductListAdapter  extends FirestoreRecyclerAdapter<GloblePr
      *
      * @param options
      */
+
+    private OnItemClickListener listener;
+
     public GlobleProductListAdapter(@NonNull FirestoreRecyclerOptions<GlobleProductNote> options) {
         super(options);
     }
@@ -30,6 +36,8 @@ public class GlobleProductListAdapter  extends FirestoreRecyclerAdapter<GloblePr
     protected void onBindViewHolder(@NonNull ViewHolde holder, int position, @NonNull GlobleProductNote model) {
         holder.name.setText(model.getProductName());
         holder.price.setText(model.getProductPrice()+"");
+
+
         if (model.getProducImagetUrl()!=null){
             String Url = model.getProducImagetUrl();
             Picasso.get().load(Url).into(holder.productImage);
@@ -37,7 +45,9 @@ public class GlobleProductListAdapter  extends FirestoreRecyclerAdapter<GloblePr
         if (model.getProQua()<=0){
             holder.instock.setText("Stock out");
             holder.instock.setTextColor(Color.RED);
+
         }else {
+
             holder.instock.setText("In stock");
             holder.instock.setTextColor(Color.GREEN);
 
@@ -65,7 +75,29 @@ public class GlobleProductListAdapter  extends FirestoreRecyclerAdapter<GloblePr
             instock = itemView.findViewById(R.id.inStock);
             price = itemView.findViewById(R.id.productPrice);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION && listener != null) {
+                        listener.onItemClick(getSnapshots().getSnapshot(position), position);
+                    }
+                }
+            });
 
         }
+
+
     }
+
+
+    public interface OnItemClickListener {
+        void onItemClick(DocumentSnapshot documentSnapshot, int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
 }

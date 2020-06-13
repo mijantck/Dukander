@@ -41,6 +41,11 @@
     <item android:title="Communicate">
         <menu>
             <item
+                android:id="@+id/OrderList"
+                android:icon="@drawable/logout"
+                android:title="OrderList " />
+
+            <item
                 android:id="@+id/Contact_us"
                 android:icon="@drawable/logout"
                 android:title="Contact us " />

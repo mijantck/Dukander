@@ -3,14 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     >
 
-    <item android:title="If you have a store">
+    <item android:title="signin or signup">
         <menu>
             <item
                 android:id="@+id/loginGloble"
                 android:icon="@drawable/logout"
                 android:title="Login " />
-
-
+            <item
+                android:id="@+id/OrderListGloble"
+                android:icon="@drawable/logout"
+                android:title="OrderList " />
         </menu>
     </item>
     <group android:checkableBehavior="single">
@@ -148,7 +150,7 @@
             <item
                 android:id="@+id/Girls_Shoes"
                 android:icon="@drawable/logout"
-                android:title="Man Shoes" />
+                android:title="Girls Shoes" />
             <item
                 android:id="@+id/Girls_Accessories"
                 android:icon="@drawable/logout"
