@@ -420,7 +420,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 revokeAccess();
                Intent resultIntnt1 =new Intent(MainActivity.this,LoginActivity.class);
                startActivity(resultIntnt1);
-
+               finish();
                 break;
 
         }

@@ -33,13 +33,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <LinearLayout
+                android:id="@+id/GlobleHomePage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
             <androidx.cardview.widget.CardView
                 app:cardCornerRadius="6dp"
                 android:layout_margin="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
-
                 <com.smarteist.autoimageslider.SliderView
                     android:id="@+id/imageSlider"
                     android:layout_width="match_parent"
@@ -59,7 +63,7 @@
                     app:sliderStartAutoCycle="true" />
 
             </androidx.cardview.widget.CardView>
-
+             <!--Mobile-->
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
@@ -81,11 +85,10 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_marginLeft="20dp"
-                        android:text="Show more"
+                        android:text="Show more>"
                         android:textSize="15dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
-
                   </RelativeLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/globleProductRecyclearViewMobile"
@@ -95,43 +98,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:layout_height="match_parent"/>
             </LinearLayout>
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="250dp">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_marginLeft="20dp"
-                        android:text="Tee Shirts"
-                        android:textSize="15dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-                    <TextView
-                        android:textColor="#E81A1A"
-                        android:layout_marginRight="20dp"
-                        android:gravity="right"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginLeft="20dp"
-                        android:text="Show more"
-                        android:textSize="15dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-
-                </RelativeLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/globleProductRecyclearViewteeshait"
-                    android:layout_width="match_parent"
-                    tools:listitem="@layout/card_view"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    android:layout_height="match_parent"/>
-            </LinearLayout>
+            <!--Thee shirts-->
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
@@ -154,12 +121,13 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_marginLeft="20dp"
-                        android:text="Show more"
+                        android:text="Show more>"
                         android:textSize="15dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
                 </RelativeLayout>
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/globleProductRecyclearViewshait"
                     android:layout_width="match_parent"
@@ -167,6 +135,172 @@
                     android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:layout_height="match_parent"/>
+            </LinearLayout>
+            <!--Thee shirts-->
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="250dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_marginLeft="20dp"
+                        android:text="T-Shirts"
+                        android:textSize="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:textColor="#E81A1A"
+                        android:layout_marginRight="20dp"
+                        android:gravity="right"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginLeft="20dp"
+                        android:text="Show more>"
+                        android:textSize="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                </RelativeLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/globleProductRecyclearViewteeshait"
+                    android:layout_width="match_parent"
+                    tools:listitem="@layout/card_view"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+            <!--Man Accessories-->
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="250dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_marginLeft="20dp"
+                        android:text="Man Accessories"
+                        android:textSize="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:textColor="#E81A1A"
+                        android:layout_marginRight="20dp"
+                        android:gravity="right"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginLeft="20dp"
+                        android:text="Show more>"
+                        android:textSize="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                </RelativeLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/globleProductRecyclearViewsManAccesoris"
+                    android:layout_width="match_parent"
+                    tools:listitem="@layout/card_view"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+            <!--Shalwar kamis-->
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="250dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_marginLeft="20dp"
+                        android:text="Salwar Kamiz Three-Piece"
+                        android:textSize="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:textColor="#E81A1A"
+                        android:layout_marginRight="20dp"
+                        android:gravity="right"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginLeft="20dp"
+                        android:text="Show more>"
+                        android:textSize="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                </RelativeLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/globleProductRecyclearViewsShalwarKamis"
+                    android:layout_width="match_parent"
+                    tools:listitem="@layout/card_view"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+            <!--Girls accesoris-->
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="250dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_marginLeft="20dp"
+                        android:text="Girls Accessories"
+                        android:textSize="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:textColor="#E81A1A"
+                        android:layout_marginRight="20dp"
+                        android:gravity="right"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginLeft="20dp"
+                        android:text="Show more>"
+                        android:textSize="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                </RelativeLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/globleProductRecyclearViewsGirlsAccesoris"
+                    android:layout_width="match_parent"
+                    tools:listitem="@layout/card_view"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/wholProductListlayout"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/wholProductList"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
             </LinearLayout>
     </LinearLayout>
 

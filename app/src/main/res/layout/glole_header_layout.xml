@@ -9,6 +9,7 @@
     android:background="@color/colorPrimary">
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_marginTop="25dp"
         android:id="@+id/globle_cutomer_profile_pic"
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -24,7 +25,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/globle_cutomer_Email"
         android:fontFamily="@font/adamina"
-        android:text="Dukandar "
+        android:text="Email "
         android:layout_marginLeft="10dp"
         android:textColor="#FFF"
         android:layout_below="@id/globle_cutomer_profile_pic"/>
@@ -34,7 +35,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/globle_customer_name"
         android:fontFamily="@font/adamina"
-        android:text="custoner Name "
+        android:text="customer Name "
         android:layout_marginLeft="10dp"
         android:textColor="#FFF"
         android:layout_below="@id/globle_cutomer_Email"/>

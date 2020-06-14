@@ -114,9 +114,10 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
     String privacyspinneritem;
    private SearchableSpinner Categoryspinner;
     String Categoryspinneritem;
+    int CategoryspinneritemInt;
     String[] privacyspinnerList = { "Public", "private" };
     String[] CategoryspinnerList = { "Mobiles","Tablets","Mobile accessories","Jewellers","Motorcycle accessories","Cosmetics","Grocery",
-    "Panjabi","Pajama","Shirts","Tee Shirt","Polo","Lungi","Man Shoes","Man Accessories","Saree", "Shalwar Kameez", "Shawls","Girls Panjabi",
+    "Panjabi","Pajama","Shirts","Pant","Tee Shirt","Polo","Lungi","Man Shoes","Man Accessories","Saree", "Shalwar Kameez", "Shawls","Girls Panjabi",
             "Nightwear", "Scarves", "Dupatta", "Girls Shoes", "Girls Accessories"};
 
     String productCode;
@@ -312,6 +313,8 @@ if (barcodenumber!=null){
 
                Categoryspinneritem = parent.getItemAtPosition(position).toString();
 
+                CategoryspinneritemInt = position;
+
 
             }
 
@@ -423,7 +426,6 @@ if (barcodenumber!=null){
                         @Override
                         public void onComplete(@NonNull Task<DocumentReference> task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(ProductAddActivity.this, pBp+" pBp", Toast.LENGTH_SHORT).show();
 
                                 final String id = task.getResult().getId();
                                 product.document(id).update("proId", id).addOnCompleteListener(new OnCompleteListener<Void>() {
