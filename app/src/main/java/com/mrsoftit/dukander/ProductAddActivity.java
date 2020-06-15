@@ -1040,6 +1040,7 @@ if (barcodenumber!=null){
                     Map<String, Object> GlobaleProductObject = new HashMap<>();
                     GlobaleProductObject.put("productId", productId);
                     GlobaleProductObject.put("productName", productName);
+                    GlobaleProductObject.put("search", productName.toLowerCase());
                     GlobaleProductObject.put("productPrice", productPrice);
                     GlobaleProductObject.put("productCode", productCode);
                     GlobaleProductObject.put("productPrivacy", privecy);
@@ -1100,6 +1101,7 @@ if (barcodenumber!=null){
                     Map<String, Object> GlobaleProductObject = new HashMap<>();
                     GlobaleProductObject.put("productId", productId);
                     GlobaleProductObject.put("productName", productName);
+                    GlobaleProductObject.put("search", productName.toLowerCase());
                     GlobaleProductObject.put("productPrice", productPrice);
                     GlobaleProductObject.put("producImagetUrl",ImageUrl);
                     GlobaleProductObject.put("productCode", productCode);
@@ -1161,6 +1163,7 @@ if (barcodenumber!=null){
                     Map<String, Object> GlobaleProductObject = new HashMap<>();
                     GlobaleProductObject.put("productId", productId);
                     GlobaleProductObject.put("productName", productName);
+                    GlobaleProductObject.put("search", productName.toLowerCase());
                     GlobaleProductObject.put("productPrice", productPrice);
                     GlobaleProductObject.put("producImagetUrl",ImageUrl);
                     GlobaleProductObject.put("productPrivacy", privecy);
@@ -1221,6 +1224,7 @@ if (barcodenumber!=null){
                     Map<String, Object> GlobaleProductObject = new HashMap<>();
                     GlobaleProductObject.put("productId", productId);
                     GlobaleProductObject.put("productName", productName);
+                    GlobaleProductObject.put("search", productName.toLowerCase());
                     GlobaleProductObject.put("productPrice", productPrice);
                     GlobaleProductObject.put("productPrivacy", privecy);
                     GlobaleProductObject.put("ShopName", DukanName);

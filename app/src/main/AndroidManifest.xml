@@ -22,7 +22,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CustomerLoginActivity"></activity>
+        <activity android:name=".SelecedCatagoryActivity"></activity>
+        <activity android:name=".CustomerLoginActivity" />
         <activity android:name=".GlobleProductListActivity" />
         <activity android:name=".CutomerOrShopManSeletionActivity" />
         <activity android:name=".TotalSaleActivity" />

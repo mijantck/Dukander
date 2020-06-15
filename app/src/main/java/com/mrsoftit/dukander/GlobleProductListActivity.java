@@ -50,6 +50,7 @@ import com.mrsoftit.dukander.modle.GlobleProductNote2;
 import com.mrsoftit.dukander.modle.GlobleProductNote3;
 import com.mrsoftit.dukander.modle.GlobleProductNote4;
 import com.mrsoftit.dukander.modle.GlobleProductNote5;
+import com.mrsoftit.dukander.modle.GlobleProductNote6;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.IndicatorView.draw.controller.DrawController;
 import com.smarteist.autoimageslider.SliderAnimations;
@@ -82,6 +83,7 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
     GlobleProductListAdapter3 globleProductListAdapter3;
     GlobleProductListAdapter4 globleProductListAdapter4;
     GlobleProductListAdapter5 globleProductListAdapter5;
+    GlobleProductListAdapter6 globleProductListAdapter6;
 
 
 
@@ -122,6 +124,8 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
 
         toggle.syncState();
 
+
+        allProductShow("");
         allProductShowMobiles();
         allProductShowMobilesteeshairt();
         allProductShowMobilesshirt();
@@ -179,7 +183,10 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                 Toast.makeText(this, " ShopList", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.mobile:
-                selectedProductShow("Mobiles");
+                Intent intent = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intent.putExtra("catagory","Mobiles");
+                startActivity(intent);
+
                 Toast.makeText(this, "Mobiles", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.tablet:
@@ -750,17 +757,14 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
     }
     //Adapter 6
     private void allProductShow(String productName) {
+        Query query = GlobleProduct.orderBy("search").startAt(productName.toLowerCase()).endAt(productName.toLowerCase()+ "\uf8ff").whereEqualTo("productPrivacy","Public");
 
 
-        Query query = GlobleProduct.whereEqualTo("productPrivacy","Public")
-                .whereLessThanOrEqualTo("productName",productName);
-
-        FirestoreRecyclerOptions<GlobleProductNote> options = new FirestoreRecyclerOptions.Builder<GlobleProductNote>()
-                .setQuery(query, GlobleProductNote.class)
+        FirestoreRecyclerOptions<GlobleProductNote6> options = new FirestoreRecyclerOptions.Builder<GlobleProductNote6>()
+                .setQuery(query, GlobleProductNote6.class)
                 .build();
 
-        globleProductListAdapter = new GlobleProductListAdapter(options);
-
+        globleProductListAdapter6 = new GlobleProductListAdapter6(options);
 
         RecyclerView recyclerView = findViewById(R.id.wholProductList);
         recyclerView.setHasFixedSize(true);
@@ -768,13 +772,13 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
          recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         //  recyclerView.setLayoutManager(ne4 LinearLayoutManager(this));
        // recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(globleProductListAdapter);
+        recyclerView.setAdapter(globleProductListAdapter6);
+        globleProductListAdapter6.startListening();
         progressDialog.dismiss();
-        globleProductListAdapter.startListening();
-        globleProductListAdapter.setOnItemClickListener(new GlobleProductListAdapter.OnItemClickListener() {
+        globleProductListAdapter6.setOnItemClickListener(new GlobleProductListAdapter6.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                final GlobleProductNote globleProductNote = documentSnapshot.toObject(GlobleProductNote.class);
+                final GlobleProductNote6 globleProductNote = documentSnapshot.toObject(GlobleProductNote6.class);
                 final Dialog dialogDetailsProduct = new Dialog(GlobleProductListActivity.this);
                 // Include dialog.xml file
                 dialogDetailsProduct.setContentView(R.layout.product_detiles_dialog_view);
@@ -840,15 +844,15 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
 
     }
 
-    private void selectedProductShow(String productName) {
-        Query query = GlobleProduct.whereEqualTo("productPrivacy","Public")
-                .whereLessThanOrEqualTo("productCategory",productName).orderBy("date", Query.Direction.DESCENDING);
+    private void selectedProductShow(String catagory) {
 
-        FirestoreRecyclerOptions<GlobleProductNote> options = new FirestoreRecyclerOptions.Builder<GlobleProductNote>()
-                .setQuery(query, GlobleProductNote.class)
+        Query query = GlobleProduct.whereEqualTo("productCategory",catagory).whereEqualTo("productPrivacy","Public");
+
+        FirestoreRecyclerOptions<GlobleProductNote6> options = new FirestoreRecyclerOptions.Builder<GlobleProductNote6>()
+                .setQuery(query, GlobleProductNote6.class)
                 .build();
 
-        globleProductListAdapter = new GlobleProductListAdapter(options);
+        globleProductListAdapter6 = new GlobleProductListAdapter6(options);
 
 
         RecyclerView recyclerView = findViewById(R.id.wholProductList);
@@ -857,13 +861,12 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         //  recyclerView.setLayoutManager(ne4 LinearLayoutManager(this));
         // recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(globleProductListAdapter);
+        recyclerView.setAdapter(globleProductListAdapter6);
         progressDialog.dismiss();
-        globleProductListAdapter.startListening();
-        globleProductListAdapter.setOnItemClickListener(new GlobleProductListAdapter.OnItemClickListener() {
+        globleProductListAdapter6.setOnItemClickListener(new GlobleProductListAdapter6.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                final GlobleProductNote globleProductNote = documentSnapshot.toObject(GlobleProductNote.class);
+                final GlobleProductNote6 globleProductNote = documentSnapshot.toObject(GlobleProductNote6.class);
                 final Dialog dialogDetailsProduct = new Dialog(GlobleProductListActivity.this);
                 // Include dialog.xml file
                 dialogDetailsProduct.setContentView(R.layout.product_detiles_dialog_view);
@@ -929,7 +932,17 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        globleProductListAdapter6.startListening();
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        globleProductListAdapter6.stopListening();
+    }
 
 
     @Override
@@ -946,7 +959,6 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                 GlobleHomePage.setVisibility(View.GONE);
                 wholProductListlayout.setVisibility(View.VISIBLE);
                  wholProductList = true;
-
                 progressDialog.show();
 
                 allProductShow(query);
@@ -956,6 +968,7 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                allProductShow(newText);
 
                 return false;
             }
@@ -963,4 +976,5 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
         return true;
     }
 
-}
+
+    }
