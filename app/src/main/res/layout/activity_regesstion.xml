@@ -12,10 +12,6 @@
     android:layout_height="match_parent"
    >
 
-
-
-
-
     <TextView
         android:id="@+id/tvTitleApp"
         android:layout_width="wrap_content"
@@ -68,7 +64,7 @@
                 android:id="@+id/editTextEmailregistesion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="ই-মেইল"
+                android:hint="Email"
                 android:inputType="textEmailAddress"
                 android:maxLines="1" />
 
@@ -89,7 +85,7 @@
                 android:id="@+id/editTextPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="পাসওয়ার্ড"
+                android:hint="Password"
                 android:inputType="textPassword"
                 android:maxLines="1" />
 

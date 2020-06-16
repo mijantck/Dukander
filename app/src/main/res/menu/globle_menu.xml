@@ -82,7 +82,7 @@
                 android:title="Shirts" />
             <item
                 android:id="@+id/Tee_Shirt"
-                android:title="Tee Shirt" />
+                android:title="T-Shirt" />
             <item
                 android:id="@+id/Pant"
 

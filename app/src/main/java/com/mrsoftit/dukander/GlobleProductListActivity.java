@@ -180,18 +180,137 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                 finish();
                 break;
             case R.id.shoplist:
-                Toast.makeText(this, " ShopList", Toast.LENGTH_SHORT).show();
+               startActivity(new Intent(GlobleProductListActivity.this,ShopListActivity.class));
+
                 break;
             case R.id.mobile:
-                Intent intent = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
-                intent.putExtra("catagory","Mobiles");
-                startActivity(intent);
-
-                Toast.makeText(this, "Mobiles", Toast.LENGTH_SHORT).show();
+                Intent intentmobile = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intentmobile.putExtra("catagory","Mobiles");
+                startActivity(intentmobile);
                 break;
             case R.id.tablet:
-                Toast.makeText(this, " tablet", Toast.LENGTH_SHORT).show();
+                Intent intenttablet = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intenttablet.putExtra("catagory","Tablets");
+                startActivity(intenttablet);
                 break;
+            case R.id.Mobile_accessories:
+                Intent intentMobile_accessories = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intentMobile_accessories.putExtra("catagory","Mobile accessories");
+                startActivity(intentMobile_accessories);
+                break;
+            case R.id.Jewellers:
+                Intent intentJewellers = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intentJewellers.putExtra("catagory","Jewellers");
+                startActivity(intentJewellers);
+                break;
+            case R.id.Motorcycle_accessories:
+                Intent intentMotorcycle_accessories = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intentMotorcycle_accessories.putExtra("catagory","Motorcycle accessories");
+                startActivity(intentMotorcycle_accessories);
+                break;
+            case R.id.Cosmetics:
+                Intent intentCosmetics = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intentCosmetics.putExtra("catagory","Cosmetics");
+                startActivity(intentCosmetics);
+                break;
+            case R.id.Grocery:
+                Intent intentGrocery = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intentGrocery.putExtra("catagory","Grocery");
+                startActivity(intentGrocery);
+                break;
+            case R.id.Shirts:
+                Intent intentShirts = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intentShirts.putExtra("catagory","Shirts");
+                startActivity(intentShirts);
+                break;
+             case R.id.Tee_Shirt:
+                Intent intentTee_Shirt = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intentTee_Shirt.putExtra("catagory","T-Shirt");
+                startActivity(intentTee_Shirt);
+                break;
+            case R.id.Pant:
+                Intent intentPant = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intentPant.putExtra("catagory","Pant");
+                startActivity(intentPant);
+                break;
+             case R.id.Panjabi:
+                Intent intentPanjabi = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intentPanjabi.putExtra("catagory","Panjabi");
+                startActivity(intentPanjabi);
+                break;
+            case R.id.Pajama:
+                Intent intentPajama = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intentPajama.putExtra("catagory","Pajama");
+                startActivity(intentPajama);
+                break;
+            case R.id.Polo:
+                Intent intentPolo = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intentPolo.putExtra("catagory","Polo");
+                startActivity(intentPolo);
+                break;
+            case R.id.Lungi:
+                Intent intentLungi = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intentLungi.putExtra("catagory","Lungi");
+                startActivity(intentLungi);
+                break;
+            case R.id.Man_Shoes:
+                Intent intentMan_Shoes = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intentMan_Shoes.putExtra("catagory","Man Shoes");
+                startActivity(intentMan_Shoes);
+                break;
+            case R.id.Man_Accessories:
+                Intent intentMan_Accessories = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intentMan_Accessories.putExtra("catagory","Man Accessories");
+                startActivity(intentMan_Accessories);
+
+                break;
+                case R.id.Saree:
+                Intent intentSaree = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intentSaree.putExtra("catagory","Saree");
+                startActivity(intentSaree);
+                break;
+            case R.id.Shalwar_Kameez:
+                Intent intentShalwar_Kameez = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intentShalwar_Kameez.putExtra("catagory","Shalwar Kameez");
+                startActivity(intentShalwar_Kameez);
+                break;
+            case R.id.Shawls:
+                Intent intentShawls = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intentShawls.putExtra("catagory","Shawls");
+                startActivity(intentShawls);
+                break;
+            case R.id.Girls_Panjabi:
+                Intent intentGirls_Panjabi = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intentGirls_Panjabi.putExtra("catagory","Girls Panjabi");
+                startActivity(intentGirls_Panjabi);
+                break;
+            case R.id.Nightwear:
+                Intent intentNightwear = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intentNightwear.putExtra("catagory","Nightwear");
+                startActivity(intentNightwear);
+                break;
+            case R.id.Scarves:
+                Intent intentScarves = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intentScarves.putExtra("catagory","Scarves");
+                startActivity(intentScarves);
+                break;
+                case R.id.Dupatta:
+                Intent intentDupatta = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intentDupatta.putExtra("catagory","Dupatta");
+                startActivity(intentDupatta);
+                break;
+                case R.id.Girls_Shoes:
+                Intent intentGirls_Shoes = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intentGirls_Shoes.putExtra("catagory","Girls Shoes");
+                startActivity(intentGirls_Shoes);
+                break;
+
+                case R.id.Girls_Accessories:
+                Intent intentGirls_Accessories = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intentGirls_Accessories.putExtra("catagory","Girls Accessories");
+                startActivity(intentGirls_Accessories);
+                break;
+
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -257,7 +376,6 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                 // Include dialog.xml file
                 dialogDetailsProduct.setContentView(R.layout.product_detiles_dialog_view);
                 dialogDetailsProduct.show();
-
                 ImageView productImageDetail = dialogDetailsProduct.findViewById(R.id.productImageDetail);
                 TextView ProductNameDetails = dialogDetailsProduct.findViewById(R.id.ProductNameDetails);
                 TextView inStockDetails = dialogDetailsProduct.findViewById(R.id.inStockDetails);
@@ -269,11 +387,11 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                 TextView productQuantidyfromCustomer = dialogDetailsProduct.findViewById(R.id.productQuantidyfromCustomer);
 
 
-                if (globleProductNote.getProducImagetUrl()!=null){
-                String Url = globleProductNote.getProducImagetUrl();
-                Picasso.get().load(Url).into(productImageDetail);
-                 }
-                ProductNameDetails.setText(globleProductNote.getProductName());
+                if (globleProductNote.getProImgeUrl()!=null){
+                    String Url = globleProductNote.getProImgeUrl();
+                    Picasso.get().load(Url).into(productImageDetail);
+                }
+                ProductNameDetails.setText(globleProductNote.getProName());
                 if (globleProductNote.getProQua()<=0){
                     inStockDetails.setText("Stock out");
                     inStockDetails.setTextColor(Color.RED);
@@ -282,7 +400,7 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                     inStockDetails.setTextColor(Color.GREEN);
                 }
                 ProductCode.setText(globleProductNote.getProductCode());
-                productPriceDetails.setText(globleProductNote.getProductPrice()+"");
+                productPriceDetails.setText(globleProductNote.getProPrice()+"");
                 shopDetailName.setText(globleProductNote.getShopName());
                 shopDetailPhone.setText(globleProductNote.getShopPhone());
                 shopDetailAddress.setText(globleProductNote.getShopAddress());
@@ -290,21 +408,20 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-
                     }
 
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                         String s1 = s.toString().trim();
-                            if (!s1.isEmpty()){
-                                double ProductQuantidy =Double.parseDouble(s1);
-                                double sumPrice = ProductQuantidy*globleProductNote.getProductPrice();
-                                productPriceDetails.setText(sumPrice+"");
-                            }else {
+                        if (!s1.isEmpty()){
+                            double ProductQuantidy =Double.parseDouble(s1);
+                            double sumPrice = ProductQuantidy*globleProductNote.getProPrice();
+                            productPriceDetails.setText(sumPrice+"");
+                        }else {
 
-                                productPriceDetails.setText(globleProductNote.getProductPrice()+"");
-                            }
+                            productPriceDetails.setText(globleProductNote.getProPrice()+"");
+                        }
                     }
                     @Override
                     public void afterTextChanged(Editable s) {
@@ -314,6 +431,7 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
 
             }
         });
+
 
     }
     //adapter 1
@@ -339,12 +457,11 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
         globleProductListAdapter1.setOnItemClickListener(new GlobleProductListAdapter1.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                final GlobleProductNote1 globleProductNote1 = documentSnapshot.toObject(GlobleProductNote1.class);
+                final GlobleProductNote1 globleProductNote = documentSnapshot.toObject(GlobleProductNote1.class);
                 final Dialog dialogDetailsProduct = new Dialog(GlobleProductListActivity.this);
                 // Include dialog.xml file
                 dialogDetailsProduct.setContentView(R.layout.product_detiles_dialog_view);
                 dialogDetailsProduct.show();
-
                 ImageView productImageDetail = dialogDetailsProduct.findViewById(R.id.productImageDetail);
                 TextView ProductNameDetails = dialogDetailsProduct.findViewById(R.id.ProductNameDetails);
                 TextView inStockDetails = dialogDetailsProduct.findViewById(R.id.inStockDetails);
@@ -356,27 +473,26 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                 TextView productQuantidyfromCustomer = dialogDetailsProduct.findViewById(R.id.productQuantidyfromCustomer);
 
 
-                if (globleProductNote1.getProducImagetUrl()!=null){
-                    String Url = globleProductNote1.getProducImagetUrl();
+                if (globleProductNote.getProImgeUrl()!=null){
+                    String Url = globleProductNote.getProImgeUrl();
                     Picasso.get().load(Url).into(productImageDetail);
                 }
-                ProductNameDetails.setText(globleProductNote1.getProductName());
-                if (globleProductNote1.getProQua()<=0){
+                ProductNameDetails.setText(globleProductNote.getProName());
+                if (globleProductNote.getProQua()<=0){
                     inStockDetails.setText("Stock out");
                     inStockDetails.setTextColor(Color.RED);
                 }else {
                     inStockDetails.setText("In stock");
                     inStockDetails.setTextColor(Color.GREEN);
                 }
-                ProductCode.setText(globleProductNote1.getProductCode());
-                productPriceDetails.setText(globleProductNote1.getProductPrice()+"");
-                shopDetailName.setText(globleProductNote1.getShopName());
-                shopDetailPhone.setText(globleProductNote1.getShopPhone());
-                shopDetailAddress.setText(globleProductNote1.getShopAddress());
+                ProductCode.setText(globleProductNote.getProductCode());
+                productPriceDetails.setText(globleProductNote.getProPrice()+"");
+                shopDetailName.setText(globleProductNote.getShopName());
+                shopDetailPhone.setText(globleProductNote.getShopPhone());
+                shopDetailAddress.setText(globleProductNote.getShopAddress());
                 productQuantidyfromCustomer.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
 
                     }
 
@@ -386,11 +502,11 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                         String s1 = s.toString().trim();
                         if (!s1.isEmpty()){
                             double ProductQuantidy =Double.parseDouble(s1);
-                            double sumPrice = ProductQuantidy*globleProductNote1.getProductPrice();
+                            double sumPrice = ProductQuantidy*globleProductNote.getProPrice();
                             productPriceDetails.setText(sumPrice+"");
                         }else {
 
-                            productPriceDetails.setText(globleProductNote1.getProductPrice()+"");
+                            productPriceDetails.setText(globleProductNote.getProPrice()+"");
                         }
                     }
                     @Override
@@ -427,12 +543,11 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
         globleProductListAdapter2.setOnItemClickListener(new GlobleProductListAdapter2.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                final GlobleProductNote2 globleProductNote2 = documentSnapshot.toObject(GlobleProductNote2.class);
+                final GlobleProductNote2 globleProductNote = documentSnapshot.toObject(GlobleProductNote2.class);
                 final Dialog dialogDetailsProduct = new Dialog(GlobleProductListActivity.this);
                 // Include dialog.xml file
                 dialogDetailsProduct.setContentView(R.layout.product_detiles_dialog_view);
                 dialogDetailsProduct.show();
-
                 ImageView productImageDetail = dialogDetailsProduct.findViewById(R.id.productImageDetail);
                 TextView ProductNameDetails = dialogDetailsProduct.findViewById(R.id.ProductNameDetails);
                 TextView inStockDetails = dialogDetailsProduct.findViewById(R.id.inStockDetails);
@@ -444,27 +559,26 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                 TextView productQuantidyfromCustomer = dialogDetailsProduct.findViewById(R.id.productQuantidyfromCustomer);
 
 
-                if (globleProductNote2.getProducImagetUrl()!=null){
-                    String Url = globleProductNote2.getProducImagetUrl();
+                if (globleProductNote.getProImgeUrl()!=null){
+                    String Url = globleProductNote.getProImgeUrl();
                     Picasso.get().load(Url).into(productImageDetail);
                 }
-                ProductNameDetails.setText(globleProductNote2.getProductName());
-                if (globleProductNote2.getProQua()<=0){
+                ProductNameDetails.setText(globleProductNote.getProName());
+                if (globleProductNote.getProQua()<=0){
                     inStockDetails.setText("Stock out");
                     inStockDetails.setTextColor(Color.RED);
                 }else {
                     inStockDetails.setText("In stock");
                     inStockDetails.setTextColor(Color.GREEN);
                 }
-                ProductCode.setText(globleProductNote2.getProductCode());
-                productPriceDetails.setText(globleProductNote2.getProductPrice()+"");
-                shopDetailName.setText(globleProductNote2.getShopName());
-                shopDetailPhone.setText(globleProductNote2.getShopPhone());
-                shopDetailAddress.setText(globleProductNote2.getShopAddress());
+                ProductCode.setText(globleProductNote.getProductCode());
+                productPriceDetails.setText(globleProductNote.getProPrice()+"");
+                shopDetailName.setText(globleProductNote.getShopName());
+                shopDetailPhone.setText(globleProductNote.getShopPhone());
+                shopDetailAddress.setText(globleProductNote.getShopAddress());
                 productQuantidyfromCustomer.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
 
                     }
 
@@ -474,11 +588,11 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                         String s1 = s.toString().trim();
                         if (!s1.isEmpty()){
                             double ProductQuantidy =Double.parseDouble(s1);
-                            double sumPrice = ProductQuantidy*globleProductNote2.getProductPrice();
+                            double sumPrice = ProductQuantidy*globleProductNote.getProPrice();
                             productPriceDetails.setText(sumPrice+"");
                         }else {
 
-                            productPriceDetails.setText(globleProductNote2.getProductPrice()+"");
+                            productPriceDetails.setText(globleProductNote.getProPrice()+"");
                         }
                     }
                     @Override
@@ -520,7 +634,6 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                 // Include dialog.xml file
                 dialogDetailsProduct.setContentView(R.layout.product_detiles_dialog_view);
                 dialogDetailsProduct.show();
-
                 ImageView productImageDetail = dialogDetailsProduct.findViewById(R.id.productImageDetail);
                 TextView ProductNameDetails = dialogDetailsProduct.findViewById(R.id.ProductNameDetails);
                 TextView inStockDetails = dialogDetailsProduct.findViewById(R.id.inStockDetails);
@@ -532,11 +645,11 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                 TextView productQuantidyfromCustomer = dialogDetailsProduct.findViewById(R.id.productQuantidyfromCustomer);
 
 
-                if (globleProductNote.getProducImagetUrl()!=null){
-                    String Url = globleProductNote.getProducImagetUrl();
+                if (globleProductNote.getProImgeUrl()!=null){
+                    String Url = globleProductNote.getProImgeUrl();
                     Picasso.get().load(Url).into(productImageDetail);
                 }
-                ProductNameDetails.setText(globleProductNote.getProductName());
+                ProductNameDetails.setText(globleProductNote.getProName());
                 if (globleProductNote.getProQua()<=0){
                     inStockDetails.setText("Stock out");
                     inStockDetails.setTextColor(Color.RED);
@@ -545,14 +658,13 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                     inStockDetails.setTextColor(Color.GREEN);
                 }
                 ProductCode.setText(globleProductNote.getProductCode());
-                productPriceDetails.setText(globleProductNote.getProductPrice()+"");
+                productPriceDetails.setText(globleProductNote.getProPrice()+"");
                 shopDetailName.setText(globleProductNote.getShopName());
                 shopDetailPhone.setText(globleProductNote.getShopPhone());
                 shopDetailAddress.setText(globleProductNote.getShopAddress());
                 productQuantidyfromCustomer.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
 
                     }
 
@@ -562,11 +674,11 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                         String s1 = s.toString().trim();
                         if (!s1.isEmpty()){
                             double ProductQuantidy =Double.parseDouble(s1);
-                            double sumPrice = ProductQuantidy*globleProductNote.getProductPrice();
+                            double sumPrice = ProductQuantidy*globleProductNote.getProPrice();
                             productPriceDetails.setText(sumPrice+"");
                         }else {
 
-                            productPriceDetails.setText(globleProductNote.getProductPrice()+"");
+                            productPriceDetails.setText(globleProductNote.getProPrice()+"");
                         }
                     }
                     @Override
@@ -577,7 +689,6 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
 
             }
         });
-
 
     }
     //Adapter 4
@@ -609,7 +720,6 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                 // Include dialog.xml file
                 dialogDetailsProduct.setContentView(R.layout.product_detiles_dialog_view);
                 dialogDetailsProduct.show();
-
                 ImageView productImageDetail = dialogDetailsProduct.findViewById(R.id.productImageDetail);
                 TextView ProductNameDetails = dialogDetailsProduct.findViewById(R.id.ProductNameDetails);
                 TextView inStockDetails = dialogDetailsProduct.findViewById(R.id.inStockDetails);
@@ -621,11 +731,11 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                 TextView productQuantidyfromCustomer = dialogDetailsProduct.findViewById(R.id.productQuantidyfromCustomer);
 
 
-                if (globleProductNote.getProducImagetUrl()!=null){
-                    String Url = globleProductNote.getProducImagetUrl();
+                if (globleProductNote.getProImgeUrl()!=null){
+                    String Url = globleProductNote.getProImgeUrl();
                     Picasso.get().load(Url).into(productImageDetail);
                 }
-                ProductNameDetails.setText(globleProductNote.getProductName());
+                ProductNameDetails.setText(globleProductNote.getProName());
                 if (globleProductNote.getProQua()<=0){
                     inStockDetails.setText("Stock out");
                     inStockDetails.setTextColor(Color.RED);
@@ -634,14 +744,13 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                     inStockDetails.setTextColor(Color.GREEN);
                 }
                 ProductCode.setText(globleProductNote.getProductCode());
-                productPriceDetails.setText(globleProductNote.getProductPrice()+"");
+                productPriceDetails.setText(globleProductNote.getProPrice()+"");
                 shopDetailName.setText(globleProductNote.getShopName());
                 shopDetailPhone.setText(globleProductNote.getShopPhone());
                 shopDetailAddress.setText(globleProductNote.getShopAddress());
                 productQuantidyfromCustomer.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
 
                     }
 
@@ -651,11 +760,11 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                         String s1 = s.toString().trim();
                         if (!s1.isEmpty()){
                             double ProductQuantidy =Double.parseDouble(s1);
-                            double sumPrice = ProductQuantidy*globleProductNote.getProductPrice();
+                            double sumPrice = ProductQuantidy*globleProductNote.getProPrice();
                             productPriceDetails.setText(sumPrice+"");
                         }else {
 
-                            productPriceDetails.setText(globleProductNote.getProductPrice()+"");
+                            productPriceDetails.setText(globleProductNote.getProPrice()+"");
                         }
                     }
                     @Override
@@ -696,7 +805,6 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                 // Include dialog.xml file
                 dialogDetailsProduct.setContentView(R.layout.product_detiles_dialog_view);
                 dialogDetailsProduct.show();
-
                 ImageView productImageDetail = dialogDetailsProduct.findViewById(R.id.productImageDetail);
                 TextView ProductNameDetails = dialogDetailsProduct.findViewById(R.id.ProductNameDetails);
                 TextView inStockDetails = dialogDetailsProduct.findViewById(R.id.inStockDetails);
@@ -708,11 +816,11 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                 TextView productQuantidyfromCustomer = dialogDetailsProduct.findViewById(R.id.productQuantidyfromCustomer);
 
 
-                if (globleProductNote.getProducImagetUrl()!=null){
-                    String Url = globleProductNote.getProducImagetUrl();
+                if (globleProductNote.getProImgeUrl()!=null){
+                    String Url = globleProductNote.getProImgeUrl();
                     Picasso.get().load(Url).into(productImageDetail);
                 }
-                ProductNameDetails.setText(globleProductNote.getProductName());
+                ProductNameDetails.setText(globleProductNote.getProName());
                 if (globleProductNote.getProQua()<=0){
                     inStockDetails.setText("Stock out");
                     inStockDetails.setTextColor(Color.RED);
@@ -721,14 +829,13 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                     inStockDetails.setTextColor(Color.GREEN);
                 }
                 ProductCode.setText(globleProductNote.getProductCode());
-                productPriceDetails.setText(globleProductNote.getProductPrice()+"");
+                productPriceDetails.setText(globleProductNote.getProPrice()+"");
                 shopDetailName.setText(globleProductNote.getShopName());
                 shopDetailPhone.setText(globleProductNote.getShopPhone());
                 shopDetailAddress.setText(globleProductNote.getShopAddress());
                 productQuantidyfromCustomer.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
 
                     }
 
@@ -738,11 +845,11 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                         String s1 = s.toString().trim();
                         if (!s1.isEmpty()){
                             double ProductQuantidy =Double.parseDouble(s1);
-                            double sumPrice = ProductQuantidy*globleProductNote.getProductPrice();
+                            double sumPrice = ProductQuantidy*globleProductNote.getProPrice();
                             productPriceDetails.setText(sumPrice+"");
                         }else {
 
-                            productPriceDetails.setText(globleProductNote.getProductPrice()+"");
+                            productPriceDetails.setText(globleProductNote.getProPrice()+"");
                         }
                     }
                     @Override
@@ -783,7 +890,6 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                 // Include dialog.xml file
                 dialogDetailsProduct.setContentView(R.layout.product_detiles_dialog_view);
                 dialogDetailsProduct.show();
-
                 ImageView productImageDetail = dialogDetailsProduct.findViewById(R.id.productImageDetail);
                 TextView ProductNameDetails = dialogDetailsProduct.findViewById(R.id.ProductNameDetails);
                 TextView inStockDetails = dialogDetailsProduct.findViewById(R.id.inStockDetails);
@@ -795,11 +901,11 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                 TextView productQuantidyfromCustomer = dialogDetailsProduct.findViewById(R.id.productQuantidyfromCustomer);
 
 
-                if (globleProductNote.getProducImagetUrl()!=null){
-                    String Url = globleProductNote.getProducImagetUrl();
+                if (globleProductNote.getProImgeUrl()!=null){
+                    String Url = globleProductNote.getProImgeUrl();
                     Picasso.get().load(Url).into(productImageDetail);
                 }
-                ProductNameDetails.setText(globleProductNote.getProductName());
+                ProductNameDetails.setText(globleProductNote.getProName());
                 if (globleProductNote.getProQua()<=0){
                     inStockDetails.setText("Stock out");
                     inStockDetails.setTextColor(Color.RED);
@@ -808,14 +914,13 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                     inStockDetails.setTextColor(Color.GREEN);
                 }
                 ProductCode.setText(globleProductNote.getProductCode());
-                productPriceDetails.setText(globleProductNote.getProductPrice()+"");
+                productPriceDetails.setText(globleProductNote.getProPrice()+"");
                 shopDetailName.setText(globleProductNote.getShopName());
                 shopDetailPhone.setText(globleProductNote.getShopPhone());
                 shopDetailAddress.setText(globleProductNote.getShopAddress());
                 productQuantidyfromCustomer.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
 
                     }
 
@@ -825,11 +930,11 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                         String s1 = s.toString().trim();
                         if (!s1.isEmpty()){
                             double ProductQuantidy =Double.parseDouble(s1);
-                            double sumPrice = ProductQuantidy*globleProductNote.getProductPrice();
+                            double sumPrice = ProductQuantidy*globleProductNote.getProPrice();
                             productPriceDetails.setText(sumPrice+"");
                         }else {
 
-                            productPriceDetails.setText(globleProductNote.getProductPrice()+"");
+                            productPriceDetails.setText(globleProductNote.getProPrice()+"");
                         }
                     }
                     @Override
@@ -844,93 +949,6 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
 
     }
 
-    private void selectedProductShow(String catagory) {
-
-        Query query = GlobleProduct.whereEqualTo("productCategory",catagory).whereEqualTo("productPrivacy","Public");
-
-        FirestoreRecyclerOptions<GlobleProductNote6> options = new FirestoreRecyclerOptions.Builder<GlobleProductNote6>()
-                .setQuery(query, GlobleProductNote6.class)
-                .build();
-
-        globleProductListAdapter6 = new GlobleProductListAdapter6(options);
-
-
-        RecyclerView recyclerView = findViewById(R.id.wholProductList);
-        recyclerView.setHasFixedSize(true);
-        // LinearLayoutManager linearLayoutManager = new LinearLayoutManager(GlobleProductListActivity.this,RecyclerView.HORIZONTAL,false);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        //  recyclerView.setLayoutManager(ne4 LinearLayoutManager(this));
-        // recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(globleProductListAdapter6);
-        progressDialog.dismiss();
-        globleProductListAdapter6.setOnItemClickListener(new GlobleProductListAdapter6.OnItemClickListener() {
-            @Override
-            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                final GlobleProductNote6 globleProductNote = documentSnapshot.toObject(GlobleProductNote6.class);
-                final Dialog dialogDetailsProduct = new Dialog(GlobleProductListActivity.this);
-                // Include dialog.xml file
-                dialogDetailsProduct.setContentView(R.layout.product_detiles_dialog_view);
-                dialogDetailsProduct.show();
-
-                ImageView productImageDetail = dialogDetailsProduct.findViewById(R.id.productImageDetail);
-                TextView ProductNameDetails = dialogDetailsProduct.findViewById(R.id.ProductNameDetails);
-                TextView inStockDetails = dialogDetailsProduct.findViewById(R.id.inStockDetails);
-                final TextView productPriceDetails = dialogDetailsProduct.findViewById(R.id.productPriceDetails);
-                TextView shopDetailName = dialogDetailsProduct.findViewById(R.id.shopDetailName);
-                TextView shopDetailPhone = dialogDetailsProduct.findViewById(R.id.shopDetailPhone);
-                TextView shopDetailAddress = dialogDetailsProduct.findViewById(R.id.shopDetailAddress);
-                TextView ProductCode = dialogDetailsProduct.findViewById(R.id.ProductCode);
-                TextView productQuantidyfromCustomer = dialogDetailsProduct.findViewById(R.id.productQuantidyfromCustomer);
-
-
-                if (globleProductNote.getProducImagetUrl()!=null){
-                    String Url = globleProductNote.getProducImagetUrl();
-                    Picasso.get().load(Url).into(productImageDetail);
-                }
-                ProductNameDetails.setText(globleProductNote.getProductName());
-                if (globleProductNote.getProQua()<=0){
-                    inStockDetails.setText("Stock out");
-                    inStockDetails.setTextColor(Color.RED);
-                }else {
-                    inStockDetails.setText("In stock");
-                    inStockDetails.setTextColor(Color.GREEN);
-                }
-                ProductCode.setText(globleProductNote.getProductCode());
-                productPriceDetails.setText(globleProductNote.getProductPrice()+"");
-                shopDetailName.setText(globleProductNote.getShopName());
-                shopDetailPhone.setText(globleProductNote.getShopPhone());
-                shopDetailAddress.setText(globleProductNote.getShopAddress());
-                productQuantidyfromCustomer.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                        String s1 = s.toString().trim();
-                        if (!s1.isEmpty()){
-                            double ProductQuantidy =Double.parseDouble(s1);
-                            double sumPrice = ProductQuantidy*globleProductNote.getProductPrice();
-                            productPriceDetails.setText(sumPrice+"");
-                        }else {
-
-                            productPriceDetails.setText(globleProductNote.getProductPrice()+"");
-                        }
-                    }
-                    @Override
-                    public void afterTextChanged(Editable s) {
-
-                    }
-                });
-
-            }
-        });
-
-
-    }
 
     @Override
     protected void onStart() {

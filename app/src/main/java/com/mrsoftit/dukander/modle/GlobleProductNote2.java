@@ -2,12 +2,12 @@ package com.mrsoftit.dukander.modle;
 
 public class GlobleProductNote2 {
 
-    private String productId;
-    private String productName;
-    private double productPrice;
+    private String proId;
+    private String proName;
+    private double proPrice;
     private String productCode;
     private String productPrivacy;
-    private String producImagetUrl;
+    private String proImgeUrl;
     private String ShopName;
     private String ShopPhone;
     private String ShopAddress;
@@ -21,29 +21,28 @@ public class GlobleProductNote2 {
     public GlobleProductNote2() {
     }
 
-
-    public String getProductId() {
-        return productId;
+    public String getProId() {
+        return proId;
     }
 
-    public void setProductId(String productId) {
-        this.productId = productId;
+    public void setProId(String proId) {
+        this.proId = proId;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getProName() {
+        return proName;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setProName(String proName) {
+        this.proName = proName;
     }
 
-    public double getProductPrice() {
-        return productPrice;
+    public double getProPrice() {
+        return proPrice;
     }
 
-    public void setProductPrice(double productPrice) {
-        this.productPrice = productPrice;
+    public void setProPrice(double proPrice) {
+        this.proPrice = proPrice;
     }
 
     public String getProductCode() {
@@ -62,12 +61,12 @@ public class GlobleProductNote2 {
         this.productPrivacy = productPrivacy;
     }
 
-    public String getProducImagetUrl() {
-        return producImagetUrl;
+    public String getProImgeUrl() {
+        return proImgeUrl;
     }
 
-    public void setProducImagetUrl(String producImagetUrl) {
-        this.producImagetUrl = producImagetUrl;
+    public void setProImgeUrl(String proImgeUrl) {
+        this.proImgeUrl = proImgeUrl;
     }
 
     public String getShopName() {

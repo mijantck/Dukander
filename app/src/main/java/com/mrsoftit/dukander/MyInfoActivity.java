@@ -64,7 +64,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 
@@ -126,6 +128,8 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
 
     boolean open = true;
 
+    CollectionReference GlobleSoplist = FirebaseFirestore.getInstance()
+            .collection("GlobleSoplist");
 
     @Override
     public void onStart() {
@@ -252,8 +256,6 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
                 if (newFile.exists()) {
                     newFile.delete();
                 }
-
-
                 if (vigivity ==true){
                     chagepasswordtextview.setVisibility(View.GONE);
                     passChange.setVisibility(View.GONE);
@@ -315,7 +317,16 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
                     return;
                 }
 
-                if (imageuploadurl==null && id!=null && mImageUri!=null){
+
+
+                progressDialog = new ProgressDialog(MyInfoActivity.this);
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.setTitle("আপলোড হচ্ছে...");
+                progressDialog.show();
+                progressDialog.setCanceledOnTouchOutside(false);
+
+
+                if (imageuploadurl == null && id!=null && mImageUri!=null){
 
                   //  MyInfoUploadWithpicnew(mImageUri);
                     uploadImageUri(mImageUri);
@@ -345,7 +356,9 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
 
                                     updateadtaall();
 
-                                    progressDialog.dismiss();
+                                    setGlobleSoplist(true,user_id,id,dukanName1,dukanphon1,dukanAddres1);
+
+
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -355,29 +368,27 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
                     });
 
                 }
-                else if (mImageUri!=null){
 
-                //   MyInfoUpload(mImageUri);
+                else if (mImageUri!=null){
 
                     uploadImageUri(mImageUri);
 
-
-
                 }
-                else if (mImageUri == null ){
+
+                else if (mImageUri == null && id ==null ){
 
                     final String dukanName1 = dukanName.getText().toString();
                     final String dukanphon1 = dukanPhone.getText().toString();
                     final String dukanAddres1 = dukanaddess.getText().toString();
                     Random rand = new Random();
                     String picname = String.format("%05d", rand.nextInt(10000));
-                    myInfo.add(new MyInfoNote(null, dukanName1, dukanphon1, dukanAddres1,true,picname,0.0,1.0,1.0,0)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    myInfo.add(new MyInfoNote(null, dukanName1, dukanphon1, dukanAddres1,true,picname,0.0,0.0,0.0,0)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentReference> task) {
 
                             if (task.isSuccessful()) {
 
-                                String id = task.getResult().getId();
+                                final String id = task.getResult().getId();
 
 
                                 myInfo.document(id).update("myid", id).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -389,13 +400,42 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
                                         HomeId.setVisibility(View.VISIBLE);
                                         updateadtaall();
 
-                                        progressDialog.dismiss();
+                                        setGlobleSoplist(false,user_id,id,dukanName1,dukanphon1,dukanAddres1);
+
                                         Toast.makeText(MyInfoActivity.this, " সফল ", Toast.LENGTH_SHORT).show();
 
                                     }
                                 });
                             }
 
+                        }
+                    });
+
+                }
+                else if (mImageUri == null && id !=null ){
+
+                    final String dukanName1 = dukanName.getText().toString();
+                    final String dukanphon1 = dukanPhone.getText().toString();
+                    final String dukanAddres1 = dukanaddess.getText().toString();
+                    Random rand = new Random();
+                    String picname = String.format("%05d", rand.nextInt(10000));
+
+                    myInfo.document(id).update("myid", id, "dukanName", dukanName1, "dukanphone", dukanphon1, "dukanaddress", dukanAddres1,"firsttime",firstTime)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+
+                                    setGlobleSoplist(true,user_id,id,dukanName1,dukanphon1,dukanAddres1);
+
+                                    shopdelaisView.setVisibility(View.VISIBLE);
+                                    shopediteView.setVisibility(View.GONE);
+                                    etideButton.setVisibility(View.GONE);
+                                    updateadtaall();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
                         }
                     });
 
@@ -492,12 +532,6 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
                 });
             }
         });
-
-
-
-
-
-
     }
 
     @AfterPermissionGranted(PICK_IMAGE_REQUEST)
@@ -518,185 +552,6 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
         }
     }
 
-    public void MyInfoUpload(final Uri mImageUri) {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progressDialog.setTitle("আপলোড হচ্ছে...");
-        progressDialog.setProgress(0);
-        progressDialog.show();
-        progressDialog.setCanceledOnTouchOutside(false);
-
-
-
-        final String fileName = System.currentTimeMillis() + "";
-
-        final StorageReference putImage = mStorageReferenceImage.child(fileName);
-
-
-        putImage.putFile(mImageUri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                        putImage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(final Uri uri) {
-
-
-                                final String dukanName1 = dukanName.getText().toString();
-                                final String dukanphon1 = dukanPhone.getText().toString();
-                                final String dukanAddres1 = dukanaddess.getText().toString();
-
-
-                                if (image != false && id !=null) {
-
-                                    myInfo.document(id).update("myid", id, "dukanName", dukanName1, "dukanphone", dukanphon1, "dukanaddress", dukanAddres1,  "dukanaddpicurl", uri.toString(),"firsttime",firstTime)
-                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    progressDialog.dismiss();
-                                                    shopdelaisView.setVisibility(View.VISIBLE);
-                                                    shopediteView.setVisibility(View.GONE);
-                                                    etideButton.setVisibility(View.GONE);
-                                                    updateadtaall();
-                                                }
-                                            }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            progressDialog.dismiss();
-                                        }
-                                    });
-
-                                } else if(firstTime == false && image == true ){
-
-                                    Random rand = new Random();
-                                    String picname = String.format("%05d", rand.nextInt(10000));
-                                    myInfo.add(new MyInfoNote(null, dukanName1, dukanphon1, dukanAddres1, uri.toString(),true,picname,1.0,1.0,1.0,0)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DocumentReference> task) {
-
-                                            if (task.isSuccessful()) {
-
-                                                String id = task.getResult().getId();
-
-
-                                                myInfo.document(id).update("myid", id).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<Void> task) {
-
-
-
-                                                        shopdelaisView.setVisibility(View.VISIBLE);
-                                                        shopediteView.setVisibility(View.GONE);
-
-                                                        etideButton.setVisibility(View.GONE);
-                                                        updateadtaall();
-
-                                                        Toast.makeText(MyInfoActivity.this, " সফল ", Toast.LENGTH_SHORT).show();
-
-                                                    }
-                                                });
-                                            }
-
-                                        }
-                                    });
-                                }
-
-                                progressDialog.dismiss();
-
-                            }
-                        });
-
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
-        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-
-                int countProgres = (int) (100 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                progressDialog.setProgress(countProgres);
-            }
-        });
-    }
-
-    public void MyInfoUploadWithpicnew(final Uri mImageUri) {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progressDialog.setTitle("আপলোড হচ্ছে...");
-        progressDialog.setProgress(0);
-        progressDialog.show();
-        progressDialog.setCanceledOnTouchOutside(false);
-
-
-
-        final String fileName = System.currentTimeMillis() + "";
-
-        final StorageReference putImage = mStorageReferenceImage.child(fileName);
-
-
-        putImage.putFile(mImageUri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                        putImage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(final Uri uri) {
-
-
-                                final String dukanName1 = dukanName.getText().toString();
-                                final String dukanphon1 = dukanPhone.getText().toString();
-                                final String dukanAddres1 = dukanaddess.getText().toString();
-
-
-                                if (image != false && id !=null) {
-
-                                    myInfo.document(id).update("myid", id, "dukanName", dukanName1, "dukanphone", dukanphon1, "dukanaddress", dukanAddres1,  "dukanaddpicurl", uri.toString(),"firsttime",firstTime)
-                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    progressDialog.dismiss();
-                                                    shopdelaisView.setVisibility(View.VISIBLE);
-                                                    shopediteView.setVisibility(View.GONE);
-                                                    etideButton.setVisibility(View.GONE);
-                                                    updateadtaall();
-                                                }
-                                            }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            progressDialog.dismiss();
-                                        }
-                                    });
-
-                                }
-
-                                progressDialog.dismiss();
-
-                            }
-                        });
-
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
-        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-
-                int countProgres = (int) (100 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                progressDialog.setProgress(countProgres);
-            }
-        });
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -714,7 +569,6 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
 
     }
@@ -776,13 +630,6 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
     private void uploadImageUri(Uri imageUri){
 
 
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.setTitle("আপলোড হচ্ছে...");
-        progressDialog.show();
-        progressDialog.setCanceledOnTouchOutside(false);
-
-
         try {
             File file = new File(Environment.getExternalStorageDirectory(), "profilePicTemp");
 
@@ -799,7 +646,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
 
             upload(file, new UploadCallback() {
                 @Override
-                public void onSuccess(String downloadLink) {
+                public void onSuccess(final String downloadLink) {
 
                     final String dukanName1 = dukanName.getText().toString();
                     final String dukanphon1 = dukanPhone.getText().toString();
@@ -811,7 +658,9 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        progressDialog.dismiss();
+
+                                        setGlobleSoplistURL(true,user_id,id,dukanName1,downloadLink,dukanphon1,dukanAddres1);
+
                                         shopdelaisView.setVisibility(View.VISIBLE);
                                         shopediteView.setVisibility(View.GONE);
                                         etideButton.setVisibility(View.GONE);
@@ -828,13 +677,13 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
 
                         Random rand = new Random();
                         String picname = String.format("%05d", rand.nextInt(10000));
-                        myInfo.add(new MyInfoNote(null, dukanName1, dukanphon1, dukanAddres1, downloadLink,true,picname,1.0,1.0,1.0,0)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                        myInfo.add(new MyInfoNote(null, dukanName1, dukanphon1, dukanAddres1, downloadLink,true,picname,0.0,0.0,0.0,0)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentReference> task) {
 
                                 if (task.isSuccessful()) {
 
-                                    String id = task.getResult().getId();
+                                    final String id = task.getResult().getId();
 
 
                                     myInfo.document(id).update("myid", id).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -844,9 +693,10 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
 
                                             shopdelaisView.setVisibility(View.VISIBLE);
                                             shopediteView.setVisibility(View.GONE);
-
                                             etideButton.setVisibility(View.GONE);
                                             updateadtaall();
+                                            setGlobleSoplistURL(false,user_id,id,dukanName1,downloadLink,dukanphon1,dukanAddres1);
+
                                             progressDialog.dismiss();
                                             Toast.makeText(MyInfoActivity.this, " সফল ", Toast.LENGTH_SHORT).show();
 
@@ -1000,6 +850,72 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
             return file;
         } catch (Exception e) {
             return null;
+        }
+    }
+
+
+
+    public void setGlobleSoplist(boolean update,String shopUserId,String shoId,String shopName,String shopPhone,String shopAddress){
+
+
+        Map<String, Object> GlobaleShopList = new HashMap<>();
+        GlobaleShopList.put("shopUserId", shopUserId);
+        GlobaleShopList.put("shopId", shoId);
+        GlobaleShopList.put("ShopName", shopName);
+        GlobaleShopList.put("search", shopName.toLowerCase());
+        GlobaleShopList.put("ShopPhone", shopPhone);
+        GlobaleShopList.put("ShopAddress", shopAddress);
+
+        if (update == false) {
+            GlobleSoplist.document(shoId).set(GlobaleShopList).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+
+                    progressDialog.dismiss();
+                }
+            });
+        }else if (update == true){
+            GlobleSoplist.document(shoId).update(GlobaleShopList).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+
+                    progressDialog.dismiss();
+                }
+            });
+        }
+    }
+    public void setGlobleSoplistURL(boolean update,String shopUserId,String shoId,String shopName,String shopImageURL,String shopPhone,String shopAddress){
+
+
+        Map<String, Object> GlobaleShopList = new HashMap<>();
+
+        GlobaleShopList.put("shopUserId", shopUserId);
+        GlobaleShopList.put("shopId", shoId);
+        GlobaleShopList.put("ShopName", shopName);
+        GlobaleShopList.put("ShopImageURL", shopImageURL);
+        GlobaleShopList.put("search", shopName.toLowerCase());
+        GlobaleShopList.put("ShopPhone", shopPhone);
+        GlobaleShopList.put("ShopAddress", shopAddress);
+
+        if (update == false) {
+            GlobleSoplist.document(shoId).set(GlobaleShopList).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+
+                    Toast.makeText(MyInfoActivity.this, " globale added", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                }
+            });
+        }
+       else if (update == true) {
+            GlobleSoplist.document(shoId).update(GlobaleShopList).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    Toast.makeText(MyInfoActivity.this, " globale added URL", Toast.LENGTH_SHORT).show();
+
+                    progressDialog.dismiss();
+                }
+            });
         }
     }
 

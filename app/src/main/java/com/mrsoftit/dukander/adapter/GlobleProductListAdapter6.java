@@ -35,12 +35,10 @@ public class GlobleProductListAdapter6 extends FirestoreRecyclerAdapter<GloblePr
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolde holder, int position, @NonNull GlobleProductNote6 model) {
-        holder.name.setText(model.getProductName());
-        holder.price.setText(model.getProductPrice()+"");
-
-
-        if (model.getProducImagetUrl()!=null){
-            String Url = model.getProducImagetUrl();
+        holder.name.setText(model.getProName());
+        holder.price.setText(model.getProPrice()+"");
+        if (model.getProImgeUrl()!=null){
+            String Url = model.getProImgeUrl();
             Picasso.get().load(Url).into(holder.productImage);
         }
         if (model.getProQua()<=0){
@@ -53,7 +51,6 @@ public class GlobleProductListAdapter6 extends FirestoreRecyclerAdapter<GloblePr
             holder.instock.setTextColor(Color.GREEN);
 
         }
-
     }
 
     @NonNull

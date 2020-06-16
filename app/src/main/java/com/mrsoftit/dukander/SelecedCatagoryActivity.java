@@ -44,6 +44,7 @@ public class SelecedCatagoryActivity extends AppCompatActivity {
 
     String catagoryUp;
 
+    TextView noData;
     CollectionReference GlobleProduct = FirebaseFirestore.getInstance()
             .collection("GlobleProduct");
 
@@ -54,6 +55,7 @@ public class SelecedCatagoryActivity extends AppCompatActivity {
 
 
         Toolbar toolbar =  findViewById(R.id.toolbar_support);
+        noData =  findViewById(R.id.noData);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -101,75 +103,73 @@ if (catagoryUp!=null){
             //  recyclerView.setLayoutManager(ne4 LinearLayoutManager(this));
             // recyclerView.setLayoutManager(linearLayoutManager);
             recyclerView.setAdapter(globleProductListAdapter6);
+            noData.setVisibility(View.GONE);
+    globleProductListAdapter6.setOnItemClickListener(new GlobleProductListAdapter6.OnItemClickListener() {
+        @Override
+        public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+            final GlobleProductNote6 globleProductNote = documentSnapshot.toObject(GlobleProductNote6.class);
+            final Dialog dialogDetailsProduct = new Dialog(SelecedCatagoryActivity.this);
+            // Include dialog.xml file
+            dialogDetailsProduct.setContentView(R.layout.product_detiles_dialog_view);
+            dialogDetailsProduct.show();
+            ImageView productImageDetail = dialogDetailsProduct.findViewById(R.id.productImageDetail);
+            TextView ProductNameDetails = dialogDetailsProduct.findViewById(R.id.ProductNameDetails);
+            TextView inStockDetails = dialogDetailsProduct.findViewById(R.id.inStockDetails);
+            final TextView productPriceDetails = dialogDetailsProduct.findViewById(R.id.productPriceDetails);
+            TextView shopDetailName = dialogDetailsProduct.findViewById(R.id.shopDetailName);
+            TextView shopDetailPhone = dialogDetailsProduct.findViewById(R.id.shopDetailPhone);
+            TextView shopDetailAddress = dialogDetailsProduct.findViewById(R.id.shopDetailAddress);
+            TextView ProductCode = dialogDetailsProduct.findViewById(R.id.ProductCode);
+            TextView productQuantidyfromCustomer = dialogDetailsProduct.findViewById(R.id.productQuantidyfromCustomer);
 
-            globleProductListAdapter6.setOnItemClickListener(new GlobleProductListAdapter6.OnItemClickListener() {
+
+            if (globleProductNote.getProImgeUrl()!=null){
+                String Url = globleProductNote.getProImgeUrl();
+                Picasso.get().load(Url).into(productImageDetail);
+            }
+            ProductNameDetails.setText(globleProductNote.getProName());
+            if (globleProductNote.getProQua()<=0){
+                inStockDetails.setText("Stock out");
+                inStockDetails.setTextColor(Color.RED);
+            }else {
+                inStockDetails.setText("In stock");
+                inStockDetails.setTextColor(Color.GREEN);
+            }
+            ProductCode.setText(globleProductNote.getProductCode());
+            productPriceDetails.setText(globleProductNote.getProPrice()+"");
+            shopDetailName.setText(globleProductNote.getShopName());
+            shopDetailPhone.setText(globleProductNote.getShopPhone());
+            shopDetailAddress.setText(globleProductNote.getShopAddress());
+            productQuantidyfromCustomer.addTextChangedListener(new TextWatcher() {
                 @Override
-                public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                    final GlobleProductNote6 globleProductNote = documentSnapshot.toObject(GlobleProductNote6.class);
-                    final Dialog dialogDetailsProduct = new Dialog(SelecedCatagoryActivity.this);
-                    // Include dialog.xml file
-                    dialogDetailsProduct.setContentView(R.layout.product_detiles_dialog_view);
-                    dialogDetailsProduct.show();
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                    ImageView productImageDetail = dialogDetailsProduct.findViewById(R.id.productImageDetail);
-                    TextView ProductNameDetails = dialogDetailsProduct.findViewById(R.id.ProductNameDetails);
-                    TextView inStockDetails = dialogDetailsProduct.findViewById(R.id.inStockDetails);
-                    final TextView productPriceDetails = dialogDetailsProduct.findViewById(R.id.productPriceDetails);
-                    TextView shopDetailName = dialogDetailsProduct.findViewById(R.id.shopDetailName);
-                    TextView shopDetailPhone = dialogDetailsProduct.findViewById(R.id.shopDetailPhone);
-                    TextView shopDetailAddress = dialogDetailsProduct.findViewById(R.id.shopDetailAddress);
-                    TextView ProductCode = dialogDetailsProduct.findViewById(R.id.ProductCode);
-                    TextView productQuantidyfromCustomer = dialogDetailsProduct.findViewById(R.id.productQuantidyfromCustomer);
+                }
 
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                    if (globleProductNote.getProducImagetUrl()!=null){
-                        String Url = globleProductNote.getProducImagetUrl();
-                        Picasso.get().load(Url).into(productImageDetail);
-                    }
-                    ProductNameDetails.setText(globleProductNote.getProductName());
-                    if (globleProductNote.getProQua()<=0){
-                        inStockDetails.setText("Stock out");
-                        inStockDetails.setTextColor(Color.RED);
+                    String s1 = s.toString().trim();
+                    if (!s1.isEmpty()){
+                        double ProductQuantidy =Double.parseDouble(s1);
+                        double sumPrice = ProductQuantidy*globleProductNote.getProPrice();
+                        productPriceDetails.setText(sumPrice+"");
                     }else {
-                        inStockDetails.setText("In stock");
-                        inStockDetails.setTextColor(Color.GREEN);
+
+                        productPriceDetails.setText(globleProductNote.getProPrice()+"");
                     }
-                    ProductCode.setText(globleProductNote.getProductCode());
-                    productPriceDetails.setText(globleProductNote.getProductPrice()+"");
-                    shopDetailName.setText(globleProductNote.getShopName());
-                    shopDetailPhone.setText(globleProductNote.getShopPhone());
-                    shopDetailAddress.setText(globleProductNote.getShopAddress());
-                    productQuantidyfromCustomer.addTextChangedListener(new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                            String s1 = s.toString().trim();
-                            if (!s1.isEmpty()){
-                                double ProductQuantidy =Double.parseDouble(s1);
-                                double sumPrice = ProductQuantidy*globleProductNote.getProductPrice();
-                                productPriceDetails.setText(sumPrice+"");
-                            }else {
-
-                                productPriceDetails.setText(globleProductNote.getProductPrice()+"");
-                            }
-                        }
-                        @Override
-                        public void afterTextChanged(Editable s) {
-
-                        }
-                    });
+                }
+                @Override
+                public void afterTextChanged(Editable s) {
 
                 }
             });
 
-
         }
+    });
+
+
+}
     }
 
 
@@ -200,7 +200,8 @@ if (catagoryUp!=null){
     }
 
     private void allProductShow(String productName) {
-        Query query = GlobleProduct.orderBy("search").startAt(productName.toLowerCase()).endAt(productName.toLowerCase()+ "\uf8ff").whereEqualTo("productCategory",catagoryUp).whereEqualTo("productPrivacy","Public");
+        Query query = GlobleProduct.orderBy("search").startAt(productName.toLowerCase()).endAt(productName.toLowerCase()+ "\uf8ff")
+                .whereEqualTo("productCategory",catagoryUp).whereEqualTo("productPrivacy","Public");
 
 
         FirestoreRecyclerOptions<GlobleProductNote6> options = new FirestoreRecyclerOptions.Builder<GlobleProductNote6>()
@@ -217,6 +218,7 @@ if (catagoryUp!=null){
         // recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(globleProductListAdapter6);
         globleProductListAdapter6.startListening();
+        noData.setVisibility(View.GONE);
         globleProductListAdapter6.setOnItemClickListener(new GlobleProductListAdapter6.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
@@ -225,7 +227,6 @@ if (catagoryUp!=null){
                 // Include dialog.xml file
                 dialogDetailsProduct.setContentView(R.layout.product_detiles_dialog_view);
                 dialogDetailsProduct.show();
-
                 ImageView productImageDetail = dialogDetailsProduct.findViewById(R.id.productImageDetail);
                 TextView ProductNameDetails = dialogDetailsProduct.findViewById(R.id.ProductNameDetails);
                 TextView inStockDetails = dialogDetailsProduct.findViewById(R.id.inStockDetails);
@@ -237,11 +238,11 @@ if (catagoryUp!=null){
                 TextView productQuantidyfromCustomer = dialogDetailsProduct.findViewById(R.id.productQuantidyfromCustomer);
 
 
-                if (globleProductNote.getProducImagetUrl()!=null){
-                    String Url = globleProductNote.getProducImagetUrl();
+                if (globleProductNote.getProImgeUrl()!=null){
+                    String Url = globleProductNote.getProImgeUrl();
                     Picasso.get().load(Url).into(productImageDetail);
                 }
-                ProductNameDetails.setText(globleProductNote.getProductName());
+                ProductNameDetails.setText(globleProductNote.getProName());
                 if (globleProductNote.getProQua()<=0){
                     inStockDetails.setText("Stock out");
                     inStockDetails.setTextColor(Color.RED);
@@ -250,14 +251,13 @@ if (catagoryUp!=null){
                     inStockDetails.setTextColor(Color.GREEN);
                 }
                 ProductCode.setText(globleProductNote.getProductCode());
-                productPriceDetails.setText(globleProductNote.getProductPrice()+"");
+                productPriceDetails.setText(globleProductNote.getProPrice()+"");
                 shopDetailName.setText(globleProductNote.getShopName());
                 shopDetailPhone.setText(globleProductNote.getShopPhone());
                 shopDetailAddress.setText(globleProductNote.getShopAddress());
                 productQuantidyfromCustomer.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
 
                     }
 
@@ -267,11 +267,11 @@ if (catagoryUp!=null){
                         String s1 = s.toString().trim();
                         if (!s1.isEmpty()){
                             double ProductQuantidy =Double.parseDouble(s1);
-                            double sumPrice = ProductQuantidy*globleProductNote.getProductPrice();
+                            double sumPrice = ProductQuantidy*globleProductNote.getProPrice();
                             productPriceDetails.setText(sumPrice+"");
                         }else {
 
-                            productPriceDetails.setText(globleProductNote.getProductPrice()+"");
+                            productPriceDetails.setText(globleProductNote.getProPrice()+"");
                         }
                     }
                     @Override
@@ -282,6 +282,7 @@ if (catagoryUp!=null){
 
             }
         });
+
 
 
     }

@@ -35,11 +35,22 @@
         </LinearLayout>
 
     </androidx.appcompat.widget.Toolbar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/selectedCatagory"
         android:layout_width="match_parent"
-        tools:listitem="@layout/card_view"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         android:layout_height="match_parent"/>
 
+        <TextView
+            android:id="@+id/noData"
+            android:gravity="center"
+            android:text="NO DATA"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </RelativeLayout>
 </LinearLayout>

@@ -16,12 +16,13 @@ public class ProductNote {
     private String productCode;
     private String productPrivacy;
     private String productCategory;
+    private String search;
     private int date;
 
     public ProductNote(){}
 
     public ProductNote(String proId, String proName, double proPrice,double proBuyPrice, double proQua, double proMin,
-                       String proImgeUrl,String barCode,String productCode,String productPrivacy,String productCategory,int date) {
+                       String proImgeUrl,String barCode,String productCode,String productPrivacy,String productCategory,int date,String search) {
         this.proId = proId;
         this.proName = proName;
         this.proPrice = proPrice;
@@ -34,10 +35,11 @@ public class ProductNote {
         this.productPrivacy = productPrivacy;
         this.productCategory = productCategory;
         this.date = date;
+        this.search = search;
     }
 
     public ProductNote(String proId, String proName, double proPrice,double proBuyPrice, double proQua,
-                       double proMin,String barCode,String productCode,String productPrivacy,String productCategory,int date) {
+                       double proMin,String barCode,String productCode,String productPrivacy,String productCategory,int date,String search) {
         this.proId = proId;
         this.proName = proName;
         this.proPrice = proPrice;
@@ -49,6 +51,7 @@ public class ProductNote {
         this.productPrivacy = productPrivacy;
         this.productCategory = productCategory;
         this.date = date;
+        this.search = search;
     }
 
     public void setUserID(String userID) {
@@ -178,5 +181,13 @@ public class ProductNote {
 
     public void setDate(int date) {
         this.date = date;
+    }
+
+    public String getSearch() {
+        return search;
+    }
+
+    public void setSearch(String search) {
+        this.search = search;
     }
 }

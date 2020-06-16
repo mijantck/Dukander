@@ -117,7 +117,8 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
     int CategoryspinneritemInt;
     String[] privacyspinnerList = { "Public", "private" };
     String[] CategoryspinnerList = { "Mobiles","Tablets","Mobile accessories","Jewellers","Motorcycle accessories","Cosmetics","Grocery",
-    "Panjabi","Pajama","Shirts","Pant","Tee Shirt","Polo","Lungi","Man Shoes","Man Accessories","Saree", "Shalwar Kameez", "Shawls","Girls Panjabi",
+    "Panjabi","Pajama","Shirts","Pant","T-Shirt","Polo","Lungi","Man Shoes","Man Accessories","Saree",
+            "Shalwar Kameez", "Shawls","Girls Panjabi",
             "Nightwear", "Scarves", "Dupatta", "Girls Shoes", "Girls Accessories"};
 
     String productCode;
@@ -422,7 +423,7 @@ if (barcodenumber!=null){
                 }
 
                 if ( bundle == null && mImageUri == null  ){
-                    product.add(new ProductNote(null, pnmae, pp,pBp, pq, pm,pbarCode,productCode,privacyspinneritem,Categoryspinneritem,datenew)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    product.add(new ProductNote(null, pnmae, pp,pBp, pq, pm,pbarCode,productCode,privacyspinneritem,Categoryspinneritem,datenew,pnmae.toLowerCase())).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentReference> task) {
                             if (task.isSuccessful()) {
@@ -454,7 +455,7 @@ if (barcodenumber!=null){
                 if (bundle!=null && image == false) {
 
                     product.document(id).update("proId", id, "proName", pnmae, "proPrice", pp,"proBuyPrice",pBp, "proQua", pq, "proMin", pm, "proImgeUrl",
-                            pruductImageup,"barCode",pbarCode,"productPrivacy",privacyspinneritem,"productCategory",Categoryspinneritem)
+                            pruductImageup,"barCode",pbarCode,"productPrivacy",privacyspinneritem,"productCategory",Categoryspinneritem,"search",pnmae.toLowerCase())
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
@@ -577,7 +578,7 @@ if (barcodenumber!=null){
 
                                     if (image != false) {
 
-                                        product.document(id).update("proId", id, "proName", pnmae, "proPrice", pp,"proBuyPrice",pBp, "proQua", pq, "proMin", pm, "proImgeUrl", uri.toString())
+                                        product.document(id).update("proId", id, "proName", pnmae, "proPrice", pp,"proBuyPrice",pBp, "proQua", pq, "proMin", pm, "proImgeUrl", uri.toString(),"search",pnmae.toLowerCase())
                                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
@@ -598,7 +599,7 @@ if (barcodenumber!=null){
 
                                     } else {
 
-                                        product.add(new ProductNote(null, pnmae, pp, pq,pBp, pm, uri.toString(),productCode,privacyspinneritem,Categoryspinneritem,datenew)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                        product.add(new ProductNote(null, pnmae, pp, pq,pBp, pm, uri.toString(),productCode,privacyspinneritem,Categoryspinneritem,datenew,pnmae.toLowerCase())).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                             @Override
                                             public void onComplete(@NonNull Task<DocumentReference> task) {
 
@@ -691,7 +692,7 @@ if (barcodenumber!=null){
 
                     if (image != false) {
 
-                        product.document(id).update("proId", id, "proName", pnmae, "proPrice", pp,"proBuyPrice", pBp, "proQua", pq, "proMin", pm, "proImgeUrl",downloadLink,"barCode",barCode)
+                        product.document(id).update("proId", id, "proName", pnmae, "proPrice", pp,"proBuyPrice", pBp, "proQua", pq, "proMin", pm, "proImgeUrl",downloadLink,"barCode",barCode,"search",pnmae.toLowerCase())
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
@@ -711,7 +712,7 @@ if (barcodenumber!=null){
                         });
 
                     } else {
-                        product.add(new ProductNote(null, pnmae, pp,pBp, pq, pm, downloadLink,barCode,productCode,privacyspinneritem,Categoryspinneritem,datenew)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                        product.add(new ProductNote(null, pnmae, pp,pBp, pq, pm, downloadLink,barCode,productCode,privacyspinneritem,Categoryspinneritem,datenew,pnmae.toLowerCase())).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentReference> task) {
 
@@ -742,12 +743,6 @@ if (barcodenumber!=null){
                     Intent intent = new Intent(ProductAddActivity.this, ProductListActivity.class);
                     startActivity(intent);
                     finish();
-
-
-
-
-
-
                     progressDialog.dismiss();
                 }
 
@@ -1038,10 +1033,10 @@ if (barcodenumber!=null){
                     }
 
                     Map<String, Object> GlobaleProductObject = new HashMap<>();
-                    GlobaleProductObject.put("productId", productId);
-                    GlobaleProductObject.put("productName", productName);
+                    GlobaleProductObject.put("proId", productId);
+                    GlobaleProductObject.put("proName", productName);
                     GlobaleProductObject.put("search", productName.toLowerCase());
-                    GlobaleProductObject.put("productPrice", productPrice);
+                    GlobaleProductObject.put("proPrice", productPrice);
                     GlobaleProductObject.put("productCode", productCode);
                     GlobaleProductObject.put("productPrivacy", privecy);
                     GlobaleProductObject.put("ShopName", DukanName);
@@ -1099,11 +1094,11 @@ if (barcodenumber!=null){
                     }
 
                     Map<String, Object> GlobaleProductObject = new HashMap<>();
-                    GlobaleProductObject.put("productId", productId);
-                    GlobaleProductObject.put("productName", productName);
+                    GlobaleProductObject.put("proId", productId);
+                    GlobaleProductObject.put("proName", productName);
                     GlobaleProductObject.put("search", productName.toLowerCase());
-                    GlobaleProductObject.put("productPrice", productPrice);
-                    GlobaleProductObject.put("producImagetUrl",ImageUrl);
+                    GlobaleProductObject.put("proPrice", productPrice);
+                    GlobaleProductObject.put("proImgeUrl",ImageUrl);
                     GlobaleProductObject.put("productCode", productCode);
                     GlobaleProductObject.put("productPrivacy", privecy);
                     GlobaleProductObject.put("ShopName", DukanName);
@@ -1161,11 +1156,11 @@ if (barcodenumber!=null){
                     }
 
                     Map<String, Object> GlobaleProductObject = new HashMap<>();
-                    GlobaleProductObject.put("productId", productId);
-                    GlobaleProductObject.put("productName", productName);
+                    GlobaleProductObject.put("proId", productId);
+                    GlobaleProductObject.put("proName", productName);
                     GlobaleProductObject.put("search", productName.toLowerCase());
-                    GlobaleProductObject.put("productPrice", productPrice);
-                    GlobaleProductObject.put("producImagetUrl",ImageUrl);
+                    GlobaleProductObject.put("proPrice", productPrice);
+                    GlobaleProductObject.put("proImgeUrl",ImageUrl);
                     GlobaleProductObject.put("productPrivacy", privecy);
                     GlobaleProductObject.put("ShopName", DukanName);
                     GlobaleProductObject.put("ShopPhone", dukanderPhone);
@@ -1222,10 +1217,10 @@ if (barcodenumber!=null){
                     }
 
                     Map<String, Object> GlobaleProductObject = new HashMap<>();
-                    GlobaleProductObject.put("productId", productId);
-                    GlobaleProductObject.put("productName", productName);
+                    GlobaleProductObject.put("proId", productId);
+                    GlobaleProductObject.put("proName", productName);
                     GlobaleProductObject.put("search", productName.toLowerCase());
-                    GlobaleProductObject.put("productPrice", productPrice);
+                    GlobaleProductObject.put("proPrice", productPrice);
                     GlobaleProductObject.put("productPrivacy", privecy);
                     GlobaleProductObject.put("ShopName", DukanName);
                     GlobaleProductObject.put("ShopPhone", dukanderPhone);

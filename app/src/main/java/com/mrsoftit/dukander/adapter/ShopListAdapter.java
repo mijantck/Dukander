@@ -1,13 +1,11 @@
-package com.mrsoftit.dukander;
+package com.mrsoftit.dukander.adapter;
 
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,9 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.mrsoftit.dukander.R;
+import com.mrsoftit.dukander.modle.GlobleProductNote1;
+import com.mrsoftit.dukander.modle.Shop_list_note;
 import com.squareup.picasso.Picasso;
 
-public class GlobleProductListAdapter  extends FirestoreRecyclerAdapter<GlobleProductNote,GlobleProductListAdapter.ViewHolde> {
+public class ShopListAdapter extends FirestoreRecyclerAdapter<Shop_list_note, ShopListAdapter.ViewHolde> {
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
@@ -28,50 +29,40 @@ public class GlobleProductListAdapter  extends FirestoreRecyclerAdapter<GloblePr
 
     private OnItemClickListener listener;
 
-    public GlobleProductListAdapter(@NonNull FirestoreRecyclerOptions<GlobleProductNote> options) {
+    public ShopListAdapter(@NonNull FirestoreRecyclerOptions<Shop_list_note> options) {
         super(options);
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ViewHolde holder, int position, @NonNull GlobleProductNote model) {
-        holder.name.setText(model.getProName());
-        holder.price.setText(model.getProPrice()+"");
-        if (model.getProImgeUrl()!=null){
-            String Url = model.getProImgeUrl();
-            Picasso.get().load(Url).into(holder.productImage);
+    protected void onBindViewHolder(@NonNull ViewHolde holder, int position, @NonNull Shop_list_note model) {
+
+        if (model.getShopImageURL()!=null) {
+            String Url = model.getShopImageURL();
+            Picasso.get().load(Url).into(holder.ImageView);
         }
-        if (model.getProQua()<=0){
-            holder.instock.setText("Stock out");
-            holder.instock.setTextColor(Color.RED);
-
-        }else {
-
-            holder.instock.setText("In stock");
-            holder.instock.setTextColor(Color.GREEN);
-
-        }
-
+        holder.ShopName.setText(model.getShopName());
     }
 
     @NonNull
     @Override
     public ViewHolde onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view,
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.shop_list_single_item,
                 parent, false);
         return new ViewHolde(v);
     }
 
     public class ViewHolde extends RecyclerView.ViewHolder {
 
-        ImageView productImage;
-        TextView name,instock,price;
 
+
+        ImageView ImageView;
+        TextView ShopName;
         public ViewHolde(@NonNull View itemView) {
             super(itemView);
-            productImage = itemView.findViewById(R.id.productImage);
-            name = itemView.findViewById(R.id.ProductName);
-            instock = itemView.findViewById(R.id.inStock);
-            price = itemView.findViewById(R.id.productPrice);
+
+            ImageView = itemView.findViewById(R.id.shop_list_image_view);
+            ShopName = itemView.findViewById(R.id.shop_list_image_name);
+
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
