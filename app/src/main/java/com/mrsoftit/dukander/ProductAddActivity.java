@@ -97,7 +97,7 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
 
     ImageView pruductImage;
 
-    private TextInputEditText productName, productPrice,productQuantayn,pruductMin,pruductBuyPrice;
+    private TextInputEditText productName, productPrice,productQuantayn,pruductMin,pruductBuyPrice,pruductDiscount;
     TextView productBarcodeNumber;
     private MaterialButton addProduct;
 
@@ -105,7 +105,8 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
     FirebaseFirestore firebaseFirestore;
     ProgressDialog progressDialog;
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-    String   proIdup, productNameup,pruductBuyPriceup, productPriceup,productQuantaynup,pruductMinup,addresup,pruductImageup,barcodenumber,privecyup,catagoryup;
+    String   proIdup, productNameup,pruductBuyPriceup, productPriceup,productQuantaynup,pruductMinup,addresup,
+            pruductImageup,barcodenumber,privecyup,catagoryup,dicountup;
 
     FloatingActionButton imageSeletprioduct;
 
@@ -116,13 +117,15 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
     String Categoryspinneritem;
     int CategoryspinneritemInt;
     String[] privacyspinnerList = { "Public", "private" };
-    String[] CategoryspinnerList = { "Mobiles","Tablets","Mobile accessories","Jewellers","Motorcycle accessories","Cosmetics","Grocery",
+
+    String[] CategoryspinnerList = { "Mobiles","Tablets","Used Mobile","Mobile accessories","Foods","jewellery","Motorcycle accessories","Cosmetics","Grocery",
     "Panjabi","Pajama","Shirts","Pant","T-Shirt","Polo","Lungi","Man Shoes","Man Accessories","Saree",
             "Shalwar Kameez", "Shawls","Girls Panjabi",
             "Nightwear", "Scarves", "Dupatta", "Girls Shoes", "Girls Accessories"};
 
     String productCode;
     int datenew;
+    int pdicount;
 
     boolean image = false;
 
@@ -130,7 +133,8 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
 
     private static final int PICK_IMAGE_REQUEST = 1;
     public Uri mImageUri;
-    String id;
+    String id,comonCatagory;
+
 
 
     private SurfaceView surfaceView;
@@ -165,7 +169,6 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_support);
-        toolbar.setTitle("দোকান্দার");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -198,6 +201,7 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
 
         privacyspinner = findViewById(R.id.privacyspinner);
         Categoryspinner = findViewById(R.id.Categoryspinner);
+        pruductDiscount = findViewById(R.id.pruductDiscount);
 
 
 
@@ -220,6 +224,10 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
             productQuantaynup = bundle.getString("pQuan");
             pruductMinup = bundle.getString("pmini");
             pruductImageup = bundle.getString("imageurl");
+            if (bundle.getString("dicount")!=null){
+                dicountup =bundle.getString("dicount");
+                pruductDiscount.setText(dicountup);
+            }
             id = proIdup;
 if (pruductImageup!=null){
     Uri myUri = Uri.parse(pruductImageup);
@@ -261,7 +269,7 @@ if (barcodenumber!=null){
                 // Include dialog.xml file
                 barDialog.setContentView(R.layout.bar_code_dialog_view);
                 // Set dialog title
-                barDialog.setTitle("বিল পরিশোধ");
+                barDialog.setTitle("Pay Bill");
                 barDialog.show();
                 barDialog.setCanceledOnTouchOutside(false);
 
@@ -292,6 +300,30 @@ if (barcodenumber!=null){
             privacyspinner.setSelection(privecyupInt);
             Categoryspinner.setSelection(catagoryupInt);
 
+
+            if (catagoryupInt>=3){
+                comonCatagory = "Mobiles";
+            }else if (catagoryupInt==4){
+                comonCatagory = "Foods";
+
+            }else if (catagoryupInt == 5){
+                comonCatagory = "Jewellers";
+
+            }else if (catagoryupInt == 6){
+                comonCatagory = "Motorcycle accessories";
+
+            }else if ( catagoryupInt == 7){
+                comonCatagory = "Cosmetics";
+
+            }
+            else if (catagoryupInt == 8){
+                comonCatagory = "Grocery";
+            } else if (catagoryupInt >=9 && catagoryupInt <=17){
+                comonCatagory = "Mans";
+            }else if (catagoryupInt >=18 && catagoryupInt <=23){
+                comonCatagory = "Girls";
+            }
+
         }
         privacyspinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -316,6 +348,29 @@ if (barcodenumber!=null){
 
                 CategoryspinneritemInt = position;
 
+                if (position>=3){
+                    comonCatagory = "Mobiles";
+                }else if (position==4){
+                    comonCatagory = "Foods";
+
+                }else if (position == 5){
+                    comonCatagory = "Jewellers";
+
+                }else if (position == 6){
+                    comonCatagory = "Motorcycle accessories";
+
+                }else if ( position == 7){
+                    comonCatagory = "Cosmetics";
+
+                }
+                else if (position == 8){
+                    comonCatagory = "Grocery";
+                } else if (position >=9 && position <=17){
+                    comonCatagory = "Mans";
+                }else if (position >=18 && position <=23){
+                    comonCatagory = "Girls";
+                }
+
 
             }
 
@@ -332,7 +387,7 @@ if (barcodenumber!=null){
             public void onClick(View v) {
 
                 if(!checkIntert()) {
-                    Toast.makeText(ProductAddActivity.this, " কোনও ইন্টারনেট সংযোগ নেই ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProductAddActivity.this, " No Internet ", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -355,36 +410,49 @@ if (barcodenumber!=null){
                 String pBpq = pruductBuyPrice.getText().toString();
                 String pmq = pruductMin.getText().toString();
 
+                final String dicount = pruductDiscount.getText().toString();
+
+
+
                 if (TextUtils.isEmpty(name) ){
-                    Toast.makeText(getApplicationContext(), "নাম লিখুন...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Product Name...", Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (TextUtils.isEmpty(privacyspinneritem) ){
-                    Toast.makeText(getApplicationContext(), "Privacy লিখুন...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Privacy ...", Toast.LENGTH_LONG).show();
                     return;
                 }  if (TextUtils.isEmpty(Categoryspinneritem) ){
-                    Toast.makeText(getApplicationContext(), "Categorys লিখুন...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Categorys ...", Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (TextUtils.isEmpty(price) ){
-                    Toast.makeText(getApplicationContext(), " ক্রয় মূল্য লিখুন ...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), " Buy Price ...", Toast.LENGTH_LONG).show();
                     return;
                 } if (TextUtils.isEmpty(pBpq) ){
-                    Toast.makeText(getApplicationContext(), " বিক্রয় মূল্য লিখুন ...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), " Sale Price ...", Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (TextUtils.isEmpty(ppq) ){
-                    Toast.makeText(getApplicationContext(), "পরিমাণ লিখুন ...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Quantity ...", Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (TextUtils.isEmpty(pmq) ){
-                    Toast.makeText(getApplicationContext(), "পরিমাণ প্রবেশ করুন...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), " Minimum Quantity...", Toast.LENGTH_LONG).show();
                     return;
+                }
+
+                if (!dicount.isEmpty()){
+                    if (pdicount>=100 && pdicount<=1){
+
+                        Toast.makeText(ProductAddActivity.this, " discount input wong", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    pdicount = Integer.parseInt(dicount);
                 }
 
                 progressDialog = new ProgressDialog(ProductAddActivity.this);
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                progressDialog.setTitle("আপলোড হচ্ছে...");
+                progressDialog.setTitle("Loading...");
                 progressDialog.show();
                 progressDialog.setCancelable(false);
                 progressDialog.setCanceledOnTouchOutside(false);
@@ -423,7 +491,8 @@ if (barcodenumber!=null){
                 }
 
                 if ( bundle == null && mImageUri == null  ){
-                    product.add(new ProductNote(null, pnmae, pp,pBp, pq, pm,pbarCode,productCode,privacyspinneritem,Categoryspinneritem,datenew,pnmae.toLowerCase())).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    product.add(new ProductNote(null, pnmae, pp,pBp, pq, pm,pbarCode,productCode,privacyspinneritem,
+                            Categoryspinneritem,datenew,pnmae.toLowerCase(),pdicount,comonCatagory)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentReference> task) {
                             if (task.isSuccessful()) {
@@ -434,9 +503,9 @@ if (barcodenumber!=null){
                                     public void onComplete(@NonNull Task<Void> task) {
 
 
-                                        setGlobleProduct(id,pnmae,pp,pq,productCode,privacyspinneritem,Categoryspinneritem,datenew);
+                                        setGlobleProduct(id,pnmae,pp,pq,productCode,privacyspinneritem,Categoryspinneritem,datenew,pdicount,comonCatagory);
 
-                                        Toast.makeText(ProductAddActivity.this, " সফলভাবে সম্পন্ন ", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(ProductAddActivity.this, " Successful", Toast.LENGTH_SHORT).show();
 
                                     }
                                 });
@@ -455,12 +524,12 @@ if (barcodenumber!=null){
                 if (bundle!=null && image == false) {
 
                     product.document(id).update("proId", id, "proName", pnmae, "proPrice", pp,"proBuyPrice",pBp, "proQua", pq, "proMin", pm, "proImgeUrl",
-                            pruductImageup,"barCode",pbarCode,"productPrivacy",privacyspinneritem,"productCategory",Categoryspinneritem,"search",pnmae.toLowerCase())
+                            pruductImageup,"barCode",pbarCode,"productPrivacy",privacyspinneritem,"productCategory",Categoryspinneritem,"search",pnmae.toLowerCase(),"comomCatagory",comonCatagory)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
 
-                                    setGlobleProductupdate(id,pnmae,pp,pq,productCode,privacyspinneritem,Categoryspinneritem,datenew);
+                                    setGlobleProductupdate(id,pnmae,pp,pq,productCode,privacyspinneritem,Categoryspinneritem,datenew,pdicount,comonCatagory);
                                     Intent intent = new Intent(ProductAddActivity.this, ProductListActivity.class);
                                     startActivity(intent);
                                     finish();
@@ -501,10 +570,10 @@ if (barcodenumber!=null){
             Intent intent = new Intent();
             intent.setType("image/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, "চিত্র নির্বাচন করুন"), PICK_IMAGE_REQUEST);
+            startActivityForResult(Intent.createChooser(intent, "Image Add "), PICK_IMAGE_REQUEST);
 
         } else {
-            EasyPermissions.requestPermissions(this, "আমাদের অনুমতি দরকার কারণ ",
+            EasyPermissions.requestPermissions(this, "Permission  ",
                     PICK_IMAGE_REQUEST , perms);
         }
     }
@@ -548,105 +617,7 @@ if (barcodenumber!=null){
 
 
 
-    public void CustomerInfoUpload(final Uri mImageUri) {
 
-
-            final String fileName = System.currentTimeMillis() + "";
-
-            final StorageReference putImage = mStorageReferenceImage.child(fileName);
-
-
-            putImage.putFile(mImageUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                            putImage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(final Uri uri) {
-
-
-                                    final String pnmae = productName.getText().toString();
-                                    final String pps = productPrice.getText().toString();
-                                    double pp = Double.parseDouble(pps);
-                                    final String pBps = pruductBuyPrice.getText().toString();
-                                    double pBp = Double.parseDouble(pBps);
-                                    final String pqs = productQuantayn.getText().toString();
-                                    int pq = Integer.parseInt(pqs);
-                                    final String pms = pruductMin.getText().toString();
-                                    int pm = Integer.parseInt(pms);
-
-                                    if (image != false) {
-
-                                        product.document(id).update("proId", id, "proName", pnmae, "proPrice", pp,"proBuyPrice",pBp, "proQua", pq, "proMin", pm, "proImgeUrl", uri.toString(),"search",pnmae.toLowerCase())
-                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<Void> task) {
-
-
-                                                        progressDialog.dismiss();
-                                                    }
-                                                }).addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                progressDialog.dismiss();
-
-                                                Intent intent = new Intent(ProductAddActivity.this,ProductListActivity.class);
-                                                startActivity(intent);
-                                                finish();
-                                            }
-                                        });
-
-                                    } else {
-
-                                        product.add(new ProductNote(null, pnmae, pp, pq,pBp, pm, uri.toString(),productCode,privacyspinneritem,Categoryspinneritem,datenew,pnmae.toLowerCase())).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<DocumentReference> task) {
-
-                                                if (task.isSuccessful()) {
-
-                                                    String id = task.getResult().getId();
-
-
-                                                    product.document(id).update("proId", id).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
-
-
-                                                            Toast.makeText(ProductAddActivity.this, " সফলভাবে সম্পন্ন ", Toast.LENGTH_SHORT).show();
-
-                                                        }
-                                                    });
-                                                }
-
-                                            }
-                                        });
-                                    }
-
-                                    progressDialog.dismiss();
-
-                                    Intent intent = new Intent(ProductAddActivity.this, ProductListActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                }
-                            });
-
-
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-
-                }
-            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-
-                    int countProgres = (int) (100 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                    progressDialog.setProgress(countProgres);
-                }
-            });
-        }
 
     private void uploadImageUri(Uri imageUri){
         progressDialog = new ProgressDialog(this);
@@ -690,13 +661,18 @@ if (barcodenumber!=null){
                     final String pms = pruductMin.getText().toString();
                     double pm = Double.parseDouble(pms);
 
+                    final String dicount = pruductDiscount.getText().toString();
+                    if (!dicount.isEmpty()){
+                        pdicount = Integer.parseInt(dicount);
+                    }
+
                     if (image != false) {
 
-                        product.document(id).update("proId", id, "proName", pnmae, "proPrice", pp,"proBuyPrice", pBp, "proQua", pq, "proMin", pm, "proImgeUrl",downloadLink,"barCode",barCode,"search",pnmae.toLowerCase())
+                        product.document(id).update("proId", id, "proName", pnmae, "proPrice", pp,"proBuyPrice", pBp, "proQua", pq, "proMin", pm, "proImgeUrl",downloadLink,"barCode",barCode,"search",pnmae.toLowerCase(),"comomCatagory",comonCatagory)
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        setGlobleProductupdate(id,pnmae,pp,pq,productCode,privacyspinneritem,Categoryspinneritem,datenew,downloadLink);
+                                        setGlobleProductupdate(id,pnmae,pp,pq,productCode,privacyspinneritem,Categoryspinneritem,datenew,downloadLink,pdicount,comonCatagory);
 
                                         progressDialog.dismiss();
                                     }
@@ -712,7 +688,8 @@ if (barcodenumber!=null){
                         });
 
                     } else {
-                        product.add(new ProductNote(null, pnmae, pp,pBp, pq, pm, downloadLink,barCode,productCode,privacyspinneritem,Categoryspinneritem,datenew,pnmae.toLowerCase())).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                        product.add(new ProductNote(null, pnmae, pp,pBp, pq, pm, downloadLink,barCode,productCode,privacyspinneritem,
+                                Categoryspinneritem,datenew,pnmae.toLowerCase(),pdicount,comonCatagory)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentReference> task) {
 
@@ -726,7 +703,7 @@ if (barcodenumber!=null){
                                         public void onComplete(@NonNull Task<Void> task) {
 
 
-                                            setGlobleProduct(id,pnmae,pp,pq,productCode,privacyspinneritem,Categoryspinneritem,datenew,downloadLink);
+                                            setGlobleProduct(id,pnmae,pp,pq,productCode,privacyspinneritem,Categoryspinneritem,datenew,downloadLink,pdicount,comonCatagory);
 
                                             Toast.makeText(ProductAddActivity.this, " সফলভাবে সম্পন্ন ", Toast.LENGTH_SHORT).show();
 
@@ -999,7 +976,7 @@ if (barcodenumber!=null){
     }
 
 
-    public void setGlobleProduct(final String productId, final String productName, final double productPrice, final double productQuantidy, final String productCode, final String privecy, final String Catagury, final int date){
+    public void setGlobleProduct(final String productId, final String productName, final double productPrice, final double productQuantidy, final String productCode, final String privecy, final String Catagury, final int date, final int pdicount, final String comomCatagory){
 
         myInfo.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -1037,8 +1014,10 @@ if (barcodenumber!=null){
                     GlobaleProductObject.put("proName", productName);
                     GlobaleProductObject.put("search", productName.toLowerCase());
                     GlobaleProductObject.put("proPrice", productPrice);
+                    GlobaleProductObject.put("pruductDiscount", pdicount);
                     GlobaleProductObject.put("productCode", productCode);
                     GlobaleProductObject.put("productPrivacy", privecy);
+                    GlobaleProductObject.put("comomCatagory", comomCatagory);
                     GlobaleProductObject.put("ShopName", DukanName);
                     GlobaleProductObject.put("ShopPhone", dukanderPhone);
                     GlobaleProductObject.put("ShopAddress", dukanderAddress);
@@ -1060,7 +1039,7 @@ if (barcodenumber!=null){
 
 
     }
-    public void setGlobleProduct(final String productId, final String productName, final double productPrice, final double productQuantidy, final String productCode, final String privecy, final String Catagury, final int date, final String ImageUrl){
+    public void setGlobleProduct(final String productId, final String productName, final double productPrice, final double productQuantidy, final String productCode, final String privecy, final String Catagury, final int date, final String ImageUrl, final int pdicount, final String comomCatagory){
 
         myInfo.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -1098,8 +1077,10 @@ if (barcodenumber!=null){
                     GlobaleProductObject.put("proName", productName);
                     GlobaleProductObject.put("search", productName.toLowerCase());
                     GlobaleProductObject.put("proPrice", productPrice);
+                    GlobaleProductObject.put("pruductDiscount", pdicount);
                     GlobaleProductObject.put("proImgeUrl",ImageUrl);
                     GlobaleProductObject.put("productCode", productCode);
+                    GlobaleProductObject.put("comomCatagory", comomCatagory);
                     GlobaleProductObject.put("productPrivacy", privecy);
                     GlobaleProductObject.put("ShopName", DukanName);
                     GlobaleProductObject.put("ShopPhone", dukanderPhone);
@@ -1122,7 +1103,7 @@ if (barcodenumber!=null){
 
 
     }
-    public void setGlobleProductupdate(final String productId, final String productName, final double productPrice, final double productQuantidy, final String productCode, final String privecy, final String Catagury, final int date, final String ImageUrl){
+    public void setGlobleProductupdate(final String productId, final String productName, final double productPrice, final double productQuantidy, final String productCode, final String privecy, final String Catagury, final int date, final String ImageUrl, final int pdicount, final String comomCatagory){
 
         myInfo.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -1160,6 +1141,8 @@ if (barcodenumber!=null){
                     GlobaleProductObject.put("proName", productName);
                     GlobaleProductObject.put("search", productName.toLowerCase());
                     GlobaleProductObject.put("proPrice", productPrice);
+                    GlobaleProductObject.put("pruductDiscount", pdicount);
+                    GlobaleProductObject.put("comomCatagory", comomCatagory);
                     GlobaleProductObject.put("proImgeUrl",ImageUrl);
                     GlobaleProductObject.put("productPrivacy", privecy);
                     GlobaleProductObject.put("ShopName", DukanName);
@@ -1183,7 +1166,7 @@ if (barcodenumber!=null){
 
 
     }
-    public void setGlobleProductupdate(final String productId, final String productName, final double productPrice, final double productQuantidy, final String productCode, final String privecy, final String Catagury, final int date){
+    public void setGlobleProductupdate(final String productId, final String productName, final double productPrice, final double productQuantidy, final String productCode, final String privecy, final String Catagury, final int date, final int pdicount, final String comomCatagory){
 
         myInfo.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -1221,6 +1204,8 @@ if (barcodenumber!=null){
                     GlobaleProductObject.put("proName", productName);
                     GlobaleProductObject.put("search", productName.toLowerCase());
                     GlobaleProductObject.put("proPrice", productPrice);
+                    GlobaleProductObject.put("pruductDiscount", pdicount);
+                    GlobaleProductObject.put("comomCatagory", comomCatagory);
                     GlobaleProductObject.put("productPrivacy", privecy);
                     GlobaleProductObject.put("ShopName", DukanName);
                     GlobaleProductObject.put("ShopPhone", dukanderPhone);

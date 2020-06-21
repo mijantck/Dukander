@@ -16,8 +16,20 @@ public class GlobleProductNote {
     private String productCategory;
     private int date;
     private double proQua;
+    private int pruductDiscount;
+    private String comomCatagory;
+
 
     public GlobleProductNote() {
+    }
+
+
+    public String getComomCatagory() {
+        return comomCatagory;
+    }
+
+    public void setComomCatagory(String comomCatagory) {
+        this.comomCatagory = comomCatagory;
     }
 
     public String getProId() {
@@ -138,5 +150,13 @@ public class GlobleProductNote {
 
     public void setProQua(double proQua) {
         this.proQua = proQua;
+    }
+
+    public int getPruductDiscount() {
+        return pruductDiscount;
+    }
+
+    public void setPruductDiscount(int pruductDiscount) {
+        this.pruductDiscount = pruductDiscount;
     }
 }

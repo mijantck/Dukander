@@ -17,14 +17,23 @@ public class GlobleProductNote2 {
     private String productCategory;
     private int date;
     private double proQua;
+    private int pruductDiscount;
+
 
     public GlobleProductNote2() {
+    }
+
+    public int getPruductDiscount() {
+        return pruductDiscount;
+    }
+
+    public void setPruductDiscount(int pruductDiscount) {
+        this.pruductDiscount = pruductDiscount;
     }
 
     public String getProId() {
         return proId;
     }
-
     public void setProId(String proId) {
         this.proId = proId;
     }

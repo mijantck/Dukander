@@ -1,5 +1,6 @@
 package com.mrsoftit.dukander;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +33,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -86,6 +89,7 @@ public class ProductListActivity extends AppCompatActivity {
     private MaterialButton barcode_Buton;
     Dialog barDialog;
 
+    ProgressDialog progressDialog;
 
 
     @Override
@@ -227,6 +231,7 @@ public class ProductListActivity extends AppCompatActivity {
                             String pBp = String.valueOf(productNote.getProBuyPrice());
                             String pq = String.valueOf(productNote.getProQua());
                             String pm = String.valueOf(productNote.getProMin());
+                            String discount = String.valueOf(productNote.getPruductDiscount());
                             Intent pdfIntent = new Intent(ProductListActivity.this, ProductAddActivity.class);
                             pdfIntent.putExtra("id", id);
                             if (imageurl != null) {
@@ -243,6 +248,12 @@ public class ProductListActivity extends AppCompatActivity {
                             pdfIntent.putExtra("pmini", pm);
                             pdfIntent.putExtra("privecy", privecy);
                             pdfIntent.putExtra("catagory", catagory);
+                            if (!discount.isEmpty())
+                            {
+                                pdfIntent.putExtra("dicount", discount);
+                            }
+
+
 
                             startActivity(pdfIntent);
 
@@ -253,10 +264,29 @@ public class ProductListActivity extends AppCompatActivity {
                                     .setMessage("তুমি কি নিশ্চিত?")
                                     .setPositiveButton("হ্যাঁ",
                                             new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface dialog, int which) {
+                                                public void onClick(final DialogInterface dialog, int which) {
 
-                                                    adapter.deleteItem(position);
-                                                    dialog.dismiss();
+                                                    progressDialog = new ProgressDialog(ProductListActivity.this);
+                                                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                                                    progressDialog.setTitle("আপলোড হচ্ছে...");
+                                                    progressDialog.show();
+
+                                                    CollectionReference GlobleProduct = FirebaseFirestore.getInstance()
+                                                            .collection("GlobleProduct");
+
+                                                    String id = documentSnapshot.getId();
+
+                                                    GlobleProduct.document(id).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+
+                                                            adapter.deleteItem(position);
+                                                            dialog.dismiss();
+                                                            progressDialog.dismiss();
+
+                                                        }
+                                                    });
+
                                                 }
                                             })
                                     .setNegativeButton("না", new DialogInterface.OnClickListener() {
@@ -325,6 +355,7 @@ public class ProductListActivity extends AppCompatActivity {
                             String pBp = String.valueOf(productNote.getProBuyPrice());
                             String pq = String.valueOf(productNote.getProQua());
                             String pm = String.valueOf(productNote.getProMin());
+                            String discount = String.valueOf(productNote.getPruductDiscount());
                             Intent pdfIntent = new Intent(ProductListActivity.this, ProductAddActivity.class);
                             pdfIntent.putExtra("id", id);
                             if (imageurl != null) {
@@ -339,6 +370,10 @@ public class ProductListActivity extends AppCompatActivity {
 
                             pdfIntent.putExtra("pQuan", pq);
                             pdfIntent.putExtra("pmini", pm);
+                            if (!discount.isEmpty())
+                            {
+                                pdfIntent.putExtra("dicount", discount);
+                            }
 
                             startActivity(pdfIntent);
 
@@ -349,10 +384,27 @@ public class ProductListActivity extends AppCompatActivity {
                                     .setMessage("তুমি কি নিশ্চিত?")
                                     .setPositiveButton("হ্যাঁ",
                                             new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface dialog, int which) {
+                                                public void onClick(final DialogInterface dialog, int which) {
+                                                    CollectionReference GlobleProduct = FirebaseFirestore.getInstance()
+                                                            .collection("GlobleProduct");
 
-                                                    adapter.deleteItem(position);
-                                                    dialog.dismiss();
+                                                    progressDialog = new ProgressDialog(ProductListActivity.this);
+                                                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                                                    progressDialog.setTitle("আপলোড হচ্ছে...");
+                                                    progressDialog.show();
+
+                                                    String id = documentSnapshot.getId();
+
+                                                    GlobleProduct.document(id).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+
+                                                            adapter.deleteItem(position);
+                                                            dialog.dismiss();
+                                                            progressDialog.dismiss();
+
+                                                        }
+                                                    });
                                                 }
                                             })
                                     .setNegativeButton("না", new DialogInterface.OnClickListener() {
@@ -541,11 +593,14 @@ public class ProductListActivity extends AppCompatActivity {
                             String pBp = String.valueOf(productNote.getProBuyPrice());
                             String pq = String.valueOf(productNote.getProQua());
                             String pm = String.valueOf(productNote.getProMin());
+                            String discount = String.valueOf(productNote.getPruductDiscount());
+
                             Intent pdfIntent = new Intent(ProductListActivity.this, ProductAddActivity.class);
                             pdfIntent.putExtra("id", id);
                             if (imageurl != null) {
                                 pdfIntent.putExtra("imageurl", imageurl);
                             }
+
                             pdfIntent.putExtra("name", name);
                             pdfIntent.putExtra("code", barcode);
 
@@ -555,7 +610,10 @@ public class ProductListActivity extends AppCompatActivity {
 
                             pdfIntent.putExtra("pQuan", pq);
                             pdfIntent.putExtra("pmini", pm);
-
+                            if (!discount.isEmpty())
+                            {
+                                pdfIntent.putExtra("dicount", discount);
+                            }
                             startActivity(pdfIntent);
 
 
@@ -565,10 +623,28 @@ public class ProductListActivity extends AppCompatActivity {
                                     .setMessage("তুমি কি নিশ্চিত?")
                                     .setPositiveButton("হ্যাঁ",
                                             new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface dialog, int which) {
+                                                public void onClick(final DialogInterface dialog, int which) {
 
-                                                    adapter.deleteItem(position);
-                                                    dialog.dismiss();
+                                                    progressDialog = new ProgressDialog(ProductListActivity.this);
+                                                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                                                    progressDialog.setTitle("আপলোড হচ্ছে...");
+                                                    progressDialog.show();
+
+                                                    CollectionReference GlobleProduct = FirebaseFirestore.getInstance()
+                                                            .collection("GlobleProduct");
+
+                                                    String id = documentSnapshot.getId();
+
+                                                    GlobleProduct.document(id).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+
+                                                            adapter.deleteItem(position);
+                                                            dialog.dismiss();
+                                                            progressDialog.dismiss();
+
+                                                        }
+                                                    });
                                                 }
                                             })
                                     .setNegativeButton("না", new DialogInterface.OnClickListener() {

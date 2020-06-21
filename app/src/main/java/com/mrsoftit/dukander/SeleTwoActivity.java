@@ -1042,23 +1042,17 @@ public class SeleTwoActivity extends AppCompatActivity {
     }
 
     public void unknowCustomerupdateData(ArrayList list) {
-
         String invoice = invoiseIdTextView.getText().toString();
         int i=Integer.parseInt(invoice);
         // Get a new write batch
         WriteBatch batch = db.batch();
-
         // Iterate through the list
         for (int k = 0; k < list.size(); k++) {
-
             // Update each list item
             DocumentReference ref = db.collection("users").document(user_id).collection("UnknownCustomer")
                     .document(unknonwnCustomerId).collection("saleProduct").document((String) list.get(k));
-
             batch.update(ref, "paid", true,"invoiceNumber",i);
-
         }
-
         // Commit the batch
         batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -1066,7 +1060,6 @@ public class SeleTwoActivity extends AppCompatActivity {
                 // Yay its all done in one go!
             }
         });
-
     }
 
     public void totalupdateData(ArrayList list) {

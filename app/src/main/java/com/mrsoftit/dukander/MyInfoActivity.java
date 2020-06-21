@@ -49,6 +49,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -64,6 +65,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,6 +89,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
     FirebaseFirestore firebaseFirestore;
     ProgressDialog progressDialog;
 
+    FirebaseFirestore db;
 
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -150,7 +153,6 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         MyInfoNote myInfoNote = document.toObject(MyInfoNote.class);
-
                         imageuploadurl = myInfoNote.getDukanaddpicurl();
                         id = myInfoNote.getMyid();
                         firstTime = myInfoNote.isFirsttime();
@@ -186,6 +188,8 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         Objects.requireNonNull(toolbar.getNavigationIcon()).setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
+
+        db = FirebaseFirestore.getInstance();
 
 
         progressDialog = new ProgressDialog(MyInfoActivity.this);
@@ -808,8 +812,6 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
         return networkInfo !=null && networkInfo.isConnected();
     }
 
-
-
     public File saveBitmapToFile(File file){
         try {
 
@@ -852,8 +854,6 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
             return null;
         }
     }
-
-
 
     public void setGlobleSoplist(boolean update,String shopUserId,String shoId,String shopName,String shopPhone,String shopAddress){
 
@@ -918,6 +918,40 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
             });
         }
     }
+
+    public void privecyupdateData(ArrayList list,String Privacy) {
+
+
+        // Get a new write batch
+        WriteBatch batch = db.batch();
+
+        if (Privacy.contains("private")) {
+            // Iterate through the list
+            for (int k = 0; k < list.size(); k++) {
+                // Update each list item
+                DocumentReference ref = db.collection("GlobleProduct")
+                        .document((String) list.get(k));
+                batch.update(ref, "productPrivacy", "private");
+            }
+        }
+        if (Privacy.contains("Public")) {
+            for (int k = 0; k < list.size(); k++) {
+                // Update each list item
+                DocumentReference ref = db.collection("GlobleProduct")
+                        .document((String) list.get(k));
+                batch.update(ref, "productPrivacy", "Public");
+            }
+        }
+        // Commit the batch
+        batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                // Yay its all done in one go!
+            }
+        });
+
+    }
+
 
 }
 

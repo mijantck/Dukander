@@ -10,6 +10,7 @@ public class TotalSaleNote {
     private String unknownCustomerID;
     private double quantedt;
     private double totalPrice;
+    private double payment;
 
     public TotalSaleNote(){}
 
@@ -20,6 +21,20 @@ public class TotalSaleNote {
         this.saleProductId = saleProductId;
         this.quantedt = quantedt;
         this.totalPrice = totalPrice;
+    }
+
+    public TotalSaleNote( String itemName,int date, double payment) {
+        this.itemName = itemName;
+        this.date = date;
+        this.payment = payment;
+    }
+
+    public double getPayment() {
+        return payment;
+    }
+
+    public void setPayment(double payment) {
+        this.payment = payment;
     }
 
     public int getDate() {

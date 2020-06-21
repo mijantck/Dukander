@@ -18,7 +18,7 @@
            android:gravity="center"
             android:textSize="20dp"
             android:textColor="#FFFF"
-            android:text="পণ্য তালিকা যুক্ত"
+            android:text="Add Product list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </androidx.appcompat.widget.Toolbar>
@@ -73,7 +73,7 @@
             android:layout_marginBottom="12dp"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
-            android:hint="পণ্যের নাম"
+            android:hint="Product Name"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
 
@@ -93,7 +93,7 @@
             android:layout_marginRight="5dp"
             android:background="@drawable/rounded_corner_barcode_text_view"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:text="বারকোড নাম্বার(ঐচ্ছিক) "
+            android:text="Barcode Scanner (Optional)"
             android:gravity="center|left"
             android:id="@+id/productBarcodeNumber"
             android:layout_width="match_parent"
@@ -124,7 +124,7 @@
             android:layout_marginBottom="12dp"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
-            android:hint="বিক্রয় মূল্য "
+            android:hint="Sale Price"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -143,7 +143,7 @@
             android:layout_marginBottom="12dp"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
-            android:hint="ক্রয় মূল্য "
+            android:hint="Buy Price "
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -151,6 +151,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
+                android:maxLines="1"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:hint=" Discount (Optional)"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/pruductDiscount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
                 android:maxLines="1"
                 />
 
@@ -165,7 +183,7 @@
             android:layout_marginBottom="12dp"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
-            android:hint="পরিমাণ"
+            android:hint="Quantity"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -184,7 +202,7 @@
             android:layout_marginBottom="12dp"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
-            android:hint=" ন্যূনতম পরিমাণ"
+            android:hint=" Minimum Quantity"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -200,7 +218,7 @@
             android:id="@+id/addpruduct"
             android:gravity="center"
             android:layout_width="wrap_content"
-            android:text="পণ্য সংযোজন"
+            android:text="Product Add"
             style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_height="wrap_content"/>
 

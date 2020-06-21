@@ -11,6 +11,7 @@ public class ProductSaleNote {
 
 
 
+
     public ProductSaleNote(){}
 
     public ProductSaleNote(String productSaleId, String proName, double price, double producQuantidy, double totalPrice, int date) {
@@ -21,6 +22,7 @@ public class ProductSaleNote {
         this.totalPrice = totalPrice;
         this.date = date;
     }
+
 
     public String getProductSaleId() {
         return productSaleId;
@@ -45,4 +47,5 @@ public class ProductSaleNote {
     public int getDate() {
         return date;
     }
+
 }

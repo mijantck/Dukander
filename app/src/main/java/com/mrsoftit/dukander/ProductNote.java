@@ -18,11 +18,13 @@ public class ProductNote {
     private String productCategory;
     private String search;
     private int date;
+    private int pruductDiscount;
+    private String comomCatagory;
 
     public ProductNote(){}
 
     public ProductNote(String proId, String proName, double proPrice,double proBuyPrice, double proQua, double proMin,
-                       String proImgeUrl,String barCode,String productCode,String productPrivacy,String productCategory,int date,String search) {
+                       String proImgeUrl,String barCode,String productCode,String productPrivacy,String productCategory,int date,String search,int pruductDiscount,String comomCatagory) {
         this.proId = proId;
         this.proName = proName;
         this.proPrice = proPrice;
@@ -36,10 +38,13 @@ public class ProductNote {
         this.productCategory = productCategory;
         this.date = date;
         this.search = search;
+        this.pruductDiscount = pruductDiscount;
+        this.comomCatagory = comomCatagory;
     }
 
     public ProductNote(String proId, String proName, double proPrice,double proBuyPrice, double proQua,
-                       double proMin,String barCode,String productCode,String productPrivacy,String productCategory,int date,String search) {
+                       double proMin,String barCode,String productCode,String productPrivacy,
+                       String productCategory,int date,String search,int pruductDiscount,String comomCatagory) {
         this.proId = proId;
         this.proName = proName;
         this.proPrice = proPrice;
@@ -52,6 +57,8 @@ public class ProductNote {
         this.productCategory = productCategory;
         this.date = date;
         this.search = search;
+        this.pruductDiscount = pruductDiscount;
+        this.comomCatagory = comomCatagory;
     }
 
     public void setUserID(String userID) {
@@ -189,5 +196,21 @@ public class ProductNote {
 
     public void setSearch(String search) {
         this.search = search;
+    }
+
+    public int getPruductDiscount() {
+        return pruductDiscount;
+    }
+
+    public void setPruductDiscount(int pruductDiscount) {
+        this.pruductDiscount = pruductDiscount;
+    }
+
+    public String getComomCatagory() {
+        return comomCatagory;
+    }
+
+    public void setComomCatagory(String comomCatagory) {
+        this.comomCatagory = comomCatagory;
     }
 }

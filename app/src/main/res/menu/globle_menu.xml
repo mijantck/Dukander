@@ -8,9 +8,6 @@
             <item
                 android:id="@+id/loginGloble"
                 android:title="Login " />
-            <item
-                android:id="@+id/OrderListGloble"
-                android:title="OrderList " />
         </menu>
     </item>
     <item android:title="Shop list">
@@ -20,7 +17,6 @@
                 android:title="Shop Find " />
         </menu>
     </item>
-
     <item android:title="Phones">
         <menu>
             <item
@@ -30,47 +26,20 @@
                 android:id="@+id/tablet"
                 android:title="Tablet " />
             <item
+                android:id="@+id/usedPhone"
+                android:title="Used Phone " />
+            <item
                 android:id="@+id/Mobile_accessories"
                 android:title="Mobile accessories " />
 
         </menu>
     </item>
-    <item android:title="Jewellers">
+
+    <item android:title="Foods Section">
         <menu>
             <item
-                android:id="@+id/Jewellers"
-                android:title="Jewellers " />
-
-
-        </menu>
-    </item>
-
-    <item android:title="Motorcycle accessories">
-        <menu>
-            <item
-                android:id="@+id/Motorcycle_accessories"
-                android:title="Motorcycle accessories " />
-
-
-        </menu>
-    </item>
-
-    <item android:title="Cosmetics">
-        <menu>
-            <item
-                android:id="@+id/Cosmetics"
-                android:title="Cosmetics" />
-
-
-        </menu>
-    </item>
-
-    <item android:title="Grocery">
-        <menu>
-            <item
-                android:id="@+id/Grocery"
-                android:title="Grocery" />
-
+                android:id="@+id/foods"
+                android:title="Food " />
 
         </menu>
     </item>
@@ -155,8 +124,42 @@
                 android:title="Girls Accessories" />
         </menu>
     </item>
+    <item android:title="Jewellers">
+        <menu>
+            <item
+                android:id="@+id/Jewellers"
+                android:title="Jewellers " />
 
 
+        </menu>
+    </item>
+    <item android:title="Motorcycle accessories">
+        <menu>
+            <item
+                android:id="@+id/Motorcycle_accessories"
+                android:title="Motorcycle accessories " />
+
+
+        </menu>
+    </item>
+    <item android:title="Cosmetics">
+        <menu>
+            <item
+                android:id="@+id/Cosmetics"
+                android:title="Cosmetics" />
+
+
+        </menu>
+    </item>
+    <item android:title="Grocery">
+        <menu>
+            <item
+                android:id="@+id/Grocery"
+                android:title="Grocery" />
+
+
+        </menu>
+    </item>
     <item android:title="Communicate">
         <menu>
             <item
@@ -166,5 +169,6 @@
 
         </menu>
     </item>
+
 
 </menu>

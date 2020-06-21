@@ -10,7 +10,6 @@
         android:fitsSystemWindows="true"
         >
 
-
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -23,6 +22,26 @@
         android:layout_height="50dp"
         android:elevation="10dp"
         />
+
+        <EditText
+            android:imeOptions="actionSearch"
+            android:hint="Find your product "
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:id="@+id/searchEditeText"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:maxLines="1"
+            android:inputType="text"
+            android:background="@drawable/search_edittext"
+            android:ems="10"
+            android:drawableLeft="@drawable/ic_search_gray"
+            />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -39,9 +58,10 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
+
             <androidx.cardview.widget.CardView
                 app:cardCornerRadius="6dp"
-                android:layout_margin="16dp"
+                android:layout_margin="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <com.smarteist.autoimageslider.SliderView
@@ -63,6 +83,188 @@
                     app:sliderStartAutoCycle="true" />
 
             </androidx.cardview.widget.CardView>
+
+             <!--Title-->
+             <LinearLayout
+                 android:orientation="horizontal"
+                 android:layout_width="match_parent"
+                 android:layout_height="100dp">
+           <HorizontalScrollView
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:scrollbars="none">
+               
+               <LinearLayout
+                   android:orientation="horizontal"
+                   android:layout_width="wrap_content"
+                   android:layout_height="match_parent">
+                   <androidx.cardview.widget.CardView
+                       android:layout_width="wrap_content"
+                       android:layout_height="match_parent"
+                       app:cardCornerRadius="5dp"
+                       app:contentPadding="2dp"
+                       app:cardElevation="2dp"
+                       app:cardBackgroundColor="@android:color/white"
+                       app:cardUseCompatPadding="true"
+                       >
+                       <ImageView
+                           android:id="@+id/manlogo"
+                           android:src="@drawable/icons_man"
+                           android:layout_width="100dp"
+                           android:layout_height="80dp"/>
+
+                       <TextView
+                           android:layout_width="100dp"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="bottom"
+                           android:gravity="center"
+                           android:text="MAN" />
+
+                   </androidx.cardview.widget.CardView>
+                   <androidx.cardview.widget.CardView
+                       android:layout_width="wrap_content"
+                       android:layout_height="match_parent"
+                       app:cardCornerRadius="5dp"
+                       app:contentPadding="2dp"
+                       app:cardElevation="2dp"
+                       app:cardBackgroundColor="@android:color/white"
+                       app:cardUseCompatPadding="true"
+                       >
+                       <ImageView
+                           android:id="@+id/girlslogo"
+                           android:src="@drawable/icons_girl"
+                           android:layout_width="100dp"
+                           android:layout_height="80dp"/>
+
+                       <TextView
+                           android:layout_width="100dp"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="bottom"
+                           android:gravity="center"
+                           android:text="GIRLS" />
+
+                   </androidx.cardview.widget.CardView>
+                   <androidx.cardview.widget.CardView
+                       android:layout_width="wrap_content"
+                       android:layout_height="match_parent"
+                       app:cardCornerRadius="5dp"
+                       app:contentPadding="2dp"
+                       app:cardElevation="2dp"
+                       app:cardBackgroundColor="@android:color/white"
+                       app:cardUseCompatPadding="true"
+                       >
+                       <ImageView
+                           android:id="@+id/mpbilelogo"
+                           android:src="@drawable/icons_smartphone_tablet"
+                           android:layout_width="100dp"
+                           android:layout_height="80dp"/>
+
+                       <TextView
+                           android:layout_width="100dp"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="bottom"
+                           android:gravity="center"
+                           android:text="PHONE" />
+
+                   </androidx.cardview.widget.CardView>
+                   <androidx.cardview.widget.CardView
+                       android:layout_width="wrap_content"
+                       android:layout_height="match_parent"
+                       app:cardCornerRadius="5dp"
+                       app:contentPadding="2dp"
+                       app:cardElevation="2dp"
+                       app:cardBackgroundColor="@android:color/white"
+                       app:cardUseCompatPadding="true"
+                       >
+                       <ImageView
+                           android:id="@+id/foodslogo"
+                           android:src="@drawable/icons_food"
+                           android:layout_width="100dp"
+                           android:layout_height="80dp"/>
+
+                       <TextView
+                           android:layout_width="100dp"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="bottom"
+                           android:gravity="center"
+                           android:text="FOODS" />
+
+                   </androidx.cardview.widget.CardView>
+                   <androidx.cardview.widget.CardView
+                       android:layout_width="wrap_content"
+                       android:layout_height="match_parent"
+                       app:cardCornerRadius="5dp"
+                       app:contentPadding="2dp"
+                       app:cardElevation="2dp"
+                       app:cardBackgroundColor="@android:color/white"
+                       app:cardUseCompatPadding="true"
+                       >
+                       <ImageView
+                           android:id="@+id/jewelarylogo"
+                           android:src="@drawable/icons_jewelry"
+                           android:layout_width="100dp"
+                           android:layout_height="80dp"/>
+
+                       <TextView
+                           android:layout_width="100dp"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="bottom"
+                           android:gravity="center"
+                           android:text="Jewelry" />
+
+                   </androidx.cardview.widget.CardView>
+                   <androidx.cardview.widget.CardView
+                       android:layout_width="wrap_content"
+                       android:layout_height="match_parent"
+                       app:cardCornerRadius="5dp"
+                       app:contentPadding="2dp"
+                       app:cardElevation="2dp"
+                       app:cardBackgroundColor="@android:color/white"
+                       app:cardUseCompatPadding="true"
+                       >
+                       <ImageView
+                           android:id="@+id/Motorcycle_logo"
+                           android:src="@drawable/icons_motorcycle"
+                           android:layout_width="100dp"
+                           android:layout_height="80dp"/>
+
+                       <TextView
+                           android:layout_width="100dp"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="bottom"
+                           android:gravity="center"
+                           android:text="motorcycle" />
+
+                   </androidx.cardview.widget.CardView>
+                   <androidx.cardview.widget.CardView
+                       android:layout_width="wrap_content"
+                       android:layout_height="match_parent"
+                       app:cardCornerRadius="5dp"
+                       app:contentPadding="2dp"
+                       app:cardElevation="2dp"
+                       app:cardBackgroundColor="@android:color/white"
+                       app:cardUseCompatPadding="true"
+                       >
+                       <ImageView
+                           android:id="@+id/grosary_logo"
+                           android:src="@drawable/icons_grosary"
+                           android:layout_width="100dp"
+                           android:layout_height="80dp"/>
+
+                       <TextView
+                           android:layout_width="100dp"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="bottom"
+                           android:gravity="center"
+                           android:text="grocery" />
+
+                   </androidx.cardview.widget.CardView>
+
+               </LinearLayout>
+
+           </HorizontalScrollView>
+                 
+             </LinearLayout>
              <!--Mobile-->
             <LinearLayout
                 android:orientation="vertical"
@@ -305,6 +507,13 @@
     </LinearLayout>
 
         </ScrollView>
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/noItem"
+            android:text="NO ITEM"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView

@@ -12,19 +12,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
@@ -33,18 +38,23 @@ import android.widget.Toast;
 
 import com.daimajia.slider.library.SliderLayout;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.mrsoftit.dukander.adapter.GlobleProductListAdapter1;
 import com.mrsoftit.dukander.adapter.GlobleProductListAdapter2;
 import com.mrsoftit.dukander.adapter.GlobleProductListAdapter3;
 import com.mrsoftit.dukander.adapter.GlobleProductListAdapter4;
 import com.mrsoftit.dukander.adapter.GlobleProductListAdapter5;
 import com.mrsoftit.dukander.adapter.GlobleProductListAdapter6;
+import com.mrsoftit.dukander.modle.AdsUrlNote;
 import com.mrsoftit.dukander.modle.GlobleProductNote1;
 import com.mrsoftit.dukander.modle.GlobleProductNote2;
 import com.mrsoftit.dukander.modle.GlobleProductNote3;
@@ -76,6 +86,8 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
     SliderView sliderView;
     private SliderAdapterExample adapter;
 
+    EditText searchEditeText;
+
     ProgressDialog progressDialog;
     GlobleProductListAdapter globleProductListAdapter;
     GlobleProductListAdapter1 globleProductListAdapter1;
@@ -84,6 +96,8 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
     GlobleProductListAdapter4 globleProductListAdapter4;
     GlobleProductListAdapter5 globleProductListAdapter5;
     GlobleProductListAdapter6 globleProductListAdapter6;
+
+    private  ImageView manlogo,girlslogo,mpbilelogo,foodslogo,jewelarylogo,Motorcycle_logo,grosary_logo;
 
 
 
@@ -106,6 +120,15 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
         drawer = findViewById(R.id.globle_drawer_layout);
         sliderView = findViewById(R.id.imageSlider);
         GlobleHomePage = findViewById(R.id.GlobleHomePage);
+        searchEditeText = findViewById(R.id.searchEditeText);
+
+        manlogo = findViewById(R.id.manlogo);
+        girlslogo = findViewById(R.id.girlslogo);
+        mpbilelogo = findViewById(R.id.mpbilelogo);
+        foodslogo = findViewById(R.id.foodslogo);
+        jewelarylogo = findViewById(R.id.jewelarylogo);
+        Motorcycle_logo = findViewById(R.id.Motorcycle_logo);
+        grosary_logo = findViewById(R.id.grosary_logo);
 
         progressDialog = new ProgressDialog(GlobleProductListActivity.this);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -123,6 +146,107 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.grey));
 
         toggle.syncState();
+
+
+
+        searchEditeText.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+
+        searchEditeText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                GlobleHomePage.setVisibility(View.GONE);
+                wholProductListlayout.setVisibility(View.VISIBLE);
+                wholProductList = true;
+                allProductShow(s.toString().toLowerCase());
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                GlobleHomePage.setVisibility(View.GONE);
+                wholProductListlayout.setVisibility(View.VISIBLE);
+                wholProductList = true;
+                allProductShow(s.toString().toLowerCase());
+            }
+        });
+
+        searchEditeText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    performSearch();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+
+
+        //catagory view
+        manlogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intent.putExtra("comomCatagory","Mans");
+                startActivity(intent);
+            }
+        });
+        girlslogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intent.putExtra("comomCatagory","Girls");
+                startActivity(intent);
+            }
+        });
+        mpbilelogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intent.putExtra("comomCatagory","Mobiles");
+                startActivity(intent);
+            }
+        });
+        foodslogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intent.putExtra("comomCatagory","Foods");
+                startActivity(intent);
+            }
+        });
+        jewelarylogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intent.putExtra("comomCatagory","Jewellers");
+                startActivity(intent);
+            }
+        });
+        Motorcycle_logo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intent.putExtra("comomCatagory","Motorcycle accessories");
+                startActivity(intent);
+            }
+        });
+        grosary_logo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intent.putExtra("comomCatagory","Grocery");
+                startActivity(intent);
+            }
+        });
+
+
 
 
         allProductShow("");
@@ -156,19 +280,29 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
     }
 
     public void renewItems() {
-        List<SliderItem> sliderItemList = new ArrayList<>();
+        final List<SliderItem> sliderItemList = new ArrayList<>();
         //dummy data
-        for (int i = 0; i < 5; i++) {
-            SliderItem sliderItem = new SliderItem();
-            sliderItem.setDescription("Slider Item " + i);
-            if (i % 2 == 0) {
-                sliderItem.setImageUrl("https://www.linkpicture.com/q/slid1.jpg");
-            } else {
-                sliderItem.setImageUrl("https://images.pexels.com/photos/4346583/pexels-photo-4346583.jpeg?cs=srgb&dl=persons-eye-with-brown-eyes-4346583.jpg&fm=jpg?auto=compress&cs=tinysrgb&h=750&w=1260");
-            }
-            sliderItemList.add(sliderItem);
-        }
-        adapter.renewItems(sliderItemList);
+      CollectionReference adsUrl = FirebaseFirestore.getInstance()
+                .collection("AdsURL");
+
+      adsUrl.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+          @Override
+          public void onComplete(@NonNull Task<QuerySnapshot> task) {
+              if (task.isSuccessful()) {
+                  for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                      AdsUrlNote adsUrlNote = document.toObject(AdsUrlNote.class);
+                      SliderItem sliderItem = new SliderItem();
+                      sliderItem.setDescription(adsUrlNote.getShopName());
+                      sliderItem.setImageUrl(adsUrlNote.getUrl());
+
+                      sliderItemList.add(sliderItem);
+                  }
+                  adapter.renewItems(sliderItemList);
+              }
+
+          }
+      });
+
     }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -179,6 +313,7 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                 startActivity(new Intent(GlobleProductListActivity.this,LoginActivity.class));
                 finish();
                 break;
+
             case R.id.shoplist:
                startActivity(new Intent(GlobleProductListActivity.this,ShopListActivity.class));
 
@@ -193,10 +328,20 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                 intenttablet.putExtra("catagory","Tablets");
                 startActivity(intenttablet);
                 break;
+            case R.id.usedPhone:
+                Intent intentusedPhone = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intentusedPhone.putExtra("catagory","Used Mobile");
+                startActivity(intentusedPhone);
+                break;
             case R.id.Mobile_accessories:
                 Intent intentMobile_accessories = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
                 intentMobile_accessories.putExtra("catagory","Mobile accessories");
                 startActivity(intentMobile_accessories);
+                break;
+            case R.id.foods:
+                Intent intentfoods = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
+                intentfoods.putExtra("catagory","Foods");
+                startActivity(intentfoods);
                 break;
             case R.id.Jewellers:
                 Intent intentJewellers = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
@@ -864,8 +1009,8 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
     }
     //Adapter 6
     private void allProductShow(String productName) {
-        Query query = GlobleProduct.orderBy("search").startAt(productName.toLowerCase()).endAt(productName.toLowerCase()+ "\uf8ff").whereEqualTo("productPrivacy","Public");
 
+        Query query = GlobleProduct.orderBy("search").startAt(productName.toLowerCase()).endAt(productName.toLowerCase()+ "\uf8ff").whereEqualTo("productPrivacy","Public");
 
         FirestoreRecyclerOptions<GlobleProductNote6> options = new FirestoreRecyclerOptions.Builder<GlobleProductNote6>()
                 .setQuery(query, GlobleProductNote6.class)
@@ -875,13 +1020,11 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
 
         RecyclerView recyclerView = findViewById(R.id.wholProductList);
         recyclerView.setHasFixedSize(true);
-       // LinearLayoutManager linearLayoutManager = new LinearLayoutManager(GlobleProductListActivity.this,RecyclerView.HORIZONTAL,false);
-         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        //  recyclerView.setLayoutManager(ne4 LinearLayoutManager(this));
-       // recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         recyclerView.setAdapter(globleProductListAdapter6);
+        TextView noItem = findViewById(R.id.noItem);
+        noItem.setVisibility(View.VISIBLE);
         globleProductListAdapter6.startListening();
-        progressDialog.dismiss();
         globleProductListAdapter6.setOnItemClickListener(new GlobleProductListAdapter6.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
@@ -954,6 +1097,7 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
     protected void onStart() {
         super.onStart();
         globleProductListAdapter6.startListening();
+        searchEditeText.clearFocus();
     }
 
     @Override
@@ -962,37 +1106,38 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
         globleProductListAdapter6.stopListening();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.example_menu, menu);
-
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) searchItem.getActionView();
-        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                GlobleHomePage.setVisibility(View.GONE);
-                wholProductListlayout.setVisibility(View.VISIBLE);
-                 wholProductList = true;
-                progressDialog.show();
-
-                allProductShow(query);
-
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                allProductShow(newText);
-
-                return false;
-            }
-        });
+        inflater.inflate(R.menu.order_list_menu, menu);
         return true;
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.OrderListTorbar:
+                Toast.makeText(this, "Item 1 selected", Toast.LENGTH_SHORT).show();
+                return true;
 
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void performSearch() {
+        searchEditeText.clearFocus();
+        InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        in.hideSoftInputFromWindow(searchEditeText.getWindowToken(), 0);
+        //...perform search
+
+
+
+    }
 
     }

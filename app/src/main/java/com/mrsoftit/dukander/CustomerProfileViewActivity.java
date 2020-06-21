@@ -235,7 +235,8 @@ public class CustomerProfileViewActivity extends AppCompatActivity {
     }
         else if (uid!=null){
             CollectionReference TotalcustomerProductSale = FirebaseFirestore.getInstance()
-                    .collection("users").document(user_id).collection("UnknownCustomer").document(uid).collection("saleProduct");
+                    .collection("users").document(user_id).collection("UnknownCustomer")
+                    .document(uid).collection("saleProduct");
 
             Query query = TotalcustomerProductSale.whereEqualTo("paid", true);
 
@@ -361,6 +362,7 @@ public class CustomerProfileViewActivity extends AppCompatActivity {
                                     loadingTExt.setVisibility(View.VISIBLE);
 
                                     String paymony = payeditetext.getText().toString();
+
                                     if (paymony.isEmpty()){
                                         return;
                                     }
@@ -381,7 +383,7 @@ public class CustomerProfileViewActivity extends AppCompatActivity {
                                         return;
                                     }
                                     double withpaytaka = dautakaccustomer - paymonyDouable;
-                                    double daubill = withpaytaka;
+                                    final double daubill = withpaytaka;
 
                                     if (activeBalance!=null){
                                         activeBalance += paymonyDouable;
@@ -398,35 +400,55 @@ public class CustomerProfileViewActivity extends AppCompatActivity {
 
 
                                     if (id!=null) {
-                                        final CollectionReference customer = FirebaseFirestore.getInstance()
-                                                .collection("users").document(user_id).collection("Customers");
-                                        customer.document(id).update("taka", daubill).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        final CollectionReference customer = FirebaseFirestore.getInstance().collection("users").document(user_id).collection("Customers");
+
+                                        customer.document(id).collection("saleProduct").add(new TotalSaleNote("Payment",datenew,paymonyDouable)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                             @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                customer.document(id).update("lastTotal", 00.0).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            public void onComplete(@NonNull Task<DocumentReference> task) {
+
+                                                customer.document(id).update("taka", daubill).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
-                                                        dialogpayment.dismiss();
-                                                        progressDialog.dismiss();
+                                                        customer.document(id).update("lastTotal", 00.0).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                dialogpayment.dismiss();
+                                                                progressDialog.dismiss();
+                                                            }
+                                                        });
                                                     }
                                                 });
                                             }
                                         });
+
+
                                     }if (uid!=null) {
-                                        final CollectionReference customer = FirebaseFirestore.getInstance()
-                                                .collection("users").document(user_id).collection("UnknownCustomer");
-                                        customer.document(uid).update("taka", daubill).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                customer.document(uid).update("lastTotal", 00.0).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                        dialogpayment.dismiss();
-                                                        progressDialog.dismiss();
-                                                    }
-                                                });
-                                            }
-                                        });
+
+
+
+                                        final CollectionReference customer = FirebaseFirestore.getInstance().collection("users").document(user_id).collection("UnknownCustomer");
+
+                                       customer.document(uid).collection("saleProduct").add(new TotalSaleNote("Payment",datenew,paymonyDouable)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                           @Override
+                                           public void onComplete(@NonNull Task<DocumentReference> task) {
+
+                                               customer.document(uid).update("taka", daubill).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                   @Override
+                                                   public void onComplete(@NonNull Task<Void> task) {
+                                                       customer.document(uid).update("lastTotal", 00.0).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                           @Override
+                                                           public void onComplete(@NonNull Task<Void> task) {
+                                                               dialogpayment.dismiss();
+                                                               progressDialog.dismiss();
+                                                           }
+                                                       });
+                                                   }
+                                               });
+
+                                           }
+                                       });
+
+
                                     }
                                 }
                             });

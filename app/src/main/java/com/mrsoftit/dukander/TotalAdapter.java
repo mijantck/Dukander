@@ -39,6 +39,11 @@ public class TotalAdapter extends FirestoreRecyclerAdapter<TotalSaleNote, TotalA
         holder.product_quantedy_textview.setText(model.getQuantedt()+"");
         holder.product_price_textview.setText(model.getTotalPrice()+"");
 
+        if (model.getItemName().equals("Payment")){
+            holder.product_quantedy_textview.setVisibility(View.GONE);
+            holder.product_price_textview.setText(model.getPayment()+"");
+
+        }
 if (model.isConfirm() == true){
     holder.confirmTextView.setVisibility(View.VISIBLE);
 }

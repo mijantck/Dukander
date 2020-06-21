@@ -45,11 +45,10 @@
         android:layout_width="match_parent"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         android:layout_height="match_parent"/>
-
         <TextView
             android:id="@+id/noData"
             android:gravity="center"
-            android:text="NO DATA"
+            android:text="NO ITEM HERE "
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </RelativeLayout>
