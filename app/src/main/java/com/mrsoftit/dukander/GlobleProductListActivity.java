@@ -244,7 +244,7 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
-                intent.putExtra("comomCatagory","Jewellers");
+                intent.putExtra("comomCatagory","jewellery");
                 startActivity(intent);
             }
         });
@@ -364,7 +364,7 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                 break;
             case R.id.Jewellers:
                 Intent intentJewellers = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
-                intentJewellers.putExtra("catagory","Jewellers");
+                intentJewellers.putExtra("catagory","jewellery");
                 startActivity(intentJewellers);
                 break;
             case R.id.Motorcycle_accessories:
@@ -620,11 +620,11 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                 TextView ProductCode = dialogDetailsProduct.findViewById(R.id.ProductCode);
                 TextView productQuantidyfromCustomer = dialogDetailsProduct.findViewById(R.id.productQuantidyfromCustomer);
 
-
                 if (globleProductNote.getProImgeUrl()!=null){
                     String Url = globleProductNote.getProImgeUrl();
                     Picasso.get().load(Url).into(productImageDetail);
                 }
+
                 ProductNameDetails.setText(globleProductNote.getProName());
                 if (globleProductNote.getProQua()<=0){
                     inStockDetails.setText("Stock out");
@@ -643,7 +643,6 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
                     }
-
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
 
@@ -662,6 +661,12 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
 
                     }
                 });
+
+              String proID =  globleProductNote.getProId();
+
+
+
+
 
             }
         });

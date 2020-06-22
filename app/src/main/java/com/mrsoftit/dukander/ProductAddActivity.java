@@ -1,9 +1,11 @@
 package com.mrsoftit.dukander;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -19,6 +21,7 @@ import android.media.ToneGenerator;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
@@ -301,13 +304,14 @@ if (barcodenumber!=null){
             Categoryspinner.setSelection(catagoryupInt);
 
 
-            if (catagoryupInt>=3){
+            if (catagoryupInt<=3){
                 comonCatagory = "Mobiles";
-            }else if (catagoryupInt==4){
+
+            }else if (catagoryupInt == 4){
                 comonCatagory = "Foods";
 
             }else if (catagoryupInt == 5){
-                comonCatagory = "Jewellers";
+                comonCatagory = "jewellery";
 
             }else if (catagoryupInt == 6){
                 comonCatagory = "Motorcycle accessories";
@@ -348,13 +352,12 @@ if (barcodenumber!=null){
 
                 CategoryspinneritemInt = position;
 
-                if (position>=3){
+                if (position<=3){
                     comonCatagory = "Mobiles";
-                }else if (position==4){
+                }else if (position == 4){
                     comonCatagory = "Foods";
-
                 }else if (position == 5){
-                    comonCatagory = "Jewellers";
+                    comonCatagory = "jewellery";
 
                 }else if (position == 6){
                     comonCatagory = "Motorcycle accessories";
@@ -454,7 +457,6 @@ if (barcodenumber!=null){
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 progressDialog.setTitle("Loading...");
                 progressDialog.show();
-                progressDialog.setCancelable(false);
                 progressDialog.setCanceledOnTouchOutside(false);
 
                 final String pnmae = productName.getText().toString();
@@ -560,9 +562,60 @@ if (barcodenumber!=null){
 
 
     }
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @AfterPermissionGranted(PICK_IMAGE_REQUEST)
     private void getIMEGE() {
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            List<Integer> lPermission = new ArrayList<>();
+            List<String> stringPermissionList1 = getPermissionList();
+            for (int i = 0; i < stringPermissionList1.size(); i++) {
+                lPermission.add(ContextCompat.checkSelfPermission(getApplicationContext(), stringPermissionList1.get(i)));
+            }
+            boolean bPermissionDenied = false;
+            for (int i = 0; i < lPermission.size(); i++) {
+                int a = lPermission.get(i);
+                if (PackageManager.PERMISSION_DENIED == a) {
+                    bPermissionDenied = true;
+                    break;
+                }
+            }
+
+
+            if (bPermissionDenied) {
+                String sMessage = "Please allow all permissions shown in upcoming dialog boxes, so that app functions properly";
+                //make request to the user
+                List<String> stringPermissionList = getPermissionList();
+                String[] sPermissions = stringPermissionList.toArray(new String[stringPermissionList.size()]);
+
+                //request the permissions
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    requestPermissions(sPermissions, PICK_IMAGE_REQUEST);
+                }
+            } else {
+
+
+            }
+
+
+        } else {
+/*
+
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Image Add "), PICK_IMAGE_REQUEST);
+*/
+
+        }
+
+
+
+
+
+
+        /////////////////////////////////////////////////////////////////////////////////////////////
         String[] perms = {Manifest.permission.READ_EXTERNAL_STORAGE};
 
         if (EasyPermissions.hasPermissions(this, perms)) {
@@ -573,12 +626,43 @@ if (barcodenumber!=null){
             startActivityForResult(Intent.createChooser(intent, "Image Add "), PICK_IMAGE_REQUEST);
 
         } else {
-            EasyPermissions.requestPermissions(this, "Permission  ",
-                    PICK_IMAGE_REQUEST , perms);
+           /* EasyPermissions.requestPermissions(this, "Permission  ",
+                    PICK_IMAGE_REQUEST , perms);*/
         }
     }
 
+    private List<String> getPermissionList(){
+        List<String> stringPermissionList=new ArrayList<>();
 
+        stringPermissionList.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+        stringPermissionList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        return  stringPermissionList;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        boolean isAllPermissionGranted = true;
+
+        for (int i = 0; i < grantResults.length; i++) {
+            int iPermission = grantResults[i];
+            if (iPermission == PackageManager.PERMISSION_DENIED) {
+                isAllPermissionGranted = false;
+                break;
+            }
+        }
+        if (isAllPermissionGranted) {
+
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Image Add "), PICK_IMAGE_REQUEST);
+        } else {
+            // Prompt the user to grant all permissions
+        }
+
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -592,6 +676,7 @@ if (barcodenumber!=null){
                 Toast.makeText(this, "No file chosen", Toast.LENGTH_SHORT).show();
             }
         }}
+/*
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -599,6 +684,7 @@ if (barcodenumber!=null){
 
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
+*/
 
     @Override
     public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
@@ -620,11 +706,6 @@ if (barcodenumber!=null){
 
 
     private void uploadImageUri(Uri imageUri){
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.setTitle("আপলোড হচ্ছে...");
-        progressDialog.show();
-        progressDialog.setCanceledOnTouchOutside(false);
 
 
         try {
@@ -643,7 +724,8 @@ if (barcodenumber!=null){
 
 
 
-            Log.d("Test", "uploadImageUri: " + imageUri.getPath());
+          //  Log.d("Test", "uploadImageUri: " +);
+
 
             upload(file, new UploadCallback() {
                 @Override
@@ -730,6 +812,7 @@ if (barcodenumber!=null){
 
         } catch (Exception e){
             e.printStackTrace();
+
         }
 
 

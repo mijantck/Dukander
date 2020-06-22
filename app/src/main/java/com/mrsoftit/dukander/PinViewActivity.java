@@ -76,16 +76,37 @@ public class PinViewActivity extends AppCompatActivity {
 
                         PinNote pinNote = new PinNote();
                         for (DocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-
                           pinNote.setFairtTime((Boolean) document.get("fairtTime"));
                           pin = Objects.requireNonNull(document.get("pin")).toString();
                           firstTime  = (Boolean) document.get("fairtTime");
-                          
                         }
 
                         if (pin==null){
-                           startActivity(new Intent(PinViewActivity.this,PinSetActivity.class));
-                           finish();
+
+
+                            new MaterialAlertDialogBuilder(PinViewActivity.this)
+                                    .setTitle("Set security code")
+                                    .setMessage("set security code than safe your shop information.so places set security code")
+                                    .setPositiveButton("GOT IT", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                                            startActivity(new Intent(PinViewActivity.this,PinSetActivity.class));
+                                            finish();
+                                        }
+                                    })
+                                    .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                                            startActivity(new Intent(PinViewActivity.this,MainActivity.class));
+                                            finish();
+                                        }
+                                    })
+                                    .show();
+
+
+
                         }
 
                 }}

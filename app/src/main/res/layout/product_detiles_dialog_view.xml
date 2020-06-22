@@ -3,9 +3,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:padding="10dp"
-    android:layout_height="wrap_content">
+    android:padding="4dp"
+    android:layout_height="match_parent">
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,6 +40,7 @@
 
                     <TextView
                         android:text="Name :"
+                        android:textColor="@color/primaryTextColor"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                     <TextView
@@ -48,6 +57,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2.5">
                     <TextView
+                        android:textColor="@color/primaryTextColor"
                         android:layout_width="wrap_content"
                         android:text="Code :"
                         android:layout_height="wrap_content"/>
@@ -66,7 +76,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal"
                 android:weightSum="6"
                 >
@@ -92,7 +102,8 @@
                    <EditText
                        android:id="@+id/productQuantidyfromCustomer"
                        android:layout_width="match_parent"
-                       android:hint="@string/quantidy"
+                       android:hint="Quantity"
+                       android:textSize="15dp"
                        android:background="@null"
                        android:inputType="numberDecimal"
                        android:layout_height="wrap_content"/>
@@ -116,7 +127,7 @@
 
 
         </LinearLayout>
-    <LinearLayout
+        <LinearLayout
         android:gravity="center"
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -127,62 +138,52 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         <TextView
-            android:textSize="20dp"
+            android:textSize="15dp"
             android:text="Shop Details"
             android:fontFamily="@font/nunito_sans_bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         </LinearLayout>
            <LinearLayout
-               android:layout_marginTop="10dp"
-               android:layout_marginBottom="10dp"
-               android:layout_marginLeft="10dp"
-               android:layout_marginRight="5dp"
-
                android:layout_width="match_parent"
                android:layout_height="wrap_content">
                <ImageView
-                   android:padding="3dp"
-                   android:layout_marginRight="10dp"
                    android:src="@drawable/icons_shop"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"/>
                <TextView
                    android:id="@+id/shopDetailName"
                    android:text=""
+                   android:layout_marginLeft="3dp"
+                   android:textSize="12sp"
                    android:layout_width="match_parent"
                    android:layout_height="match_parent"/>
            </LinearLayout>
         <LinearLayout
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <ImageView
-                android:padding="3dp"
-                android:layout_marginRight="10dp"
                 android:src="@drawable/icons_call"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <TextView
+                android:layout_marginLeft="3dp"
+                android:textSize="12sp"
                 android:id="@+id/shopDetailPhone"
                 android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"/>
         </LinearLayout>
         <LinearLayout
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <ImageView
-                android:padding="3dp"
-                android:layout_marginRight="10dp"
                 android:src="@drawable/icons_shop_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <TextView
+                android:layout_marginLeft="3dp"
+                android:textSize="12sp"
                 android:id="@+id/shopDetailAddress"
                 android:text=""
                 android:layout_width="wrap_content"
@@ -191,16 +192,85 @@
 
         <Button
             android:text="Order now"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_marginRight="50dp"
-            android:padding="10dp"
             android:layout_marginLeft="50dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+
     </LinearLayout>
 
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
+            <TextView
+                android:gravity="center"
+                android:text="REVIEW "
+                android:textStyle="bold"
+                android:textColor="@color/primaryTextColorNew"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/primaryTextColorNew"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:orientation="vertical"
+                android:clipToPadding="false"
+                android:focusableInTouchMode="true"
+                >
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_above="@+id/send_layout"
+                    android:id="@+id/reviewreciclearview"
+                    android:layout_width="match_parent"
+                    android:foregroundGravity="bottom"
+                    android:layout_height="match_parent"
+                    />
+
+                <LinearLayout
+                    android:id="@+id/send_layout"
+                    android:layout_width="match_parent"
+                    android:layout_alignParentBottom="true"
+                    android:layout_height="wrap_content"
+                    android:background="#fff"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/revieweditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:ems="10"
+                        android:hint="Write a message"
+                        android:inputType="text"
+                        android:paddingHorizontal="10dp"
+                        android:text="" />
+
+                    <ImageButton
+                        android:id="@+id/reviewsendbutton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:scaleType="fitCenter"
+                        android:padding="20dp"
+                        android:layout_marginHorizontal="10dp"
+                        android:background="@drawable/ic_send_black_24dp"/>
+                </LinearLayout>
+            </RelativeLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>

@@ -1,15 +1,18 @@
 package com.mrsoftit.dukander;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,6 +21,7 @@ import android.graphics.PorterDuff;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.OpenableColumns;
@@ -58,6 +62,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -319,10 +324,60 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
 
 
     }
-
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @AfterPermissionGranted(PICK_IMAGE_REQUEST)
     private void getIMEGE() {
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            List<Integer> lPermission = new ArrayList<>();
+            List<String> stringPermissionList1 = getPermissionList();
+            for (int i = 0; i < stringPermissionList1.size(); i++) {
+                lPermission.add(ContextCompat.checkSelfPermission(getApplicationContext(), stringPermissionList1.get(i)));
+            }
+            boolean bPermissionDenied = false;
+            for (int i = 0; i < lPermission.size(); i++) {
+                int a = lPermission.get(i);
+                if (PackageManager.PERMISSION_DENIED == a) {
+                    bPermissionDenied = true;
+                    break;
+                }
+            }
+
+
+            if (bPermissionDenied) {
+                String sMessage = "Please allow all permissions shown in upcoming dialog boxes, so that app functions properly";
+                //make request to the user
+                List<String> stringPermissionList = getPermissionList();
+                String[] sPermissions = stringPermissionList.toArray(new String[stringPermissionList.size()]);
+
+                //request the permissions
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    requestPermissions(sPermissions, PICK_IMAGE_REQUEST);
+                }
+            } else {
+
+
+            }
+
+
+        } else {
+/*
+
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Image Add "), PICK_IMAGE_REQUEST);
+*/
+
+        }
+
+
+
+
+
+
+        /////////////////////////////////////////////////////////////////////////////////////////////
         String[] perms = {Manifest.permission.READ_EXTERNAL_STORAGE};
 
         if (EasyPermissions.hasPermissions(this, perms)) {
@@ -330,12 +385,45 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
             Intent intent = new Intent();
             intent.setType("image/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+            startActivityForResult(Intent.createChooser(intent, "Image Add "), PICK_IMAGE_REQUEST);
 
         } else {
-            EasyPermissions.requestPermissions(this, "We need permissions because this and that",
-                    PICK_IMAGE_REQUEST , perms);
+           /* EasyPermissions.requestPermissions(this, "Permission  ",
+                    PICK_IMAGE_REQUEST , perms);*/
         }
+    }
+
+    private List<String> getPermissionList(){
+        List<String> stringPermissionList=new ArrayList<>();
+
+        stringPermissionList.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+        stringPermissionList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        return  stringPermissionList;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        boolean isAllPermissionGranted = true;
+
+        for (int i = 0; i < grantResults.length; i++) {
+            int iPermission = grantResults[i];
+            if (iPermission == PackageManager.PERMISSION_DENIED) {
+                isAllPermissionGranted = false;
+                break;
+            }
+        }
+        if (isAllPermissionGranted) {
+
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Image Add "), PICK_IMAGE_REQUEST);
+        } else {
+            // Prompt the user to grant all permissions
+        }
+
     }
 
     @Override
@@ -351,6 +439,7 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
             }
         }}
 
+/*
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -358,6 +447,7 @@ public class CustomerAddActivity extends AppCompatActivity implements EasyPermis
 
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
+*/
 
     @Override
     public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {

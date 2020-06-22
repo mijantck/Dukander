@@ -4,11 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -16,6 +18,7 @@ import android.graphics.PorterDuff;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
@@ -541,6 +544,59 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
     @AfterPermissionGranted(PICK_IMAGE_REQUEST)
     private void getIMEGE() {
 
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            List<Integer> lPermission = new ArrayList<>();
+            List<String> stringPermissionList1 = getPermissionList();
+            for (int i = 0; i < stringPermissionList1.size(); i++) {
+                lPermission.add(ContextCompat.checkSelfPermission(getApplicationContext(), stringPermissionList1.get(i)));
+            }
+            boolean bPermissionDenied = false;
+            for (int i = 0; i < lPermission.size(); i++) {
+                int a = lPermission.get(i);
+                if (PackageManager.PERMISSION_DENIED == a) {
+                    bPermissionDenied = true;
+                    break;
+                }
+            }
+
+
+            if (bPermissionDenied) {
+                String sMessage = "Please allow all permissions shown in upcoming dialog boxes, so that app functions properly";
+                //make request to the user
+                List<String> stringPermissionList = getPermissionList();
+                String[] sPermissions = stringPermissionList.toArray(new String[stringPermissionList.size()]);
+
+                //request the permissions
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    requestPermissions(sPermissions, PICK_IMAGE_REQUEST);
+                }
+            } else {
+
+
+            }
+
+
+        } else {
+/*
+
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Image Add "), PICK_IMAGE_REQUEST);
+*/
+
+        }
+
+
+
+
+
+
+
+
+        ///////////////////////////////////////////////////////////////////
         String[] perms = {Manifest.permission.READ_EXTERNAL_STORAGE};
 
         if (EasyPermissions.hasPermissions(this, perms)) {
@@ -551,10 +607,46 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
             startActivityForResult(Intent.createChooser(intent, "চিত্র নির্বাচন করুন"), PICK_IMAGE_REQUEST);
 
         } else {
-            EasyPermissions.requestPermissions(this, "আমাদের অনুমতি দরকার",
-                    PICK_IMAGE_REQUEST , perms);
+          /*  EasyPermissions.requestPermissions(this, "আমাদের অনুমতি দরকার",
+                    PICK_IMAGE_REQUEST , perms);*/
         }
     }
+
+
+    private List<String> getPermissionList(){
+        List<String> stringPermissionList=new ArrayList<>();
+
+        stringPermissionList.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+        stringPermissionList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        return  stringPermissionList;
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        boolean isAllPermissionGranted = true;
+
+        for (int i = 0; i < grantResults.length; i++) {
+            int iPermission = grantResults[i];
+            if (iPermission == PackageManager.PERMISSION_DENIED) {
+                isAllPermissionGranted = false;
+                break;
+            }
+        }
+        if (isAllPermissionGranted) {
+
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Image Add "), PICK_IMAGE_REQUEST);
+        } else {
+            // Prompt the user to grant all permissions
+        }
+
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -570,12 +662,14 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
         }}
 
 
+
+/*
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
 
-    }
+    }*/
 
     @Override
     public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
@@ -911,7 +1005,6 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
             GlobleSoplist.document(shoId).update(GlobaleShopList).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
-                    Toast.makeText(MyInfoActivity.this, " globale added URL", Toast.LENGTH_SHORT).show();
 
                     progressDialog.dismiss();
                 }
