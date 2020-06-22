@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -38,6 +39,13 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.mrsoftit.dukander.modle.GlobleCustomerNote;
+
+import java.util.Objects;
 
 import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
 
@@ -62,6 +70,8 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
 
     FirebaseAuth.AuthStateListener mAuthLisenar;
+
+    String cType;
 
 
     @Override
@@ -99,8 +109,34 @@ public class LoginActivity extends AppCompatActivity {
         tvToSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final Dialog dialog = new Dialog(LoginActivity.this);
+                // Include dialogpayment.xml file
+                dialog.setContentView(R.layout.signup_choos_dialoge);
+                // Set dialogpayment title
+                dialog.setTitle("Choose your option");
+                dialog.show();
 
-                onRegestetionClick(v);
+                TextView customer = dialog.findViewById(R.id.customer_signup);
+                TextView shopkeper = dialog.findViewById(R.id.shopkeper_signup);
+
+                customer.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        startActivity(new Intent(LoginActivity.this,CustomerLoginActivity.class));
+
+                    }
+                });
+
+         shopkeper.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        dialog.dismiss();
+        onRegestetionClick(v);
+
+    }
+});
+
             }
         });
 
@@ -160,7 +196,36 @@ public class LoginActivity extends AppCompatActivity {
 
         if(mAuth.getCurrentUser()!=null){
 
-            startActivity(new Intent(getApplicationContext(),PinViewActivity.class));
+
+            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+            String user_id = currentUser.getUid();
+
+            CollectionReference Info = FirebaseFirestore.getInstance()
+                    .collection("Globlecustomers").document(user_id).collection("info");
+
+            Info.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+
+                        for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                            GlobleCustomerNote globleCustomerNote = document.toObject(GlobleCustomerNote.class);
+                            cType = globleCustomerNote.getCustomerType();
+                        }
+
+                        if (cType!=null){
+
+                            startActivity(new Intent(getApplicationContext(),GlobleProductListActivity.class));
+                            finish();
+
+                        }else {
+                            startActivity(new Intent(getApplicationContext(),PinViewActivity.class));
+                            finish();
+                        }
+                    }
+                }
+            });
+
 
             finish();
         }
@@ -233,13 +298,42 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "সফল লগইন!", Toast.LENGTH_LONG).show();
 
-                                progressDialog.dismiss();
 
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
+
+                            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                            String user_id = currentUser.getUid();
+
+                            CollectionReference Info = FirebaseFirestore.getInstance()
+                                    .collection("Globlecustomers").document(user_id).collection("info");
+
+                            Info.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+
+                                        for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                                            GlobleCustomerNote globleCustomerNote = document.toObject(GlobleCustomerNote.class);
+                                            cType = globleCustomerNote.getCustomerType();
+                                        }
+
+                                        if (cType!=null){
+                                            progressDialog.dismiss();
+                                            startActivity(new Intent(getApplicationContext(),GlobleProductListActivity.class));
+                                            Toast.makeText(getApplicationContext(), "সফল লগইন!", Toast.LENGTH_LONG).show();
+
+                                            finish();
+
+                                        }else {
+
+                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    }
+                                }
+                            });
+
                         }
                         else {
                             Toast.makeText(getApplicationContext(), "লগইন ব্যর্থ! পরে আবার চেষ্টা করুন", Toast.LENGTH_LONG).show();

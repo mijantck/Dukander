@@ -68,7 +68,7 @@
             android:hint="Name">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/input_name"
+                android:id="@+id/input_name_customer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text" />
@@ -87,7 +87,7 @@
             android:hint="Email">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/input_email"
+                android:id="@+id/input_email_cutomer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress" />
@@ -108,7 +108,26 @@
             android:hint="password">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/input_password"
+                android:id="@+id/input_password_customer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="@dimen/loginViewsMargin"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="12dp"
+            android:hint="Confirm password">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/confirm_input_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
@@ -129,7 +148,7 @@
             android:hint="Phone Number">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/input_phoneNumber"
+                android:id="@+id/input_phoneNumber_customer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="phone" />
@@ -148,7 +167,7 @@
             android:hint="Address">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/input_Address"
+                android:id="@+id/input_Address_customer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress" />
@@ -156,6 +175,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
+            android:id="@+id/customer_singup_button"
             android:text="signup"
             android:gravity="center"
             android:layout_marginLeft="50dp"

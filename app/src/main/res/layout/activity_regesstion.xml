@@ -90,6 +90,25 @@
                 android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="@dimen/loginViewsMargin"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="2dp"
+            android:background="#FFF">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ConfirmTextPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Confirm Password"
+                android:inputType="textPassword"
+                android:maxLines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
 

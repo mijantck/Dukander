@@ -33,7 +33,7 @@ public class RegestationActivity extends AppCompatActivity {
 
     FirebaseAuth Auth;
 
-    TextInputEditText editTextEmail,editTextPassword;
+    TextInputEditText editTextEmail,editTextPassword,ConfirmTextPassword;
 
     TextView alredyResistetionTextView;
     Button cirRegisterButton;
@@ -50,6 +50,7 @@ public class RegestationActivity extends AppCompatActivity {
 
         editTextEmail =findViewById(R.id.editTextEmailregistesion);
         editTextPassword =findViewById(R.id.editTextPassword);
+        ConfirmTextPassword =findViewById(R.id.ConfirmTextPassword);
         cirRegisterButton =findViewById(R.id.cirRegisterButton);
 
         Auth = FirebaseAuth.getInstance();
@@ -77,6 +78,7 @@ public class RegestationActivity extends AppCompatActivity {
 
                 final String email = editTextEmail.getText().toString();
                 final String password = editTextPassword.getText().toString();
+                final String confimpassword = ConfirmTextPassword.getText().toString();
 
                 if(TextUtils.isEmpty(email)){
                     Toast.makeText(getApplicationContext(),"দয়া করে ইমেলটি পূরণ করুন",Toast.LENGTH_SHORT).show();
@@ -94,6 +96,10 @@ public class RegestationActivity extends AppCompatActivity {
                     return;
                 }
 
+                if (!password.equals(confimpassword)){
+                    Toast.makeText(getApplicationContext(),"Confirm Password not match",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 progressDialog = new ProgressDialog(RegestationActivity.this);
                 // Setting Message
                 progressDialog.setTitle("তথ্য প্রস্তুত হচ্ছে..."); // Setting Title
@@ -104,7 +110,7 @@ public class RegestationActivity extends AppCompatActivity {
                         .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
                             @Override
                             public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
-try {
+                            try {
     boolean isNewUser = task.getResult().getSignInMethods().isEmpty();
     if (isNewUser) {
         Auth.createUserWithEmailAndPassword(email,password)
@@ -128,10 +134,8 @@ try {
 
     }
 }catch (Exception e){
-    Toast.makeText(RegestationActivity.this, e+"", Toast.LENGTH_SHORT).show();
-}
-
-
+                                 Toast.makeText(RegestationActivity.this, e+"", Toast.LENGTH_SHORT).show();
+                                              }
                             }
                         });
 

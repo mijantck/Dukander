@@ -164,8 +164,10 @@
         <menu>
             <item
                 android:id="@+id/Contact_us"
-
                 android:title="Contact us " />
+            <item
+                android:id="@+id/logout"
+                android:title="logout" />
 
         </menu>
     </item>

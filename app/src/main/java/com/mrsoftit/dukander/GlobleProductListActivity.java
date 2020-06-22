@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -38,10 +39,15 @@ import android.widget.Toast;
 
 import com.daimajia.slider.library.SliderLayout;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -55,6 +61,7 @@ import com.mrsoftit.dukander.adapter.GlobleProductListAdapter4;
 import com.mrsoftit.dukander.adapter.GlobleProductListAdapter5;
 import com.mrsoftit.dukander.adapter.GlobleProductListAdapter6;
 import com.mrsoftit.dukander.modle.AdsUrlNote;
+import com.mrsoftit.dukander.modle.GlobleCustomerNote;
 import com.mrsoftit.dukander.modle.GlobleProductNote1;
 import com.mrsoftit.dukander.modle.GlobleProductNote2;
 import com.mrsoftit.dukander.modle.GlobleProductNote3;
@@ -85,8 +92,10 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
 
     SliderView sliderView;
     private SliderAdapterExample adapter;
+    String cType;
 
     EditText searchEditeText;
+    GoogleSignInClient googleSignInClient;
 
     ProgressDialog progressDialog;
     GlobleProductListAdapter globleProductListAdapter;
@@ -99,6 +108,7 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
 
     private  ImageView manlogo,girlslogo,mpbilelogo,foodslogo,jewelarylogo,Motorcycle_logo,grosary_logo;
 
+    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
 
     CollectionReference GlobleProduct = FirebaseFirestore.getInstance()
@@ -129,6 +139,15 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
         jewelarylogo = findViewById(R.id.jewelarylogo);
         Motorcycle_logo = findViewById(R.id.Motorcycle_logo);
         grosary_logo = findViewById(R.id.grosary_logo);
+
+        // Configure sign-in to request the user's ID, email address, and basic
+// profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+// Build a GoogleSignInClient with the options specified by gso.
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
 
         progressDialog = new ProgressDialog(GlobleProductListActivity.this);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -454,6 +473,76 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                 Intent intentGirls_Accessories = new Intent(GlobleProductListActivity.this,SelecedCatagoryActivity.class);
                 intentGirls_Accessories.putExtra("catagory","Girls Accessories");
                 startActivity(intentGirls_Accessories);
+                break;
+            case R.id.Contact_us:
+
+                break;
+            case R.id.logout:
+
+                progressDialog.show();
+
+                if (currentUser!=null) {
+                    String user_id = currentUser.getUid();
+
+                    CollectionReference Info = FirebaseFirestore.getInstance()
+                            .collection("Globlecustomers").document(user_id).collection("info");
+
+                    Info.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+
+                                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                                    GlobleCustomerNote globleCustomerNote = document.toObject(GlobleCustomerNote.class);
+                                    cType = globleCustomerNote.getCustomerType();
+                                }
+
+                                if (cType != null) {
+
+                                    signOut();
+                                    revokeAccess();
+                                    Intent resultIntnt1 = new Intent(GlobleProductListActivity.this, LoginActivity.class);
+                                    startActivity(resultIntnt1);
+                                    finish();
+                                } else {
+                                    new MaterialAlertDialogBuilder(GlobleProductListActivity.this)
+                                            .setTitle("It's for customer ")
+                                            .setMessage("Do not logout because your shopkeeper ")
+                                            .setPositiveButton("GOT IT", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                    dialogInterface.dismiss();
+                                                }
+                                            })
+                                            .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                    dialogInterface.dismiss();
+                                                }
+                                            }).show();
+                                }
+                            }
+                        }
+                    });
+                }
+
+                else {
+                    new MaterialAlertDialogBuilder(GlobleProductListActivity.this)
+                            .setTitle("It's for customer ")
+                            .setMessage("Do not logout because you are not sign up ")
+                            .setPositiveButton("GOT IT", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            }).show();
+                }
                 break;
 
         }
@@ -1098,6 +1187,38 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
         super.onStart();
         globleProductListAdapter6.startListening();
         searchEditeText.clearFocus();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        assert currentUser != null;
+
+        if (currentUser != null) {
+            String user_id = currentUser.getUid();
+
+            CollectionReference Info = FirebaseFirestore.getInstance()
+                    .collection("Globlecustomers").document(user_id).collection("info");
+
+            NavigationView navigationView = findViewById(R.id.globle_navigationView);
+            View headeView = navigationView.getHeaderView(0);
+
+            //final ImageView appCompatImageView = headeView.findViewById(R.id.appCompatImageView);
+            final TextView dukanname = headeView.findViewById(R.id.globle_customer_name);
+            final TextView dukanEmail = headeView.findViewById(R.id.globle_cutomer_Email);
+
+            dukanEmail.setText(currentUser.getEmail() + "");
+
+            Info.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                            GlobleCustomerNote globleCustomerNote = document.toObject(GlobleCustomerNote.class);
+                            dukanname.setText(globleCustomerNote.getName());
+
+                        }
+                    }
+                }
+            });
+        }
+
     }
 
     @Override
@@ -1140,4 +1261,36 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
 
     }
 
+    private void signOut() {
+        // Firebase sign out
+        mAuth.signOut();
+
+        // Google sign out
+        googleSignInClient.signOut().addOnCompleteListener(this,
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // Google Sign In failed, update UI appropriately
+                    }
+                });
+        progressDialog.dismiss();
     }
+
+    private void revokeAccess() {
+        // Firebase sign out
+        mAuth.signOut();
+
+        // Google revoke access
+        googleSignInClient.revokeAccess().addOnCompleteListener(this,
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // Google Sign In failed, update UI appropriately
+
+                    }
+                });
+        progressDialog.dismiss();
+
+    }
+
+}

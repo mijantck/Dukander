@@ -26,7 +26,14 @@
         <activity android:name=".ShopListActivity" />
         <activity android:name=".SelecedCatagoryActivity" />
         <activity android:name=".CustomerLoginActivity" />
-        <activity android:name=".GlobleProductListActivity" />
+        <activity
+            android:configChanges="screenSize|orientation|keyboardHidden"
+            android:screenOrientation="fullSensor"
+            android:name=".GlobleProductListActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+
+
+            />
         <activity android:name=".CutomerOrShopManSeletionActivity" />
         <activity android:name=".TotalSaleActivity" />
         <activity android:name=".ProfitActivity" />
