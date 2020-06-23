@@ -20,9 +20,9 @@ public class GlobleProductNote {
     private String comomCatagory;
 
 
+
     public GlobleProductNote() {
     }
-
 
     public String getComomCatagory() {
         return comomCatagory;

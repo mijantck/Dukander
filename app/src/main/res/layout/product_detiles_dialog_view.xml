@@ -206,7 +206,7 @@
             android:orientation="vertical"
             android:gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="250dp">
 
             <TextView
                 android:gravity="center"
@@ -223,7 +223,7 @@
                 android:background="@color/primaryTextColorNew"/>
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:clipToPadding="false"
                 android:focusableInTouchMode="true"
@@ -233,7 +233,6 @@
                     android:layout_above="@+id/send_layout"
                     android:id="@+id/reviewreciclearview"
                     android:layout_width="match_parent"
-                    android:foregroundGravity="bottom"
                     android:layout_height="match_parent"
                     />
 

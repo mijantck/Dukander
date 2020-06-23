@@ -2,21 +2,53 @@ package com.mrsoftit.dukander.modle;
 
 public class GlobleCustomerNote {
     private String glovleCustomerID;
+    private String Id;
     private String customerType;
     private String name;
     private String email;
     private String phoneNumber;
     private String address;
+    private int coine;
+    private String referCode;
 
     public GlobleCustomerNote(){}
 
-    public GlobleCustomerNote(String glovleCustomerID, String customerType, String name, String email, String phoneNumber, String address) {
+    public GlobleCustomerNote(String glovleCustomerID,String Id, String customerType, String name, String email, String phoneNumber,
+                              String address,int coine,String referCode) {
         this.glovleCustomerID = glovleCustomerID;
+        this.Id = Id;
         this.customerType = customerType;
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.address = address;
+        this.coine = coine;
+        this.referCode = referCode;
+
+    }
+
+    public String getId() {
+        return Id;
+    }
+
+    public void setId(String id) {
+        Id = id;
+    }
+
+    public int getCoine() {
+        return coine;
+    }
+
+    public void setCoine(int coine) {
+        this.coine = coine;
+    }
+
+    public String getReferCode() {
+        return referCode;
+    }
+
+    public void setReferCode(String referCode) {
+        this.referCode = referCode;
     }
 
     public String getGlovleCustomerID() {

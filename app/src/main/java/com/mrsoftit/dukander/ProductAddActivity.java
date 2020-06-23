@@ -1059,7 +1059,7 @@ if (barcodenumber!=null){
     }
 
 
-    public void setGlobleProduct(final String productId, final String productName, final double productPrice, final double productQuantidy, final String productCode, final String privecy, final String Catagury, final int date, final int pdicount, final String comomCatagory){
+    public void setGlobleProduct(final String productId, final String productName, final double productPrice, final double productQuantidy, final String productCode, final String privecy, final String Catagury, final int date, final int pdicount, final String comomCatagory) {
 
         myInfo.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -1102,6 +1102,7 @@ if (barcodenumber!=null){
                     GlobaleProductObject.put("productPrivacy", privecy);
                     GlobaleProductObject.put("comomCatagory", comomCatagory);
                     GlobaleProductObject.put("ShopName", DukanName);
+                    GlobaleProductObject.put("ShopID", user_id);
                     GlobaleProductObject.put("ShopPhone", dukanderPhone);
                     GlobaleProductObject.put("ShopAddress", dukanderAddress);
                     GlobaleProductObject.put("ShopId", dukanderid);

@@ -31,6 +31,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
@@ -49,6 +50,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -60,6 +62,7 @@ import com.mrsoftit.dukander.adapter.GlobleProductListAdapter3;
 import com.mrsoftit.dukander.adapter.GlobleProductListAdapter4;
 import com.mrsoftit.dukander.adapter.GlobleProductListAdapter5;
 import com.mrsoftit.dukander.adapter.GlobleProductListAdapter6;
+import com.mrsoftit.dukander.adapter.ReviewAdapter;
 import com.mrsoftit.dukander.modle.AdsUrlNote;
 import com.mrsoftit.dukander.modle.GlobleCustomerNote;
 import com.mrsoftit.dukander.modle.GlobleProductNote1;
@@ -68,13 +71,18 @@ import com.mrsoftit.dukander.modle.GlobleProductNote3;
 import com.mrsoftit.dukander.modle.GlobleProductNote4;
 import com.mrsoftit.dukander.modle.GlobleProductNote5;
 import com.mrsoftit.dukander.modle.GlobleProductNote6;
+import com.mrsoftit.dukander.modle.ReviewComentNote;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.IndicatorView.draw.controller.DrawController;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -94,10 +102,16 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
     private SliderAdapterExample adapter;
     String cType;
 
+    int coinupdet;
+    String globleCustomerName;
+
+
+    String globalCustomerInfoId;
     EditText searchEditeText;
     GoogleSignInClient googleSignInClient;
 
     ProgressDialog progressDialog;
+    EditText revieweditText;
     GlobleProductListAdapter globleProductListAdapter;
     GlobleProductListAdapter1 globleProductListAdapter1;
     GlobleProductListAdapter2 globleProductListAdapter2;
@@ -105,11 +119,12 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
     GlobleProductListAdapter4 globleProductListAdapter4;
     GlobleProductListAdapter5 globleProductListAdapter5;
     GlobleProductListAdapter6 globleProductListAdapter6;
+    ReviewAdapter reviewAdapter;
 
     private  ImageView manlogo,girlslogo,mpbilelogo,foodslogo,jewelarylogo,Motorcycle_logo,grosary_logo;
 
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
+    String globlecutouser_id ;
 
     CollectionReference GlobleProduct = FirebaseFirestore.getInstance()
             .collection("GlobleProduct");
@@ -120,6 +135,10 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
         setContentView(R.layout.activity_globle_product_list);
 
         mAuth = FirebaseAuth.getInstance();
+
+        if (currentUser!=null){
+            globlecutouser_id = currentUser.getUid();
+        }
 
         Toolbar toolbar = findViewById(R.id.toolbar_support);
         setSupportActionBar(toolbar);
@@ -618,7 +637,12 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                 TextView shopDetailPhone = dialogDetailsProduct.findViewById(R.id.shopDetailPhone);
                 TextView shopDetailAddress = dialogDetailsProduct.findViewById(R.id.shopDetailAddress);
                 TextView ProductCode = dialogDetailsProduct.findViewById(R.id.ProductCode);
+                revieweditText = dialogDetailsProduct.findViewById(R.id.revieweditText);
+                ImageButton reviewsendbutton = dialogDetailsProduct.findViewById(R.id.reviewsendbutton);
                 TextView productQuantidyfromCustomer = dialogDetailsProduct.findViewById(R.id.productQuantidyfromCustomer);
+
+
+                review(globleProductNote.getProId(),dialogDetailsProduct );
 
                 if (globleProductNote.getProImgeUrl()!=null){
                     String Url = globleProductNote.getProImgeUrl();
@@ -662,8 +686,75 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                     }
                 });
 
-              String proID =  globleProductNote.getProId();
 
+                reviewsendbutton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        if (currentUser != null) {
+
+                            progressDialog = new ProgressDialog(getApplicationContext());
+                            progressDialog.setTitle("Loading...");
+                            progressDialog.setCanceledOnTouchOutside(false);
+                            progressDialog.show();
+                            String customerId = globlecutouser_id;
+                            final String revieweditText1 = revieweditText.getText().toString();
+
+                            final CollectionReference Reviewcustomer = FirebaseFirestore.getInstance()
+                                    .collection("Globlecustomers").document(customerId).collection("info");
+
+
+                            Reviewcustomer.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                                    if (task.isSuccessful()) {
+                                        for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                                            GlobleCustomerNote globleCustomerNote = document.toObject(GlobleCustomerNote.class);
+                                            coinupdet = globleCustomerNote.getCoine();
+                                            globalCustomerInfoId = globleCustomerNote.getId();
+                                            globleCustomerName = globleCustomerNote.getName();
+                                        }
+
+
+                                        String proId = globleProductNote.getProId();
+                                        String shopUserId = globleProductNote.getUserId();
+
+
+                                        comment(proId, shopUserId, globlecutouser_id, globleCustomerName, revieweditText1, coinupdet, globalCustomerInfoId);
+
+                                    }
+                                }
+                            });
+
+
+                        }
+                        else {
+
+                            new MaterialAlertDialogBuilder(GlobleProductListActivity.this)
+                                    .setTitle("you have not signup")
+                                    .setPositiveButton("GOT IT", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                                            startActivity(new Intent(GlobleProductListActivity.this,CustomerLoginActivity.class));
+                                            finish();
+                                        }
+                                    })
+                                    .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                                            dialogDetailsProduct.dismiss();
+                                        }
+                                    })
+                                    .show();
+
+
+
+                        }
+                    }
+                });
 
 
 
@@ -1295,6 +1386,90 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                     }
                 });
         progressDialog.dismiss();
+
+    }
+
+    public void review(String productID,Dialog dialogDetailsProduct){
+
+                CollectionReference Review = FirebaseFirestore.getInstance()
+                .collection("GlobleProduct").document(productID).collection("review");
+
+                Query query = Review.orderBy("dateAndTime", Query.Direction.DESCENDING);
+        FirestoreRecyclerOptions<ReviewComentNote> options = new FirestoreRecyclerOptions.Builder<ReviewComentNote>()
+                .setQuery(query, ReviewComentNote.class)
+                .build();
+
+       reviewAdapter = new ReviewAdapter(options);
+        RecyclerView recyclerView = dialogDetailsProduct.findViewById(R.id.reviewreciclearview);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+       // recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(reviewAdapter);
+        reviewAdapter.startListening();
+    }
+
+    public void comment(String productID, String shopUserID, final String customerID, final String custumerName,
+                        final String reviewComment, final int coinupdet1, final String globalCustomerInfoId1){
+
+
+        final CollectionReference Review = FirebaseFirestore.getInstance()
+                .collection("GlobleProduct").document(productID).collection("review");
+
+        final CollectionReference ReviewShop = FirebaseFirestore.getInstance()
+                .collection("users").document(shopUserID).collection("Product");
+
+        final CollectionReference Reviewcustomer = FirebaseFirestore.getInstance()
+                .collection("Globlecustomers").document(customerID).collection("info");
+
+        Date calendar1 = Calendar.getInstance().getTime();
+        DateFormat df1 = new SimpleDateFormat("yyMMddHHmm");
+        String todayString = df1.format(calendar1);
+         final int datereview = Integer.parseInt(todayString);
+
+
+        Review.add(new ReviewComentNote(null,customerID,custumerName,reviewComment,datereview))
+                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                        if (task.isSuccessful()){
+                            final String reviewCmmtID = task.getResult().getId();
+                            Review.document(reviewCmmtID).update("reviewID",reviewCmmtID).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    ReviewShop.add(new ReviewComentNote(reviewCmmtID,customerID,custumerName,reviewComment,datereview)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentReference> task) {
+
+
+                                                    int coinUpadate = coinupdet1+10;
+                                                    Reviewcustomer.document(globalCustomerInfoId1).update("coine",coinUpadate)
+                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                  progressDialog.dismiss();
+                                                                  revieweditText.setText("");
+                                                                    new MaterialAlertDialogBuilder(GlobleProductListActivity.this)
+                                                                            .setTitle(" You win 10 coin ")
+                                                                            .setMessage("This is for your review gift ")
+                                                                            .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                                                                                @Override
+                                                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                                                    dialogInterface.dismiss();
+                                                                                }
+                                                                            })
+                                                                            .show();
+
+                                                                }
+                                                            });
+
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    }
+                });
+
 
     }
 
