@@ -351,6 +351,9 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                 startActivity(new Intent(GlobleProductListActivity.this,LoginActivity.class));
                 finish();
                 break;
+            case R.id.myProfile:
+                startActivity(new Intent(GlobleProductListActivity.this,GlobleCustomerActivity.class));
+                break;
 
             case R.id.shoplist:
                startActivity(new Intent(GlobleProductListActivity.this,ShopListActivity.class));
@@ -692,11 +695,6 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                     public void onClick(View v) {
 
                         if (currentUser != null) {
-
-                            progressDialog = new ProgressDialog(getApplicationContext());
-                            progressDialog.setTitle("Loading...");
-                            progressDialog.setCanceledOnTouchOutside(false);
-                            progressDialog.show();
                             String customerId = globlecutouser_id;
                             final String revieweditText1 = revieweditText.getText().toString();
 
@@ -1440,13 +1438,12 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
                                         @Override
                                         public void onComplete(@NonNull Task<DocumentReference> task) {
 
-
-                                                    int coinUpadate = coinupdet1+10;
+                                                int coinUpadate = coinupdet1+10;
                                                     Reviewcustomer.document(globalCustomerInfoId1).update("coine",coinUpadate)
                                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                 @Override
                                                                 public void onComplete(@NonNull Task<Void> task) {
-                                                                  progressDialog.dismiss();
+
                                                                   revieweditText.setText("");
                                                                     new MaterialAlertDialogBuilder(GlobleProductListActivity.this)
                                                                             .setTitle(" You win 10 coin ")

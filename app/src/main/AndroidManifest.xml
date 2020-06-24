@@ -19,23 +19,20 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:requestLegacyExternalStorage="true">
-
-        <activity android:name=".ShopViewActivity"></activity>
+        android:theme="@style/AppTheme">
+        <activity android:name=".GlobleCustomerActivity"></activity>
+        <activity android:name=".ShopViewActivity" />
         <activity android:name=".ShopListActivity" />
         <activity android:name=".SelecedCatagoryActivity" />
         <activity android:name=".CustomerLoginActivity" />
         <activity
+            android:name=".GlobleProductListActivity"
             android:configChanges="screenSize|orientation|keyboardHidden"
             android:screenOrientation="fullSensor"
-            android:name=".GlobleProductListActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize"
-
-
-            />
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name=".CutomerOrShopManSeletionActivity" />
         <activity android:name=".TotalSaleActivity" />
         <activity android:name=".ProfitActivity" />

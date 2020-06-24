@@ -70,14 +70,11 @@ public class SplashScreenActivity extends AppCompatActivity {
                         }
 
                         if (cType!=null){
-                            Toast.makeText(SplashScreenActivity.this, " globleCustomer ", Toast.LENGTH_SHORT).show();
 
                             startActivity(new Intent(SplashScreenActivity.this,GlobleProductListActivity.class));
                             finish();
 
                         }else {
-
-                            Toast.makeText(SplashScreenActivity.this, " shokeper ", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(SplashScreenActivity.this,PinViewActivity.class));
                             finish();
                         }

@@ -10,13 +10,14 @@ public class GlobleCustomerNote {
     private String address;
     private int coine;
     private String referCode;
+    private boolean firstTimeRafer;
 
     public GlobleCustomerNote(){}
 
-    public GlobleCustomerNote(String glovleCustomerID,String Id, String customerType, String name, String email, String phoneNumber,
-                              String address,int coine,String referCode) {
+
+    public GlobleCustomerNote(String glovleCustomerID, String id, String customerType, String name, String email, String phoneNumber, String address, int coine, String referCode, boolean firstTimeRafer) {
         this.glovleCustomerID = glovleCustomerID;
-        this.Id = Id;
+        Id = id;
         this.customerType = customerType;
         this.name = name;
         this.email = email;
@@ -24,7 +25,15 @@ public class GlobleCustomerNote {
         this.address = address;
         this.coine = coine;
         this.referCode = referCode;
+        this.firstTimeRafer = firstTimeRafer;
+    }
 
+    public boolean isFirstTimeRafer() {
+        return firstTimeRafer;
+    }
+
+    public void setFirstTimeRafer(boolean firstTimeRafer) {
+        this.firstTimeRafer = firstTimeRafer;
     }
 
     public String getId() {

@@ -29,6 +29,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.mrsoftit.dukander.modle.GlobleCustomerNote;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class CustomerLoginActivity extends AppCompatActivity {
@@ -133,24 +135,45 @@ public class CustomerLoginActivity extends AppCompatActivity {
 
                                                             FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-                                                            String user_id = currentUser.getUid();
+                                                            final String user_id = currentUser.getUid();
 
                                                             final CollectionReference Info = FirebaseFirestore.getInstance()
                                                                     .collection("Globlecustomers").document(user_id).collection("info");
 
+                                                            final CollectionReference globleRefercode = FirebaseFirestore.getInstance()
+                                                                    .collection("globleRefercode");
 
-                                                            Info.add(new GlobleCustomerNote(user_id,"id","globleCustomer",name,email,phoneNumber,address,0,randomStr))
+
+
+                                                            Info.add(new GlobleCustomerNote(user_id,"id","globleCustomer",name,email,phoneNumber,address,0,randomStr,false))
                                                                     .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                                                         @Override
                                                                         public void onComplete(@NonNull Task<DocumentReference> task) {
                                                                             if (task.isSuccessful()){
-                                                                               String CustomerID = task.getResult().getId();
-                                                                               Info.document(CustomerID).update("Id",CustomerID).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                               final String CustomerID = task.getResult().getId();
+                                                                               Info.document(CustomerID).update("id",CustomerID).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                                    @Override
                                                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                                                       progressDialog.dismiss();
-                                                                                       startActivity(new Intent(getApplicationContext(),GlobleProductListActivity.class));
-                                                                                       finish();
+                                                                                       Map<String, Object> RefercodeOdject = new HashMap<>();
+                                                                                       RefercodeOdject.put("glovleCustomerID",user_id);
+                                                                                       RefercodeOdject.put("Id",CustomerID);
+                                                                                       RefercodeOdject.put("name",name);
+                                                                                       RefercodeOdject.put("email",email);
+                                                                                       RefercodeOdject.put("phoneNumber",phoneNumber);
+                                                                                       RefercodeOdject.put("address",address);
+                                                                                       RefercodeOdject.put("referCode",randomStr);
+
+                                                                                       globleRefercode.document(user_id).set(RefercodeOdject).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                           @Override
+                                                                                           public void onComplete(@NonNull Task<Void> task) {
+
+                                                                                               progressDialog.dismiss();
+                                                                                               startActivity(new Intent(getApplicationContext(),GlobleProductListActivity.class));
+                                                                                               finish();
+                                                                                           }
+                                                                                       });
+
+
                                                                                    }
                                                                                });
                                                                             }
@@ -203,7 +226,7 @@ public class CustomerLoginActivity extends AppCompatActivity {
     private static String generateRandom(String aToZ) {
         Random rand=new Random();
         StringBuilder res=new StringBuilder();
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 8; i++) {
             int randIndex=rand.nextInt(aToZ.length());
             res.append(aToZ.charAt(randIndex));
         }

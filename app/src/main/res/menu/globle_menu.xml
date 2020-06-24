@@ -8,6 +8,9 @@
             <item
                 android:id="@+id/loginGloble"
                 android:title="Login " />
+            <item
+                android:id="@+id/myProfile"
+                android:title="My profile " />
         </menu>
     </item>
     <item android:title="Shop list">
