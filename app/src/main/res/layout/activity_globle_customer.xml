@@ -228,6 +228,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content">
                 <TextView
+                    android:fontFamily="@font/nunito_sans_bold"
+
+                    android:textColor="@android:color/black"
                     android:id="@+id/globle_customer_name_textView"
                     android:text="Name"
                     android:layout_width="match_parent"
@@ -315,6 +318,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content">
                 <TextView
+
+                    android:fontFamily="@font/nunito_sans_bold"
+                    android:textColor="@android:color/black"
                     android:id="@+id/globle_customer_referCode_textView"
                     android:text="Refer code"
                     android:layout_width="match_parent"
@@ -344,6 +350,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content">
                 <TextView
+                    android:fontFamily="@font/nunito_sans_bold"
+                    android:textColor="@android:color/black"
                     android:id="@+id/globle_customer_coin_textView"
                     android:text="Coin"
                     android:layout_width="match_parent"
@@ -356,6 +364,9 @@
     </LinearLayout>
 
     <TextView
+        android:fontFamily="@font/nunito_sans_bold"
+        android:layout_marginTop="10dp"
+        android:textColor="@android:color/black"
         android:textSize="20dp"
         android:padding="10dp"
         android:layout_margin="10dp"

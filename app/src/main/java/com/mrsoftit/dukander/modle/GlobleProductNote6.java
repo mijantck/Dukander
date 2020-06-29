@@ -17,7 +17,6 @@ public class GlobleProductNote6 {
     private String productCategory;
     private int date;
     private double proQua;
-
     private int pruductDiscount;
 
     public int getPruductDiscount() {

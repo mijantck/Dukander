@@ -59,6 +59,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -139,6 +141,8 @@ public class ProductAddActivity extends AppCompatActivity implements EasyPermiss
     String id,comonCatagory;
 
 
+
+    private  String token;
 
     private SurfaceView surfaceView;
     private BarcodeDetector barcodeDetector;
@@ -404,6 +408,20 @@ if (barcodenumber!=null){
 
                 String s =String.valueOf(randomNumber);
                 productCode = todayString+s;
+
+
+                FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+
+                        if (task.isSuccessful()){
+                         token = task.getResult().getToken();
+
+                        }
+
+                    }
+                });
+
 
 
                 String name = productName.getText().toString();
@@ -1110,6 +1128,7 @@ if (barcodenumber!=null){
                     GlobaleProductObject.put("date", date);
                     GlobaleProductObject.put("proQua", productQuantidy);
                     GlobaleProductObject.put("UserId", user_id);
+                    GlobaleProductObject.put("token", token);
 
                     GlobleProduct.document(productId).set(GlobaleProductObject).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -1174,6 +1193,7 @@ if (barcodenumber!=null){
                     GlobaleProductObject.put("date", date);
                     GlobaleProductObject.put("proQua", productQuantidy);
                     GlobaleProductObject.put("UserId", user_id);
+                    GlobaleProductObject.put("token", token);
 
                     GlobleProduct.document(productId).set(GlobaleProductObject).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -1237,6 +1257,7 @@ if (barcodenumber!=null){
                     GlobaleProductObject.put("date", date);
                     GlobaleProductObject.put("proQua", productQuantidy);
                     GlobaleProductObject.put("UserId", user_id);
+                    GlobaleProductObject.put("token", token);
 
                     GlobleProduct.document(productId).set(GlobaleProductObject).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -1299,6 +1320,7 @@ if (barcodenumber!=null){
                     GlobaleProductObject.put("date", date);
                     GlobaleProductObject.put("proQua", productQuantidy);
                     GlobaleProductObject.put("UserId", user_id);
+                    GlobaleProductObject.put("token", token);
 
                     GlobleProduct.document(productId).update(GlobaleProductObject).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override

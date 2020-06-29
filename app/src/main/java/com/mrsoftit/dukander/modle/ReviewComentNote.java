@@ -3,7 +3,11 @@ package com.mrsoftit.dukander.modle;
 public class ReviewComentNote {
     private String reviewID;
     private String reviewCustomerID;
+    private String reviewShopMainID;
     private String reviewCustomerName;
+    private String producrName;
+    private String productEmail;
+    private String reviewCustomerEmail;
     private String reviewComment;
     private int dateAndTime;
 
@@ -15,6 +19,48 @@ public class ReviewComentNote {
         this.reviewCustomerName = reviewCustomerName;
         this.reviewComment = reviewComment;
         this.dateAndTime = dateAndTime;
+    }
+
+
+    public ReviewComentNote(String reviewID, String reviewCustomerID, String reviewCustomerName, String reviewCustomerEmail, String reviewComment, int dateAndTime) {
+        this.reviewID = reviewID;
+        this.reviewCustomerID = reviewCustomerID;
+        this.reviewCustomerName = reviewCustomerName;
+        this.reviewCustomerEmail = reviewCustomerEmail;
+        this.reviewComment = reviewComment;
+        this.dateAndTime = dateAndTime;
+    }
+
+    public String getReviewShopMainID() {
+        return reviewShopMainID;
+    }
+
+    public void setReviewShopMainID(String reviewShopMainID) {
+        this.reviewShopMainID = reviewShopMainID;
+    }
+
+    public String getProducrName() {
+        return producrName;
+    }
+
+    public void setProducrName(String producrName) {
+        this.producrName = producrName;
+    }
+
+    public String getProductEmail() {
+        return productEmail;
+    }
+
+    public void setProductEmail(String productEmail) {
+        this.productEmail = productEmail;
+    }
+
+    public String getReviewCustomerEmail() {
+        return reviewCustomerEmail;
+    }
+
+    public void setReviewCustomerEmail(String reviewCustomerEmail) {
+        this.reviewCustomerEmail = reviewCustomerEmail;
     }
 
     public String getReviewID() {

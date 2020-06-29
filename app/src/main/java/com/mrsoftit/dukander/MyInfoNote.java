@@ -18,10 +18,12 @@ public class MyInfoNote {
     private String withdrowDeleils;
     private String productname;
     private double product;
+    private String token;
 
-    public MyInfoNote(){}
+    public MyInfoNote() {
+    }
 
-    public MyInfoNote(String myid, String dukanName, String dukanphone, String dukanaddress, String dukanaddpicurl, boolean firsttime, String picName, double invesment, double activeBalance, double totalpaybil,int date) {
+    public MyInfoNote(String myid, String dukanName, String dukanphone, String dukanaddress, String dukanaddpicurl, boolean firsttime, String picName, double invesment, double activeBalance, double totalpaybil, int date, String token) {
         this.myid = myid;
         this.dukanName = dukanName;
         this.dukanphone = dukanphone;
@@ -33,9 +35,11 @@ public class MyInfoNote {
         this.activeBalance = activeBalance;
         this.totalpaybil = totalpaybil;
         this.date = date;
+        this.token = token;
+
     }
 
-    public MyInfoNote(String myid, String dukanName, String dukanphone, String dukanaddress,  boolean firsttime, String picName, double invesment, double activeBalance, double totalpaybil,int date) {
+    public MyInfoNote(String myid, String dukanName, String dukanphone, String dukanaddress, boolean firsttime, String picName, double invesment, double activeBalance, double totalpaybil, int date, String token) {
         this.myid = myid;
         this.dukanName = dukanName;
         this.dukanphone = dukanphone;
@@ -46,11 +50,12 @@ public class MyInfoNote {
         this.activeBalance = activeBalance;
         this.totalpaybil = totalpaybil;
         this.date = date;
+        this.token = token;
     }
 
-    public MyInfoNote(String productname,double product,String myid, Double invesment, int date, String investmentDeleils) {
-       this.productname = productname;
-       this.product = product;
+    public MyInfoNote(String productname, double product, String myid, Double invesment, int date, String investmentDeleils) {
+        this.productname = productname;
+        this.product = product;
         this.myid = myid;
         this.invesment = invesment;
         this.date = date;
@@ -65,13 +70,6 @@ public class MyInfoNote {
         this.withdrowDeleils = withdrowDeleils;
     }
 
-    public String getProductname() {
-        return productname;
-    }
-
-    public void setProductname(String productname) {
-        this.productname = productname;
-    }
 
     public String getMyid() {
         return myid;
@@ -129,36 +127,44 @@ public class MyInfoNote {
         this.picName = picName;
     }
 
-    public Double getInvesment() {
+    public double getInvesment() {
         return invesment;
     }
 
-    public void setInvesment(Double invesment) {
+    public void setInvesment(double invesment) {
         this.invesment = invesment;
     }
 
-    public Double getActiveBalance() {
-        return activeBalance;
-    }
-
-    public void setActiveBalance(Double activeBalance) {
-        this.activeBalance = activeBalance;
-    }
-
-    public Double getTotalpaybil() {
-        return totalpaybil;
-    }
-
-    public void setTotalpaybil(Double totalpaybil) {
-        this.totalpaybil = totalpaybil;
-    }
-
-    public Double getWithdrow() {
+    public double getWithdrow() {
         return withdrow;
     }
 
-    public void setWithdrow(Double withdrow) {
+    public void setWithdrow(double withdrow) {
         this.withdrow = withdrow;
+    }
+
+    public double getActiveBalance() {
+        return activeBalance;
+    }
+
+    public void setActiveBalance(double activeBalance) {
+        this.activeBalance = activeBalance;
+    }
+
+    public double getTotalpaybil() {
+        return totalpaybil;
+    }
+
+    public void setTotalpaybil(double totalpaybil) {
+        this.totalpaybil = totalpaybil;
+    }
+
+    public int getDate() {
+        return date;
+    }
+
+    public void setDate(int date) {
+        this.date = date;
     }
 
     public String getInvestmentDeleils() {
@@ -177,14 +183,13 @@ public class MyInfoNote {
         this.withdrowDeleils = withdrowDeleils;
     }
 
-    public int getDate() {
-        return date;
+    public String getProductname() {
+        return productname;
     }
 
-    public void setDate(int date) {
-        this.date = date;
+    public void setProductname(String productname) {
+        this.productname = productname;
     }
-
 
     public double getProduct() {
         return product;
@@ -192,5 +197,13 @@ public class MyInfoNote {
 
     public void setProduct(double product) {
         this.product = product;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

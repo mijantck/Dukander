@@ -23,7 +23,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".GlobleCustomerActivity"></activity>
+        <activity android:name=".ConfirmOrderActivity"></activity>
+        <activity
+            android:name=".ProductFullViewOrderActivity"
+            android:configChanges="screenSize|orientation|keyboardHidden"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity android:name=".GlobleCustomerActivity" />
         <activity android:name=".ShopViewActivity" />
         <activity android:name=".ShopListActivity" />
         <activity android:name=".SelecedCatagoryActivity" />
@@ -31,7 +36,6 @@
         <activity
             android:name=".GlobleProductListActivity"
             android:configChanges="screenSize|orientation|keyboardHidden"
-            android:screenOrientation="fullSensor"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name=".CutomerOrShopManSeletionActivity" />
         <activity android:name=".TotalSaleActivity" />
@@ -65,6 +69,16 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
+
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:permission="com.google.android.c2dm.permission.SEND"
+            android:stopWithTask="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
 
         <provider
             android:name="androidx.core.content.FileProvider"

@@ -118,12 +118,16 @@ public class GlobleCustomerActivity extends AppCompatActivity {
                             }
                             globle_customer_name_textView.setText(myglobleCustomerNote.getName());
                             globleCutomerNameEdite.setText(myglobleCustomerNote.getName());
+
                             globle_customer_phone_textView.setText(myglobleCustomerNote.getPhoneNumber());
                             globleCutomerPhoneEdite.setText(myglobleCustomerNote.getPhoneNumber());
+
                             globle_customer_address_textView.setText(myglobleCustomerNote.getAddress());
-                            globle_customer_address_textView.setText(myglobleCustomerNote.getAddress());
-                            globleCutomerAddressEdite.setText(myglobleCustomerNote.getReferCode());
+                            globleCutomerAddressEdite.setText(myglobleCustomerNote.getAddress());
+
                             globle_customer_coin_textView.setText(myglobleCustomerNote.getCoine()+"");
+                            globle_customer_referCode_textView.setText(myglobleCustomerNote.getReferCode());
+
 
                         }
 
@@ -135,12 +139,55 @@ public class GlobleCustomerActivity extends AppCompatActivity {
 
         giftRecyclearview();
 
-
         referButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                referMethod();
+                progressDialog.show();
+
+                final String tesTcode =   referCode.getText().toString().trim();
+
+                final CollectionReference MyInfo11 = FirebaseFirestore.getInstance()
+                        .collection("Globlecustomers").document(globlecutouser_id).collection("info");
+
+                MyInfo11.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+
+                            String checkcode = null;
+
+                            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                                final GlobleCustomerNote testglobleCustomerNote = document.toObject(GlobleCustomerNote.class);
+
+                                checkcode = testglobleCustomerNote.getReferCode();
+                               }
+
+                            if (!checkcode.equals(tesTcode)){
+
+                                referMethod();
+                            }
+                            else {
+                                new MaterialAlertDialogBuilder(GlobleCustomerActivity.this)
+                                        .setTitle("Opps..Sorry...")
+                                        .setMessage(tesTcode+" its your refer code")
+                                        .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                dialogInterface.dismiss();
+                                            }
+                                        })
+                                        .show();
+                                }
+
+                        }
+
+                    }
+                });
+
+
+
+
 
             }
         });
@@ -210,135 +257,142 @@ public class GlobleCustomerActivity extends AppCompatActivity {
 
     public void referMethod(){
         progressDialog.show();
-        final String code =   referCode.getText().toString().trim();
 
-        CollectionReference globleRefercode = FirebaseFirestore.getInstance()
+        final CollectionReference globleRefercode1 = FirebaseFirestore.getInstance()
                 .collection("globleRefercode");
 
-        Query query = globleRefercode.whereEqualTo("referCode",code);
+        final String code =   referCode.getText().toString().trim();
+        Query query = globleRefercode1.whereEqualTo("referCode",code);
 
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()){
+                    String testName = null;
+                    String testFriendGlobleID = null;
+                    String testPhone = null;
+                    String testEmail = null;
+                    String testReferCode = null;
+
                     for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                         final GlobleCustomerNote globleCustomerNote = document.toObject(GlobleCustomerNote.class);
 
-                        if (globleCustomerNote.getReferCode().equals(code)){
+                        testName =  globleCustomerNote.getName();
+                        testFriendGlobleID =  globleCustomerNote.getGlovleCustomerID();
+                        testPhone =  globleCustomerNote.getPhoneNumber();
+                        testEmail =  globleCustomerNote.getEmail();
+                        testReferCode =  globleCustomerNote.getReferCode();
+                    }
+                    if (testName!=null){
+                        progressDialog.dismiss();
+                        final Dialog dialogrefer = new Dialog(GlobleCustomerActivity.this);
+                        // Include dialog.xml file
+                        dialogrefer.setContentView(R.layout.refer_dialog_view);
+                        dialogrefer.show();
+                        TextView name = dialogrefer.findViewById(R.id.friendName);
+                        TextView email = dialogrefer.findViewById(R.id.friendEmail);
+                        TextView phone = dialogrefer.findViewById(R.id.friendPhone);
+                        TextView refercode = dialogrefer.findViewById(R.id.friendrefercode);
+                        Button confirmbutton = dialogrefer.findViewById(R.id.referConfirmButton);
 
-                            progressDialog.dismiss();
-                            new MaterialAlertDialogBuilder(GlobleCustomerActivity.this)
-                                    .setTitle("Opp Sorry...")
-                                    .setMessage(" This is your refer code ")
-                                    .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            dialogInterface.dismiss();
-                                        }
-                                    })
-                                    .show();
-                            return;
-                        }
-                        if (globleCustomerNote.getName()!=null){
-                            progressDialog.dismiss();
-                            final Dialog dialogrefer = new Dialog(GlobleCustomerActivity.this);
-                            // Include dialog.xml file
-                            dialogrefer.setContentView(R.layout.refer_dialog_view);
-                            dialogrefer.show();
-                            TextView name = dialogrefer.findViewById(R.id.friendName);
-                            TextView email = dialogrefer.findViewById(R.id.friendEmail);
-                            TextView phone = dialogrefer.findViewById(R.id.friendPhone);
-                            TextView refercode = dialogrefer.findViewById(R.id.friendrefercode);
-                            Button confirmbutton = dialogrefer.findViewById(R.id.referConfirmButton);
+                        name.setText(testName);
+                        email.setText(testEmail);
+                        phone.setText(testPhone);
+                        refercode.setText(testReferCode);
+                        final String finalTestFriendGlobleID = testFriendGlobleID;
+                        confirmbutton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                progressDialog.show();
+                                final CollectionReference Info = FirebaseFirestore.getInstance()
+                                        .collection("Globlecustomers").document(finalTestFriendGlobleID).collection("info");
 
-                            name.setText(globleCustomerNote.getName());
-                            email.setText(globleCustomerNote.getEmail());
-                            phone.setText(globleCustomerNote.getPhoneNumber());
-                            refercode.setText(globleCustomerNote.getReferCode());
-                            confirmbutton.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
+                                Info.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()){
+                                            int friendCoin = 0;
+                                            String referFrindID = null;
+                                            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                                                final GlobleCustomerNote globleCustomerNote = document.toObject(GlobleCustomerNote.class);
 
-
-                                    progressDialog.show();
-                                    final CollectionReference Info = FirebaseFirestore.getInstance()
-                                            .collection("Globlecustomers").document(globleCustomerNote.getGlovleCustomerID()).collection("info");
-
-                                    Info.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                            if (task.isSuccessful()){
-                                                int friendCoin = 0;
-                                                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                                                    final GlobleCustomerNote globleCustomerNote = document.toObject(GlobleCustomerNote.class);
-
-                                                    friendCoin = globleCustomerNote.getCoine();
-                                                }
-
-                                                friendCoin = friendCoin +100;
-
-                                                Info.document(globleCustomerNote.getId()).update("coine",friendCoin).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull final Task<Void> task) {
-
-                                                        final CollectionReference MyInfo1 = FirebaseFirestore.getInstance()
-                                                                .collection("Globlecustomers").document(globlecutouser_id).collection("info");
-
-                                                        MyInfo1.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                            @Override
-                                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
-                                                                if (task.isSuccessful()){
-                                                                    int myfriendCoin = 0;
-                                                                    String id = null;
-                                                                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                                                                        final GlobleCustomerNote myglobleCustomerNote = document.toObject(GlobleCustomerNote.class);
-
-                                                                        myfriendCoin = myglobleCustomerNote.getCoine();
-                                                                        id = myglobleCustomerNote.getId();
-                                                                    }
-                                                                    myfriendCoin = myfriendCoin +100;
-
-
-                                                                    MyInfo1.document(id).update("coine",myfriendCoin,"firstTimeRafer",true).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                        @Override
-                                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                                           if(task.isSuccessful()){
-                                                                               friendreferEditebox.setVisibility(View.GONE);
-                                                                               progressDialog.dismiss();
-                                                                               new MaterialAlertDialogBuilder(GlobleCustomerActivity.this)
-                                                                                       .setTitle(" Congratulation")
-                                                                                       .setMessage(" You win 100 coin  ")
-                                                                                       .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                                                                                           @Override
-                                                                                           public void onClick(DialogInterface dialogInterface, int i) {
-                                                                                               dialogrefer.dismiss();
-                                                                                               dialogInterface.dismiss();
-                                                                                           }
-                                                                                       })
-                                                                                       .show();
-                                                                           }
-
-
-                                                                        }
-                                                                    });
-                                                                }
-                                                            }
-
-                                                        });
-
-                                                    }
-                                                });
+                                                friendCoin = globleCustomerNote.getCoine();
+                                                referFrindID = globleCustomerNote.getId();
                                             }
 
-                                        }
-                                    });
+                                            friendCoin = friendCoin +100;
 
-                                }
-                            });
-                        }else {
-                            Toast.makeText(GlobleCustomerActivity.this, "places  try again later....", Toast.LENGTH_SHORT).show();
-                        }
+                                            Info.document(referFrindID).update("coine",friendCoin).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull final Task<Void> task) {
+
+                                                    final CollectionReference MyInfo1 = FirebaseFirestore.getInstance()
+                                                            .collection("Globlecustomers").document(globlecutouser_id).collection("info");
+
+                                                    MyInfo1.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                                                            if (task.isSuccessful()){
+                                                                int myfriendCoin = 0;
+                                                                String id = null;
+                                                                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                                                                    final GlobleCustomerNote myglobleCustomerNote = document.toObject(GlobleCustomerNote.class);
+
+                                                                    myfriendCoin = myglobleCustomerNote.getCoine();
+                                                                    id = myglobleCustomerNote.getId();
+                                                                }
+                                                                myfriendCoin = myfriendCoin +100;
+
+
+                                                                MyInfo1.document(id).update("coine",myfriendCoin,"firstTimeRafer",true).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                        if(task.isSuccessful()){
+                                                                            friendreferEditebox.setVisibility(View.GONE);
+                                                                            progressDialog.dismiss();
+                                                                            new MaterialAlertDialogBuilder(GlobleCustomerActivity.this)
+                                                                                    .setTitle(" Congratulation")
+                                                                                    .setMessage(" You win 100 coin  ")
+                                                                                    .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                                                                                        @Override
+                                                                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                                                                            dialogrefer.dismiss();
+                                                                                            dialogInterface.dismiss();
+                                                                                        }
+                                                                                    })
+                                                                                    .show();
+                                                                        }
+
+
+                                                                    }
+                                                                });
+                                                            }
+                                                        }
+
+                                                    });
+
+                                                }
+                                            });
+                                        }
+                                    }
+                                });
+
+                            }
+                        });
+                    }else {
+                        progressDialog.dismiss();
+                        new MaterialAlertDialogBuilder(GlobleCustomerActivity.this)
+                                .setTitle(" Wong refer Code")
+                                .setMessage("places  try again later....")
+                                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.dismiss();
+                                    }
+                                })
+                                .show();
+
                     }
                 }
             }

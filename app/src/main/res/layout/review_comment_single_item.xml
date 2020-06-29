@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     card_view:cardCornerRadius="5dp"
     card_view:contentPadding="2dp"
-    card_view:cardElevation="2dp"
+    card_view:cardElevation="1dp"
     android:layout_marginLeft="4dp"
     android:layout_marginRight="5dp"
     card_view:cardBackgroundColor="@android:color/white"
@@ -39,6 +39,7 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:fontFamily="@font/nunito_sans_bold"
                     android:id="@+id/customer_name_for_review"
                     android:textSize="13dp"
                     android:textColor="@color/primaryTextColor"
@@ -46,6 +47,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <TextView
+                    android:fontFamily="@font/nunito_sans_bold"
                     android:layout_alignParentRight="true"
                     android:id="@+id/review_Date_And_Time"
                     android:textSize="10dp"

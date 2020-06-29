@@ -325,32 +325,7 @@ public class SeleTwoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                product.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-
-                            QuerySnapshot queryDocumentSnapshots = task.getResult();
-                            titleList = new ArrayList<>();
-
-                            assert queryDocumentSnapshots != null;
-                            for(DocumentSnapshot readData: queryDocumentSnapshots.getDocuments()){
-                                String titlename = Objects.requireNonNull(readData.get("proName")).toString();
-
-                                titleList.add(titlename);
-                            }
-
-
-                            ArrayAdapter arrayAdapter2 = new ArrayAdapter(SeleTwoActivity.this,android.R.layout.simple_spinner_dropdown_item,titleList);
-                            searchableSpinner.setAdapter(arrayAdapter2);
-
-                        }
-                    }
-                });
-
-                addItemButton.setVisibility(View.GONE);
-                showitemLinearLayout.setVisibility(View.VISIBLE);
-
+                productListView();
             }
         });
 
@@ -1184,5 +1159,37 @@ public class SeleTwoActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+
+    public void productListView(){
+
+
+        product.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+
+                    QuerySnapshot queryDocumentSnapshots = task.getResult();
+                    titleList = new ArrayList<>();
+
+                    assert queryDocumentSnapshots != null;
+                    for(DocumentSnapshot readData: queryDocumentSnapshots.getDocuments()){
+                        String titlename = Objects.requireNonNull(readData.get("proName")).toString();
+
+                        titleList.add(titlename);
+                    }
+
+
+                    ArrayAdapter arrayAdapter2 = new ArrayAdapter(SeleTwoActivity.this,android.R.layout.simple_spinner_dropdown_item,titleList);
+                    searchableSpinner.setAdapter(arrayAdapter2);
+
+                }
+            }
+        });
+
+        addItemButton.setVisibility(View.GONE);
+        showitemLinearLayout.setVisibility(View.VISIBLE);
+
     }
 }

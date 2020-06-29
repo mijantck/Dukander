@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="4dp"
     android:layout_height="match_parent">
@@ -40,7 +40,8 @@
 
                     <TextView
                         android:text="Name :"
-                        android:textColor="@color/primaryTextColor"
+                        android:fontFamily="@font/nunito_sans_bold"
+                        android:textColor="#000"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                     <TextView
@@ -57,7 +58,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2.5">
                     <TextView
-                        android:textColor="@color/primaryTextColor"
+                        android:fontFamily="@font/nunito_sans_bold"
+                        android:textColor="#000"
                         android:layout_width="wrap_content"
                         android:text="Code :"
                         android:layout_height="wrap_content"/>
@@ -132,72 +134,62 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <LinearLayout
+        <RelativeLayout
             android:gravity="center"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         <TextView
-            android:textSize="15dp"
-            android:text="Shop Details"
+            android:layout_marginTop="5dp"
             android:fontFamily="@font/nunito_sans_bold"
-            android:layout_width="wrap_content"
+            android:textColor="#000"
+            android:text="Shop Details"
+            android:padding="5dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-        </LinearLayout>
+            <Button
+                android:layout_alignParentRight="true"
+                android:drawableLeft="@drawable/ic_add_shopping"
+                android:text="Order now"
+                android:layout_marginBottom="5dp"
+                android:layout_width="130dp"
+                android:layout_height="40dp"/>
+        </RelativeLayout>
            <LinearLayout
                android:layout_width="match_parent"
                android:layout_height="wrap_content">
-               <ImageView
-                   android:src="@drawable/icons_shop"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"/>
                <TextView
+                   android:fontFamily="@font/nunito_sans_bold"
+                   android:textColor="#000"
                    android:id="@+id/shopDetailName"
-                   android:text=""
+                   android:text="Shop Name"
                    android:layout_marginLeft="3dp"
-                   android:textSize="12sp"
+                   android:textSize="15sp"
                    android:layout_width="match_parent"
                    android:layout_height="match_parent"/>
            </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <ImageView
-                android:src="@drawable/icons_call"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
             <TextView
                 android:layout_marginLeft="3dp"
                 android:textSize="12sp"
                 android:id="@+id/shopDetailPhone"
-                android:text=""
+                android:text="01733883310"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <ImageView
-                android:src="@drawable/icons_shop_location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
             <TextView
                 android:layout_marginLeft="3dp"
                 android:textSize="12sp"
                 android:id="@+id/shopDetailAddress"
-                android:text=""
+                android:text="Nikonju 2 ,dhaka"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"/>
         </LinearLayout>
-
-        <Button
-            android:text="Order now"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginRight="50dp"
-            android:layout_marginLeft="50dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 
@@ -206,14 +198,14 @@
             android:orientation="vertical"
             android:gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="250dp">
+            android:layout_height="300dp">
 
             <TextView
-                android:gravity="center"
                 android:text="REVIEW "
                 android:textStyle="bold"
-                android:textColor="@color/primaryTextColorNew"
-                android:layout_gravity="center"
+                android:fontFamily="@font/nunito_sans_bold"
+                android:textColor="#000"
+                android:padding="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 

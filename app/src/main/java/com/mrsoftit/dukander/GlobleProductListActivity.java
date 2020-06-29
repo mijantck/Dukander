@@ -85,6 +85,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class GlobleProductListActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -104,8 +105,7 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
 
     int coinupdet;
     String globleCustomerName;
-
-
+    String globleCustomerEmail;
     String globalCustomerInfoId;
     EditText searchEditeText;
     GoogleSignInClient googleSignInClient;
@@ -628,134 +628,24 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 final GlobleProductNote globleProductNote = documentSnapshot.toObject(GlobleProductNote.class);
-                final Dialog dialogDetailsProduct = new Dialog(GlobleProductListActivity.this);
-                // Include dialog.xml file
-                dialogDetailsProduct.setContentView(R.layout.product_detiles_dialog_view);
-                dialogDetailsProduct.show();
-                ImageView productImageDetail = dialogDetailsProduct.findViewById(R.id.productImageDetail);
-                TextView ProductNameDetails = dialogDetailsProduct.findViewById(R.id.ProductNameDetails);
-                TextView inStockDetails = dialogDetailsProduct.findViewById(R.id.inStockDetails);
-                final TextView productPriceDetails = dialogDetailsProduct.findViewById(R.id.productPriceDetails);
-                TextView shopDetailName = dialogDetailsProduct.findViewById(R.id.shopDetailName);
-                TextView shopDetailPhone = dialogDetailsProduct.findViewById(R.id.shopDetailPhone);
-                TextView shopDetailAddress = dialogDetailsProduct.findViewById(R.id.shopDetailAddress);
-                TextView ProductCode = dialogDetailsProduct.findViewById(R.id.ProductCode);
-                revieweditText = dialogDetailsProduct.findViewById(R.id.revieweditText);
-                ImageButton reviewsendbutton = dialogDetailsProduct.findViewById(R.id.reviewsendbutton);
-                TextView productQuantidyfromCustomer = dialogDetailsProduct.findViewById(R.id.productQuantidyfromCustomer);
-
-
-                review(globleProductNote.getProId(),dialogDetailsProduct );
-
-                if (globleProductNote.getProImgeUrl()!=null){
-                    String Url = globleProductNote.getProImgeUrl();
-                    Picasso.get().load(Url).into(productImageDetail);
-                }
-
-                ProductNameDetails.setText(globleProductNote.getProName());
-                if (globleProductNote.getProQua()<=0){
-                    inStockDetails.setText("Stock out");
-                    inStockDetails.setTextColor(Color.RED);
-                }else {
-                    inStockDetails.setText("In stock");
-                    inStockDetails.setTextColor(Color.GREEN);
-                }
-                ProductCode.setText(globleProductNote.getProductCode());
-                productPriceDetails.setText(globleProductNote.getProPrice()+"");
-                shopDetailName.setText(globleProductNote.getShopName());
-                shopDetailPhone.setText(globleProductNote.getShopPhone());
-                shopDetailAddress.setText(globleProductNote.getShopAddress());
-                productQuantidyfromCustomer.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                    }
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                        String s1 = s.toString().trim();
-                        if (!s1.isEmpty()){
-                            double ProductQuantidy =Double.parseDouble(s1);
-                            double sumPrice = ProductQuantidy*globleProductNote.getProPrice();
-                            productPriceDetails.setText(sumPrice+"");
-                        }else {
-
-                            productPriceDetails.setText(globleProductNote.getProPrice()+"");
-                        }
-                    }
-                    @Override
-                    public void afterTextChanged(Editable s) {
-
-                    }
-                });
-
-
-                reviewsendbutton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        if (currentUser != null) {
-                            String customerId = globlecutouser_id;
-                            final String revieweditText1 = revieweditText.getText().toString();
-
-                            final CollectionReference Reviewcustomer = FirebaseFirestore.getInstance()
-                                    .collection("Globlecustomers").document(customerId).collection("info");
-
-
-                            Reviewcustomer.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
-                                    if (task.isSuccessful()) {
-                                        for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                                            GlobleCustomerNote globleCustomerNote = document.toObject(GlobleCustomerNote.class);
-                                            coinupdet = globleCustomerNote.getCoine();
-                                            globalCustomerInfoId = globleCustomerNote.getId();
-                                            globleCustomerName = globleCustomerNote.getName();
-                                        }
-
-
-                                        String proId = globleProductNote.getProId();
-                                        String shopUserId = globleProductNote.getUserId();
-
-
-                                        comment(proId, shopUserId, globlecutouser_id, globleCustomerName, revieweditText1, coinupdet, globalCustomerInfoId);
-
-                                    }
-                                }
-                            });
-
-
-                        }
-                        else {
-
-                            new MaterialAlertDialogBuilder(GlobleProductListActivity.this)
-                                    .setTitle("you have not signup")
-                                    .setPositiveButton("GOT IT", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-
-                                            startActivity(new Intent(GlobleProductListActivity.this,CustomerLoginActivity.class));
-                                            finish();
-                                        }
-                                    })
-                                    .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-
-                                            dialogDetailsProduct.dismiss();
-                                        }
-                                    })
-                                    .show();
-
-
-
-                        }
-                    }
-                });
-
-
-
+                Intent intent = new Intent(GlobleProductListActivity.this, ProductFullViewOrderActivity.class);
+                intent.putExtra("proIdup",globleProductNote.getProId());
+                intent.putExtra("proNameup",globleProductNote.getProName());
+                intent.putExtra("proPriceup",globleProductNote.getProPrice()+"");
+                intent.putExtra("productCodeup",globleProductNote.getProductCode());
+                intent.putExtra("productPrivacyup",globleProductNote.getProductPrivacy());
+                intent.putExtra("proImgeUrlup",globleProductNote.getProImgeUrl());
+                intent.putExtra("ShopNameup",globleProductNote.getShopName());
+                intent.putExtra("ShopPhoneup",globleProductNote.getShopPhone());
+                intent.putExtra("ShopAddressup",globleProductNote.getShopAddress());
+                intent.putExtra("ShopImageUrlup",globleProductNote.getShopImageUrl());
+                intent.putExtra("ShopIdup",globleProductNote.getShopId());
+                intent.putExtra("UserIdup",globleProductNote.getUserId());
+                intent.putExtra("productCategoryup",globleProductNote.getProductCategory());
+                intent.putExtra("dateup",globleProductNote.getDate()+"");
+                intent.putExtra("proQuaup",globleProductNote.getProQua()+"");
+                intent.putExtra("discuntup",globleProductNote.getPruductDiscount()+"");
+                startActivity(intent);
 
             }
         });
@@ -786,62 +676,24 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 final GlobleProductNote1 globleProductNote = documentSnapshot.toObject(GlobleProductNote1.class);
-                final Dialog dialogDetailsProduct = new Dialog(GlobleProductListActivity.this);
-                // Include dialog.xml file
-                dialogDetailsProduct.setContentView(R.layout.product_detiles_dialog_view);
-                dialogDetailsProduct.show();
-                ImageView productImageDetail = dialogDetailsProduct.findViewById(R.id.productImageDetail);
-                TextView ProductNameDetails = dialogDetailsProduct.findViewById(R.id.ProductNameDetails);
-                TextView inStockDetails = dialogDetailsProduct.findViewById(R.id.inStockDetails);
-                final TextView productPriceDetails = dialogDetailsProduct.findViewById(R.id.productPriceDetails);
-                TextView shopDetailName = dialogDetailsProduct.findViewById(R.id.shopDetailName);
-                TextView shopDetailPhone = dialogDetailsProduct.findViewById(R.id.shopDetailPhone);
-                TextView shopDetailAddress = dialogDetailsProduct.findViewById(R.id.shopDetailAddress);
-                TextView ProductCode = dialogDetailsProduct.findViewById(R.id.ProductCode);
-                TextView productQuantidyfromCustomer = dialogDetailsProduct.findViewById(R.id.productQuantidyfromCustomer);
-
-
-                if (globleProductNote.getProImgeUrl()!=null){
-                    String Url = globleProductNote.getProImgeUrl();
-                    Picasso.get().load(Url).into(productImageDetail);
-                }
-                ProductNameDetails.setText(globleProductNote.getProName());
-                if (globleProductNote.getProQua()<=0){
-                    inStockDetails.setText("Stock out");
-                    inStockDetails.setTextColor(Color.RED);
-                }else {
-                    inStockDetails.setText("In stock");
-                    inStockDetails.setTextColor(Color.GREEN);
-                }
-                ProductCode.setText(globleProductNote.getProductCode());
-                productPriceDetails.setText(globleProductNote.getProPrice()+"");
-                shopDetailName.setText(globleProductNote.getShopName());
-                shopDetailPhone.setText(globleProductNote.getShopPhone());
-                shopDetailAddress.setText(globleProductNote.getShopAddress());
-                productQuantidyfromCustomer.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                        String s1 = s.toString().trim();
-                        if (!s1.isEmpty()){
-                            double ProductQuantidy =Double.parseDouble(s1);
-                            double sumPrice = ProductQuantidy*globleProductNote.getProPrice();
-                            productPriceDetails.setText(sumPrice+"");
-                        }else {
-
-                            productPriceDetails.setText(globleProductNote.getProPrice()+"");
-                        }
-                    }
-                    @Override
-                    public void afterTextChanged(Editable s) {
-
-                    }
-                });
+                Intent intent = new Intent(GlobleProductListActivity.this, ProductFullViewOrderActivity.class);
+                intent.putExtra("proIdup",globleProductNote.getProId());
+                intent.putExtra("proNameup",globleProductNote.getProName());
+                intent.putExtra("proPriceup",globleProductNote.getProPrice()+"");
+                intent.putExtra("productCodeup",globleProductNote.getProductCode());
+                intent.putExtra("productPrivacyup",globleProductNote.getProductPrivacy());
+                intent.putExtra("proImgeUrlup",globleProductNote.getProImgeUrl());
+                intent.putExtra("ShopNameup",globleProductNote.getShopName());
+                intent.putExtra("ShopPhoneup",globleProductNote.getShopPhone());
+                intent.putExtra("ShopAddressup",globleProductNote.getShopAddress());
+                intent.putExtra("ShopImageUrlup",globleProductNote.getShopImageUrl());
+                intent.putExtra("ShopIdup",globleProductNote.getShopId());
+                intent.putExtra("UserIdup",globleProductNote.getUserId());
+                intent.putExtra("productCategoryup",globleProductNote.getProductCategory());
+                intent.putExtra("dateup",globleProductNote.getDate()+"");
+                intent.putExtra("proQuaup",globleProductNote.getProQua()+"");
+                intent.putExtra("discuntup",globleProductNote.getPruductDiscount()+"");
+                startActivity(intent);
 
             }
         });
@@ -872,62 +724,24 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 final GlobleProductNote2 globleProductNote = documentSnapshot.toObject(GlobleProductNote2.class);
-                final Dialog dialogDetailsProduct = new Dialog(GlobleProductListActivity.this);
-                // Include dialog.xml file
-                dialogDetailsProduct.setContentView(R.layout.product_detiles_dialog_view);
-                dialogDetailsProduct.show();
-                ImageView productImageDetail = dialogDetailsProduct.findViewById(R.id.productImageDetail);
-                TextView ProductNameDetails = dialogDetailsProduct.findViewById(R.id.ProductNameDetails);
-                TextView inStockDetails = dialogDetailsProduct.findViewById(R.id.inStockDetails);
-                final TextView productPriceDetails = dialogDetailsProduct.findViewById(R.id.productPriceDetails);
-                TextView shopDetailName = dialogDetailsProduct.findViewById(R.id.shopDetailName);
-                TextView shopDetailPhone = dialogDetailsProduct.findViewById(R.id.shopDetailPhone);
-                TextView shopDetailAddress = dialogDetailsProduct.findViewById(R.id.shopDetailAddress);
-                TextView ProductCode = dialogDetailsProduct.findViewById(R.id.ProductCode);
-                TextView productQuantidyfromCustomer = dialogDetailsProduct.findViewById(R.id.productQuantidyfromCustomer);
-
-
-                if (globleProductNote.getProImgeUrl()!=null){
-                    String Url = globleProductNote.getProImgeUrl();
-                    Picasso.get().load(Url).into(productImageDetail);
-                }
-                ProductNameDetails.setText(globleProductNote.getProName());
-                if (globleProductNote.getProQua()<=0){
-                    inStockDetails.setText("Stock out");
-                    inStockDetails.setTextColor(Color.RED);
-                }else {
-                    inStockDetails.setText("In stock");
-                    inStockDetails.setTextColor(Color.GREEN);
-                }
-                ProductCode.setText(globleProductNote.getProductCode());
-                productPriceDetails.setText(globleProductNote.getProPrice()+"");
-                shopDetailName.setText(globleProductNote.getShopName());
-                shopDetailPhone.setText(globleProductNote.getShopPhone());
-                shopDetailAddress.setText(globleProductNote.getShopAddress());
-                productQuantidyfromCustomer.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                        String s1 = s.toString().trim();
-                        if (!s1.isEmpty()){
-                            double ProductQuantidy =Double.parseDouble(s1);
-                            double sumPrice = ProductQuantidy*globleProductNote.getProPrice();
-                            productPriceDetails.setText(sumPrice+"");
-                        }else {
-
-                            productPriceDetails.setText(globleProductNote.getProPrice()+"");
-                        }
-                    }
-                    @Override
-                    public void afterTextChanged(Editable s) {
-
-                    }
-                });
+                Intent intent = new Intent(GlobleProductListActivity.this, ProductFullViewOrderActivity.class);
+                intent.putExtra("proIdup",globleProductNote.getProId());
+                intent.putExtra("proNameup",globleProductNote.getProName());
+                intent.putExtra("proPriceup",globleProductNote.getProPrice()+"");
+                intent.putExtra("productCodeup",globleProductNote.getProductCode());
+                intent.putExtra("productPrivacyup",globleProductNote.getProductPrivacy());
+                intent.putExtra("proImgeUrlup",globleProductNote.getProImgeUrl());
+                intent.putExtra("ShopNameup",globleProductNote.getShopName());
+                intent.putExtra("ShopPhoneup",globleProductNote.getShopPhone());
+                intent.putExtra("ShopAddressup",globleProductNote.getShopAddress());
+                intent.putExtra("ShopImageUrlup",globleProductNote.getShopImageUrl());
+                intent.putExtra("ShopIdup",globleProductNote.getShopId());
+                intent.putExtra("UserIdup",globleProductNote.getUserId());
+                intent.putExtra("productCategoryup",globleProductNote.getProductCategory());
+                intent.putExtra("dateup",globleProductNote.getDate()+"");
+                intent.putExtra("proQuaup",globleProductNote.getProQua()+"");
+                intent.putExtra("discuntup",globleProductNote.getPruductDiscount()+"");
+                startActivity(intent);
 
             }
         });
@@ -958,62 +772,24 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 final GlobleProductNote3 globleProductNote = documentSnapshot.toObject(GlobleProductNote3.class);
-                final Dialog dialogDetailsProduct = new Dialog(GlobleProductListActivity.this);
-                // Include dialog.xml file
-                dialogDetailsProduct.setContentView(R.layout.product_detiles_dialog_view);
-                dialogDetailsProduct.show();
-                ImageView productImageDetail = dialogDetailsProduct.findViewById(R.id.productImageDetail);
-                TextView ProductNameDetails = dialogDetailsProduct.findViewById(R.id.ProductNameDetails);
-                TextView inStockDetails = dialogDetailsProduct.findViewById(R.id.inStockDetails);
-                final TextView productPriceDetails = dialogDetailsProduct.findViewById(R.id.productPriceDetails);
-                TextView shopDetailName = dialogDetailsProduct.findViewById(R.id.shopDetailName);
-                TextView shopDetailPhone = dialogDetailsProduct.findViewById(R.id.shopDetailPhone);
-                TextView shopDetailAddress = dialogDetailsProduct.findViewById(R.id.shopDetailAddress);
-                TextView ProductCode = dialogDetailsProduct.findViewById(R.id.ProductCode);
-                TextView productQuantidyfromCustomer = dialogDetailsProduct.findViewById(R.id.productQuantidyfromCustomer);
-
-
-                if (globleProductNote.getProImgeUrl()!=null){
-                    String Url = globleProductNote.getProImgeUrl();
-                    Picasso.get().load(Url).into(productImageDetail);
-                }
-                ProductNameDetails.setText(globleProductNote.getProName());
-                if (globleProductNote.getProQua()<=0){
-                    inStockDetails.setText("Stock out");
-                    inStockDetails.setTextColor(Color.RED);
-                }else {
-                    inStockDetails.setText("In stock");
-                    inStockDetails.setTextColor(Color.GREEN);
-                }
-                ProductCode.setText(globleProductNote.getProductCode());
-                productPriceDetails.setText(globleProductNote.getProPrice()+"");
-                shopDetailName.setText(globleProductNote.getShopName());
-                shopDetailPhone.setText(globleProductNote.getShopPhone());
-                shopDetailAddress.setText(globleProductNote.getShopAddress());
-                productQuantidyfromCustomer.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                        String s1 = s.toString().trim();
-                        if (!s1.isEmpty()){
-                            double ProductQuantidy =Double.parseDouble(s1);
-                            double sumPrice = ProductQuantidy*globleProductNote.getProPrice();
-                            productPriceDetails.setText(sumPrice+"");
-                        }else {
-
-                            productPriceDetails.setText(globleProductNote.getProPrice()+"");
-                        }
-                    }
-                    @Override
-                    public void afterTextChanged(Editable s) {
-
-                    }
-                });
+                Intent intent = new Intent(GlobleProductListActivity.this, ProductFullViewOrderActivity.class);
+                intent.putExtra("proIdup",globleProductNote.getProId());
+                intent.putExtra("proNameup",globleProductNote.getProName());
+                intent.putExtra("proPriceup",globleProductNote.getProPrice()+"");
+                intent.putExtra("productCodeup",globleProductNote.getProductCode());
+                intent.putExtra("productPrivacyup",globleProductNote.getProductPrivacy());
+                intent.putExtra("proImgeUrlup",globleProductNote.getProImgeUrl());
+                intent.putExtra("ShopNameup",globleProductNote.getShopName());
+                intent.putExtra("ShopPhoneup",globleProductNote.getShopPhone());
+                intent.putExtra("ShopAddressup",globleProductNote.getShopAddress());
+                intent.putExtra("ShopImageUrlup",globleProductNote.getShopImageUrl());
+                intent.putExtra("ShopIdup",globleProductNote.getShopId());
+                intent.putExtra("UserIdup",globleProductNote.getUserId());
+                intent.putExtra("productCategoryup",globleProductNote.getProductCategory());
+                intent.putExtra("dateup",globleProductNote.getDate()+"");
+                intent.putExtra("proQuaup",globleProductNote.getProQua()+"");
+                intent.putExtra("discuntup",globleProductNote.getPruductDiscount()+"");
+                startActivity(intent);
 
             }
         });
@@ -1044,62 +820,24 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 final GlobleProductNote4 globleProductNote = documentSnapshot.toObject(GlobleProductNote4.class);
-                final Dialog dialogDetailsProduct = new Dialog(GlobleProductListActivity.this);
-                // Include dialog.xml file
-                dialogDetailsProduct.setContentView(R.layout.product_detiles_dialog_view);
-                dialogDetailsProduct.show();
-                ImageView productImageDetail = dialogDetailsProduct.findViewById(R.id.productImageDetail);
-                TextView ProductNameDetails = dialogDetailsProduct.findViewById(R.id.ProductNameDetails);
-                TextView inStockDetails = dialogDetailsProduct.findViewById(R.id.inStockDetails);
-                final TextView productPriceDetails = dialogDetailsProduct.findViewById(R.id.productPriceDetails);
-                TextView shopDetailName = dialogDetailsProduct.findViewById(R.id.shopDetailName);
-                TextView shopDetailPhone = dialogDetailsProduct.findViewById(R.id.shopDetailPhone);
-                TextView shopDetailAddress = dialogDetailsProduct.findViewById(R.id.shopDetailAddress);
-                TextView ProductCode = dialogDetailsProduct.findViewById(R.id.ProductCode);
-                TextView productQuantidyfromCustomer = dialogDetailsProduct.findViewById(R.id.productQuantidyfromCustomer);
-
-
-                if (globleProductNote.getProImgeUrl()!=null){
-                    String Url = globleProductNote.getProImgeUrl();
-                    Picasso.get().load(Url).into(productImageDetail);
-                }
-                ProductNameDetails.setText(globleProductNote.getProName());
-                if (globleProductNote.getProQua()<=0){
-                    inStockDetails.setText("Stock out");
-                    inStockDetails.setTextColor(Color.RED);
-                }else {
-                    inStockDetails.setText("In stock");
-                    inStockDetails.setTextColor(Color.GREEN);
-                }
-                ProductCode.setText(globleProductNote.getProductCode());
-                productPriceDetails.setText(globleProductNote.getProPrice()+"");
-                shopDetailName.setText(globleProductNote.getShopName());
-                shopDetailPhone.setText(globleProductNote.getShopPhone());
-                shopDetailAddress.setText(globleProductNote.getShopAddress());
-                productQuantidyfromCustomer.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                        String s1 = s.toString().trim();
-                        if (!s1.isEmpty()){
-                            double ProductQuantidy =Double.parseDouble(s1);
-                            double sumPrice = ProductQuantidy*globleProductNote.getProPrice();
-                            productPriceDetails.setText(sumPrice+"");
-                        }else {
-
-                            productPriceDetails.setText(globleProductNote.getProPrice()+"");
-                        }
-                    }
-                    @Override
-                    public void afterTextChanged(Editable s) {
-
-                    }
-                });
+                Intent intent = new Intent(GlobleProductListActivity.this, ProductFullViewOrderActivity.class);
+                intent.putExtra("proIdup",globleProductNote.getProId());
+                intent.putExtra("proNameup",globleProductNote.getProName());
+                intent.putExtra("proPriceup",globleProductNote.getProPrice()+"");
+                intent.putExtra("productCodeup",globleProductNote.getProductCode());
+                intent.putExtra("productPrivacyup",globleProductNote.getProductPrivacy());
+                intent.putExtra("proImgeUrlup",globleProductNote.getProImgeUrl());
+                intent.putExtra("ShopNameup",globleProductNote.getShopName());
+                intent.putExtra("ShopPhoneup",globleProductNote.getShopPhone());
+                intent.putExtra("ShopAddressup",globleProductNote.getShopAddress());
+                intent.putExtra("ShopImageUrlup",globleProductNote.getShopImageUrl());
+                intent.putExtra("ShopIdup",globleProductNote.getShopId());
+                intent.putExtra("UserIdup",globleProductNote.getUserId());
+                intent.putExtra("productCategoryup",globleProductNote.getProductCategory());
+                intent.putExtra("dateup",globleProductNote.getDate()+"");
+                intent.putExtra("proQuaup",globleProductNote.getProQua()+"");
+                intent.putExtra("discuntup",globleProductNote.getPruductDiscount()+"");
+                startActivity(intent);
 
             }
         });
@@ -1129,62 +867,24 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 final GlobleProductNote5 globleProductNote = documentSnapshot.toObject(GlobleProductNote5.class);
-                final Dialog dialogDetailsProduct = new Dialog(GlobleProductListActivity.this);
-                // Include dialog.xml file
-                dialogDetailsProduct.setContentView(R.layout.product_detiles_dialog_view);
-                dialogDetailsProduct.show();
-                ImageView productImageDetail = dialogDetailsProduct.findViewById(R.id.productImageDetail);
-                TextView ProductNameDetails = dialogDetailsProduct.findViewById(R.id.ProductNameDetails);
-                TextView inStockDetails = dialogDetailsProduct.findViewById(R.id.inStockDetails);
-                final TextView productPriceDetails = dialogDetailsProduct.findViewById(R.id.productPriceDetails);
-                TextView shopDetailName = dialogDetailsProduct.findViewById(R.id.shopDetailName);
-                TextView shopDetailPhone = dialogDetailsProduct.findViewById(R.id.shopDetailPhone);
-                TextView shopDetailAddress = dialogDetailsProduct.findViewById(R.id.shopDetailAddress);
-                TextView ProductCode = dialogDetailsProduct.findViewById(R.id.ProductCode);
-                TextView productQuantidyfromCustomer = dialogDetailsProduct.findViewById(R.id.productQuantidyfromCustomer);
-
-
-                if (globleProductNote.getProImgeUrl()!=null){
-                    String Url = globleProductNote.getProImgeUrl();
-                    Picasso.get().load(Url).into(productImageDetail);
-                }
-                ProductNameDetails.setText(globleProductNote.getProName());
-                if (globleProductNote.getProQua()<=0){
-                    inStockDetails.setText("Stock out");
-                    inStockDetails.setTextColor(Color.RED);
-                }else {
-                    inStockDetails.setText("In stock");
-                    inStockDetails.setTextColor(Color.GREEN);
-                }
-                ProductCode.setText(globleProductNote.getProductCode());
-                productPriceDetails.setText(globleProductNote.getProPrice()+"");
-                shopDetailName.setText(globleProductNote.getShopName());
-                shopDetailPhone.setText(globleProductNote.getShopPhone());
-                shopDetailAddress.setText(globleProductNote.getShopAddress());
-                productQuantidyfromCustomer.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                        String s1 = s.toString().trim();
-                        if (!s1.isEmpty()){
-                            double ProductQuantidy =Double.parseDouble(s1);
-                            double sumPrice = ProductQuantidy*globleProductNote.getProPrice();
-                            productPriceDetails.setText(sumPrice+"");
-                        }else {
-
-                            productPriceDetails.setText(globleProductNote.getProPrice()+"");
-                        }
-                    }
-                    @Override
-                    public void afterTextChanged(Editable s) {
-
-                    }
-                });
+                Intent intent = new Intent(GlobleProductListActivity.this, ProductFullViewOrderActivity.class);
+                intent.putExtra("proIdup",globleProductNote.getProId());
+                intent.putExtra("proNameup",globleProductNote.getProName());
+                intent.putExtra("proPriceup",globleProductNote.getProPrice()+"");
+                intent.putExtra("productCodeup",globleProductNote.getProductCode());
+                intent.putExtra("productPrivacyup",globleProductNote.getProductPrivacy());
+                intent.putExtra("proImgeUrlup",globleProductNote.getProImgeUrl());
+                intent.putExtra("ShopNameup",globleProductNote.getShopName());
+                intent.putExtra("ShopPhoneup",globleProductNote.getShopPhone());
+                intent.putExtra("ShopAddressup",globleProductNote.getShopAddress());
+                intent.putExtra("ShopImageUrlup",globleProductNote.getShopImageUrl());
+                intent.putExtra("ShopIdup",globleProductNote.getShopId());
+                intent.putExtra("UserIdup",globleProductNote.getUserId());
+                intent.putExtra("productCategoryup",globleProductNote.getProductCategory());
+                intent.putExtra("dateup",globleProductNote.getDate()+"");
+                intent.putExtra("proQuaup",globleProductNote.getProQua()+"");
+                intent.putExtra("discuntup",globleProductNote.getPruductDiscount()+"");
+                startActivity(intent);
 
             }
         });
@@ -1212,63 +912,24 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 final GlobleProductNote6 globleProductNote = documentSnapshot.toObject(GlobleProductNote6.class);
-                final Dialog dialogDetailsProduct = new Dialog(GlobleProductListActivity.this);
-                // Include dialog.xml file
-                dialogDetailsProduct.setContentView(R.layout.product_detiles_dialog_view);
-                dialogDetailsProduct.show();
-                ImageView productImageDetail = dialogDetailsProduct.findViewById(R.id.productImageDetail);
-                TextView ProductNameDetails = dialogDetailsProduct.findViewById(R.id.ProductNameDetails);
-                TextView inStockDetails = dialogDetailsProduct.findViewById(R.id.inStockDetails);
-                final TextView productPriceDetails = dialogDetailsProduct.findViewById(R.id.productPriceDetails);
-                TextView shopDetailName = dialogDetailsProduct.findViewById(R.id.shopDetailName);
-                TextView shopDetailPhone = dialogDetailsProduct.findViewById(R.id.shopDetailPhone);
-                TextView shopDetailAddress = dialogDetailsProduct.findViewById(R.id.shopDetailAddress);
-                TextView ProductCode = dialogDetailsProduct.findViewById(R.id.ProductCode);
-                TextView productQuantidyfromCustomer = dialogDetailsProduct.findViewById(R.id.productQuantidyfromCustomer);
-
-
-                if (globleProductNote.getProImgeUrl()!=null){
-                    String Url = globleProductNote.getProImgeUrl();
-                    Picasso.get().load(Url).into(productImageDetail);
-                }
-                ProductNameDetails.setText(globleProductNote.getProName());
-                if (globleProductNote.getProQua()<=0){
-                    inStockDetails.setText("Stock out");
-                    inStockDetails.setTextColor(Color.RED);
-                }else {
-                    inStockDetails.setText("In stock");
-                    inStockDetails.setTextColor(Color.GREEN);
-                }
-                ProductCode.setText(globleProductNote.getProductCode());
-                productPriceDetails.setText(globleProductNote.getProPrice()+"");
-                shopDetailName.setText(globleProductNote.getShopName());
-                shopDetailPhone.setText(globleProductNote.getShopPhone());
-                shopDetailAddress.setText(globleProductNote.getShopAddress());
-                productQuantidyfromCustomer.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                        String s1 = s.toString().trim();
-                        if (!s1.isEmpty()){
-                            double ProductQuantidy =Double.parseDouble(s1);
-                            double sumPrice = ProductQuantidy*globleProductNote.getProPrice();
-                            productPriceDetails.setText(sumPrice+"");
-                        }else {
-
-                            productPriceDetails.setText(globleProductNote.getProPrice()+"");
-                        }
-                    }
-                    @Override
-                    public void afterTextChanged(Editable s) {
-
-                    }
-                });
-
+                Intent intent = new Intent(GlobleProductListActivity.this, ProductFullViewOrderActivity.class);
+                intent.putExtra("proIdup",globleProductNote.getProId());
+                intent.putExtra("proNameup",globleProductNote.getProName());
+                intent.putExtra("proPriceup",globleProductNote.getProPrice()+"");
+                intent.putExtra("productCodeup",globleProductNote.getProductCode());
+                intent.putExtra("productPrivacyup",globleProductNote.getProductPrivacy());
+                intent.putExtra("proImgeUrlup",globleProductNote.getProImgeUrl());
+                intent.putExtra("ShopNameup",globleProductNote.getShopName());
+                intent.putExtra("ShopPhoneup",globleProductNote.getShopPhone());
+                intent.putExtra("ShopAddressup",globleProductNote.getShopAddress());
+                intent.putExtra("ShopImageUrlup",globleProductNote.getShopImageUrl());
+                intent.putExtra("ShopIdup",globleProductNote.getShopId());
+                intent.putExtra("UserIdup",globleProductNote.getUserId());
+                intent.putExtra("productCategoryup",globleProductNote.getProductCategory());
+                intent.putExtra("dateup",globleProductNote.getDate()+"");
+                intent.putExtra("proQuaup",globleProductNote.getProQua()+"");
+                intent.putExtra("discuntup",globleProductNote.getPruductDiscount()+"");
+                startActivity(intent);
             }
         });
 
@@ -1406,8 +1067,60 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
         reviewAdapter.startListening();
     }
 
-    public void comment(String productID, String shopUserID, final String customerID, final String custumerName,
-                        final String reviewComment, final int coinupdet1, final String globalCustomerInfoId1){
+
+    public void  testUserforpreviusComment(final String productID, final String shopUserID, final String custumerName, final String custumerEmail, final String productName,
+                                           final String productURL , final String reviewComment, final int coinupdet1, final String globalCustomerInfoId1 ){
+
+        final CollectionReference Review = FirebaseFirestore.getInstance()
+                .collection("GlobleProduct").document(productID).collection("review");
+
+        Review.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                if (task.isSuccessful()){
+                    String reviewCustomerId = null;
+
+                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                        final ReviewComentNote reviewComentNote = document.toObject(ReviewComentNote.class);
+                        reviewCustomerId = reviewComentNote.getReviewCustomerID();
+                    }
+
+                    if (reviewComment==null){
+                        comment(productID, shopUserID, globlecutouser_id, custumerName,custumerEmail,productName,productURL, reviewComment, coinupdet1, globalCustomerInfoId1);
+
+                    }else {
+                        if (!reviewCustomerId.equals(globlecutouser_id)) {
+
+                            comment(productID, shopUserID, globlecutouser_id, custumerName, custumerEmail, productName, productURL, reviewComment, coinupdet1, globalCustomerInfoId1);
+
+                        } else {
+                            progressDialog.dismiss();
+                            new MaterialAlertDialogBuilder(GlobleProductListActivity.this)
+                                    .setTitle(" Sorry ")
+                                    .setMessage("You alredy commet here \n because one product one  review ")
+                                    .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            dialogInterface.dismiss();
+                                        }
+                                    })
+                                    .show();
+
+                        }
+                    }
+
+
+
+                }
+
+            }
+        });
+
+    }
+
+    public void comment(final String productID,final String shopUserID, final String customerID, final String custumerName, final String reviewCustomerEmail,
+                        final String productName , final String productImageURL, final  String reviewComment, final int coinupdet1, final String globalCustomerInfoId1){
 
 
         final CollectionReference Review = FirebaseFirestore.getInstance()
@@ -1415,6 +1128,11 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
 
         final CollectionReference ReviewShop = FirebaseFirestore.getInstance()
                 .collection("users").document(shopUserID).collection("Product");
+
+
+        final CollectionReference ReviewlistInshop = FirebaseFirestore.getInstance()
+                .collection("users").document(shopUserID).collection("reviewall");
+
 
         final CollectionReference Reviewcustomer = FirebaseFirestore.getInstance()
                 .collection("Globlecustomers").document(customerID).collection("info");
@@ -1425,49 +1143,68 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
          final int datereview = Integer.parseInt(todayString);
 
 
-        Review.add(new ReviewComentNote(null,customerID,custumerName,reviewComment,datereview))
-                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentReference> task) {
-                        if (task.isSuccessful()){
-                            final String reviewCmmtID = task.getResult().getId();
-                            Review.document(reviewCmmtID).update("reviewID",reviewCmmtID).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    ReviewShop.add(new ReviewComentNote(reviewCmmtID,customerID,custumerName,reviewComment,datereview)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DocumentReference> task) {
+        final Map<String, Object> reviewindivsualProdut = new HashMap<>();
 
-                                                int coinUpadate = coinupdet1+10;
-                                                    Reviewcustomer.document(globalCustomerInfoId1).update("coine",coinUpadate)
-                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                @Override
-                                                                public void onComplete(@NonNull Task<Void> task) {
+        reviewindivsualProdut.put("reviewCustomerID",customerID);
+        reviewindivsualProdut.put("reviewShopMainID",shopUserID);
+        reviewindivsualProdut.put("reviewCustomerName",custumerName);
+        reviewindivsualProdut.put("reviewCustomerEmail",reviewCustomerEmail);
+        reviewindivsualProdut.put("reviewComment",reviewComment);
+        reviewindivsualProdut.put("dateAndTime",datereview);
+        reviewindivsualProdut.put("producrName",productName);
+        reviewindivsualProdut.put("productEmail",productImageURL);
 
-                                                                  revieweditText.setText("");
-                                                                    new MaterialAlertDialogBuilder(GlobleProductListActivity.this)
-                                                                            .setTitle(" You win 10 coin ")
-                                                                            .setMessage("This is for your review gift ")
-                                                                            .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                                                                                @Override
-                                                                                public void onClick(DialogInterface dialogInterface, int i) {
-                                                                                    dialogInterface.dismiss();
-                                                                                }
-                                                                            })
-                                                                            .show();
+        Review.document(customerID).set(reviewindivsualProdut).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
 
-                                                                }
-                                                            });
+                    ReviewShop.document(productID).collection("review").document(customerID).set(reviewindivsualProdut).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                         if (task.isSuccessful()){
+                             ReviewlistInshop.document(customerID).set(reviewindivsualProdut).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                 @Override
+                                 public void onComplete(@NonNull Task<Void> task) {
+                                     if (task.isSuccessful()){
+                                         int coinUpadate = coinupdet1+10;
+                                         Reviewcustomer.document(globalCustomerInfoId1).update("coine",coinUpadate)
+                                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                     @Override
+                                                     public void onComplete(@NonNull Task<Void> task) {
+                                                         progressDialog.dismiss();
+                                                         revieweditText.setText("");
+                                                         new MaterialAlertDialogBuilder(GlobleProductListActivity.this)
+                                                                 .setTitle(" You win 10 coin ")
+                                                                 .setMessage("This is for your review gift ")
+                                                                 .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                                                                     @Override
+                                                                     public void onClick(DialogInterface dialogInterface, int i) {
+                                                                         dialogInterface.dismiss();
+                                                                     }
+                                                                 })
+                                                                 .show();
 
-                                        }
-                                    });
-                                }
-                            });
+                                                     }
+                                                 });
+
+                                     }
+
+
+                                 }
+                             });
+                         }
                         }
-                    }
-                });
+                    });
+                }
+
+
+            }
+        });
 
 
     }
+
+
 
 }

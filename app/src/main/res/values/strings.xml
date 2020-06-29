@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Sale Market</string>
+    <string name="app_name">Sellers Market</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
@@ -56,16 +56,17 @@
     <string name="shop_name">Shop name </string>
     <string name="shop_addres">Shop Address </string>
     <string name="cutomer_added">Customer add</string>
-    <string name="prebeastDue">Due</string>
-    <string name="custumarName">Name </string>
-    <string name="phoneNumber">phone</string>
-    <string name="quantidy">Quantity </string>
-    <string name="addres">Address</string>
-    <string name="addedProduct">Product add</string>
-    <string name="product">Product</string>
-    <string name="singleProduct">Single</string>
-    <string name="price">Price</string>
-    <string name="stutas">Status</string>
-    <string name="TotalPrice">Total Quantity</string>
+    <string name="prebeastDue"> Due</string>
+    <string name="custumarName"> Name </string>
+    <string name="phoneNumber"> phone</string>
+    <string name="quantidy"> Quantity </string>
+    <string name="addres"> Address</string>
+    <string name="addedProduct"> Product add</string>
+    <string name="product"> Product</string>
+    <string name="singleProduct"> Single</string>
+    <string name="price"> Price</string>
+    <string name="stutas"> Status</string>
+    <string name="TotalPrice"> Total Quantity</string>
+    <string name="default_notification_channel_id">CHANNEL</string>
 
 </resources>

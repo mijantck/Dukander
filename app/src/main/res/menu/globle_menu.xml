@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:title="signin or signup">
+    <item
+        android:title="signin or signup">
         <menu>
             <item
+                app:itemTextAppearance="@style/Style_TextView"
                 android:id="@+id/loginGloble"
                 android:title="Login " />
             <item
+                app:itemTextAppearance="@style/Style_TextView"
                 android:id="@+id/myProfile"
                 android:title="My profile " />
         </menu>
@@ -16,6 +19,7 @@
     <item android:title="Shop list">
         <menu>
             <item
+                app:itemTextAppearance="@style/Style_TextView"
                 android:id="@+id/shoplist"
                 android:title="Shop Find " />
         </menu>
@@ -23,15 +27,19 @@
     <item android:title="Phones">
         <menu>
             <item
+                app:itemTextAppearance="@style/Style_TextView"
                 android:id="@+id/mobile"
                 android:title="Mobile " />
             <item
+                app:itemTextAppearance="@style/Style_TextView"
                 android:id="@+id/tablet"
                 android:title="Tablet " />
             <item
+                app:itemTextAppearance="@style/Style_TextView"
                 android:id="@+id/usedPhone"
                 android:title="Used Phone " />
             <item
+                app:itemTextAppearance="@style/Style_TextView"
                 android:id="@+id/Mobile_accessories"
                 android:title="Mobile accessories " />
 
@@ -41,6 +49,7 @@
     <item android:title="Foods Section">
         <menu>
             <item
+                app:itemTextAppearance="@style/Style_TextView"
                 android:id="@+id/foods"
                 android:title="Food " />
 
@@ -50,38 +59,47 @@
         <menu>
 
             <item
+                app:itemTextAppearance="@style/Style_TextView"
                 android:id="@+id/Shirts"
                 android:title="Shirts" />
             <item
+                app:itemTextAppearance="@style/Style_TextView"
                 android:id="@+id/Tee_Shirt"
                 android:title="T-Shirt" />
             <item
+                app:itemTextAppearance="@style/Style_TextView"
                 android:id="@+id/Pant"
 
                 android:title="Pant" />
 
             <item
+                app:itemTextAppearance="@style/Style_TextView"
                 android:id="@+id/Panjabi"
 
                 android:title="Panjabi" />
             <item
+                app:itemTextAppearance="@style/Style_TextView"
                 android:id="@+id/Pajama"
 
                 android:title="Pajama" />
 
             <item
+                app:itemTextAppearance="@style/Style_TextView"
                 android:id="@+id/Polo"
 
                 android:title="Polo" />
             <item
+                app:itemTextAppearance="@style/Style_TextView"
                 android:id="@+id/Lungi"
 
                 android:title="Lungi" />
             <item
+                app:itemTextAppearance="@style/Style_TextView"
                 android:id="@+id/Man_Shoes"
 
                 android:title="Man Shoes" />
             <item
+                app:itemTextAppearance="@style/Style_TextView"
                 android:id="@+id/Man_Accessories"
 
                 android:title="Man Accessories" />
@@ -90,38 +108,47 @@
     <item android:title="Girls Collection">
         <menu>
             <item
+                app:itemTextAppearance="@style/Style_TextView"
                 android:id="@+id/Saree"
 
                 android:title="Saree" />
             <item
+                app:itemTextAppearance="@style/Style_TextView"
                 android:id="@+id/Shalwar_Kameez"
 
                 android:title="Shalwar Kameez" />
             <item
+                app:itemTextAppearance="@style/Style_TextView"
                 android:id="@+id/Shawls"
 
                 android:title="Shawls" />
             <item
+                app:itemTextAppearance="@style/Style_TextView"
                 android:id="@+id/Girls_Panjabi"
 
                 android:title="Girls Panjabi" />
             <item
+                app:itemTextAppearance="@style/Style_TextView"
                 android:id="@+id/Nightwear"
 
                 android:title="Nightwear" />
             <item
+                app:itemTextAppearance="@style/Style_TextView"
                 android:id="@+id/Scarves"
 
                 android:title="Scarves" />
             <item
+                app:itemTextAppearance="@style/Style_TextView"
                 android:id="@+id/Dupatta"
 
                 android:title="Dupatta" />
             <item
+                app:itemTextAppearance="@style/Style_TextView"
                 android:id="@+id/Girls_Shoes"
 
                 android:title="Girls Shoes" />
             <item
+                app:itemTextAppearance="@style/Style_TextView"
                 android:id="@+id/Girls_Accessories"
 
                 android:title="Girls Accessories" />
@@ -130,6 +157,7 @@
     <item android:title="Jewellers">
         <menu>
             <item
+                app:itemTextAppearance="@style/Style_TextView"
                 android:id="@+id/Jewellers"
                 android:title="Jewellers " />
 
@@ -139,6 +167,7 @@
     <item android:title="Motorcycle accessories">
         <menu>
             <item
+                app:itemTextAppearance="@style/Style_TextView"
                 android:id="@+id/Motorcycle_accessories"
                 android:title="Motorcycle accessories " />
 
@@ -149,6 +178,7 @@
         <menu>
             <item
                 android:id="@+id/Cosmetics"
+                app:itemTextAppearance="@style/Style_TextView"
                 android:title="Cosmetics" />
 
 
@@ -157,6 +187,7 @@
     <item android:title="Grocery">
         <menu>
             <item
+                app:itemTextAppearance="@style/Style_TextView"
                 android:id="@+id/Grocery"
                 android:title="Grocery" />
 
@@ -166,9 +197,11 @@
     <item android:title="Communicate">
         <menu>
             <item
+                app:itemTextAppearance="@style/Style_TextView"
                 android:id="@+id/Contact_us"
                 android:title="Contact us " />
             <item
+                app:itemTextAppearance="@style/Style_TextView"
                 android:id="@+id/logout"
                 android:title="logout" />
 

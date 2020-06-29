@@ -25,6 +25,7 @@ import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -41,20 +42,26 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -70,6 +77,10 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
      ProgressDialog pd;
     GoogleSignInClient googleSignInClient;
 
+    ProgressDialog progressDialog;
+
+
+    String tokenjustTime;
 
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -111,6 +122,12 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
+        progressDialog = new ProgressDialog(MainActivity.this);
+        // Setting Message
+        progressDialog.setTitle("Loading..."); // Setting Title
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setCanceledOnTouchOutside(false);
+
         Toolbar toolbar = findViewById(R.id.toolbar_support);
         toolbar.setTitle("Dukandar");
         setSupportActionBar(toolbar);
@@ -442,7 +459,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         assert currentUser != null;
 
         if (currentUser != null) {
-            String user_id = currentUser.getUid();
+            final String user_id = currentUser.getUid();
 
             final CollectionReference myInfo = FirebaseFirestore.getInstance()
                     .collection("users").document(user_id).collection("DukanInfo");
@@ -461,6 +478,20 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
+
+                        String token = null;
+
+
+
+                        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                if (task.isSuccessful()){
+                                  tokenjustTime = task.getResult().getToken();
+                                }
+                            }
+                        });
+
                         for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                             MyInfoNote myInfoNote = document.toObject(MyInfoNote.class);
 
@@ -471,13 +502,51 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                                 myUri = uri;
                                 Picasso.get().load(uri).into(appCompatImageView);
                             }
+                            if (document.get("token")!=null){
+                                token = document.get("token").toString();
+                            }
                             id = document.get("myid").toString();
-
                             mydate = myInfoNote.getDate();
                             picname = myInfoNote.getPicName();
 
 
                         }
+
+                        if (!token.equals(tokenjustTime)){
+                            progressDialog.show();
+
+                            final CollectionReference globleProductUpdateToken = FirebaseFirestore.getInstance()
+                                    .collection("users").document(user_id).collection("Product");
+
+                            final CollectionReference myInfo = FirebaseFirestore.getInstance()
+                                    .collection("users").document(user_id).collection("DukanInfo");
+
+
+
+                            Query query = globleProductUpdateToken;
+
+                            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+
+                                        List<String> list = new ArrayList<>();
+                                        for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                                            list.add(document.getId());
+                                        }
+
+                                        totalupdateData((ArrayList) list);
+
+                                        myInfo.document(id).update("token",tokenjustTime);
+                                    }
+
+                                }
+
+
+                            });
+                        }
+
+
                     }
                 }
             });
@@ -634,4 +703,33 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     }
 
 
+    public void totalupdateData(ArrayList list) {
+
+        // Get a new write batch
+        WriteBatch batch = db.batch();
+
+        // Iterate through the list
+        for (int k = 0; k < list.size(); k++) {
+
+            // Update each list item
+
+            DocumentReference ref = db.collection("GlobleProduct")
+                    .document((String) list.get(k));
+            batch.update(ref, "token", tokenjustTime);
+
+
+
+        }
+
+        // Commit the batch
+        batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                // Yay its all done in one go!
+
+                progressDialog.dismiss();
+            }
+        });
+
+    }
 }

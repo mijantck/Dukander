@@ -53,6 +53,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -113,6 +115,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
 
 
 
+    String token;
 
     private LinearLayout shopediteView,shopdelaisView,passChange,PinLayout;
     private MaterialButton etideButton;
@@ -251,6 +254,18 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
 
 
 
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+            @Override
+            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+
+                if (task.isSuccessful()){
+                    token = task.getResult().getToken();
+
+                }
+
+            }
+        });
+
 
 
         etideButton.setOnClickListener(new View.OnClickListener() {
@@ -352,7 +367,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
 
 
 
-                    myInfo.document(id).update( "dukanName", dukanName1, "dukanphone", dukanphon1, "dukanaddress", dukanAddres1)
+                    myInfo.document(id).update( "dukanName", dukanName1, "dukanphone", dukanphon1, "dukanaddress", dukanAddres1,"token",token)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
@@ -387,9 +402,13 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
                     final String dukanName1 = dukanName.getText().toString();
                     final String dukanphon1 = dukanPhone.getText().toString();
                     final String dukanAddres1 = dukanaddess.getText().toString();
+
+
+
+
                     Random rand = new Random();
                     String picname = String.format("%05d", rand.nextInt(10000));
-                    myInfo.add(new MyInfoNote(null, dukanName1, dukanphon1, dukanAddres1,true,picname,0.0,0.0,0.0,0)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    myInfo.add(new MyInfoNote(null, dukanName1, dukanphon1, dukanAddres1,true,picname,0.0,0.0,0.0,0,token)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentReference> task) {
 
@@ -427,7 +446,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
                     Random rand = new Random();
                     String picname = String.format("%05d", rand.nextInt(10000));
 
-                    myInfo.document(id).update("myid", id, "dukanName", dukanName1, "dukanphone", dukanphon1, "dukanaddress", dukanAddres1,"firsttime",firstTime)
+                    myInfo.document(id).update("myid", id, "dukanName", dukanName1, "dukanphone", dukanphon1, "dukanaddress", dukanAddres1,"firsttime",firstTime,"token",token)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
@@ -752,7 +771,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
 
                     if (image != false && id !=null) {
 
-                        myInfo.document(id).update("myid", id, "dukanName", dukanName1, "dukanphone", dukanphon1, "dukanaddress", dukanAddres1,  "dukanaddpicurl", downloadLink,"firsttime",firstTime)
+                        myInfo.document(id).update("myid", id, "dukanName", dukanName1, "dukanphone", dukanphon1, "dukanaddress", dukanAddres1,  "dukanaddpicurl", downloadLink,"firsttime",firstTime,"token",token)
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
@@ -775,7 +794,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
 
                         Random rand = new Random();
                         String picname = String.format("%05d", rand.nextInt(10000));
-                        myInfo.add(new MyInfoNote(null, dukanName1, dukanphon1, dukanAddres1, downloadLink,true,picname,0.0,0.0,0.0,0)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                        myInfo.add(new MyInfoNote(null, dukanName1, dukanphon1, dukanAddres1, downloadLink,true,picname,0.0,0.0,0.0,0,token)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentReference> task) {
 
@@ -959,6 +978,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
         GlobaleShopList.put("search", shopName.toLowerCase());
         GlobaleShopList.put("ShopPhone", shopPhone);
         GlobaleShopList.put("ShopAddress", shopAddress);
+        GlobaleShopList.put("token", token);
 
         if (update == false) {
             GlobleSoplist.document(shoId).set(GlobaleShopList).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -990,6 +1010,7 @@ public class MyInfoActivity extends AppCompatActivity implements EasyPermissions
         GlobaleShopList.put("search", shopName.toLowerCase());
         GlobaleShopList.put("ShopPhone", shopPhone);
         GlobaleShopList.put("ShopAddress", shopAddress);
+        GlobaleShopList.put("token", token);
 
         if (update == false) {
             GlobleSoplist.document(shoId).set(GlobaleShopList).addOnCompleteListener(new OnCompleteListener<Void>() {
