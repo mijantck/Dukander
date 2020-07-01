@@ -70,6 +70,7 @@ public class GlobleProductListAdapter  extends FirestoreRecyclerAdapter<GloblePr
             holder.dicuntLayout.setVisibility(View.VISIBLE);
             holder.price.setPaintFlags(holder.price.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
             Double d2 =Double.valueOf(model.getPruductDiscount());
+
             holder.discountParsent.setText(calcuateDiscount(model.getProPrice(),d2)+"");
         }
 

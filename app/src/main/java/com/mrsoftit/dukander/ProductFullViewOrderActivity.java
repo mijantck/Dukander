@@ -88,6 +88,7 @@ public class ProductFullViewOrderActivity extends AppCompatActivity {
 
     JSONArray jsonArray = new JSONArray();
 
+    Double commonPrice;
     private String proIdup,proNameup,proPriceup,productCodeup,productPrivacyup,proImgeUrlup,ShopNameup,ShopPhoneup,ShopAddressup,ShopImageUrlup,
             ShopIdup,UserIdup,productCategoryup,dateup,proQuaup,discuntup;
 
@@ -110,6 +111,8 @@ public class ProductFullViewOrderActivity extends AppCompatActivity {
     String globleCustomerEmail;
     String globalCustomerInfoId;
 
+    String q ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +123,7 @@ public class ProductFullViewOrderActivity extends AppCompatActivity {
          mAuth = FirebaseAuth.getInstance();
 
         if (currentUser!=null){
+
             globlecutouser_id = currentUser.getUid();
         }
        productImageDetail = findViewById(R.id.productImageDetail);
@@ -134,7 +138,6 @@ public class ProductFullViewOrderActivity extends AppCompatActivity {
       revieweditText = findViewById(R.id.revieweditText);
       reviewsendbutton =findViewById(R.id.reviewsendbutton);
         orderButton =findViewById(R.id.orderButton);
-
 
         final Bundle bundle = getIntent().getExtras();
 
@@ -152,7 +155,6 @@ public class ProductFullViewOrderActivity extends AppCompatActivity {
                 proPrice = Double.parseDouble(proPriceup);
                 productPriceDetails.setText(proPriceup);
             }
-            Toast.makeText(this, proPriceup+"  price", Toast.LENGTH_SHORT).show();
 
             if (bundle.getString("productCodeup")!=null){
                 productCodeup = bundle.getString("productCodeup");
@@ -212,32 +214,16 @@ public class ProductFullViewOrderActivity extends AppCompatActivity {
                 discuntup = bundle.getString("discuntup");
                 pruductDiscount =Integer.parseInt(discuntup);
                 Double d2 =Double.valueOf(pruductDiscount);
-
+                commonPrice = calcuateDiscount(proPrice,d2);
                 productPriceDetails.setText(calcuateDiscount(proPrice,d2)+"");
 
+
+            }else {
+                commonPrice = proPrice;
+                productPriceDetails.setText(proPrice+"");
             }
         }
 
-        orderButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-
-                        if (task.isSuccessful()){
-
-                            String token = task.getResult().getToken();
-
-                            Log.e("newToken", token);
-                           // sendMessage(jsonArray,"fjskdf-sdf","mijan","kdjkdd","test ");
-                         notificationSend(token);
-                        }
-
-                    }
-                });
-            }
-        });
         productQuantidyfromCustomer.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -249,17 +235,65 @@ public class ProductFullViewOrderActivity extends AppCompatActivity {
 
                 String s1 = s.toString().trim();
                 if (!s1.isEmpty()){
-
                     double ProductQuantidy =Double.parseDouble(s1);
-                    double sumPrice = ProductQuantidy*proPrice;
+                    double sumPrice = ProductQuantidy*commonPrice;
                     productPriceDetails.setText(sumPrice+"");
                 }else {
 
-                    productPriceDetails.setText(proPriceup);
+                    productPriceDetails.setText(commonPrice+"");
                 }
             }
             @Override
             public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        orderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+
+                        if (task.isSuccessful()){
+                            String token = task.getResult().getToken();
+
+                            Log.e("newToken", token);
+                           // notificationSend(token);
+                        }
+                    }
+                });
+
+                q =  productQuantidyfromCustomer.getText().toString();;
+
+                Toast.makeText(ProductFullViewOrderActivity.this, q, Toast.LENGTH_SHORT).show();
+                if ( !q.isEmpty()){
+                    Intent intent = new Intent(ProductFullViewOrderActivity.this, ConfirmOrderActivity.class);
+                    intent.putExtra("proIdup",proIdup);
+                    intent.putExtra("proNameup",proNameup);
+                    intent.putExtra("proPriceup",proPriceup);
+                    intent.putExtra("proPriceupSingle",proPriceup);
+                    intent.putExtra("commonPrice",productPriceDetails.getText().toString());
+                    intent.putExtra("productCodeup",productCodeup);
+                    intent.putExtra("productPrivacyup",productPrivacyup);
+                    intent.putExtra("proImgeUrlup",proImgeUrlup);
+                    intent.putExtra("ShopNameup",ShopNameup);
+                    intent.putExtra("ShopPhoneup",ShopPhoneup);
+                    intent.putExtra("ShopAddressup",ShopAddressup);
+                    intent.putExtra("ShopImageUrlup",ShopImageUrlup);
+                    intent.putExtra("ShopIdup",ShopIdup);
+                    intent.putExtra("UserIdup",UserIdup);
+                    intent.putExtra("productCategoryup",productCategoryup);
+                    intent.putExtra("dateup",dateup);
+                    intent.putExtra("proQuaup",productQuantidyfromCustomer.getText().toString());
+                    intent.putExtra("discuntup",discuntup);
+                    startActivity(intent);
+                }else {
+                    Toast.makeText(ProductFullViewOrderActivity.this, " please fill up quantity ", Toast.LENGTH_SHORT).show();
+                }
+
+
 
             }
         });
@@ -646,70 +680,6 @@ public class ProductFullViewOrderActivity extends AppCompatActivity {
     }
 
 
-    public void sendMessage(final JSONArray recipients, final String user_id, final String name, final String user_profile, final String message) {
 
-        Toast.makeText(this, recipients+"", Toast.LENGTH_SHORT).show();
-
-        try {
-            if (recipients.getString(0).length() > 0)
-                new AsyncTask<String, String, String>() {
-                    @Override
-                    protected String doInBackground(String... params) {
-                        try {
-                            JSONObject root = new JSONObject();
-                            JSONObject notification = new JSONObject();
-                            notification.put("user_id", user_id);
-                            notification.put("user_name", name);
-                            notification.put("user_profile", user_profile);
-                            notification.put("msg", message);
-                            notification.put("type", "chat");
-
-                            JSONObject data = new JSONObject();
-                            data.put("body", notification);
-                            root.put("data", data);
-                            root.put("registration_ids", recipients);
-
-                            String result = postToFCM(root.toString());
-                            Log.d("chat Activity", "Result: " + result);
-                            return result;
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
-                        }
-                        return null;
-                    }
-
-                    @Override
-                    protected void onPostExecute(String result) {
-                        try {
-                            JSONObject resultJson = new JSONObject(result);
-                            int success, failure;
-                            success = resultJson.getInt("success");
-                            failure = resultJson.getInt("failure");
-                            Toast.makeText(ProductFullViewOrderActivity.this, "Message Success: " + success + "Message Failed: " + failure, Toast.LENGTH_LONG).show();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Toast.makeText(ProductFullViewOrderActivity.this, "Message Failed, Unknown error occurred.", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                }.execute();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    String postToFCM(String bodyString) throws IOException {
-
-        OkHttpClient mClient = new OkHttpClient();
-        final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-
-        RequestBody body = RequestBody.create(JSON, bodyString);
-        Request request = new Request.Builder()
-                .url("https://fcm.googleapis.com/fcm/send")
-                .post(body)
-                .addHeader("Authorization", serverKey)
-                .build();
-        okhttp3.Response response = mClient.newCall(request).execute();
-        return response.body().string();
-    }
 
 }

@@ -136,6 +136,7 @@ public class GlobleProductListActivity extends AppCompatActivity implements Navi
 
         mAuth = FirebaseAuth.getInstance();
 
+
         if (currentUser!=null){
             globlecutouser_id = currentUser.getUid();
         }
