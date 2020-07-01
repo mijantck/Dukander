@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:orientation="vertical"
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    card_view:cardCornerRadius="5dp"
+    card_view:contentPadding="2dp"
+    card_view:cardElevation="2dp"
+    card_view:cardBackgroundColor="@android:color/white"
+    card_view:cardUseCompatPadding="true" >
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <LinearLayout
         android:weightSum="10"
@@ -32,7 +41,7 @@
                 android:textSize="20dp"
                 android:maxLines="1"
                 android:scrollbars="horizontal"
-                android:textColor="@color/black"
+                android:textColor="@android:color/holo_blue_dark"
                 android:fontFamily="@font/nunito_sans_bold"
                 android:text="Product Name "
                 android:layout_width="match_parent"
@@ -109,7 +118,7 @@
             android:layout_height="wrap_content">
             <TextView
                 android:id="@+id/orderProducCinfimeTexview"
-                android:textColor="@color/black"
+                android:textColor="@color/tcolorPrimary"
                 android:fontFamily="@font/nunito_sans_bold"
                 android:textSize="17dp"
                 android:text="Confirm"
@@ -123,6 +132,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/productWonerLayout"
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -209,6 +219,7 @@
 
     </LinearLayout>
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/deliveryBoyLayout"
         android:weightSum="10"
         android:layout_width="match_parent"
@@ -254,6 +265,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_marginTop="5dp"
         android:weightSum="10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -264,9 +276,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content">
             <TextView
-                android:textColor="@color/black"
+                android:textColor="@android:color/holo_blue_dark"
                 android:fontFamily="@font/nunito_sans_bold"
-                android:gravity="center"
                 android:text="COSTUMER INFO"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -303,9 +314,8 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:textColor="@color/black"
+                android:textColor="@android:color/holo_blue_dark"
                 android:fontFamily="@font/nunito_sans_bold"
-                android:gravity="center"
                 android:text="SHOP INFO"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -340,3 +350,4 @@
 </LinearLayout>
 
 </LinearLayout>
+</androidx.cardview.widget.CardView>

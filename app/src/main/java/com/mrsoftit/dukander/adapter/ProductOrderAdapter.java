@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,6 +30,9 @@ import com.mrsoftit.dukander.modle.GlobleCustomerNote;
 import com.mrsoftit.dukander.modle.OrderNote;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
 
 public class ProductOrderAdapter extends FirestoreRecyclerAdapter<OrderNote, ProductOrderAdapter.ViewHolde> {
@@ -41,6 +45,7 @@ public class ProductOrderAdapter extends FirestoreRecyclerAdapter<OrderNote, Pro
      */
 
     private OnItemClickListener listener;
+
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     String  user_id =currentUser.getUid();
 
@@ -52,13 +57,75 @@ public class ProductOrderAdapter extends FirestoreRecyclerAdapter<OrderNote, Pro
     @Override
     protected void onBindViewHolder(@NonNull ViewHolde holder, int position, @NonNull final OrderNote model) {
 
+        //product Info
+        if (model.getProductURL()!=null){
+            String Url = model.getProductURL();
+            Picasso.get().load(Url).into(holder.orderProductPicURL);
+        }
+     holder.orderProductName.setText(model.getProductName());
+     holder.orderProductCode.setText(model.getProductCode());
+     holder.orderProductQuantity.setText(model.getProductQuantity());
+     holder.orderProductPrice.setText(model.getProductPrice());
+
+        Integer value = model.getOrderDate();
+        SimpleDateFormat originalFormat = new SimpleDateFormat("yyMMddHHmm");
+        try {
+            Date date = originalFormat.parse(value.toString());
+            SimpleDateFormat newFormat = new SimpleDateFormat("dd-MM-yy-HH:mm");
+            String formatedDate = newFormat.format(date);
+            holder.orderProductDate.setText(formatedDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+      // delivery ....
+        if (model.getConfirmetionStatus()!=null) {
+            holder.orderProducCinfimeTexview.setText(model.getConfirmetionStatus());
+        }else {
+            holder.orderProducCinfimeTexview.setText("Processing");
+        }
+        if (model.getUserID() == user_id ){
+           holder.productWonerLayout.setVisibility(View.VISIBLE);
+
+           holder.orderProductConfimeOrCancel.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+
+                   Toast.makeText(v.getContext(), " confirm ", Toast.LENGTH_SHORT).show();
+
+               }
+           });
+
+           holder.orderProductDeliveyBoySecelt.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+
+                   Toast.makeText(v.getContext(), " delivery boy ", Toast.LENGTH_SHORT).show();
+
+               }
+           });
+        }
+
+        if (model.getDeliveryBoyName() != null){
+            holder.deliveryBoyLayout.setVisibility(View.VISIBLE);
+            holder.orderProductDeliveryBoyName.setText(model.getDeliveryBoyName());
+            holder.orderProductDeliveryBoyPhone.setText(model.getDeliveryBoyPhone());
+        }
+        holder.orderCustomertName.setText(model.getCutomerName());
+        holder.orderCustomertPhone.setText(model.getCutomerPhone());
+        holder.orderCustomertAddress.setText(model.getCutomerAddress());
+
+        holder.orderShopName.setText(model.getShopName());
+        holder.orderShopPhone.setText(model.getShopPhone());
+        holder.orderShopAddress.setText(model.getShopAddress());
+
+
 
     }
 
     @NonNull
     @Override
     public ViewHolde onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.gift_single_item,
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.order_customr_single_layout,
                 parent, false);
         return new ViewHolde(v);
     }
@@ -69,10 +136,14 @@ public class ProductOrderAdapter extends FirestoreRecyclerAdapter<OrderNote, Pro
         TextView orderProductName,orderProductCode,orderProductQuantity,orderProductPrice,orderProductDate,orderProducCinfimeTexview,
                 orderProductConfimeOrCancel,orderProductDeliveyBoySecelt,orderProductDeliveryBoyName,orderProductDeliveryBoyPhone,
                 orderCustomertName,orderCustomertPhone,orderCustomertAddress,orderShopName,orderShopPhone,orderShopAddress;
+
+        LinearLayout productWonerLayout,deliveryBoyLayout;
         public ViewHolde(@NonNull final View itemView) {
             super(itemView);
 
             orderProductPicURL = itemView.findViewById(R.id.orderProductPicURL);
+            productWonerLayout = itemView.findViewById(R.id.productWonerLayout);
+            deliveryBoyLayout = itemView.findViewById(R.id.deliveryBoyLayout);
             orderProductName = itemView.findViewById(R.id.orderProductName);
             orderProductCode = itemView.findViewById(R.id.orderProductCode);
             orderProductQuantity = itemView.findViewById(R.id.orderProductQuantity);

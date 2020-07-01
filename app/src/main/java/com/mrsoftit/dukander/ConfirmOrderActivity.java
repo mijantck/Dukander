@@ -22,13 +22,19 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mrsoftit.dukander.modle.GlobleCustomerNote;
+import com.mrsoftit.dukander.modle.OrderNote;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 public class ConfirmOrderActivity extends AppCompatActivity {
@@ -40,7 +46,7 @@ public class ConfirmOrderActivity extends AppCompatActivity {
     String globlecutouser_id ;
 
     private String proIdup,proNameup,proPriceup,proPriceupSingle,productCodeup,productPrivacyup,proImgeUrlup,ShopNameup,ShopPhoneup,ShopAddressup,ShopImageUrlup,
-            ShopIdup,UserIdup,productCategoryup,dateup,proQuaup,discuntup,commonPriceup;
+            ShopIdup,UserIdup,productCategoryup,dateup,proQuaup,discuntup,commonPriceup,tokenup;
 
 
     ProgressDialog progressDialog;
@@ -189,6 +195,13 @@ public class ConfirmOrderActivity extends AppCompatActivity {
                // orderProductTotalBill.setText(calcuateDiscount(proPrice,d2)+"");
                 orderProductDicunt.setText(discuntup);
             }
+            if (bundle.getString("tokenup")!=null){
+                tokenup = bundle.getString("tokenup");
+               // pruductDiscount =Integer.parseInt(discuntup);
+                //  Double d2 =Double.valueOf(pruductDiscount);
+                // orderProductTotalBill.setText(calcuateDiscount(proPrice,d2)+"");
+               // orderProductDicunt.setText(discuntup);
+            }
         }
 
 
@@ -212,6 +225,55 @@ public class ConfirmOrderActivity extends AppCompatActivity {
             }
         });
 
+
+        OrderConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+               String  ShippingName =   Shipping_name.getText().toString();
+               String  ShippingPhone =   Shipping_Phone.getText().toString();
+               String  ShippingAddress =   Shipping_Address.getText().toString();
+               String  TotalproductPrice =   orderProductTotalBill.getText().toString();
+
+
+               if (ShippingName.isEmpty() && ShippingPhone.isEmpty() && ShippingAddress.isEmpty() ){
+
+                   Toast.makeText(ConfirmOrderActivity.this, " Shipping address fillup", Toast.LENGTH_SHORT).show();
+
+                   return;
+               }
+
+
+                Date calendar1 = Calendar.getInstance().getTime();
+                DateFormat df1 = new SimpleDateFormat("yyMMddHHmm");
+                String todayString = df1.format(calendar1);
+                final int datereview = Integer.parseInt(todayString);
+
+                final CollectionReference customerForOrder = FirebaseFirestore.getInstance()
+                        .collection("Globlecustomers").document(globlecutouser_id).collection("OrderList");
+
+
+                customerForOrder.add(new OrderNote(ShippingName,ShippingPhone,ShippingAddress,globlecutouser_id,ShopNameup,ShopPhoneup,
+                        ShopAddressup,ShopIdup,UserIdup,null,datereview,proNameup,proIdup,proImgeUrlup,productCodeup,
+                        TotalproductPrice,proQuaup,discuntup,"promocode",null,null,null,null))
+                        .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentReference> task) {
+                                if (task.isSuccessful()){
+                                    String orderID = task.getResult().getId();
+                                    customerForOrder.document(orderID).update("orderID",orderID).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+
+                                            Toast.makeText(ConfirmOrderActivity.this, "oreder complet ", Toast.LENGTH_SHORT).show();
+
+                                        }
+                                    });
+                                }
+                            }
+                        });
+            }
+        });
 
         orderProductCoponCodeButton.setOnClickListener(new View.OnClickListener() {
             @Override

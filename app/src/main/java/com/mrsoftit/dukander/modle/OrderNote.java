@@ -9,7 +9,10 @@ public class OrderNote {
     private String shopPhone;
     private String shopAddress;
     private String shopID;
+    private String userID;
     private String orderID;
+    private int orderDate;
+    private String productName;
     private String productID;
     private String productURL;
     private String productCode;
@@ -17,14 +20,15 @@ public class OrderNote {
     private String productQuantity;
     private String offerForShop;
     private String offerForcoupon;
+    private String confirmetionStatus;
     private String orderStatus;
     private String deliveryBoyName;
     private String deliveryBoyPhone;
 
 
-    public void OrderNote(){}
+    public  OrderNote(){}
 
-    public OrderNote(String cutomerName, String cutomerPhone, String cutomerAddress, String cutomerID, String shopName, String shopPhone, String shopAddress, String shopID, String orderID, String productID, String productURL, String productCode, String productPrice, String productQuantity, String offerForShop, String offerForcoupon, String orderStatus) {
+    public OrderNote(String cutomerName, String cutomerPhone, String cutomerAddress, String cutomerID, String shopName, String shopPhone, String shopAddress, String shopID, String userID, String orderID, int orderDate, String productName, String productID, String productURL, String productCode, String productPrice, String productQuantity, String offerForShop, String offerForcoupon, String confirmetionStatus, String orderStatus, String deliveryBoyName, String deliveryBoyPhone) {
         this.cutomerName = cutomerName;
         this.cutomerPhone = cutomerPhone;
         this.cutomerAddress = cutomerAddress;
@@ -33,7 +37,10 @@ public class OrderNote {
         this.shopPhone = shopPhone;
         this.shopAddress = shopAddress;
         this.shopID = shopID;
+        this.userID = userID;
         this.orderID = orderID;
+        this.orderDate = orderDate;
+        this.productName = productName;
         this.productID = productID;
         this.productURL = productURL;
         this.productCode = productCode;
@@ -41,9 +48,43 @@ public class OrderNote {
         this.productQuantity = productQuantity;
         this.offerForShop = offerForShop;
         this.offerForcoupon = offerForcoupon;
+        this.confirmetionStatus = confirmetionStatus;
         this.orderStatus = orderStatus;
+        this.deliveryBoyName = deliveryBoyName;
+        this.deliveryBoyPhone = deliveryBoyPhone;
     }
 
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
+
+    public String getConfirmetionStatus() {
+        return confirmetionStatus;
+    }
+
+    public void setConfirmetionStatus(String confirmetionStatus) {
+        this.confirmetionStatus = confirmetionStatus;
+    }
+
+    public int getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(int orderDate) {
+        this.orderDate = orderDate;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
 
     public String getCutomerName() {
         return cutomerName;

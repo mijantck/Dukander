@@ -15,6 +15,7 @@ public class GlobleProductNote5 {
     private String ShopId;
     private String UserId;
     private String productCategory;
+    private String token;
     private int date;
     private double proQua;
     private int pruductDiscount;
@@ -29,6 +30,14 @@ public class GlobleProductNote5 {
     }
 
     public GlobleProductNote5() {
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getProId() {

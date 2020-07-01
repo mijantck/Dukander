@@ -114,11 +114,10 @@
             android:layout_height="wrap_content"
             android:text="$ 00"
             android:layout_alignParentRight="true"
-            android:fontFamily="@font/nunito_sans_reguler"
+            android:fontFamily="@font/nunito_sans_bold"
             android:padding="2dp"
             android:gravity="center"
-            android:background="@drawable/text_round"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/holo_blue_dark"
             android:textSize="12sp" />
 
 
@@ -146,10 +145,9 @@
                 android:text="$ 00"
                 android:padding="2dp"
                 android:gravity="center"
-                android:fontFamily="@font/nunito_sans_reguler"
+                android:fontFamily="@font/nunito_sans_bold"
                 android:layout_marginRight="2dp"
-                android:background="@drawable/text_round"
-                android:textColor="@android:color/white"
+                android:textColor="@android:color/holo_blue_dark"
                 android:textSize="12sp" />
         </RelativeLayout>
     </LinearLayout>

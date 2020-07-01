@@ -18,10 +18,19 @@ public class GlobleProductNote {
     private double proQua;
     private int pruductDiscount;
     private String comomCatagory;
+    private String token;
 
 
 
     public GlobleProductNote() {
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getComomCatagory() {
